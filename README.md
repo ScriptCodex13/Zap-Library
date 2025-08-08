@@ -12,7 +12,7 @@ EasyGL is a OpenGL abstraction/library for one of my game engine projects. I tho
 
 **Step 1:**
 
-## Use the Library
+## Use the compiled Library
 
 **Step 1:**
 
@@ -50,6 +50,49 @@ int main()
 
 
 ```
+
+```c++
+ez::Init();
+ez::Delete();
+```
+You use these functions to manage the APIs OpenGL resources. Every call from EasyGL must be called between these two functions.
+
+```c++
+ez::Window window(1290, 720, "Hello Window");
+```
+We create a new Window class here. We specify the width and height and the Title of the window.
+
+```c++
+ez::InitGlad();
+```
+Glad is an library that handles the OpenGL function locations. All you need to know is that this function must be called AFTER you create a window class instance.
+
+```c++
+while (window.Open())
+	{
+		window.ClearBackground(ez::BackgroundColors::ORANGE);
+
+		if (window.GetInput(ez::Key::ESC, ez::State::EZ_PRESSED))
+		{
+			window.Close();
+		}
+
+		window.UpdateViewport();
+		window.Update();
+		window.Draw();
+
+	}
+```
+Now a while loop is created which checks if the window is open. In this loop the window is painted orange with the ClearBackground function. 
+
+```c++
+window.UpdateViewport();
+```
+In quite a few cases your window gets resized. So we call UpdateViewport to match the new window size. But in some cases you want a Viewport 
+
+
+
+
 
 # Please Note 
 
