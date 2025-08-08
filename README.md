@@ -16,6 +16,40 @@ EasyGL is a OpenGL abstraction/library for one of my game engine projects. I tho
 
 **Step 1:**
 
+## Start with your first code
+
+```c++
+
+#include "EasyGL.h"
+
+int main()
+{
+	ez::Init();
+
+	ez::Window window(1290, 720, "Hello Window");
+
+	ez::InitGlad();
+
+	while (window.Open())
+	{
+		window.ClearBackground(ez::BackgroundColors::ORANGE);
+
+		if (window.GetInput(ez::Key::ESC, ez::State::EZ_PRESSED))
+		{
+			window.Close();
+		}
+
+		window.UpdateViewport();
+		window.Update();
+		window.Draw();
+
+	}
+
+	ez::Delete();
+}
+
+
+```
 
 # Please Note 
 
