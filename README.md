@@ -2,7 +2,7 @@
 
 # What is EasyGL?
 
-EasyGL is a OpenGL abstraction/library for one of my game engine projects. I thought it could be useful for others because the APIs code is shorter than raw OpenGL code but still lets you control the important parts of the EasyGL code. You dont have to know anything about OpenGL. The API can be used by anyone who is familiar with C++.
+EasyGL is a OpenGL abstraction/library for one of my game engine projects. I thought it could be useful for others because the APIs code is shorter than raw OpenGL code but still lets you control the important parts of the EasyGL code. You dont have to know anything about OpenGL. The API can be used by anyone who is familiar with C++. But for everyone who know some OpenGL can also use raw OpenGL in combination with EasyGL.
 
 # How to use 
 
@@ -94,9 +94,12 @@ window.UpdateViewport();
 ```
 In quite a few cases your window gets resized. So we call UpdateViewport to match the new window size. 
 
+```c++
+window.Update();
+window.Draw();
+```
 
-
-
+These functions are one of the most important. Update() manages all the window events like Key Inputs. window.Draw() draws everything on the window. So every write operation from meshes etc. need to be called before. Otherwise these wont work.
 
 # Please Note 
 
