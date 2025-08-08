@@ -2,7 +2,7 @@
 
 # What is EasyGL?
 
-EasyGL is a OpenGL abstraction/library for one of my game engine projects. I thought it could be useful to others because the APIs code is shorter than OpenGL code but lets you control the important stuff. You dont have to know anything about OpenGL. The API can be used by anyone with C++ knowledge.
+EasyGL is a OpenGL abstraction/library for one of my game engine projects. I thought it could be useful to others because the APIs code is shorter than OpenGL code but still lets you control the important configurations. You dont have to know anything about OpenGL. The API can be used by anyone who is familiar with C++.
 
 # How to use 
 
@@ -15,3 +15,8 @@ EasyGL is a OpenGL abstraction/library for one of my game engine projects. I tho
 ## Use the Library
 
 **Step 1:**
+
+
+# Please Note 
+
+EasyGL isnt fully finished yet. There may still be some Issues. If you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Help will be greatly appriciated ! 
