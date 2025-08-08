@@ -92,7 +92,7 @@ Now a while loop is created which checks if the window is open. In this loop the
 ```c++
 window.UpdateViewport();
 ```
-In quite a few cases your window gets resized. So we call UpdateViewport to match the new window size. But in some cases you want a Viewport 
+In quite a few cases your window gets resized. So we call UpdateViewport to match the new window size. 
 
 
 
