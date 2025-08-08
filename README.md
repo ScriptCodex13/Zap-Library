@@ -61,6 +61,9 @@ You use these functions to manage the APIs OpenGL resources. Every call from Eas
 ez::Window window(1290, 720, "Hello Window");
 ```
 We create a new Window class here. We specify the width and height and the Title of the window.
+Multiple windows:
+
+Only one window can exist per thread, so if you want to create more than one, you have to create them in different threads.
 
 ```c++
 ez::InitGlad();
