@@ -64,7 +64,7 @@ We create a new Window class here. We specify the width and height and the Title
 
 **Multiple windows:**
 
-Only one window can exist per thread, so if you want to create more than one, you have to create them in different threads.
+Only one window can exist per thread, so if you want to create more than one, you have to create and handle them in different threads.
 
 ```c++
 ez::InitGlad();
