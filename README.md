@@ -101,6 +101,10 @@ window.Draw();
 
 These functions are one of the most important. Update() manages all the window events like Key Inputs. window.Draw() draws everything on the window. So every write operation from meshes etc. need to be called before. Otherwise these wont work.
 
+# Wiki
+
+You can visit the wiki here <- Link of the wiki
+
 # Please Note 
 
 EasyGL isnt fully finished yet. There may still be some Issues. If you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Help will be greatly appriciated ! 
