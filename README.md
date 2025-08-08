@@ -14,7 +14,7 @@ EasyGL is a OpenGL abstraction/library for one of my game engine projects. I tho
 
 ## Use the compiled Library
 
-**Step 1:**
+Go to the Releases of this Repository and choose your preferred version.
 
 ## Start with your first code
 
