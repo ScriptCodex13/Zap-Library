@@ -8,7 +8,7 @@ EasyGL is a OpenGL abstraction/library for one of my game engine projects. I tho
 
 ## Build the project
 
-### Build for Visual Studio using Premake <- Link here 
+### Build for Visual Studio using [Premake](https://github.com/premake/premake-core)
 
 **Step 1:**
 
