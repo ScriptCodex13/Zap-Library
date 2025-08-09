@@ -107,9 +107,9 @@ You can visit the wiki here <- Link of the wiki
 
 # Used Libraries
 
-[stb_image](https://github.com/nothings/stb),
-GLFW,
-GLAD
+[stb_image](https://github.com/nothings/stb) to load images,
+GLFW to manage windows,
+GLAD to load OpenGL functions
 
 # Please Note 
 
