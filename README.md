@@ -105,6 +105,12 @@ These functions are one of the most important. Update() manages all the window e
 
 You can visit the wiki here <- Link of the wiki
 
+# Used Libraries
+
+[stb_image](https://github.com/nothings/stb),
+GLFW,
+GLAD
+
 # Please Note 
 
 EasyGL isnt fully finished yet. There may still be some Issues. If you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Help will be greatly appriciated ! 
