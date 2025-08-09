@@ -14,7 +14,7 @@ Coming soon
 
 ## Use the compiled Library
 
-coming soon
+Coming soon
 
 ## Start with your first code
 
