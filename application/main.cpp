@@ -77,7 +77,7 @@ int main()
 	mesh.SetAttribPointer(2, 2, 8, 6);
 
 	mesh.UseTexture(true);
-	mesh.InitTexture(0, "C:/Dev/Zap/Rec/Textures/texture.jpg", 0, ez::TextureFilters::NEAREST, ez::MipmapSettings::NEAREST_MIPMAP_NEAREST, ez::TextureWrapping::CLAMP_TO_BORDER);
+	mesh.InitTexture(0, "C:/Dev/Zap/Rec/Textures/texture.jpg /*Use your own path here*/", 0, ez::TextureFilters::NEAREST, ez::MipmapSettings::NEAREST_MIPMAP_NEAREST, ez::TextureWrapping::CLAMP_TO_BORDER);
 	//mesh.UsePNG(0);
 
 	mesh.Finish();
@@ -122,4 +122,5 @@ int main()
 	}
 
 	ez::Delete();
+
 }
