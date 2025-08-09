@@ -2,7 +2,7 @@
 
 # What is EasyGL?
 
-EasyGL is a OpenGL abstraction/library for one of my game engine projects. I thought it could be useful for others because the APIs code is shorter than raw OpenGL code but still lets you control the important parts of the EasyGL code. The API can be used by anyone who is familiar with C++ and has expierience with GLSL. But for everyone who know more OpenGL can also use OpenGL in combination with EasyGL. If you want to know more about GLSL look at the Website [LearnOpenGL](https://learnopengl.com/Getting-started/Shaders).
+EasyGL is a OpenGL abstraction/library for one of my game engine projects. I thought it could be useful for others because the APIs code is shorter than raw OpenGL code but still lets you control the important parts of the EasyGL code. The API can be used by anyone who is familiar with C++ and has expierience with GLSL. But for everyone who know more OpenGL can also use OpenGL in combination with EasyGL. If you want to know more about GLSL look at the awesome Website [LearnOpenGL](https://learnopengl.com/Getting-started/Shaders).
 
 # How to use 
 
@@ -69,7 +69,7 @@ Only one window can exist per thread, so if you want to create more than one, yo
 ```c++
 ez::InitGlad();
 ```
-Glad is an library that handles the OpenGL function locations. All you need to know is that this function must be called AFTER you create a window class instance.
+Glad is a library that handles the OpenGL function locations. All you need to know is that this function must be called AFTER you create a window class instance.
 
 ```c++
 while (window.Open())
