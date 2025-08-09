@@ -14,6 +14,8 @@ Coming soon
 
 ## Use the compiled Library
 
+coming soon
+
 ## Start with your first code
 
 ```c++
@@ -111,4 +113,4 @@ GLAD to load OpenGL functions
 
 # Please Note 
 
-EasyGL isnt fully finished yet. There may still be some Issues. If you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Help will be greatly appriciated ! 
+EasyGL isnt finished yet. To be precise, it is a fresh project. There are some Issues and the API is missing a lot of planned features. But if you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Help will be greatly appriciated ! 
