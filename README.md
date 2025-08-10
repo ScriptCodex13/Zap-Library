@@ -114,3 +114,5 @@ GLAD to load OpenGL functions
 # Please Note 
 
 EasyGL isnt finished yet. To be precise, it is a fresh project. There are some Issues and the API is missing a lot of planned features. But if you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Help will be greatly appriciated ! 
+
+This isn't a copy of other libraries called EasyGL. I made my own library and called it EasyGL. 
