@@ -1,3 +1,5 @@
+// Just a example
+
 #include "Zap.h"
 #include "Mesh.h"
 #include <iostream>
@@ -124,4 +126,5 @@ int main()
 	ez::Delete();
 
 }
+
 
