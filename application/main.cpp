@@ -1,4 +1,4 @@
-#include "EasyGL.h"
+#include "Zap.h"
 #include "Mesh.h"
 #include <iostream>
 #include <vector>
@@ -124,3 +124,4 @@ int main()
 	ez::Delete();
 
 }
+
