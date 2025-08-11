@@ -1,8 +1,9 @@
-<img width="300" height="300" alt="EasyGLLogo" src="https://github.com/user-attachments/assets/530644b3-04f8-4606-9e3b-4001fb0a0fe6" />
 
-# What is EasyGL?
+<img width="300" height="300" alt="ZapLib Logo" src="https://github.com/user-attachments/assets/d9f62e46-1d9d-4e68-a9b6-8cb8943cf495" />
 
-EasyGL is a OpenGL abstraction/library for one of my game engine projects. I thought it could be useful for others because the APIs code is shorter than raw OpenGL code but still lets you control the important parts of the EasyGL code. The API can be used by anyone who is familiar with C++ and has expierience with GLSL. But for everyone who know more OpenGL can also use OpenGL code in combination with EasyGL. If you want to know more about GLSL take a look at the awesome Website [LearnOpenGL](https://learnopengl.com/Getting-started/Shaders).
+# What is Zap?
+
+Zap is an OpenGL abstraction/library for one of my game engine projects. I thought it could be useful for others because the APIs code is shorter than raw OpenGL code but still lets you control the important parts of the Zap code. The API can be used by anyone who is familiar with C++ and has expierience with GLSL. But for everyone who know more OpenGL can also use OpenGL code in combination with Zap. If you want to know more about GLSL take a look at the awesome Website [LearnOpenGL](https://learnopengl.com/Getting-started/Shaders).
 
 # How to use 
 
@@ -20,21 +21,21 @@ Coming soon
 
 ```c++
 
-#include "EasyGL.h"
+#include "Zap.h"
 
 int main()
 {
-	ez::Init();
+	zap::Init();
 
-	ez::Window window(1290, 720, "Hello Window");
+	zap::Window window(1290, 720, "Hello Window");
 
-	ez::InitGlad();
+	zap::InitGlad();
 
 	while (window.Open())
 	{
-		window.ClearBackground(ez::BackgroundColors::ORANGE);
+		window.ClearBackground(zap::BackgroundColors::ORANGE);
 
-		if (window.GetInput(ez::Key::ESC, ez::State::EZ_PRESSED))
+		if (window.GetInput(zap::Key::ESC, zap::State::EZ_PRESSED))
 		{
 			window.Close();
 		}
@@ -45,20 +46,20 @@ int main()
 
 	}
 
-	ez::Delete();
+	zap::Delete();
 }
 
 
 ```
 
 ```c++
-ez::Init();
-ez::Delete();
+zap::Init();
+zap::Delete();
 ```
 You use these functions to manage the APIs OpenGL resources. Every call from EasyGL must be called between these two functions.
 
 ```c++
-ez::Window window(1290, 720, "Hello Window");
+zap::Window window(1290, 720, "Hello Window");
 ```
 We create a new Window class here. We specify the width and height and the Title of the window.
 
@@ -67,16 +68,16 @@ We create a new Window class here. We specify the width and height and the Title
 Only one window can exist per thread, so if you want to create more than one, you have to create and handle them in different threads.
 
 ```c++
-ez::InitGlad();
+zap::InitGlad();
 ```
 Glad is a library that handles the OpenGL function locations. All you need to know is that this function must be called AFTER you create a window class instance.
 
 ```c++
 while (window.Open())
 	{
-		window.ClearBackground(ez::BackgroundColors::ORANGE);
+		window.ClearBackground(zap::BackgroundColors::ORANGE);
 
-		if (window.GetInput(ez::Key::ESC, ez::State::EZ_PRESSED))
+		if (window.GetInput(zap::Key::ESC, zap::State::EZ_PRESSED))
 		{
 			window.Close();
 		}
@@ -113,6 +114,4 @@ GLAD to load OpenGL functions
 
 # Please Note 
 
-EasyGL isnt finished yet. To be precise, it is a fresh project. There are some Issues and the API is missing a lot of planned features. But if you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Help will be greatly appriciated ! 
-
-This isn't a copy of other libraries called EasyGL. I made my own library and called it EasyGL. 
+Zap isnt finished yet. To be precise, it is a fresh project. There are some Issues and the API is missing a lot of planned features. But if you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Help will be greatly appriciated ! 
