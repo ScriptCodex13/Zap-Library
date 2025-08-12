@@ -109,7 +109,7 @@ namespace zap
 		void InitTexture(unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping i_wrapping = TextureWrapping::CLAMP_TO_BORDER);
 		
 
-		void Finish(); // Alles wird erstellt. Es können keine Einstellungen mehr vorgenommen werden
+		void Finish(); // Everything is finished you can't change the settings of the mesh anymore
 	
 		void SetTexture(unsigned int id);
 		void Write(int vertices_count = 0);
@@ -158,6 +158,7 @@ namespace zap
 
 	};
 };
+
 
 
 #endif
