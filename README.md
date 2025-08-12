@@ -108,8 +108,8 @@ You can visit the wiki [here](https://github.com/ScriptCodex13/Zap-Library/wiki)
 # Used Libraries
 
 [stb_image](https://github.com/nothings/stb) to load images,
-GLFW to manage windows,
-GLAD to load OpenGL functions
+[GLFW](https://github.com/glfw/glfw) to manage windows,
+[GLAD](https://github.com/Dav1dde/glad) to load OpenGL functions
 
 # Please Note 
 
