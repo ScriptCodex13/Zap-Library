@@ -74,19 +74,19 @@ Glad is a library that handles the OpenGL function locations. All you need to kn
 
 ```c++
 while (window.Open())
+{
+	window.ClearBackground(zap::BackgroundColors::ORANGE);
+
+	if (window.GetInput(zap::Key::ESC, zap::State::EZ_PRESSED))
 	{
-		window.ClearBackground(zap::BackgroundColors::ORANGE);
-
-		if (window.GetInput(zap::Key::ESC, zap::State::EZ_PRESSED))
-		{
-			window.Close();
-		}
-
-		window.UpdateViewport();
-		window.Update();
-		window.Draw();
-
+		window.Close();
 	}
+
+	window.UpdateViewport();
+	window.Update();
+	window.Draw();
+
+}
 ```
 Now a while loop is created which checks if the window is open. In this loop the window is painted orange with the ClearBackground function. 
 
