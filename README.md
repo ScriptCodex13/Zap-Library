@@ -105,11 +105,12 @@ These functions are one of the most important. Update() manages all the window e
 # Wiki
 
 You can visit the wiki [here](https://github.com/ScriptCodex13/Zap-Library/wiki)
-# Used Libraries
+# Used Software
 
 [stb_image](https://github.com/nothings/stb) to load images,
 [GLFW](https://github.com/glfw/glfw) to manage windows,
 [GLAD](https://github.com/Dav1dde/glad) to load OpenGL functions
+[Premake](https://github.com/premake/premake-core) to build the project
 
 # Please Note 
 
