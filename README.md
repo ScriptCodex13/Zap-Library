@@ -16,8 +16,6 @@ Windows:
 
   	Visual Studio: Run the Windows_GenerateVS.bat
 
- 	Visual Studio Code: Run the Windows_GenerateVSC.bat
-
 
   
  	
