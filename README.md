@@ -11,7 +11,17 @@ Zap is an OpenGL abstraction/library for one of my game engine projects. I thoug
 
 ### Build for Visual Studio using [Premake](https://github.com/premake/premake-core)
 
-Coming soon
+Windows:
+	1. clone this repository
+
+  	Visual Studio: Run the Windows_GenerateVS.bat
+
+ 	Visual Studio Code: Run the Windows_GenerateVSC.bat
+
+
+  
+ 	
+	
 
 ## Use the compiled Library
 
