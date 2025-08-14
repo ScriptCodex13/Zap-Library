@@ -317,8 +317,6 @@ namespace zap
 		FPSLimit = limit;
 
 		TargetTime = std::round(1.0f / limit * 1000) / 1000;
-
-		std::cout << TargetTime << std::endl;
 	}
 
 	void Window::SetTitle( const std::string title)
@@ -448,5 +446,6 @@ namespace zap
 	{
 		InternSwapBuffers();
 	}
+
 
 }
