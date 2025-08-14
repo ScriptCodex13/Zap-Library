@@ -680,16 +680,8 @@ namespace zap
 		bool CheckInput(Key key, State state)
 		{
 			
-			if (key_states.count(key))
-			{
-				if (key_states.at(key) == state)
-				{
-					return true;
-				}
-			}
-		
-
-			return false;
+			if (key_states.find(key) == key_states.end()) return false;
+			return key_states[key] == state;
 		}
 	}
 }

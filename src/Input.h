@@ -9,17 +9,17 @@
 
 namespace zap
 {
-	enum class State
+	enum class State : int
 	{
-		NONE,
-		EZ_PRESSED,
-		EZ_RELEASED
+		NONE        = -1,
+		EZ_PRESSED  = GLFW_PRESS,
+		EZ_RELEASED = GLFW_RELEASE
 	};
 
-	enum class Key
+	enum class Key : int
 	{
-		NONE,
-		A,
+		NONE = GLFW_KEY_UNKNOWN,
+		A    = GLFW_KEY_A,
 		B,
 		C,
 		D,
@@ -45,11 +45,11 @@ namespace zap
 		X,
 		Y,
 		Z,
+		right_arrow = GLFW_KEY_RIGHT,
 		left_arrow,
-		right_arrow,
-		up_arrow,
 		down_arrow,
-		NumPad_0,
+		up_arrow,
+		NumPad_0 = GLFW_KEY_0,
 		NumPad_1,
 		NumPad_2,
 		NumPad_3,
@@ -59,7 +59,7 @@ namespace zap
 		NumPad_7,
 		NumPad_8,
 		NumPad_9,
-		Num_0K,
+		Num_0K   = GLFW_KEY_KP_0,
 		Num_1K,
 		Num_2K,
 		Num_3K,
@@ -69,13 +69,13 @@ namespace zap
 		Num_7K,
 		Num_8K,
 		Num_9K,
-		ESC,
-		ENTER,
-		SPACE,
-		L_SHIFT,
-		R_SHIFT,
-		TAB,
-		F1,
+		ESC      = GLFW_KEY_ESCAPE,
+		ENTER    = GLFW_KEY_ENTER,
+		SPACE    = GLFW_KEY_SPACE,
+		L_SHIFT  = GLFW_KEY_LEFT_SHIFT,
+		R_SHIFT  = GLFW_KEY_RIGHT_SHIFT,
+		TAB      = GLFW_KEY_TAB,
+		F1       = GLFW_KEY_F1,
 		F2,
 		F3,
 		F4,
@@ -100,7 +100,7 @@ namespace zap
 		F23,
 		F24,
 		F25,
-		LEFT_MOUSE,
+		LEFT_MOUSE = GLFW_MOUSE_BUTTON_LEFT,
 		RIGHT_MOUSE,
 		MIDDLE_MOUSE
 	};
@@ -109,7 +109,6 @@ namespace zap
 	namespace input
 	{
 		inline std::unordered_map<Key, State> key_states;
-
 		void UpdateInputs(GLFWwindow* window);
 		bool CheckInput(Key key, State state);
 	};

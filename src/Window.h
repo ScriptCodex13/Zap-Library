@@ -38,7 +38,8 @@ namespace zap
 
 	/*****************************************************************************/
 
-	//Window 
+	//TODO: Yes it is Window, no doubt. Comment is redundant:
+	//Window
 
 	class Window
 	{
@@ -66,6 +67,15 @@ namespace zap
 		void SetFPSLimit(unsigned int limit); //TODO Get it to work correctly
 		void SetTitle(const std::string title);
 		bool GetInput(Key key, State state);
+		bool GetInput(int key, int   state);
+		bool isKeyPressed(Key key);
+		bool isKeyPressed(int key);
+		bool isKeyReleased(Key key);
+		bool isKeyReleased(int key);
+		bool isMousePressed(Key key);
+		bool isMousePressed(int key);
+		bool isMouseReleased(Key key);
+		bool isMouseReleased(int key);
 		void ShowWireFrame(bool state);
 		void SetIcon(const std::string path);
 		std::array<double, 2> GetMousePosition();
@@ -78,10 +88,10 @@ namespace zap
 	private:
 		GLFWwindow* intern_window = nullptr;
 		GLFWmonitor* currentMonitor = nullptr;
-		int width = 0;
+		int width  = 0;
 		int height = 0;
-		int pos_x = 0;
-		int pos_y = 0;
+		int pos_x  = 0;
+		int pos_y  = 0;
 		int current_refresh_rate = 1000000000;
 
 	private: //Icon

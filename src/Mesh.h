@@ -16,54 +16,58 @@
 
 namespace zap
 {
-	enum class BufferAccessModes
+	enum class BufferAccessModes : GLenum
 	{
-		LOW_ACCESS_STATIC,
-		HIGH_ACESS_STATIC,
-		HIGH_ACESS_DYNAMIC
+		LOW_ACCESS_STATIC   = GL_STREAM_DRAW,
+		HIGH_ACESS_STATIC   = GL_STATIC_DRAW,
+		HIGH_ACESS_DYNAMIC  = GL_DYNAMIC_DRAW
 	};
 
-	enum class TextureFilters
+	enum class TextureFilters : GLint
 	{
-		NEAREST,
-		LINEAR
+		NEAREST = GL_NEAREST,
+		LINEAR  = GL_LINEAR
 	};
 
-	enum class MipmapSettings
+	enum class MipmapSettings : GLint
 	{
-		NEAREST_MIPMAP_NEAREST,
-		LINEAR_MIPMAP_LINEAR,
-		NEAREST_MIPMAP_LINEAR,
-		LINEAR_MIPMAP_NEAREST
+		NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
+		LINEAR_MIPMAP_LINEAR   = GL_LINEAR_MIPMAP_LINEAR,
+		NEAREST_MIPMAP_LINEAR  = GL_NEAREST_MIPMAP_LINEAR,
+		LINEAR_MIPMAP_NEAREST  = GL_LINEAR_MIPMAP_NEAREST
 	};
 
-	enum class TextureWrapping
+	enum class TextureWrapping : GLint
 	{
-		REPEAT,
-		MIRRORED_REPEAT,
-		CLAMP_TO_EDGE,
-		CLAMP_TO_BORDER
+		REPEAT          = GL_REPEAT,
+		MIRRORED_REPEAT = GL_MIRRORED_REPEAT,
+		CLAMP_TO_EDGE   = GL_CLAMP_TO_EDGE,
+		CLAMP_TO_BORDER = GL_CLAMP_TO_BORDER
 	};
 
 	struct AttributeConfig
 	{
 		AttributeConfig(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos);
-		~AttributeConfig();
 
-		int i_shader_location;
-		int i_value_ct;
-		unsigned int i_data_stride;
-		unsigned int i_start_pos;
+		int             i_shader_location;
+		int             i_value_ct;
+		GLenum          i_type       = GL_FLOAT;
+		GLboolean       i_normalized = GL_FALSE;
+		unsigned int    i_data_stride;
+		unsigned int    i_start_pos;
+		void* getPos() { return  reinterpret_cast<void*>( i_start_pos * sizeof(float)); }
+		void  vertexAttribPointer();
 	};
 
 	struct Texture
 	{
 		Texture(unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
-		~Texture();
+
+		void genTexture();
+		void bind();
 
 		unsigned int i_texture;
 		std::string i_path;
-		unsigned char* i_texturedata;
 
 		TextureFilters i_filter = TextureFilters::LINEAR;
 		MipmapSettings i_settings = MipmapSettings::LINEAR_MIPMAP_LINEAR;
@@ -82,6 +86,24 @@ namespace zap
 		unsigned int i_texture_index;
 	};
 
+	inline const char* defaultVertexShaderSource = R"glsl(
+											#version 330 core
+											layout (location = 0) in vec3 aPos;
+
+											void main()
+											{
+												gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+											}
+									)glsl";
+	inline const char* defaultFragmentShaderSource = R"glsl(
+											#version 330 core
+											out vec4 FragColor;
+
+											void main()
+											{
+												FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+											}
+									)glsl";
 	class Mesh2D
 	{
 	public:
@@ -90,29 +112,27 @@ namespace zap
 
 		//Cofig Process
 
-		void SetVertexShaderSource(const char* source);
-		void SetVertexShaderSource(const std::string* source);
+		void SetVertexShaderSource(const std::string& source);
 
-		void SetFragmentShaderSource(const char* source);
-		void SetFragmentShaderSource(const std::string* source);
+		void SetFragmentShaderSource(const std::string& source);
 
 		void SetVBOAccessMode(BufferAccessModes mode);
 		void SetEBOAccessMode(BufferAccessModes mode);
 
-		void UseEBO(bool state);
 		void UsePNG(unsigned int id);
 
-		void SetAttribPointer(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos);
+		AttributeConfig& SetAttribPointer(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos);
 		//
 
-		void UseTexture(bool state);
-		void InitTexture(unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping i_wrapping = TextureWrapping::CLAMP_TO_BORDER);
-		
+		Texture& InitTexture(unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping i_wrapping = TextureWrapping::CLAMP_TO_BORDER);
 
 		void Finish(); // Everything is finished you can't change the settings of the mesh anymore
-	
-		void SetTexture(unsigned int id);
-		void Write(int vertices_count = 0);
+		bool SetTexture (unsigned int id); //TODO: This is Bind, not Set, should be renamed
+		//separate functions will be very useful in more complex logic
+		void useProgram ();
+		void bindVAO    ();
+		void bind       ();
+		void Write      (int vertices_count = 0);
 		// Transform func
 
 	private:
@@ -120,8 +140,8 @@ namespace zap
 		std::vector<float> vertices;
 		std::vector<unsigned int> indices;
 
-		const char* vertexShaderSource;
-		const char* fragmentShaderSource;
+		std::string vertexShaderSource   = defaultVertexShaderSource;
+		std::string fragmentShaderSource = defaultFragmentShaderSource;
 
 		bool vSourceset = false;
 		bool fSourceset = false;
@@ -137,19 +157,15 @@ namespace zap
 
 		unsigned int VBO;
 		unsigned int VAO;
-		unsigned int EBO;
+		unsigned int EBO = -1;
 
-		BufferAccessModes VBO_ACCESS_MODE;
-		BufferAccessModes EBO_ACCESS_MODE;
-		
-		bool useEBO;
+		BufferAccessModes VBO_ACCESS_MODE = BufferAccessModes::HIGH_ACESS_DYNAMIC;
+		BufferAccessModes EBO_ACCESS_MODE = BufferAccessModes::HIGH_ACESS_DYNAMIC;
 
-		std::vector<std::unique_ptr<AttributeConfig>> attribcfg;
+		std::vector<AttributeConfig> attribcfg;
 
 		//Textures
-
-		std::vector<std::unique_ptr<Texture>> texturecfg;
-		bool use_texture;
+		std::vector<Texture> texturecfg;
 		
 	};
 
@@ -158,7 +174,6 @@ namespace zap
 
 	};
 };
-
 
 
 #endif

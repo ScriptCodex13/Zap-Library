@@ -6,59 +6,69 @@
 
 #include "stb_image.h"
 
+#include <filesystem>
 namespace zap
 {
-	AttributeConfig::AttributeConfig(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos)
+	AttributeConfig::AttributeConfig(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos) :
+		i_shader_location (shader_location),
+		i_value_ct        (value_ct),
+		i_data_stride     (data_stride),
+		i_start_pos       (start_pos)
 	{
-		i_shader_location = shader_location;
-		i_value_ct = value_ct;
-		i_data_stride = data_stride;
-		i_start_pos = start_pos;
+	}
+	void AttributeConfig::vertexAttribPointer() 
+	{
+		glVertexAttribPointer (i_shader_location, i_value_ct, i_type, i_normalized, i_data_stride * sizeof(float), getPos());
+		glEnableVertexAttribArray(i_shader_location);
 	}
 
-	AttributeConfig::~AttributeConfig()
-	{
+	Texture::Texture(unsigned int id, const std::string path,
+						unsigned int     texture_index,
+						TextureFilters   filter,
+						MipmapSettings   settings,
+						TextureWrapping  wrapping) :
+		i_id             (id),
+		i_path           (path),
+		i_filter         (filter),
+		i_settings       (settings),
+		i_wrapping       (wrapping),
+		i_texture_index  (texture_index)
 
+	{
+		glGenTextures(1, &i_texture);
 	}
-
-	Texture::Texture(unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter, MipmapSettings settings, TextureWrapping wrapping)
+	void Texture::genTexture()
 	{
-		i_id = id;
-		i_path = path;
+		namespace fs = std::filesystem;
+		using std::cout;
+		using std::endl;
+		//glBindTexture (GL_TEXTURE_2D, i_texture);
+		bind();
+
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)i_wrapping);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLint)i_wrapping);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLint)i_settings);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLint)i_filter);
+
+		bool usePng = fs::path(i_path).extension() == ".png"; //TODO: so what?
 
 		stbi_set_flip_vertically_on_load(true);
-
-		i_texturedata = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Bessere Lösung nutze Filepath wie im Tutorial !
-
-		i_filter = filter;
-		i_settings = settings;
-		i_wrapping = wrapping;
-		i_texture_index = texture_index;
-
-		if (i_texturedata)
-		{
-			i_textureloaded = true;
-		}
-		else
+		unsigned char* texturedata = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Bessere Lösung nutze Filepath wie im Tutorial !
+		if (!texturedata)
 		{
 			messages::PrintMessage("Failed to load Texture at path: " + i_path, "Mesh.cpp/ez::Texture::Texture(...)", MessageTypes::error);
+			return;
 		}
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, i_width, i_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texturedata);
+		stbi_image_free(texturedata);
+		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-
-	Texture::~Texture()
-	{
-		stbi_image_free(i_texturedata);
-	}
-
+	void Texture::bind () { glBindTexture(GL_TEXTURE_2D, i_texture); }
 
 	Mesh2D::Mesh2D(std::vector<float>* extern_vertices, std::vector<unsigned int>* extern_indices)
 	{
 		vertices = *extern_vertices;
-		indices = *extern_indices;
-
-		VBO_ACCESS_MODE = BufferAccessModes::HIGH_ACESS_DYNAMIC;
-		EBO_ACCESS_MODE = BufferAccessModes::HIGH_ACESS_DYNAMIC;
-
+		indices  = *extern_indices;
 	}
 	Mesh2D::~Mesh2D()
 	{
@@ -68,7 +78,7 @@ namespace zap
 		glDeleteProgram(shaderProgram);
 	}
 
-	void Mesh2D::SetVertexShaderSource(const char* source)
+	void Mesh2D::SetVertexShaderSource(const std::string& source)
 	{
 		if (!vSourceset)
 		{
@@ -77,29 +87,11 @@ namespace zap
 		}
 	}
 
-	void Mesh2D::SetVertexShaderSource(const std::string* source)
-	{
-		if (!vSourceset)
-		{
-			vertexShaderSource = source->c_str();
-			vSourceset = true;
-		}
-	}
-
-	void Mesh2D::SetFragmentShaderSource(const char* source)
+	void Mesh2D::SetFragmentShaderSource(const std::string& source) 
 	{
 		if (!fSourceset)
 		{
 			fragmentShaderSource = source;
-			fSourceset = true;
-		}
-	}
-
-	void Mesh2D::SetFragmentShaderSource(const std::string* source) 
-	{
-		if (!fSourceset)
-		{
-			fragmentShaderSource = source->c_str();
 			fSourceset = true;
 		}
 	}
@@ -114,84 +106,38 @@ namespace zap
 		EBO_ACCESS_MODE = mode;
 	}
 
-	void Mesh2D::UseEBO(bool state)
+	void Mesh2D::UsePNG (unsigned int id)
 	{
-		useEBO = state;
+		auto cfg = std::find_if(texturecfg.begin(), texturecfg.end(), [id](const auto& x) {return x.i_id == id; });
+		if (cfg == texturecfg.end()) return;
+		cfg->i_usePNG = true; //TODO: so what?
 	}
 
-	void Mesh2D::UsePNG(unsigned int id)
+	AttributeConfig& Mesh2D::SetAttribPointer (int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos)
 	{
-		for (int i = 0; i < texturecfg.size(); i++)
-		{
-			if (texturecfg[i]->i_id == id)
-			{
-				texturecfg[i]->i_usePNG = true;
-			}
-		}
+		return attribcfg.emplace_back(AttributeConfig{ shader_location, value_ct, data_stride, start_pos });
 	}
 
-	void Mesh2D::SetAttribPointer(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos)
+	Texture& Mesh2D::InitTexture (unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter, MipmapSettings settings, TextureWrapping wrapping)
 	{
-		attribcfg.push_back(std::make_unique<AttributeConfig>(shader_location, value_ct, data_stride, start_pos));
+		return texturecfg.emplace_back(Texture { id, path, texture_index, filter, settings, wrapping });
 	}
-
-	void Mesh2D::UseTexture(bool state)
-	{
-		use_texture = state;
-	}
-
-	void Mesh2D::InitTexture(unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter, MipmapSettings settings, TextureWrapping wrapping)
-	{
-		texturecfg.push_back(std::make_unique<Texture>(id, path, texture_index, filter, settings, wrapping));
-	}
-
 
 	void Mesh2D::Finish()
 	{
 		/******************************************************************************************/
 
 		// Shader 
-		
-		//Source
-
-		if (!vSourceset)
-		{
-			vertexShaderSource =    R"glsl(
-											#version 330 core
-											layout (location = 0) in vec3 aPos;
-
-											void main() 
-											{
-												gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
-											}
-									)glsl";
-		}
-
-		if (!fSourceset)
-		{
-			fragmentShaderSource = R"glsl(
-											#version 330 core
-											out vec4 FragColor;
-
-											void main() 
-											{
-												FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
-											}
-									)glsl";
-		}
-
-		//
-
 		// Vertex Shader
-
-		vertexShader = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-		glCompileShader(vertexShader);
+		vertexShader = glCreateShader (GL_VERTEX_SHADER);
+		const char* src = vertexShaderSource.c_str();
+		glShaderSource  (vertexShader, 1, &src, NULL);
+		glCompileShader (vertexShader);
 
 		int ok;
 		char info[512];
 
-		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &ok);
+		glGetShaderiv (vertexShader, GL_COMPILE_STATUS, &ok);
 
 		if (!ok)
 		{
@@ -200,15 +146,11 @@ namespace zap
 			std::cerr << info << std::endl;
 		}
 
-		//
-
-
-
 		// FragmentShader
-
-		fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-		glCompileShader(fragmentShader);
+		fragmentShader = glCreateShader (GL_FRAGMENT_SHADER);
+		src = fragmentShaderSource.c_str();
+		glShaderSource  (fragmentShader, 1, &src, NULL);
+		glCompileShader (fragmentShader);
 
 		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &ok);
 		
@@ -242,211 +184,73 @@ namespace zap
 		//
 
 		//Delete Shaders
-
-		glDeleteShader(vertexShader);
-		glDeleteShader(fragmentShader);
-
+		glDeleteShader (vertexShader);
+		glDeleteShader (fragmentShader);
 		//
 
 		/*****************************************************************************************/
-	
-		
-		
-		/*****************************************************************************************/
-
 		// Buffer
+		// VAO
+		glGenVertexArrays (1, &VAO);
+		glBindVertexArray (VAO);
 
-		//VAO
+		// VBO
+		// F
+		glGenBuffers (1, &VBO);
+		glBindBuffer (GL_ARRAY_BUFFER, VBO);
+		glBufferData (GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), (GLenum)VBO_ACCESS_MODE);
 
-		glGenVertexArrays(1, &VAO);
-		glBindVertexArray(VAO);
+		for (auto& cfg : attribcfg)
+			cfg.vertexAttribPointer();
 
-		//
-
-		//VBO
-
-		//F
-
-		glGenBuffers(1, &VBO);
-
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		
-		if (VBO_ACCESS_MODE == BufferAccessModes::LOW_ACCESS_STATIC)
-		{
-			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STREAM_DRAW);
-		}
-		else if (VBO_ACCESS_MODE == BufferAccessModes::HIGH_ACESS_STATIC)
-		{
-			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-		}
-		else if (VBO_ACCESS_MODE == BufferAccessModes::HIGH_ACESS_DYNAMIC)
-		{
-			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_DYNAMIC_DRAW);
-		}
-
-		//f
-
-		//F
-
-		if (!attribcfg.empty())
-		{
-			for (int i = 0; i < attribcfg.size(); i++)
-			{
-				glVertexAttribPointer(attribcfg[i]->i_shader_location, attribcfg[i]->i_value_ct, GL_FLOAT, GL_FALSE, attribcfg[i]->i_data_stride * sizeof(float), (void*)(attribcfg[i]->i_start_pos * sizeof(float)));
-				glEnableVertexAttribArray(attribcfg[i]->i_shader_location);
-			}
-		}
-		else
-		{
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-			glEnableVertexAttribArray(0);
-		}
-
-		//f
-
-
-		//F
-		
 		// EBO
-
-		if (useEBO)
+		if (!indices.empty())
 		{
 			glGenBuffers(1, &EBO);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-
-			if (EBO_ACCESS_MODE == BufferAccessModes::LOW_ACCESS_STATIC)
-			{
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof( int), indices.data(), GL_STREAM_DRAW);
-			}
-			else if (EBO_ACCESS_MODE == BufferAccessModes::HIGH_ACESS_STATIC)
-			{
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof( int), indices.data(), GL_STATIC_DRAW);
-			}
-			else if (EBO_ACCESS_MODE == BufferAccessModes::HIGH_ACESS_DYNAMIC)
-			{
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof( int), indices.data(), GL_DYNAMIC_DRAW);
-			}
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int), indices.data(), (GLenum)EBO_ACCESS_MODE);
 		}
-
 		//
-
-
 		glBindVertexArray(0);
-
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 		//f
 
-		/*****************************************************************************************/
-
-
-		/*****************************************************************************************/
-
 		//Textures
-
-		if (use_texture)
-		{
-			for (int t = 0; t < texturecfg.size(); t++)
-			{
-				glGenTextures(1, &texturecfg[t]->i_texture);
-				glBindTexture(GL_TEXTURE_2D, texturecfg[t]->i_texture);
-
-				if (texturecfg[t]->i_wrapping == TextureWrapping::REPEAT)
-				{
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-				}
-				else if (texturecfg[t]->i_wrapping == TextureWrapping::MIRRORED_REPEAT)
-				{
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-				}
-				else if (texturecfg[t]->i_wrapping == TextureWrapping::CLAMP_TO_EDGE)
-				{
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-				}
-				else if (texturecfg[t]->i_wrapping == TextureWrapping::CLAMP_TO_BORDER)
-				{
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-				}
-
-				if (texturecfg[t]->i_settings == MipmapSettings::NEAREST_MIPMAP_NEAREST)
-				{
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-				}
-				else if (texturecfg[t]->i_settings == MipmapSettings::LINEAR_MIPMAP_LINEAR)
-				{
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-				}
-				else if (texturecfg[t]->i_settings == MipmapSettings::NEAREST_MIPMAP_LINEAR)
-				{
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-				}
-				else if (texturecfg[t]->i_settings == MipmapSettings::LINEAR_MIPMAP_NEAREST)
-				{
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-				}
-
-				if (texturecfg[t]->i_filter == TextureFilters::NEAREST)
-				{
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-				}
-				else if (texturecfg[t]->i_filter == TextureFilters::LINEAR)
-				{
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-				}
-
-				if (texturecfg[t]->i_textureloaded)
-				{
-					if (texturecfg[t]->i_usePNG)
-					{
-						glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texturecfg[t]->i_width, texturecfg[t]->i_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texturecfg[t]->i_texturedata);
-						glGenerateMipmap(GL_TEXTURE_2D);
-					}
-					else 
-					{
-						glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texturecfg[t]->i_width, texturecfg[t]->i_height, 0, GL_RGB, GL_UNSIGNED_BYTE, texturecfg[t]->i_texturedata);
-						glGenerateMipmap(GL_TEXTURE_2D);
-					}
-				}
-			}
-		}
-		
+		for (auto& texcfg : texturecfg) texcfg.genTexture();
 
 		/*****************************************************************************************/
 	}
 
-	void Mesh2D::SetTexture(unsigned int id)
+	bool Mesh2D::SetTexture(unsigned int id)
 	{
-		if (use_texture)
-		{
-			for (int e = 0; e < texturecfg.size(); e++)
-			{
-				if (texturecfg[e]->i_id == id)
-				{
-					glActiveTexture(0x84BF + texturecfg[e]->i_texture_index);
-					glBindTexture(GL_TEXTURE_2D, texturecfg[e]->i_texture);
-				}
-			}
-		}
+		auto cfg = std::find_if(texturecfg.begin(), texturecfg.end(), [id] (const auto& x) {return x.i_id == id; });
+		if (cfg == texturecfg.end()) return false;
+		cfg->bind();
+
+		return true;
 	}
 
-
+	void Mesh2D::useProgram () { glUseProgram (shaderProgram); }
+	void Mesh2D::bindVAO    () { glBindVertexArray (VAO); }
+	void Mesh2D::bind()
+	{
+		useProgram ();
+		bindVAO ();
+	}
 	void Mesh2D::Write(int vertices_count)
 	{
-		if (useEBO)
+		if (!indices.empty())
 		{
-			glUseProgram(shaderProgram);
-			glBindVertexArray(VAO);
+			glUseProgram (shaderProgram);
+			glBindVertexArray (VAO);
 			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 		}
 		else
 		{
+			//vertices_count = vertices.size() / attribcfg[0].i_value_ct;
 			glUseProgram(shaderProgram);
 			glBindVertexArray(VAO);
-			glDrawArrays(GL_TRIANGLES, 0,vertices_count);
+			glDrawArrays(GL_TRIANGLES, 0, vertices_count);
 		}
 	}
 

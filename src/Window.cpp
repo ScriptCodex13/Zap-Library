@@ -32,7 +32,6 @@ namespace zap
 		{
 			int width, height;
 			glfwGetWindowSize(window, &width, &height);
-
 			glViewport(0, 0, width, height);
 		}
 	}
@@ -327,14 +326,35 @@ namespace zap
 		}
 	}
 
-	bool Window::GetInput(Key key, State state)
+	bool Window::GetInput (Key key, State state) { return GetInput(static_cast<int>(key), static_cast<int>(state)); }
+	bool Window::GetInput (int key, int state)
 	{
-		if (intern_window)
-		{
-			return input::CheckInput(key, state);
-		}
-		
-		return false;
+		if (!intern_window) return false;
+		return glfwGetKey(intern_window, key) == state;
+	}
+	bool Window::isKeyPressed (Key key) { return isKeyPressed(static_cast<int>(key)); }
+	bool Window::isKeyPressed (int key)
+	{
+		if (!intern_window) return false;
+		return glfwGetKey(intern_window, key) == GLFW_PRESS;
+	}
+	bool Window::isKeyReleased (Key key) { return isKeyReleased(static_cast<int>(key)); }
+	bool Window::isKeyReleased (int key)
+	{
+		if (!intern_window) return false;
+		return glfwGetKey(intern_window, key) == GLFW_RELEASE;
+	}
+	bool Window::isMousePressed (Key key) { return isMousePressed(static_cast<int>(key)); }
+	bool Window::isMousePressed (int key)
+	{
+		if (!intern_window) return false;
+		return glfwGetMouseButton (intern_window, key) == GLFW_PRESS;
+	}
+	bool Window::isMouseReleased (Key key) { return isMousePressed(static_cast<int>(key)); }
+	bool Window::isMouseReleased (int key)
+	{
+		if (!intern_window) return false;
+		return glfwGetMouseButton (intern_window, key) == GLFW_RELEASE;
 	}
 
 	void Window::ShowWireFrame(bool state)
@@ -385,44 +405,14 @@ namespace zap
 
 	void Window::InternSwapBuffers()
 	{
-		if (intern_window)
-		{
-			auto now = std::chrono::steady_clock::now();
+		if (!intern_window) return;
 
-			float CurrentTime = glfwGetTime();
-
-			std::chrono::duration<float> Time = now - currentTime;
-
-
-
-
-
-			float Frametime = CurrentTime - LastTime;
-
-			FrametimeBuffer += Frametime;
-
-			//std::cout << FrametimeBuffer << std::endl;
-
-			//std::cout << Time.count() << std::endl;
-
-			if (FrametimeBuffer >= TargetTime)
-			{
-				glfwSwapBuffers(intern_window);
-
-				//std::cout << FrametimeBuffer << std::endl;
-
-				current_FPS = 1.0f / FrametimeBuffer;
-
-				FrametimeBuffer = 0.0f;
-
-				auto now = std::chrono::steady_clock::now();
-
-				std::chrono::duration<float> frametime = now - waitTime;
-				current_Frametime = frametime.count();
-
-				waitTime = std::chrono::steady_clock::now();
-			}
-		}
+		glfwPollEvents();
+		input::UpdateInputs(intern_window);
+		auto now = std::chrono::steady_clock::now();
+		std::chrono::duration<float> frametime = now - waitTime;
+		current_Frametime = frametime.count();
+		current_FPS = 1.0f / frametime.count();
 
 		currentTime = std::chrono::steady_clock::now(); // Restart the time counter
 
@@ -433,13 +423,12 @@ namespace zap
 
 	void Window::Update()
 	{
-		if (intern_window)
-		{
-			glfwPollEvents();
+		if (!intern_window) return;
 
-			input::UpdateInputs(intern_window);
+		auto now = std::chrono::steady_clock::now();
+		std::chrono::duration<float> Time = now - currentTime;	
+		glfwSwapBuffers(intern_window);
 
-		}
 	}
 
 	void Window::Draw()
