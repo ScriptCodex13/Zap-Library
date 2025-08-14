@@ -63,7 +63,6 @@ namespace zap
 	struct Texture
 	{
 		Texture(unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
-		~Texture();
 
 		void genTexture();
 		void bind();
@@ -77,7 +76,6 @@ namespace zap
 
 		//bool i_usetexture = false;
 		bool i_textureloaded = false;
-		unsigned char* i_texturedata;
 
 		int i_width;
 		int i_height;

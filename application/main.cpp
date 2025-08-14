@@ -1,5 +1,7 @@
 // Just a example
 
+//this is separate application and should treat the Zap library as external
+//everyone using this library will do, this is a standard practice
 #include "Zap.h" // Please use intern Header with ""
 #include "Mesh.h"
 #include <iostream>

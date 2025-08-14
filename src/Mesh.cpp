@@ -47,11 +47,6 @@ namespace zap
 		glGenTextures(1, &i_texture);
 	}
 
-	Texture::~Texture()
-	{
-		stbi_image_free(i_texturedata);
-	}
-
 	void Texture::genTexture()
 	{
 		/*namespace fs = std::filesystem; // I wouldn't use namespaces here 
@@ -70,12 +65,16 @@ namespace zap
 		bool usePng = std::filesystem::path(i_path).extension() == ".png"; //TODO: so what? 
 
 		stbi_set_flip_vertically_on_load(true);
-
-		i_texturedata = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Bessere Lösung nutze Filepath wie im Tutorial !
+		//a memory buffer never should be member of class, 
+		//It is needed only inside this function.
+		//it is never needed at any moments of program execution
+		//so declare, create and destroy the buffer right away
+		unsigned char* i_texturedata = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Bessere Lösung nutze Filepath wie im Tutorial !
 
 		if (!i_texturedata)
 		{
 			messages::PrintMessage("Failed to load Texture at path: " + i_path, "Mesh.cpp/ez::Texture::Texture(...)", MessageTypes::error);
+			return;
 		}
 
 		if (usePng)
@@ -88,6 +87,10 @@ namespace zap
 		}
 
 		glGenerateMipmap(GL_TEXTURE_2D);
+		//since this point i_texturedata is no more needed. We do stbi_image_free here
+		//no more memory managemet
+		//No more destructor for Texture class
+		stbi_image_free(i_texturedata);
 	}
 	void Texture::bind() 
 	{ 

@@ -74,10 +74,11 @@ int main()
 	mesh.SetAttribPointer(1, 3, 8, 3);
 	mesh.SetAttribPointer(2, 2, 8, 6);
 
-	unsigned int texture0Id = mesh.InitTexture(0, "textures/texture.png", 0, zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).i_id;
+	unsigned int texture0Id = mesh.InitTexture(0, "textures/texture.png", 0, zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER)->i_id;
 
 	mesh.Finish();
 
+	//
 
 	window.UpdateViewport(); //This is a set callback. Once set == forever set
 	while (window.Open())
