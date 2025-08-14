@@ -116,11 +116,7 @@ int main()
 
 		mesh.SetTexture(0);
 		mesh.Write(6);
-
-		//window.SetTitle(std::to_string(window.GetFPS()));
-
-		std::cerr << window.GetDelta() << std::endl;
-
+		
 		window.UpdateViewport();
 		window.Update();
 		window.Draw();
@@ -129,5 +125,6 @@ int main()
 	zap::Delete();
 
 }
+
 
 
