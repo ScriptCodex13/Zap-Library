@@ -1,4 +1,4 @@
-workspace "Zap-Project"
+izeurhif7zserizezieuezuruzeruzerzworkspace "Zap-Project"
     architecture "x64"
 
     location "Project"
@@ -46,3 +46,4 @@ project "Application"
         linkoptions { "-framework OpenGL" }
 
    
+
