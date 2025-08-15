@@ -71,7 +71,7 @@ namespace zap
 
 		if (!intern_window)
 		{
-			messages::PrintMessage("Failed to get extern window", "Window.cpp/Window::Window(...)", MessageTypes::fatal_error);
+			messages::PrintMessage("Failed to get extern window", "Window.cpp/zap::Window::Window(...)", MessageTypes::fatal_error);
 		}
 
 		if (intern_window)
@@ -411,7 +411,7 @@ namespace zap
 			return { x, y };
 		}
 
-		messages::PrintMessage("Can not get the mouse Position", "Window.cpp/std::array<double, 2> ez::Window::GetMousePosition()", MessageTypes::error);
+		messages::PrintMessage("Can not get the mouse Position", "Window.cpp/std::array<double, 2> zap::Window::GetMousePosition()", MessageTypes::error);
 
 		return { 0,0 };
 	}
@@ -444,23 +444,13 @@ namespace zap
 
 			std::chrono::duration<float> Time = now - currentTime;
 
-
-
-
-
 			float Frametime = CurrentTime - LastTime;
 
 			FrametimeBuffer += Frametime;
 
-			//std::cout << FrametimeBuffer << std::endl;
-
-			//std::cout << Time.count() << std::endl;
-
 			if (FrametimeBuffer >= TargetTime)
 			{
 				glfwSwapBuffers(intern_window);
-
-				//std::cout << FrametimeBuffer << std::endl;
 
 				current_FPS = 1.0f / FrametimeBuffer;
 
@@ -499,3 +489,4 @@ namespace zap
 	}
 
 }
+
