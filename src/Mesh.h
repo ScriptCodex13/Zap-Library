@@ -122,10 +122,10 @@ namespace zap
 
 		void UsePNG(unsigned int id);
 
-		void SetAttribPointer(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos);
+		AttributeConfig& SetAttribPointer(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos);
 		//
 
-		std::shared_ptr<Texture> InitTexture(unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping i_wrapping = TextureWrapping::CLAMP_TO_BORDER);
+		Texture& InitTexture(unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping i_wrapping = TextureWrapping::CLAMP_TO_BORDER);
 
 		void Finish(); // Everything is finished you can't change the settings of the mesh anymore
 		bool SetTexture (unsigned int id); //TODO: This is Bind, not Set, should be renamed | Done - ScriptCodex13
@@ -163,10 +163,10 @@ namespace zap
 		BufferAccessModes VBO_ACCESS_MODE = BufferAccessModes::HIGH_ACESS_DYNAMIC;
 		BufferAccessModes EBO_ACCESS_MODE = BufferAccessModes::HIGH_ACESS_DYNAMIC;
 
-		std::vector<std::shared_ptr<AttributeConfig>> attribcfg;
+		std::vector<AttributeConfig> attribcfg;
 
 		//Textures
-		std::vector<std::shared_ptr<Texture>> texturecfg; // Needed to use shared_ptr because otherwise the Program crashes. Please do not change. If that here is very problematic we can find out a solution together.
+		std::vector<Texture> texturecfg; // Needed to use shared_ptr because otherwise the Program crashes. Please do not change. If that here is very problematic we can find out a solution together.
 		
 	};
 

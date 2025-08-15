@@ -76,7 +76,8 @@ int main()
 	mesh.SetAttribPointer(1, 3, 8, 3);
 	mesh.SetAttribPointer(2, 2, 8, 6);
 
-	unsigned int texture0Id = mesh.InitTexture(0, "C:/Dev/Zap/Rec/Textures/texture.jpg", 0, zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE)->i_id;
+	//Remove the absolute path pointing to file location on your computer
+	unsigned int texture0Id = mesh.InitTexture(0, "C:/Dev/Zap/Rec/Textures/texture.jpg", 0, zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE).i_id;
 
 	mesh.Finish();
 

@@ -150,16 +150,14 @@ namespace zap
 		//cfg->i_usePNG = true; //TODO: so what?
 	}
 
-	void Mesh2D::SetAttribPointer (int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos)
+	AttributeConfig& Mesh2D::SetAttribPointer (int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos)
 	{
-		attribcfg.push_back(std::make_shared<AttributeConfig>( shader_location, value_ct, data_stride, start_pos ));
+		return attribcfg.emplace_back(AttributeConfig { shader_location, value_ct, data_stride, start_pos });
 	}
 
-	std::shared_ptr<Texture> Mesh2D::InitTexture (unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter, MipmapSettings settings, TextureWrapping wrapping)
+	Texture& Mesh2D::InitTexture (unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter, MipmapSettings settings, TextureWrapping wrapping)
 	{
-		texturecfg.push_back(std::make_shared<Texture> ( id, path, texture_index, filter, settings, wrapping ));
-
-		return texturecfg[texturecfg.size() - 1]; // Muss ich referenzieren ? 
+		return texturecfg.emplace_back(Texture{ id, path, texture_index, filter, settings, wrapping });
 	}
 
 	void Mesh2D::Finish()
@@ -243,7 +241,7 @@ namespace zap
 
 		for (auto& cfg : attribcfg)
 		{
-			cfg->vertexAttribPointer();
+			cfg.vertexAttribPointer();
 		}
 
 		// EBO
@@ -261,7 +259,7 @@ namespace zap
 		//Textures
 		for (auto& texcfg : texturecfg)
 		{
-			texcfg->genTexture();
+			texcfg.genTexture();
 		}
 
 		/*****************************************************************************************/
@@ -271,11 +269,12 @@ namespace zap
 	{
 		//auto cfg = std::find_if(texturecfg.begin(), texturecfg.end(), [id] (const auto& x) {return x.i_id == id; });
 		
+		//why did you replace the STL find?
 		for (auto cfg : texturecfg)
 		{
-			if (cfg->i_id == id) 
+			if (cfg.i_id == id) 
 			{
-				cfg->bind();
+				cfg.bind();
 
 				return true;
 			}
