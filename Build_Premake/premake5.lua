@@ -17,7 +17,7 @@ project "Zap"
     files { "../src/**.h"}
     includedirs {"../extern/"}
     files {"../extern/stb_image.h"}
-    includedirs {"./extern/DEPENDENCIES (glad)(GLFW)/include/"}
+    includedirs {"../extern/DEPENDENCIES (glad)(GLFW)/include/"}
     cppdialect "C++17"
 
 
@@ -44,4 +44,5 @@ project "Application"
     filter "system:macosx"
         links { "glfw", "glad" }
         linkoptions { "-framework OpenGL" }
+
    
