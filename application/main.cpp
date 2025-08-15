@@ -102,9 +102,7 @@ int main()
 		mesh.SetTexture(texture0Id); //return false if texture not found
 		mesh.Write();
 		//here draw ends
-
-		window.SetTitle(std::to_string(window.GetDelta()));
-
+		
 		window.Update();
 		window.Draw();
 
@@ -114,5 +112,6 @@ int main()
 	zap::Delete();
 
 }
+
 
 
