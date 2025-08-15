@@ -14,7 +14,7 @@ Zap is an OpenGL abstraction/ graphics library for one of my game engine project
 Windows:
 	1. clone this repository
 
-  	Visual Studio: Run the Windows_GenerateVS.bat
+  	Visual Studio: Run the Windows_GenerateVS.bat in the Build_Premake folder
 
 
   
