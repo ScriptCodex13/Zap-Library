@@ -69,11 +69,11 @@ namespace zap
 		//It is needed only inside this function.
 		//it is never needed at any moments of program execution
 		//so declare, create and destroy the buffer right away
-		unsigned char* i_texturedata = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Bessere Lösung nutze Filepath wie im Tutorial !
+		unsigned char* i_texturedata = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Bessere LÃ¶sung nutze Filepath wie im Tutorial !
 
 		if (!i_texturedata)
 		{
-			messages::PrintMessage("Failed to load Texture at path: " + i_path, "Mesh.cpp/ez::Texture::Texture(...)", MessageTypes::error);
+			messages::PrintMessage("Failed to load Texture at path: " + i_path, "Mesh.cpp/zap::Texture::Texture(...)", MessageTypes::error);
 			return;
 		}
 
@@ -145,7 +145,7 @@ namespace zap
 		/*if (cfg == texturecfg.end())
 		{
 			return; 
-		};´*/
+		};Â´*/
 
 		//cfg->i_usePNG = true; //TODO: so what?
 	}
@@ -179,7 +179,7 @@ namespace zap
 		if (!ok)
 		{
 			glGetShaderInfoLog(vertexShader, 512, NULL, info);
-			messages::PrintMessage("Failed to compile Vertex Shader:", "Mesh.cpp/void ez::Mesh2D::Finish()", MessageTypes::error);
+			messages::PrintMessage("Failed to compile Vertex Shader:", "Mesh.cpp/void zap::Mesh2D::Finish()", MessageTypes::error);
 			std::cerr << info << std::endl;
 		}
 
@@ -194,7 +194,7 @@ namespace zap
 		if (!ok)
 		{
 			glGetShaderInfoLog(fragmentShader, 512, NULL, info);
-			messages::PrintMessage("Failed to compile Fragment Shader:", "Mesh.cpp/void ez::Mesh2D::Finish()", MessageTypes::error);
+			messages::PrintMessage("Failed to compile Fragment Shader:", "Mesh.cpp/void zap::Mesh2D::Finish()", MessageTypes::error);
 			std::cerr << info << std::endl;
 		}
 
@@ -213,7 +213,7 @@ namespace zap
 		if (!ok)
 		{
 			glGetProgramInfoLog(shaderProgram, 512, NULL, info);
-			messages::PrintMessage("Failed to link Shader Program:", "Mesh.cpp/void ez::Mesh2D::Finish()", MessageTypes::error);
+			messages::PrintMessage("Failed to link Shader Program:", "Mesh.cpp/void zap::Mesh2D::Finish()", MessageTypes::error);
 			std::cerr << info << std::endl;
 		}
 
@@ -317,3 +317,4 @@ namespace zap
 	}
 
 }
+
