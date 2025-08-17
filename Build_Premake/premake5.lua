@@ -16,6 +16,7 @@ project "Zap"
     files { "../src/**.cpp"}
     files { "../src/**.h"}
     includedirs {"../extern/"}
+    includedirs {"../extern/glm/"} 
     files {"../extern/stb_image.h"}
     includedirs {"../extern/DEPENDENCIES (glad)(GLFW)/include/"}
     cppdialect "C++17"
@@ -46,5 +47,6 @@ project "Application"
         linkoptions { "-framework OpenGL" }
 
    
+
 
 
