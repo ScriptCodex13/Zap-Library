@@ -1,3 +1,5 @@
+#include "enabler.h"
+#ifdef  __MAIN_MAIN_CPP__
 // Just a example
 
 #include <Zap.h>
@@ -111,4 +113,4 @@ int main()
 
 }
 
-
+#endif
