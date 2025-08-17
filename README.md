@@ -5,6 +5,10 @@
 
 Zap is an OpenGL abstraction/ graphics library for one of my game engine projects. I thought it could be useful for others because the APIs code is shorter than raw OpenGL code but still lets you control the important parts of the Zap code. The API can be used by anyone who is familiar with C++ and has expierience with GLSL. But for everyone who know more OpenGL can also use OpenGL code in combination with Zap. If you want to know more about GLSL take a look at the awesome Website [LearnOpenGL](https://learnopengl.com/Getting-started/Shaders).
 
+# What is it abley to do ?
+
+Zap can handle Conntroller and Keyboard input, Mouse input and events, handle windows and modifying them and it can also render 2DMeshes.
+
 # How to use 
 
 ## Build the project
