@@ -283,6 +283,14 @@ namespace zap
 		return false;
 	}
 
+	unsigned int Mesh2D::getUniformLocation(const GLchar* name)
+	{ 
+		return glGetUniformLocation(shaderProgram, name);
+	}
+	unsigned int Mesh2D::getProgram()
+	{ 
+		return shaderProgram;
+	}
 	void Mesh2D::useProgram() 
 	{ 
 		glUseProgram (shaderProgram); 

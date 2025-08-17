@@ -130,6 +130,8 @@ namespace zap
 		void Finish(); // Everything is finished you can't change the settings of the mesh anymore
 		bool SetTexture (unsigned int id); //TODO: This is Bind, not Set, should be renamed | Done - ScriptCodex13
 		//separate functions will be very useful in more complex logic
+		unsigned int getUniformLocation(const GLchar* name);
+		unsigned int getProgram ();
 		void useProgram ();
 		void bindVAO    ();
 		void bind       ();
