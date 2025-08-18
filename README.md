@@ -122,8 +122,8 @@ You can visit the wiki [here](https://github.com/ScriptCodex13/Zap-Library/wiki)
 [stb_image](https://github.com/nothings/stb) to load images,
 [GLFW](https://github.com/glfw/glfw) to manage windows,
 [GLAD](https://github.com/Dav1dde/glad) to load OpenGL functions
-[Premake](https://github.com/premake/premake-core) to build the project
-glm
+[Premake](https://github.com/premake/premake-core) to build the project,
+glm for the math
 
 # Please Note 
 
