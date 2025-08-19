@@ -68,7 +68,7 @@ int main()
 zap::Init();
 zap::Delete();
 ```
-You use these functions to manage the APIs OpenGL resources. Every call from EasyGL must be called between these two functions.
+You use these functions to manage the APIs OpenGL resources. Every call from Zap must be called between these two functions.
 
 ```c++
 zap::Window window(1290, 720, "Hello Window");
