@@ -64,7 +64,7 @@ namespace zap
 		float GetDelta();
 		void SetSize(unsigned int new_width, unsigned int new_height);
 		void SetPosition(int x, int y);
-		void SetFPSLimit(unsigned int limit); //TODO Get it to work correctly
+		void SetFPSLimit(unsigned int limit); 
 		void SetTitle(const std::string title);
 		bool GetInput(Key key, State state);
 		bool GetInput(int key, int   state);
@@ -122,3 +122,4 @@ namespace zap
 
 
 #endif
+
