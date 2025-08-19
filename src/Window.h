@@ -45,7 +45,7 @@ namespace zap
 	{
 	public:
 		Window(int scale_x, int scale_y, const std::string Title, GLFWmonitor* monitor = NULL, GLFWwindow* other_window = NULL);
-		Window(GLFWwindow* extern_window); // You dont have to handle the window anymore it is now handled by EasyGL
+		Window(GLFWwindow* extern_window); // You dont have to handle the window anymore it is now handled by Zap
 		~Window();
 
 	public:
@@ -119,5 +119,6 @@ namespace zap
 
 
 }
+
 
 #endif
