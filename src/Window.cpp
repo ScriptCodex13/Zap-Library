@@ -36,6 +36,8 @@ namespace zap
 		}
 	}
 
+    void i_nFramebuffersizeCallback(GLFWwindow* window ,int size_x, int size_y){}
+
 	/***********************************************/
 
 	Window::Window(int scale_x, int scale_y, const std::string Title, GLFWmonitor* monitor, GLFWwindow* other_window)
@@ -118,11 +120,15 @@ namespace zap
 		}
 	}
 
-	void Window::UpdateViewport()
+	void Window::UpdateViewport(bool state)
 	{
 		if (intern_window)
 		{
 			glfwSetFramebufferSizeCallback(intern_window, i_FramebuffersizeCallback);
+		}
+		else
+		{
+			glfwSetFramebufferSizeCallback(intern_window, i_nFramebuffersizeCallback);
 		}
 	}
 
@@ -489,4 +495,5 @@ namespace zap
 	}
 
 }
+
 
