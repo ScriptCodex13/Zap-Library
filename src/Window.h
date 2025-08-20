@@ -51,7 +51,7 @@ namespace zap
 	public:
 		GLFWwindow* GetNativeWindow();
 		bool Open();
-		void UpdateViewport();
+		void UpdateViewport(bool state = true);
 		void SetViewport(unsigned int new_width, unsigned int new_height);
 		void Close();
 		void SetFullscreen(bool state);
@@ -122,4 +122,5 @@ namespace zap
 
 
 #endif
+
 
