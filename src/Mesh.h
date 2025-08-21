@@ -120,8 +120,6 @@ namespace zap
 		void SetVBOAccessMode(BufferAccessModes mode);
 		void SetEBOAccessMode(BufferAccessModes mode);
 
-		void UsePNG(unsigned int id);
-
 		AttributeConfig& SetAttribPointer(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos);
 		//
 
@@ -177,6 +175,7 @@ namespace zap
 
 	};
 };
+
 
 
 #endif
