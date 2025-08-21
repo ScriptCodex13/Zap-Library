@@ -16,6 +16,7 @@ Zap can handle Conntroller and Keyboard input, Mouse input and events, handle wi
 ### Build for Visual Studio using [Premake](https://github.com/premake/premake-core)
 
 Windows:
+    Requirements: Visual Studio 2022
 	1. clone this repository
 
   	Visual Studio: Run the Windows_GenerateVS.bat in the Build_Premake folder
