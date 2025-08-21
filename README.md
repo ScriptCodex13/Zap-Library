@@ -17,9 +17,10 @@ Zap can handle Conntroller and Keyboard input, Mouse input and events, handle wi
 
 Windows:
     Requirements: Visual Studio 2022
-	1. clone this repository
+	
+ 1. clone this repository
 
-  	Visual Studio: Run the Windows_GenerateVS.bat in the Build_Premake folder
+Visual Studio: Run the Windows_GenerateVS.bat in the Build_Premake folder
 
 
   
