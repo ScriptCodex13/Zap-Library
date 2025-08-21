@@ -138,18 +138,6 @@ namespace zap
 		EBO_ACCESS_MODE = mode;
 	}
 
-	void Mesh2D::UsePNG (unsigned int id)
-	{
-		// auto cfg = std::find_if(texturecfg.begin(), texturecfg.end(), [id](const auto& x) {return x.i_id == id; });
-		
-		/*if (cfg == texturecfg.end())
-		{
-			return; 
-		};´*/
-
-		//cfg->i_usePNG = true; //TODO: so what?
-	}
-
 	AttributeConfig& Mesh2D::SetAttribPointer (int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos)
 	{
 		return attribcfg.emplace_back(AttributeConfig { shader_location, value_ct, data_stride, start_pos });
@@ -325,4 +313,5 @@ namespace zap
 	}
 
 }
+
 
