@@ -2,9 +2,10 @@
 setlocal ENABLEDELAYEDEXPANSION
 mkdir "..\Project"
 set /p version="Visual Studio Version:"
-premake5.exe %version%
+premake5.exe vs%version%
 
 PAUSE
+
 
 
 
