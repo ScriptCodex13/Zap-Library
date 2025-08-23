@@ -127,6 +127,10 @@ You can visit the wiki [here](https://github.com/ScriptCodex13/Zap-Library/wiki)
 [Premake](https://github.com/premake/premake-core) to build the project,
 glm for the math
 
+# Questions ?
+
+Come to our [discord server](https://discord.gg/hr2vjemJSV) to ask questions and chat with the developers.
+
 # Please Note 
 
 Zap isnt finished yet. To be precise, it is a fresh project. There are some Issues and the API is missing a lot of planned features. But if you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Help will be greatly appriciated ! 
