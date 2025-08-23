@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef EASYGL_H
-#define EASYGL_H
+#ifndef ZAP_H
+#define ZAP_H
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -35,3 +35,4 @@ namespace zap
 }
 
 #endif
+
