@@ -3,6 +3,8 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include "Message.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <vector>
@@ -10,9 +12,6 @@
 #include <memory>
 #include <iomanip>
 #include <filesystem>
-
-#include "Message.h"
-
 
 namespace zap
 {
@@ -179,3 +178,4 @@ namespace zap
 
 
 #endif
+
