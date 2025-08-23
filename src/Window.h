@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef WINDOW_H
+#define WINDOW_H
+
 #include "Window.h"
 
 #include <glad/glad.h>
@@ -14,10 +17,6 @@
 #include <thread>
 #include <cmath>
 #include <array>
-
-
-#ifndef WINDOW_H
-#define WINDOW_H
 
 namespace zap
 {
@@ -122,5 +121,6 @@ namespace zap
 
 
 #endif
+
 
 
