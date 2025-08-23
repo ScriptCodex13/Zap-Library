@@ -8,7 +8,10 @@
 #include <unordered_map>
 
 namespace zap
-{
+{   
+
+    // Button/States
+
 	enum class State : int
 	{
 		NONE        = -1,
@@ -159,9 +162,11 @@ namespace zap
 		RIGHT_STICK_Y,
 	};
 
-	inline unsigned int highest_device_id = (unsigned int)ControllerID::CONTROLLER_1;
+    //
 
-	class Device
+	inline unsigned int highest_device_id = (unsigned int)ControllerID::CONTROLLER_1; //keeps track of the highest, not used Glfw_Joystick 
+
+	class Device // manages a assigned GLFW_Joystick
 	{
 	public:
 		bool IsConnected();
@@ -176,14 +181,15 @@ namespace zap
 		bool Controller_assigned = false;
 	};
 
-	Device AssignController();
+	Device AssignController(); // sets the settings for the new device class 
 
 	namespace input
 	{
-		inline std::unordered_map<Key, State> key_states;
-		void UpdateInputs(GLFWwindow* window);
-		bool CheckInput(Key key, State state);
+		inline std::unordered_map<Key, State> key_states; // saves and manages all key states
+		void UpdateInputs(GLFWwindow* window); // Updates all key states
+		bool CheckInput(Key key, State state); // checks a key state
 	};
 }
+
 
 #endif
