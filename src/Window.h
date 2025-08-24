@@ -48,13 +48,13 @@ namespace zap
 		~Window();
 
 	public:
-		GLFWwindow* GetNativeWindow();
-		bool Open();
-		void UpdateViewport(bool state = true);
-		void SetViewport(unsigned int new_width, unsigned int new_height);
-		void Close();
-		void SetFullscreen(bool state);
-		void SetFullscreen(bool state, GLFWmonitor* monitor);
+		GLFWwindow* GetNativeWindow();                                      // Returns the intern GLFWwindow instance 
+		bool Open();                                                        // Checks if the window should be open
+		void UpdateViewport(bool state = true);                             // Enable viewport changes if the window resizes
+		void SetViewport(unsigned int new_width, unsigned int new_height);  // Set the new viewport of the window
+		void Close();                                                       // Closes the window 
+		void SetFullscreen(bool state);                                     // Sets the window to fullacreen or to windowed based on the state
+		void SetFullscreen(bool state, GLFWmonitor* monitor);               // Changes the fullscreen mode. If sate = true. The provided GLFWmonitor is going to be used 
 		void Maximize(bool update_viewport = true);
 		void Minimize();
 		void ClearBackground(BackgroundColors color);
@@ -121,6 +121,7 @@ namespace zap
 
 
 #endif
+
 
 
 
