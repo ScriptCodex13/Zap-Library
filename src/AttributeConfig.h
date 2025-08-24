@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef MESH_H
-#define MESH_H
+#ifndef ATTRIBUTE_CONFIG_H
+#define ATTRIBUTE_CONFIG_H
 
 #include "Message.h"
 #include "Texture.h"
@@ -16,12 +16,6 @@
 
 namespace zap
 {
-	enum class BufferAccessModes : GLenum
-	{
-		LOW_ACCESS_STATIC   = GL_STREAM_DRAW,
-		HIGH_ACESS_STATIC   = GL_STATIC_DRAW,
-		HIGH_ACESS_DYNAMIC  = GL_DYNAMIC_DRAW
-	};
 
 	struct AttributeConfig
 	{

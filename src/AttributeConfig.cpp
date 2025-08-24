@@ -1,4 +1,4 @@
-#include "Mesh.h"
+#include "AttributeConfig.h"
 
 #include <stb_image.h>
 #include <filesystem>
