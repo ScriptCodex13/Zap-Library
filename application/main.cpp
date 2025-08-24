@@ -39,7 +39,6 @@ void main()
 
 int main()
 {
-	system("cd");
 	zap::Init();
 
 	zap::Window window(1920, 1080, "Hello Window");
@@ -80,8 +79,8 @@ int main()
 	mesh.SetAttribPointer(2, 2, 8, 6);
 
 	//Remove the absolute path pointing to file location on your computer
-	system("cd");
-	unsigned int texture0Id = mesh.InitTexture(0, "textures\\texture.png", 0, zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE).i_id;
+	//TODO: Texture must be added into the project. The project must be self sufficient.
+	unsigned int texture0Id = mesh.AddTexture(0, "textures\\texture.png", 0, zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE).i_id;
 
 	mesh.Finish();
 

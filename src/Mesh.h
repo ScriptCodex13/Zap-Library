@@ -4,14 +4,13 @@
 #define MESH_H
 
 #include "Message.h"
+#include "Texture.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <string>
-#include <memory>
-#include <iomanip>
-#include <filesystem>
+
 
 namespace zap
 {
@@ -20,28 +19,6 @@ namespace zap
 		LOW_ACCESS_STATIC   = GL_STREAM_DRAW,
 		HIGH_ACESS_STATIC   = GL_STATIC_DRAW,
 		HIGH_ACESS_DYNAMIC  = GL_DYNAMIC_DRAW
-	};
-
-	enum class TextureFilters : GLint
-	{
-		NEAREST = GL_NEAREST,
-		LINEAR  = GL_LINEAR
-	};
-
-	enum class MipmapSettings : GLint
-	{
-		NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
-		LINEAR_MIPMAP_LINEAR   = GL_LINEAR_MIPMAP_LINEAR,
-		NEAREST_MIPMAP_LINEAR  = GL_NEAREST_MIPMAP_LINEAR,
-		LINEAR_MIPMAP_NEAREST  = GL_LINEAR_MIPMAP_NEAREST
-	};
-
-	enum class TextureWrapping : GLint
-	{
-		REPEAT          = GL_REPEAT,
-		MIRRORED_REPEAT = GL_MIRRORED_REPEAT,
-		CLAMP_TO_EDGE   = GL_CLAMP_TO_EDGE,
-		CLAMP_TO_BORDER = GL_CLAMP_TO_BORDER
 	};
 
 	struct AttributeConfig
@@ -57,33 +34,6 @@ namespace zap
 		GLboolean       i_normalized = GL_FALSE;
 		unsigned int    i_data_stride;
 		unsigned int    i_start_pos;
-	};
-
-	struct Texture
-	{
-		Texture(unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
-
-		void genTexture();
-		void bind();
-
-		unsigned int i_texture;
-		std::string i_path;
-
-		TextureFilters i_filter = TextureFilters::LINEAR;
-		MipmapSettings i_settings = MipmapSettings::LINEAR_MIPMAP_LINEAR;
-		TextureWrapping i_wrapping = TextureWrapping::CLAMP_TO_BORDER;
-
-		//bool i_usetexture = false;
-		bool i_textureloaded = false;
-
-		int i_width;
-		int i_height;
-		int i_nrChannels;
-
-		bool i_usePNG = false;
-
-		unsigned int i_id;
-		unsigned int i_texture_index;
 	};
 
 	inline const char* defaultVertexShaderSource = R"glsl(
@@ -112,18 +62,19 @@ namespace zap
 
 		//Cofig Process
 
-		void SetVertexShaderSource(const std::string& source);
+		void SetVertexShaderSource   (const std::string& source);
+		void SetFragmentShaderSource (const std::string& source);
 
-		void SetFragmentShaderSource(const std::string& source);
-
-		void SetVBOAccessMode(BufferAccessModes mode);
-		void SetEBOAccessMode(BufferAccessModes mode);
+		void SetVBOAccessMode  (BufferAccessModes mode);
+		void SetEBOAccessMode  (BufferAccessModes mode);
 
 		AttributeConfig& SetAttribPointer(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos);
 		//
 
-		Texture& InitTexture(unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping i_wrapping = TextureWrapping::CLAMP_TO_BORDER);
+		Texture& AddTexture(unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping i_wrapping = TextureWrapping::CLAMP_TO_BORDER);
 
+		void BuildProgram();
+		void GenObject();
 		void Finish(); // Everything is finished you can't change the settings of the mesh anymore
 		bool SetTexture (unsigned int id); //TODO: This is Bind, not Set, should be renamed | Done - ScriptCodex13
 		//separate functions will be very useful in more complex logic
@@ -151,7 +102,7 @@ namespace zap
 		unsigned int fragmentShader;
 
 		//Shader link
-		unsigned int shaderProgram;
+		unsigned int shaderProgram = -1;
 
 		//Buffer Objects
 
@@ -169,10 +120,6 @@ namespace zap
 		
 	};
 
-	class Mesh3D
-	{
-
-	};
 };
 
 

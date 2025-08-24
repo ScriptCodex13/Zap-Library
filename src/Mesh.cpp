@@ -1,11 +1,5 @@
 #include "Mesh.h"
 
-#ifndef STB_IMAGE_IMPLEMENTATION
-	#define STB_IMAGE_IMPLEMENTATION
-#endif
-
-#include <stb_image.h>
-
 /**************************************************************************************/
 
 // extern includes
@@ -16,89 +10,7 @@
 
 namespace zap
 {
-	AttributeConfig::AttributeConfig(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos) :
-		i_shader_location (shader_location),
-		i_value_ct        (value_ct),
-		i_data_stride     (data_stride),
-		i_start_pos       (start_pos)
-	{
-		// Currently empty
-	}
 
-	void AttributeConfig::vertexAttribPointer() 
-	{
-		glVertexAttribPointer (i_shader_location, i_value_ct, i_type, i_normalized, i_data_stride * sizeof(float), getPos());
-		glEnableVertexAttribArray(i_shader_location);
-	}
-
-	Texture::Texture(unsigned int id, const std::string path,
-						unsigned int     texture_index,
-						TextureFilters   filter,
-						MipmapSettings   settings,
-						TextureWrapping  wrapping) :
-		i_id             (id),
-		i_path           (path),
-		i_filter         (filter),
-		i_settings       (settings),
-		i_wrapping       (wrapping),
-		i_texture_index  (texture_index)
-
-	{
-		glGenTextures(1, &i_texture);
-	}
-
-	void Texture::genTexture()
-	{
-		/*namespace fs = std::filesystem; // I wouldn't use namespaces here 
-		using std::cout;
-		using std::endl;*/
-
-		//glBindTexture (GL_TEXTURE_2D, i_texture);
-		
-		bind();
-
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)i_wrapping);
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLint)i_wrapping);
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLint)i_settings);
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLint)i_filter);
-
-		bool usePng = std::filesystem::path(i_path).extension() == ".png"; //TODO: so what? 
-
-		stbi_set_flip_vertically_on_load(true);
-		//a memory buffer never should be member of class, 
-		//It is needed only inside this function.
-		//it is never needed at any moments of program execution
-		//so declare, create and destroy the buffer right away
-
-		unsigned char* i_texturedata = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Bessere Lösung nutze Filepath wie im Tutorial !
-		messages::PrintMessage("Failed to load Texture at path: " + i_path, "Mesh.cpp/zap::Texture::Texture(...)", MessageTypes::error)
-			<< "\n current working directory: " << std::filesystem::current_path() << std::endl;
-		if (!i_texturedata)
-		{
-			messages::PrintMessage("Failed to load Texture at path: " + i_path, "Mesh.cpp/zap::Texture::Texture(...)", MessageTypes::error)
-				<< "current working directory: " << std::filesystem::current_path() << std::endl;
-			return;
-		}
-
-		if (usePng)
-		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, i_width, i_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, i_texturedata);
-		}
-		else 
-		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, i_width, i_height, 0, GL_RGB, GL_UNSIGNED_BYTE, i_texturedata);
-		}
-
-		glGenerateMipmap(GL_TEXTURE_2D);
-		//since this point i_texturedata is no more needed. We do stbi_image_free here
-		//no more memory managemet
-		//No more destructor for Texture class
-		stbi_image_free(i_texturedata);
-	}
-	void Texture::bind() 
-	{ 
-		glBindTexture(GL_TEXTURE_2D, i_texture); 
-	}
 
 	Mesh2D::Mesh2D(std::vector<float>* extern_vertices, std::vector<unsigned int>* extern_indices)
 	{
@@ -146,26 +58,21 @@ namespace zap
 		return attribcfg.emplace_back(AttributeConfig { shader_location, value_ct, data_stride, start_pos });
 	}
 
-	Texture& Mesh2D::InitTexture (unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter, MipmapSettings settings, TextureWrapping wrapping)
+	Texture& Mesh2D::AddTexture (unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter, MipmapSettings settings, TextureWrapping wrapping)
 	{
 		return texturecfg.emplace_back(Texture{ id, path, texture_index, filter, settings, wrapping });
 	}
 
-	void Mesh2D::Finish()
-	{
-		/******************************************************************************************/
-
-		// Shader 
-		// Vertex Shader
-		vertexShader = glCreateShader (GL_VERTEX_SHADER);
+	void Mesh2D::BuildProgram() {
+		vertexShader = glCreateShader(GL_VERTEX_SHADER);
 		const char* src = vertexShaderSource.c_str();
-		glShaderSource  (vertexShader, 1, &src, NULL);
-		glCompileShader (vertexShader);
+		glShaderSource(vertexShader, 1, &src, NULL);
+		glCompileShader(vertexShader);
 
 		int ok;
 		char info[512];
 
-		glGetShaderiv (vertexShader, GL_COMPILE_STATUS, &ok);
+		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &ok);
 
 		if (!ok)
 		{
@@ -175,13 +82,13 @@ namespace zap
 		}
 
 		// FragmentShader
-		fragmentShader = glCreateShader (GL_FRAGMENT_SHADER);
+		fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 		src = fragmentShaderSource.c_str();
-		glShaderSource  (fragmentShader, 1, &src, NULL);
-		glCompileShader (fragmentShader);
+		glShaderSource(fragmentShader, 1, &src, NULL);
+		glCompileShader(fragmentShader);
 
 		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &ok);
-		
+
 		if (!ok)
 		{
 			glGetShaderInfoLog(fragmentShader, 512, NULL, info);
@@ -207,28 +114,25 @@ namespace zap
 			messages::PrintMessage("Failed to link Shader Program:", "Mesh.cpp/void zap::Mesh2D::Finish()", MessageTypes::error);
 			std::cerr << info << std::endl;
 		}
+		glDeleteShader(vertexShader);
+		glDeleteShader(fragmentShader);
 
+	}
 
-		//
-
-		//Delete Shaders
-		glDeleteShader (vertexShader);
-		glDeleteShader (fragmentShader);
-		//
-
+	void Mesh2D::GenObject() {
 		/*****************************************************************************************/
 		// Buffer
 		// VAO
-		glGenVertexArrays (1, &VAO);
-		glBindVertexArray (VAO);
+		glGenVertexArrays(1, &VAO);
+		glBindVertexArray(VAO);
 
 		// VBO
 		// F
-		glGenBuffers (1, &VBO);
+		glGenBuffers(1, &VBO);
 
-		glBindBuffer (GL_ARRAY_BUFFER, VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-		glBufferData (GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), (GLenum)VBO_ACCESS_MODE);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), (GLenum)VBO_ACCESS_MODE);
 
 		for (auto& cfg : attribcfg)
 		{
@@ -245,6 +149,17 @@ namespace zap
 		//
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+	void Mesh2D::Finish()
+	{
+		/******************************************************************************************/
+
+		if (shaderProgram == -1)
+		{
+			BuildProgram();
+		}
+		GenObject();
+
 		//f
 
 		//Textures
