@@ -1,6 +1,7 @@
 @echo off
 setlocal ENABLEDELAYEDEXPANSION
-mkdir "..\Project"
+@REM the newly created folder is ignored by premake tool
+@REM mkdir "..\Project"
 premake5.exe vs2022
 
 PAUSE
