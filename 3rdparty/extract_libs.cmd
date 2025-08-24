@@ -4,7 +4,7 @@
 @if not exist %zip7zPath% set zip7zPath="%ProgramFiles(x86)%\7-Zip\7z.exe"
 @if not exist %zip7zPath% set zip7zPath="7z.exe"
 @if not exist %zip7zPath% goto end
-@rd /s /q glfw-3.4.bin.WIN64 glm-0.9.9.7 stb || echo nothing to cleanup
+@rd /s /q glfw-3.4.bin.WIN64 glm-0.9.9.7 stb glad.gl4.6 || echo nothing to cleanup
 @rem goto finish
 @%zip7zPath% x .\glfw-3.4.bin.WIN64.zip
 @%zip7zPath% x .\glad.gl4.6.zip
