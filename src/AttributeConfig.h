@@ -7,16 +7,9 @@
 #include "Texture.h"
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <vector>
-#include <string>
-#include <memory>
-#include <iomanip>
-
 
 namespace zap
 {
-
 	struct AttributeConfig
 	{
 		AttributeConfig(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos);

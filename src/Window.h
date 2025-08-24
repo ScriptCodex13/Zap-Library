@@ -4,19 +4,14 @@
 #define WINDOW_H
 
 #include "Window.h"
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include "Input.h"
 #include "Message.h"
 
-
-#include <algorithm>
-#include <chrono>
-#include <thread>
-#include <cmath>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <array>
+#include <chrono>
+
 
 namespace zap
 {
