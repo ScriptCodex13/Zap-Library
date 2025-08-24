@@ -19,7 +19,7 @@ enum class MessageTypes
 
 namespace messages
 {
-	void PrintMessage(const std::string& message_content, const std::string& File /*which File sends the Message ?*/, MessageTypes Type, bool show_file = true);
+	std::ostream& PrintMessage(const std::string& message_content, const std::string& File /*which File sends the Message ?*/, MessageTypes Type, bool show_file = true);
 }
 
 #endif

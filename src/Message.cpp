@@ -2,7 +2,7 @@
 
 namespace messages
 {
-	void PrintMessage(const std::string& message_content, const std::string& File /*which File sends the Message ?*/, MessageTypes Type, bool show_file)
+	std::ostream& PrintMessage(const std::string& message_content, const std::string& File /*which File sends the Message ?*/, MessageTypes Type, bool show_file)
 	{
 		if (Type == MessageTypes::notification)
 		{
@@ -16,6 +16,7 @@ namespace messages
 			{
 				std::cout << "\n";
 			}
+			return std::cout;
 		}
 		if (Type == MessageTypes::important_notification)
 		{
@@ -29,6 +30,7 @@ namespace messages
 			{
 				std::cout << "\033[0m" << std::endl;
 			}
+			return std::cout;
 		}
 		if (Type == MessageTypes::warning)
 		{
@@ -42,6 +44,7 @@ namespace messages
 			{
 				std::cout << "\033[0m" << std::endl;
 			}
+			return std::cout;
 		}
 		if (Type == MessageTypes::error)
 		{
@@ -49,12 +52,13 @@ namespace messages
 
 			if (show_file)
 			{
-				std::cout << " ( " << File << " )" << "\033[0m" << std::endl;
+				std::cerr << " ( " << File << " )" << "\033[0m" << std::endl;
 			}
 			else
 			{
-				std::cout << "\033[0m" << std::endl;
+				std::cerr << "\033[0m" << std::endl;
 			}
+			return std::cerr;
 		}
 		if (Type == MessageTypes::fatal_error)
 		{
@@ -62,16 +66,18 @@ namespace messages
 
 			if (show_file)
 			{
-				std::cout << " ( " << File << " )" << "\033[0m" << std::endl;
+				std::cerr << " ( " << File << " )" << "\033[0m" << std::endl;
 			}
 			else
 			{
-				std::cout << "\033[0m" << std::endl;
+				std::cerr << "\033[0m" << std::endl;
 			}
+			return std::cerr;
 		}
 		if (Type == MessageTypes::engine_core_info)
 		{
 			std::cout << "\033[32m[CORE] " << message_content << "\033[0m" << std::endl;
 		}
+		return std::cout;
 	};
 }

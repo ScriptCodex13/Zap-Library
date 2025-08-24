@@ -4,7 +4,7 @@
 	#define STB_IMAGE_IMPLEMENTATION
 #endif
 
-#include "stb_image.h"
+#include <stb_image.h>
 
 /**************************************************************************************/
 
@@ -69,11 +69,14 @@ namespace zap
 		//It is needed only inside this function.
 		//it is never needed at any moments of program execution
 		//so declare, create and destroy the buffer right away
-		unsigned char* i_texturedata = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Bessere Lösung nutze Filepath wie im Tutorial !
 
+		unsigned char* i_texturedata = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Bessere Lösung nutze Filepath wie im Tutorial !
+		messages::PrintMessage("Failed to load Texture at path: " + i_path, "Mesh.cpp/zap::Texture::Texture(...)", MessageTypes::error)
+			<< "\n current working directory: " << std::filesystem::current_path() << std::endl;
 		if (!i_texturedata)
 		{
-			messages::PrintMessage("Failed to load Texture at path: " + i_path, "Mesh.cpp/zap::Texture::Texture(...)", MessageTypes::error);
+			messages::PrintMessage("Failed to load Texture at path: " + i_path, "Mesh.cpp/zap::Texture::Texture(...)", MessageTypes::error)
+				<< "current working directory: " << std::filesystem::current_path() << std::endl;
 			return;
 		}
 

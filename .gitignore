@@ -5,3 +5,8 @@ Release
 src - Copy
 export
 /3rdparty/glad.gl4.6
+/3rdparty/glfw-3.4.bin.WIN64
+/3rdparty/glm-0.9.9.7
+/3rdparty/stb
+/Build_Premake/ProjectAnder
+/Build_Premake/Project
