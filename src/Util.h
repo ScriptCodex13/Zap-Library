@@ -10,8 +10,9 @@ namespace zap
 {
 	namespace util 
 	{
-		GLFWmonitor* GetMonitor();
+		GLFWmonitor* GetMonitor(); // Gets the main monitor
 	};
 }
+
 
 #endif
