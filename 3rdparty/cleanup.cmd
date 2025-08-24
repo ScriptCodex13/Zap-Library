@@ -1,0 +1,1 @@
+@rd /s /q glfw-3.4.bin.WIN64 glm-0.9.9.7 stb || echo nothing to cleanup
