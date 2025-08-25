@@ -50,16 +50,16 @@ namespace zap
 		void Close();                                                       // Closes the window 
 		void SetFullscreen(bool state);                                     // Sets the window to fullacreen or to windowed based on the state
 		void SetFullscreen(bool state, GLFWmonitor* monitor);               // Changes the fullscreen mode. If sate = true. The provided GLFWmonitor is going to be used 
-		void Maximize(bool update_viewport = true);
-		void Minimize();
-		void ClearBackground(BackgroundColors color);
-		void ClearBackground(float RED, float GREEN, float BLUE, float ALPHA);
-		float GetFPS();
-		float GetDelta();
-		void SetSize(unsigned int new_width, unsigned int new_height);
-		void SetPosition(int x, int y);
-		void SetFPSLimit(unsigned int limit); 
-		void SetTitle(const std::string title);
+		void Maximize(bool update_viewport = true);                         // Maximizes the window
+		void Minimize();                                                    // Minimizes the window
+		void ClearBackground(BackgroundColors color);                       // Clears the backround with a predefined color 
+		void ClearBackground(float RED, float GREEN, float BLUE, float ALPHA);  // Clears the Background with a self defined color based on the RGBA settings given in the parameters
+		float GetFPS();                                                     // Returns the current FPS of the window as a float. ! Cannot be replaced with manual FPS checking if .Draw() is used !
+		float GetDelta();                                                   // Returns the current Frametime as Delta
+		void SetSize(unsigned int new_width, unsigned int new_height);      // Set the new size of the window 
+		void SetPosition(int x, int y);                                     // Set the Position of the window on the screen
+		void SetFPSLimit(unsigned int limit);                               // Limit the max amount of frame updates per second
+		void SetTitle(const std::string title);                             // Set the title of the window 
 		bool GetInput(Key key, State state);
 		bool GetInput(int key, int   state);
 		bool isKeyPressed(Key key);
@@ -116,6 +116,7 @@ namespace zap
 
 
 #endif
+
 
 
 
