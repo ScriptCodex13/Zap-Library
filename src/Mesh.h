@@ -57,12 +57,12 @@ namespace zap
 		AttributeConfig& SetAttribPointer(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos);
 		//
 
-		Texture& AddTexture(unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping i_wrapping = TextureWrapping::CLAMP_TO_BORDER);
+		Texture& AddTexture(unsigned int id, const std::string path, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping i_wrapping = TextureWrapping::CLAMP_TO_BORDER);
 
 		void BuildProgram();
 		void GenObject();
 		void Finish(); // Everything is finished you can't change the settings of the mesh anymore
-		bool SetTexture (unsigned int id); //TODO: This is Bind, not Set, should be renamed | Done - ScriptCodex13
+		bool UseTexture (unsigned int id); //TODO: This is Bind, not Set, should be renamed | Done - ScriptCodex13
 		//separate functions will be very useful in more complex logic
 		unsigned int getUniformLocation(const GLchar* name);
 		unsigned int getProgram ();

@@ -80,7 +80,7 @@ int main()
 
 	//Remove the absolute path pointing to file location on your computer
 	//TODO: Texture must be added into the project. The project must be self sufficient.
-	unsigned int texture0Id = mesh.AddTexture(0, "textures\\texture.png", 0, zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE).i_id;
+	unsigned int texture0Id = mesh.AddTexture(0, "textures\\texture.png", zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE).i_id;
 
 	mesh.Finish();
 
@@ -187,7 +187,7 @@ int main()
 		window.ClearBackground(zap::BackgroundColors::BLACK);
 		//here starts current VAO for current program draw
 		mesh.bind(); //set current context before any draw routines, it prevents mess in more complex programs
-		mesh.SetTexture(texture0Id); //return false if texture not found
+		mesh.UseTexture(texture0Id); //return false if texture not found
 		mesh.Write();
 		//here draw ends
 		

@@ -3,14 +3,18 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 namespace zap
 {
 	namespace util 
 	{
-		GLFWmonitor* GetMonitor(); // Gets the main monitor
+		//Scope guard for RAII
+		template<typename T> class scope_guard
+		{
+			T t;
+		public:
+			scope_guard(T _t) :t(_t) {}
+			~scope_guard() { t(); }
+		};
 	};
 }
 

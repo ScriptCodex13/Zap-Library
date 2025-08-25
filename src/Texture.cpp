@@ -1,5 +1,6 @@
+#include "Texture.h"
 #include "Mesh.h"
-
+#include "Util.h"
 #include <stb_image.h>
 
 /**************************************************************************************/
@@ -14,7 +15,6 @@ namespace zap
 {
 
 	Texture::Texture(unsigned int id, const std::string path,
-						unsigned int     texture_index,
 						TextureFilters   filter,
 						MipmapSettings   settings,
 						TextureWrapping  wrapping) :
@@ -23,7 +23,8 @@ namespace zap
 		i_filter         (filter),
 		i_settings       (settings),
 		i_wrapping       (wrapping),
-		i_texture_index  (texture_index)
+		i_width          (-1),
+		i_height         (-1)
 
 	{
 		glGenTextures(1, &i_texture);
@@ -31,29 +32,21 @@ namespace zap
 
 	void Texture::genTexture()
 	{
-		/*namespace fs = std::filesystem; // I wouldn't use namespaces here 
-		using std::cout;
-		using std::endl;*/
-
-		//glBindTexture (GL_TEXTURE_2D, i_texture);
-		
 		bind();
 
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)i_wrapping);
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLint)i_wrapping);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,     (GLint)i_wrapping);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,     (GLint)i_wrapping);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLint)i_settings);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLint)i_filter);
 
-		bool usePng = std::filesystem::path(i_path).extension() == ".png"; //TODO: so what? 
+		bool usePng = std::filesystem::path(i_path).extension() == ".png";
 
 		stbi_set_flip_vertically_on_load(true);
-		//a memory buffer never should be member of class, 
-		//It is needed only inside this function.
-		//it is never needed at any moments of program execution
-		//so declare, create and destroy the buffer right away
 
-		unsigned char* i_texturedata = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Bessere Lösung nutze Filepath wie im Tutorial !
-		if (!i_texturedata)
+		unsigned char* pTextureData = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Bessere Lösung nutze Filepath wie im Tutorial !
+		//Use scope_guard to free texture data whenever going out of scope
+		util::scope_guard freeTextureData([pTextureData]() { if (pTextureData) stbi_image_free(pTextureData); });
+		if (!pTextureData)
 		{
 			messages::PrintMessage("Failed to load Texture at path: " + i_path, "Mesh.cpp/zap::Texture::Texture(...)", MessageTypes::error)
 				<< "current working directory: " << std::filesystem::current_path() << std::endl;
@@ -62,18 +55,18 @@ namespace zap
 
 		if (usePng)
 		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, i_width, i_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, i_texturedata);
+			//TODO: be aware of internal format and format difference
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, i_width, i_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pTextureData);
 		}
-		else 
+		else
 		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, i_width, i_height, 0, GL_RGB, GL_UNSIGNED_BYTE, i_texturedata);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, i_width, i_height, 0, GL_RGB, GL_UNSIGNED_BYTE, pTextureData);
 		}
 
 		glGenerateMipmap(GL_TEXTURE_2D);
-		//since this point i_texturedata is no more needed. We do stbi_image_free here
-		//no more memory managemet
-		//No more destructor for Texture class
-		stbi_image_free(i_texturedata);
+		//We do not need to free the texture data here anymore.
+		//Also we do not manage memory manually here anymore. It is done by scope_guard.
+		//stbi_image_free(pTextureData); //TODO: remove this commented line after seen
 	}
 	void Texture::bind() 
 	{ 

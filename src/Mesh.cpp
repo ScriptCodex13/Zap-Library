@@ -58,12 +58,13 @@ namespace zap
 		return attribcfg.emplace_back(AttributeConfig { shader_location, value_ct, data_stride, start_pos });
 	}
 
-	Texture& Mesh2D::AddTexture (unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter, MipmapSettings settings, TextureWrapping wrapping)
+	Texture& Mesh2D::AddTexture (unsigned int id, const std::string path, TextureFilters filter, MipmapSettings settings, TextureWrapping wrapping)
 	{
-		return texturecfg.emplace_back(Texture{ id, path, texture_index, filter, settings, wrapping });
+		return texturecfg.emplace_back(Texture{ id, path, filter, settings, wrapping });
 	}
 
-	void Mesh2D::BuildProgram() {
+	void Mesh2D::BuildProgram()
+	{
 		vertexShader = glCreateShader(GL_VERTEX_SHADER);
 		const char* src = vertexShaderSource.c_str();
 		glShaderSource(vertexShader, 1, &src, NULL);
@@ -119,7 +120,8 @@ namespace zap
 
 	}
 
-	void Mesh2D::GenObject() {
+	void Mesh2D::GenObject()
+	{
 		/*****************************************************************************************/
 		// Buffer
 		// VAO
@@ -129,9 +131,7 @@ namespace zap
 		// VBO
 		// F
 		glGenBuffers(1, &VBO);
-
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), (GLenum)VBO_ACCESS_MODE);
 
 		for (auto& cfg : attribcfg)
@@ -153,25 +153,23 @@ namespace zap
 	void Mesh2D::Finish()
 	{
 		/******************************************************************************************/
-
 		if (shaderProgram == -1)
 		{
 			BuildProgram();
 		}
+
 		GenObject();
 
 		//f
-
 		//Textures
 		for (auto& texcfg : texturecfg)
 		{
 			texcfg.genTexture();
 		}
-
 		/*****************************************************************************************/
 	}
 
-	bool Mesh2D::SetTexture(unsigned int id)
+	bool Mesh2D::UseTexture(unsigned int id)
 	{
 		//auto cfg = std::find_if(texturecfg.begin(), texturecfg.end(), [id] (const auto& x) {return x.i_id == id; });
 		
@@ -181,7 +179,6 @@ namespace zap
 			if (cfg.i_id == id) 
 			{
 				cfg.bind();
-
 				return true;
 			}
 		}

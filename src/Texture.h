@@ -4,11 +4,11 @@
 #define TEXTURE_H
 
 #include "Message.h"
-
 #include <glad/glad.h>
 
 namespace zap
 {
+
 	enum class TextureFilters : GLint
 	{
 		NEAREST = GL_NEAREST,
@@ -33,7 +33,7 @@ namespace zap
 
 	struct Texture
 	{
-		Texture(unsigned int id, const std::string path, unsigned int texture_index, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
+		Texture(unsigned int id, const std::string path, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
 
 		void genTexture();
 		void bind();
@@ -41,11 +41,10 @@ namespace zap
 		unsigned int i_texture;
 		std::string i_path;
 
-		TextureFilters i_filter = TextureFilters::LINEAR;
-		MipmapSettings i_settings = MipmapSettings::LINEAR_MIPMAP_LINEAR;
+		TextureFilters i_filter    = TextureFilters::LINEAR;
+		MipmapSettings i_settings  = MipmapSettings::LINEAR_MIPMAP_LINEAR;
 		TextureWrapping i_wrapping = TextureWrapping::CLAMP_TO_BORDER;
 
-		//bool i_usetexture = false;
 		bool i_textureloaded = false;
 
 		int i_width;
@@ -55,7 +54,6 @@ namespace zap
 		bool i_usePNG = false;
 
 		unsigned int i_id;
-		unsigned int i_texture_index;
 	};
 
 };
