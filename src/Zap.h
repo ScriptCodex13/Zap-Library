@@ -26,13 +26,14 @@ namespace zap
 	
 	//APIs Resources
 
-	void Init();
-	void InitGlad();
-	void Delete();
+	void Init();       // Initialize GLFW 
+	void InitGlad();   // Initialize glad
+	void Delete();     // Delete GLFW resources
 
 	/*****************************************************************************/
 
 }
 
 #endif
+
 
