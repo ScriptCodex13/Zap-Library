@@ -66,7 +66,6 @@ namespace zap
 		glGenerateMipmap(GL_TEXTURE_2D);
 		//We do not need to free the texture data here anymore.
 		//Also we do not manage memory manually here anymore. It is done by scope_guard.
-		//stbi_image_free(pTextureData); //TODO: remove this commented line after seen
 	}
 	void Texture::bind() 
 	{ 
@@ -76,5 +75,6 @@ namespace zap
 
 
 }
+
 
 
