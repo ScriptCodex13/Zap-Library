@@ -79,7 +79,6 @@ namespace zap
 		void HideCursor(bool state);                                        // Hide or unhide the cursor if the window is entered
 
 		void Update();
-		//void Write(); Draw Things
 		void Draw();
 
 	private:
@@ -119,6 +118,7 @@ namespace zap
 
 
 #endif
+
 
 
 
