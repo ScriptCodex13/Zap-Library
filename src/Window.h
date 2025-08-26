@@ -61,7 +61,7 @@ namespace zap
 		void SetPosition(int x, int y);                                     // Set the Position of the window on the screen
 		void SetFPSLimit(unsigned int limit);                               // Limit the max amount of frame updates per second
 		void SetTitle(const std::string title);                             // Set the title of the window 
-		bool GetInput(Key key, State state);
+		bool GetInput(Key key, State state);                                // Checks the state of a key
 		bool GetInput(int key, int   state);
 		bool isKeyPressed(Key key);
 		bool isKeyPressed(int key);
@@ -71,10 +71,10 @@ namespace zap
 		bool isMousePressed(int key);
 		bool isMouseReleased(Key key);
 		bool isMouseReleased(int key);
-		void ShowWireFrame(bool state);
-		void SetIcon(const std::string path);
-		std::array<double, 2> GetMousePosition();
-		void HideCursor(bool state);
+		void ShowWireFrame(bool state);                                     // Enable or disable the wireframe
+		void SetIcon(const std::string path);                               // Loads the new window icon at the specified path
+		std::array<double, 2> GetMousePosition();                           // Returns the cursor position in pixels relative to the top left corner of the window 
+		void HideCursor(bool state);                                        // Hide or unhide the cursor if the window is entered
 
 		void Update();
 		//void Write(); Draw Things
@@ -117,6 +117,7 @@ namespace zap
 
 
 #endif
+
 
 
 
