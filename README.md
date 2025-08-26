@@ -45,6 +45,8 @@ int main()
 
 	zap::InitGlad();
 
+    window.UpdateViewport(true);
+
 	while (window.Open())
 	{
 		window.ClearBackground(zap::BackgroundColors::ORANGE);
@@ -54,7 +56,6 @@ int main()
 			window.Close();
 		}
 
-		window.UpdateViewport();
 		window.Update();
 		window.Draw();
 
