@@ -129,7 +129,7 @@ int main()
 	mesh.SetAttribPointer(1, 3, 8, 3);
 	mesh.SetAttribPointer(2, 2, 8, 6);
 
-	unsigned int texture0Id = mesh.InitTexture(0, "textures/texture.png", 0, zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).i_id;
+	unsigned int texture0Id = mesh.AddTexture(0, "textures/texture.png", zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).i_id;
 
 	mesh.Finish();
 	mesh.bind();
@@ -175,7 +175,7 @@ int main()
 		glUniformMatrix4fv(modelLocationId, 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(viewLocationId, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projectionLocationId, 1, GL_FALSE, glm::value_ptr(projection));
-		mesh.SetTexture(texture0Id); //return false if texture not found
+		mesh.UseTexture(texture0Id); //return false if texture not found
 		mesh.Write();
 		//here draw ends
 

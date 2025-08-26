@@ -76,7 +76,7 @@ int main()
 	mesh.SetAttribPointer(1, 3, 8, 3);
 	mesh.SetAttribPointer(2, 2, 8, 6);
 
-	unsigned int texture0Id = mesh.InitTexture(0, "textures/texture.png", 0, zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).i_id;
+	unsigned int texture0Id = mesh.AddTexture(0, "textures/texture.png", zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).i_id;
 
 	mesh.Finish();
 
@@ -97,7 +97,7 @@ int main()
 		window.ClearBackground(zap::BackgroundColors::BLACK);
 		//here starts current VAO for current program draw
 		mesh.bind(); //set current context before any draw routines, it prevents mess in more complex programs
-		mesh.SetTexture(texture0Id); //return false if texture not found
+		mesh.UseTexture(texture0Id); //return false if texture not found
 		mesh.Write();
 		//here draw ends
 
