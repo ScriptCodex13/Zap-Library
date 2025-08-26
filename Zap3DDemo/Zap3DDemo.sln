@@ -1,14 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36408.4 d17.14
+VisualStudioVersion = 17.14.36408.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Zap3DTrianglesBasic", "Zap3DTrianglesBasic\Zap3DTrianglesBasic.vcxproj", "{107E7706-9BAB-4055-B75E-3155B8B21ACB}"
-	ProjectSection(ProjectDependencies) = postProject
-		{D9B515A7-E59D-4C7B-A022-0A9EC67AD402} = {D9B515A7-E59D-4C7B-A022-0A9EC67AD402}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Zap3D", "..\Zap3D\Zap3D.vcxproj", "{D9B515A7-E59D-4C7B-A022-0A9EC67AD402}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,14 +21,6 @@ Global
 		{107E7706-9BAB-4055-B75E-3155B8B21ACB}.Release|x64.Build.0 = Release|x64
 		{107E7706-9BAB-4055-B75E-3155B8B21ACB}.Release|x86.ActiveCfg = Release|Win32
 		{107E7706-9BAB-4055-B75E-3155B8B21ACB}.Release|x86.Build.0 = Release|Win32
-		{D9B515A7-E59D-4C7B-A022-0A9EC67AD402}.Debug|x64.ActiveCfg = Debug|x64
-		{D9B515A7-E59D-4C7B-A022-0A9EC67AD402}.Debug|x64.Build.0 = Debug|x64
-		{D9B515A7-E59D-4C7B-A022-0A9EC67AD402}.Debug|x86.ActiveCfg = Debug|Win32
-		{D9B515A7-E59D-4C7B-A022-0A9EC67AD402}.Debug|x86.Build.0 = Debug|Win32
-		{D9B515A7-E59D-4C7B-A022-0A9EC67AD402}.Release|x64.ActiveCfg = Release|x64
-		{D9B515A7-E59D-4C7B-A022-0A9EC67AD402}.Release|x64.Build.0 = Release|x64
-		{D9B515A7-E59D-4C7B-A022-0A9EC67AD402}.Release|x86.ActiveCfg = Release|Win32
-		{D9B515A7-E59D-4C7B-A022-0A9EC67AD402}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
