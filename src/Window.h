@@ -71,6 +71,8 @@ namespace zap
 		bool isMousePressed(int key);
 		bool isMouseReleased(Key key);
 		bool isMouseReleased(int key);
+		//TODO: ShowWireFrame does not belong to Window class, should be moved to a different class
+		//      It is a full OpenGL Renderer function, not Window/GLFW API
 		void ShowWireFrame(bool state);                                     // Enable or disable the wireframe
 		void SetIcon(const std::string path);                               // Loads the new window icon at the specified path
 		std::array<double, 2> GetMousePosition();                           // Returns the cursor position in pixels relative to the top left corner of the window 
