@@ -110,15 +110,12 @@ namespace zap
 			{
 				return true;
 			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
+			
 			return false;
+			
 		}
+		
+		return false;
 	}
 
 	void Window::UpdateViewport(bool state)
@@ -477,19 +474,20 @@ namespace zap
 	{
 		if (intern_window)
 		{
-			glfwPollEvents(); // Should be called everytime 
+			glfwPollEvents();                   // Should be called everytime 
 
-			input::UpdateInputs(intern_window);
+			input::UpdateInputs(intern_window); // Update the key states
 
 		}
 	}
 
 	void Window::Draw()
 	{
-		InternSwapBuffers();
+		InternSwapBuffers(); // Only executes the draw call if the target frame time is passed
 	}
 
 }
+
 
 
 
