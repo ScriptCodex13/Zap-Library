@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <exportdir>$(SolutionDir)..\export\</exportdir>
+    <thirdpartydir>$(SolutionDir)..\3rdparty\</thirdpartydir>
+    <glfw_dir>$(thirdpartydir)glfw-3.4.bin.WIN64\</glfw_dir>
+    <stb_dir>$(thirdpartydir)stb\</stb_dir>
+    <glm_dir>$(thirdpartydir)glm-0.9.9.7\glm\</glm_dir>
+    <glad_dir>$(thirdpartydir)glad.gl4.6\</glad_dir>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(glad_dir)\include;$(stb_dir);$(glm_dir);$(glfw_dir)\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="exportdir">
+      <Value>$(exportdir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="thirdpartydir">
+      <Value>$(thirdpartydir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="glfw_dir">
+      <Value>$(glfw_dir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="stb_dir">
+      <Value>$(stb_dir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="glm_dir">
+      <Value>$(glm_dir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="glad_dir">
+      <Value>$(glad_dir)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
