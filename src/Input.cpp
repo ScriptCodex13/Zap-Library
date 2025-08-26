@@ -1,4 +1,5 @@
 #include "Input.h"
+#include "Message.h"
 
 #include <iostream>
 
@@ -47,7 +48,8 @@ namespace zap
 			return axis[(int)trigger];
 		}
 
-
+		messages::PrintMessage("Controller is not connected" , "Input.cpp/ const float Device::GetTrigger(...)", MessageTypes::warning);
+        
 		return 0.0f;
 	}
 
@@ -748,4 +750,5 @@ namespace zap
 			return key_states[key] == state;
 		}
 	}
+
 }
