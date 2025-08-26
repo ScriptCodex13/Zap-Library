@@ -10,7 +10,7 @@
 
 namespace zap
 {
-	struct AttributeConfig // Config for the vertex attributes and also executes
+	struct AttributeConfig // Config for the vertex attributes and also executes it
 	{
 		AttributeConfig(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos);
 
@@ -29,5 +29,6 @@ namespace zap
 
 
 #endif
+
 
 
