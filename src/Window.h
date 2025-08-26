@@ -32,7 +32,6 @@ namespace zap
 
 	/*****************************************************************************/
 
-	//TODO: Yes it is Window, no doubt. Comment is redundant: || Just splitting into parts 
 	//Window
 
 	class Window
@@ -116,6 +115,7 @@ namespace zap
 
 
 #endif
+
 
 
 
