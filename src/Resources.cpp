@@ -1,5 +1,5 @@
 #include "Resources.h"
-
+#include "Message.h"
 namespace zap
 {
 	void Init()
