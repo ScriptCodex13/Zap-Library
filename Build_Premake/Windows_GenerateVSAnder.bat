@@ -1,11 +1,16 @@
 echo off
+
+@rem Unpack third party libraries for usage
+@set cpwd=%cd%
+@cd ../3rdparty
+@call extract_libs.cmd
+@cd %cpwd%
+
 setlocal ENABLEDELAYEDEXPANSION
-@REM the newly created folder is ignored by premake tool
-@REM mkdir "..\Project"
+
+@rem Create MSVC projects according to rules written in premake5.ander.lua
 @echo start premake
 premake5.exe vs2022 --file=premake5.ander.lua
 @echo end premake
 endlocal
-@cd ../3rdparty
-@extract_libs.cmd
 PAUSE

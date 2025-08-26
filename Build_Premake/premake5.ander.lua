@@ -1,8 +1,6 @@
 workspace "Zap-Project"
     architecture "x64"
-
     location "ProjectAnder"
-
     configurations
     {
         "Debug",
@@ -21,7 +19,6 @@ project "Zap"
     includedirs {"../3rdparty/stb"}
     files {"../extern/stb_image.h"}
     cppdialect "C++17"
-
 
 project "Application"
     location "ProjectAnder/Application"
@@ -49,8 +46,3 @@ project "Application"
     filter "system:macosx"
         links { "glfw", "glad" }
         linkoptions { "-framework OpenGL" }
-
-   
-
-
-

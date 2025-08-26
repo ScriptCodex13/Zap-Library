@@ -212,50 +212,48 @@ namespace zap
 
 	void Window::ClearBackground(BackgroundColors color)
 	{
-		if (color == BackgroundColors::WHITE)
+		//This is the case for usage of switch/case statement
+		//It is easier to read and to maintain than multiple if/else statements
+		//Also it is faster than multiple if/else statements because it uses a jump table instead of multiple comparisons
+		//TODO: remove comments after reading
+		switch (color)
 		{
+		case BackgroundColors::WHITE:
 			glClearColor(1.0f, 1.0f, 1.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
-		}
-		else if (color == BackgroundColors::BLACK)
-		{
+			return;
+		case BackgroundColors::BLACK:
 			glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
-		}
-		else if (color == BackgroundColors::RED)
-		{
+			return;
+		case BackgroundColors::RED:
 			glClearColor(1.0f, 0.0f, 0.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
-		}
-		else if (color == BackgroundColors::GREEN)
-		{
+			return;
+		case BackgroundColors::GREEN:
 			glClearColor(0.0f, 1.0f, 0.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
-		}
-		else if (color == BackgroundColors::BLUE)
-		{
+			return;
+		case BackgroundColors::BLUE:
 			glClearColor(0.0f, 0.0f, 1.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
-		}
-		else if (color == BackgroundColors::YELLOW)
-		{
+			return;
+		case BackgroundColors::YELLOW:
 			glClearColor(1.0f, 0.9f, 0.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
-		}
-		else if (color == BackgroundColors::ORANGE)
-		{
+			return;
+		case BackgroundColors::ORANGE:
 			glClearColor(1.0f, 0.7f, 0.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
-		}
-		else if (color == BackgroundColors::PURPLE)
-		{
+			return;
+		case BackgroundColors::PURPLE:
 			glClearColor(0.8f, 0.0f, 1.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
-		}
-		else if (color == BackgroundColors::PINK)
-		{
-			glClearColor(1.0f, 0.0f, 1.0f, 0.5f);
+			return;
+		case BackgroundColors::PINK:
+			glClearColor(1.0f, 0.0f, 0.5f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
+			return;
 		}
 	}
 

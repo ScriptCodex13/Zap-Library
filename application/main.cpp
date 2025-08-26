@@ -2,7 +2,7 @@
 
 //this is separate application and should treat the Zap library as external
 //everyone using this library will do, this is a standard practice
-#include "Zap.h" // Please use intern Header with ""
+#include "Zap.h" //TODO: This is not the correct way to use libraries
 #include "Mesh.h"
 #include <iostream>
 #include <vector>

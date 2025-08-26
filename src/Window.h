@@ -51,6 +51,8 @@ namespace zap
 		void SetFullscreen(bool state, GLFWmonitor* monitor);               // Changes the fullscreen mode. If sate = true. The provided GLFWmonitor is going to be used 
 		void Maximize(bool update_viewport = true);                         // Maximizes the window
 		void Minimize();                                                    // Minimizes the window
+		//TODO: ClearBackground does not belong to Window class, should be moved to a different class
+		//      It is a full OpenGL Renderer function, not Window/GLFW API
 		void ClearBackground(BackgroundColors color);                       // Clears the backround with a predefined color 
 		void ClearBackground(float RED, float GREEN, float BLUE, float ALPHA);  // Clears the Background with a self defined color based on the RGBA settings given in the parameters
 		float GetFPS();                                                     // Returns the current FPS of the window as a float. ! Cannot be replaced with manual FPS checking if .Draw() is used !
