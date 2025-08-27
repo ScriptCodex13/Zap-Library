@@ -126,7 +126,7 @@ You can visit the wiki [here](https://github.com/ScriptCodex13/Zap-Library/wiki)
 [GLFW](https://github.com/glfw/glfw) to manage windows,
 [GLAD](https://github.com/Dav1dde/glad) to load OpenGL functions
 [Premake](https://github.com/premake/premake-core) to build the project,
-glm for the math
+[glm](https://github.com/g-truc/glm) for the math
 
 # Questions ?
 
