@@ -134,4 +134,4 @@ Come to our [discord server](https://discord.gg/hr2vjemJSV) to ask questions and
 
 # Please Note 
 
-Zap isnt finished yet. To be precise, it is a fresh project. There are some Issues and the API is missing a lot of planned features. But if you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Help will be greatly appriciated ! 
+Zap isnt finished yet. To be precise, it is a fresh project. There are some Issues and the API is missing planned features. But if you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Help will be greatly appriciated ! 
