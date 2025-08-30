@@ -9,7 +9,7 @@ namespace zap
 
 class Camera
 {
-
+	static const float YAW, PITCH, SPEED, SENSITIVITY, ZOOM;
 public:
 	enum class Movement
 	{
@@ -37,10 +37,6 @@ public:
 	void onMouseScroll(float yoffset);
 
 	void updateVectors();
-
-private:
-	static const float YAW, PITCH, SPEED, SENSITIVITY, ZOOM;
-
 };
 namespace config
 {

@@ -295,11 +295,6 @@ namespace zap
 		}
 	}
 
-	std::array<unsigned int, 2> Window::GetSize()
-	{
-		return { (unsigned int)width, (unsigned int)height };
-	}
-
 	void Window::SetPosition(int x, int y)
 	{
 		pos_x = x;
@@ -483,9 +478,6 @@ namespace zap
 
 			input::UpdateInputs(intern_window); // Update the key states
 
-			glfwGetWindowSize(intern_window, &width, &height);
-
-			// TODO Maybe update the monitor var etc.
 		}
 	}
 
