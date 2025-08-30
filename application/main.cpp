@@ -1,5 +1,8 @@
 // Just a example
 
+
+// PR = Prototyping -> only for testing 
+
 //this is separate application and should treat the Zap library as external
 //everyone using this library will do, this is a standard practice
 #include "Zap.h" //TODO: This is not the correct way to use libraries
@@ -7,20 +10,24 @@
 #include <iostream>
 #include <vector>
 
-
 const char* vertexShaderSource = R"glsl(#version 330 core
 layout(location = 0) in vec3 aPos;
-layout(location = 1) in vec3 aColor;
-layout(location = 2) in vec2 aTexCoord;
+// layout(location = 1) in vec3 aColor;
+// layout(location = 2) in vec2 aTexCoord;
+
+uniform mat4 model;      //takes local coordinates for thing and moves it into world coordinates
+uniform mat4 view;       //moves world space objects around based on camera
+uniform mat4 projection; //converts values to normalised device coordinates (use sweet math for perspective)
 
 out vec3 ourColor;
-out vec2 TexCoord;
+// out vec2 TexCoord;
 
 void main()
 {
-	gl_Position = vec4(aPos, 1.0);
-	ourColor = aColor;
-	TexCoord = aTexCoord;
+	gl_Position = projection * view * model * vec4(aPos, 1.0);
+	// ourColor = aColor;
+	// TexCoord = vec2(aTexCoord.x, aTexCoord.y);
+
 } )glsl";
 
 const char* fragmentShaderSource = R"glsl(#version 330 core
@@ -36,6 +43,7 @@ void main()
     FragColor = texture(ourTexture, TexCoord);
 })glsl";
 
+// Du musst auch das mesh transformieren ! Du musst uniform model auc verändern !
 
 int main()
 {
@@ -45,6 +53,8 @@ int main()
 
 	zap::InitGlad();
 
+	glEnable(GL_DEPTH_TEST); // PR
+
 	//window.SetFullscreen(true);
 	//window.UpdateViewport();
 
@@ -52,9 +62,9 @@ int main()
 	{
 		// positions          // colors           // texture coords
 		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right 
-		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right  This causes the bug
+		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
 		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left		And also this
+		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left
 
 	};
 
@@ -64,8 +74,21 @@ int main()
 		1, 2, 3
 	};
 
+	//Controller 
 
 	zap::Device controller = zap::AssignController();
+
+	//
+
+
+	//Camera
+
+	std::array<unsigned int, 2> size = window.GetSize(); // Funktioniert noch nicht ganz gibt keine refernz zurück !
+
+	zap::Camera camera(size[0], size[1]);
+
+	//
+
 
 	//Mesh
 
@@ -75,106 +98,38 @@ int main()
 	mesh.SetFragmentShaderSource(fragmentShaderSource);
 
 	mesh.SetAttribPointer(0, 3, 8, 0);
-	mesh.SetAttribPointer(1, 3, 8, 3);
-	mesh.SetAttribPointer(2, 2, 8, 6);
+	//mesh.SetAttribPointer(1, 3, 8, 3);
+	//mesh.SetAttribPointer(2, 2, 8, 6);
 
 	//Remove the absolute path pointing to file location on your computer
 	//TODO: Texture must be added into the project. The project must be self sufficient.
-	unsigned int texture0Id = mesh.AddTexture(0, "textures\\texture.png", zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE).i_id;
+	//auto texture = mesh.AddTexture(0, "C:/Dev/Test/New_v13/Zap-Library/Zap3DDemo/Zap3DTrianglesBasic/textures/texture.png", zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE);
 
 	mesh.Finish();
 
+	//
 
-	window.UpdateViewport(); //This is a set callback. Once set == forever set
+	
+	// Window settings
+
+	window.UpdateViewport(true);
+
+	window.SetFPSLimit(60);
+
+	//
+
 
 	while (window.Open())
 	{
-		//window.StartTime();
+		window.ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
 
-		if (controller.IsConnected())
-		{
-			if (controller.GetButton(zap::ControllerButtonsPS::CROSS, zap::State::EZ_PRESSED))
-			{
-				std::cout << "X Pressed" << std::endl;
-			}
-			if (controller.GetButton(zap::ControllerButtonsPS::RECTANGLE, zap::State::EZ_PRESSED))
-			{
-				std::cout << "Rectangle pressed" << std::endl;
-			}
-			if (controller.GetButton(zap::ControllerButtonsPS::TRIANGLE, zap::State::EZ_PRESSED))
-			{
-				std::cout << "Triangle pressed" << std::endl;
-			}
-			if (controller.GetButton(zap::ControllerButtonsPS::CIRCLE, zap::State::EZ_PRESSED))
-			{
-				std::cout << "Circle pressed" << std::endl;
-			}
-			if (controller.GetButton(zap::ControllerButtonsPS::DPAD_DOWN, zap::State::EZ_PRESSED))
-			{
-				std::cout << "DPad down" << std::endl;
-			}
-			if (controller.GetButton(zap::ControllerButtonsPS::DPAD_UP, zap::State::EZ_PRESSED))
-			{
-				std::cout << "DPad up" << std::endl;
-			}
-			if (controller.GetButton(zap::ControllerButtonsPS::DPAD_LEFT, zap::State::EZ_PRESSED))
-			{
-				std::cout << "DPad left" << std::endl;
-			}
-			if (controller.GetButton(zap::ControllerButtonsPS::DPAD_RIGHT, zap::State::EZ_PRESSED))
-			{
-				std::cout << "DPad right" << std::endl;
-			}
-			if (controller.GetButton(zap::ControllerButtonsPS::GUIDE_BUTTON, zap::State::EZ_PRESSED))
-			{
-				std::cout << "Guide" << std::endl;
-			}
-			if (controller.GetButton(zap::ControllerButtonsPS::L1, zap::State::EZ_PRESSED))
-			{
-				std::cout << "L1" << std::endl;
-			}
-			if (controller.GetButton(zap::ControllerButtonsPS::R1, zap::State::EZ_PRESSED))
-			{
-				std::cout << "R1" << std::endl;
-			}
-			if (controller.GetButton(zap::ControllerButtonsPS::BACK, zap::State::EZ_PRESSED))
-			{
-				std::cout << "Back" << std::endl;
-			}
-			if (controller.GetButton(zap::ControllerButtonsPS::MENU, zap::State::EZ_PRESSED))
-			{
-				std::cout << "menu" << std::endl;
-			}
-			if (controller.GetButton(zap::ControllerButtonsPS::LEFT_STICK_PRESS, zap::State::EZ_PRESSED))
-			{
-				std::cout << "Left Stick" << std::endl;
-			}
+		glClear(GL_DEPTH_BUFFER_BIT); // PR
 
-			/*int count;
-			const float* axis = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &count);
-
-			//std::cout << count << std::endl;
-
-			std::cout << axis[5] << std::endl;*/
-
-			std::cout << controller.GetTrigger(zap::ControllerTriggersPS::L2) << std::endl;
-
-		}
-
-
-		/*int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
-
-		if (present)
-		{
-			int count;
-			const unsigned char* buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &count);
-
-			if (buttons[19] == GLFW_PRESS)
-			{
-				std::cout << "true" << std::endl;
-			}
-		}*/
-
+		camera.Rotate(0.0f, 0.0f, 0.0f); // Doesn't work
+		
+		camera.UpdateProjection(mesh.GetProgram(), "projection"); // Maybe also 
+		camera.UpdateView(mesh.GetProgram(), "view");
+		camera.UpdateRotation();
 
 		if (window.isKeyPressed(zap::Key::ESC))
 		{
@@ -184,10 +139,11 @@ int main()
 		//from here draw starts
 		//there starts general draw
 		window.ShowWireFrame(window.isKeyPressed(zap::Key::F10));
-		window.ClearBackground(zap::BackgroundColors::BLACK);
+
+
 		//here starts current VAO for current program draw
 		mesh.bind(); //set current context before any draw routines, it prevents mess in more complex programs
-		mesh.UseTexture(texture0Id); //return false if texture not found
+		//mesh.UseTexture(texture.i_id); //return false if texture not found
 		mesh.Write();
 		//here draw ends
 		
