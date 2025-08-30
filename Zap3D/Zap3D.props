@@ -6,7 +6,7 @@
     <thirdpartydir>$(SolutionDir)..\3rdparty\</thirdpartydir>
     <glfw_dir>$(thirdpartydir)glfw-3.4.bin.WIN64\</glfw_dir>
     <stb_dir>$(thirdpartydir)stb\</stb_dir>
-    <glm_dir>$(thirdpartydir)glm-0.9.9.7\glm\</glm_dir>
+    <glm_dir>$(thirdpartydir)glm-0.9.9.7\</glm_dir>
     <glad_dir>$(thirdpartydir)glad.gl4.6\</glad_dir>
   </PropertyGroup>
   <PropertyGroup />

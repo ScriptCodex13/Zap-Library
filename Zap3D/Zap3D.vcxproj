@@ -114,8 +114,8 @@
 mkdir $(exportdir)lib_win\$(Platform)\$(Configuration) || echo all done
 del mkdir $(exportdir)include\*  || echo all done
 del (exportdir)\lib_win\$(LibrariesArchitecture)\$(Configuration)\*
-copy *h $(exportdir)include
-copy $(OutDir)* $(exportdir)\lib_win\$(LibrariesArchitecture)\$(Configuration)</Command>
+copy /Y *h $(exportdir)include
+copy /Y $(OutDir)* $(exportdir)lib_win\$(LibrariesArchitecture)\$(Configuration)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -136,8 +136,8 @@ copy $(OutDir)* $(exportdir)\lib_win\$(LibrariesArchitecture)\$(Configuration)</
 mkdir $(exportdir)lib_win\$(Platform)\$(Configuration) || echo all done
 del mkdir $(exportdir)include\*  || echo all done
 del (exportdir)\lib_win\$(LibrariesArchitecture)\$(Configuration)\*
-copy *h $(exportdir)include
-copy $(OutDir)* $(exportdir)\lib_win\$(LibrariesArchitecture)\$(Configuration)</Command>
+copy /Y *.h $(exportdir)include
+copy /Y $(OutDir)* $(exportdir)\lib_win$(LibrariesArchitecture)\$(Configuration)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

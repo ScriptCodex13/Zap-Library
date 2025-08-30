@@ -110,15 +110,12 @@ namespace zap
 			{
 				return true;
 			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
+			
 			return false;
+			
 		}
+		
+		return false;
 	}
 
 	void Window::UpdateViewport(bool state)
@@ -212,10 +209,6 @@ namespace zap
 
 	void Window::ClearBackground(BackgroundColors color)
 	{
-		//This is the case for usage of switch/case statement
-		//It is easier to read and to maintain than multiple if/else statements
-		//Also it is faster than multiple if/else statements because it uses a jump table instead of multiple comparisons
-		//TODO: remove comments after reading
 		switch (color)
 		{
 		case BackgroundColors::WHITE:
@@ -481,18 +474,20 @@ namespace zap
 	{
 		if (intern_window)
 		{
-			glfwPollEvents(); // Should be called everytime 
+			glfwPollEvents();                   // Should be called everytime 
 
-			input::UpdateInputs(intern_window);
+			input::UpdateInputs(intern_window); // Update the key states
 
 		}
 	}
 
 	void Window::Draw()
 	{
-		InternSwapBuffers();
+		InternSwapBuffers(); // Only executes the draw call if the target frame time is passed
 	}
 
 }
+
+
 
 
