@@ -145,26 +145,35 @@ int main()
 
 	zapWindow.UpdateViewport(); //This is a set callback. Once set == forever set
 	GLFWwindow* window = zapWindow.GetNativeWindow();
-	glfwSetCursorPosCallback(window, mouse_callback);
-	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetCursorPosCallback (window, mouse_callback);
+	glfwSetScrollCallback    (window, scroll_callback);
 	//glfwSetKeyCallback(window, key_callback);
+
+	using zap::config::camera;
+	glm::mat4 model      = glm::translate(glm::mat4(1.0), glm::vec3(0.1f, -0.1f, 0.0f));
+	glm::mat4 view       = camera.view();
+	glm::mat4 projection = camera.perspective();
+	mesh.bind();
+	//initialize uniforms
+	glUniformMatrix4fv (modelLocationId,      1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv (projectionLocationId, 1, GL_FALSE, glm::value_ptr(projection));
+	//glUniformMatrix4fv (viewLocationId,       1, GL_FALSE, glm::value_ptr(view));
 	while (zapWindow.Open())
 	{
-		using zap::config::camera;
+		if (zapWindow.isKeyPressed(zap::Key::ESC))
+			zapWindow.Close();
+
 		deltaTime = (float)glfwGetTime() - lastFrame;
 
 		lastFrame += deltaTime;
 		//zapWindow.StartTime();
-		glm::mat4 model = glm::translate(glm::mat4(1.0), glm::vec3(0.1f, -0.1f, 0.0f));
-		glm::mat4 view = camera.view();
-		glm::mat4 projection = camera.perspective();
-		//triangleRainbowWithCamera.drawInit(model, view, projection);
+		//model      = glm::translate(glm::mat4(1.0), glm::vec3(0.1f, -0.1f, 0.0f));
+		view       = camera.view();
+		//projection = camera.perspective();
 
-		model = glm::translate(glm::mat4(1.0), pos);
-		model = glm::rotate(model, currentTime, glm::vec3(0.0f, 1.0f, 0.0f));
+		//model = glm::translate(glm::mat4(1.0), pos);
+		//model = glm::rotate   (model, currentTime, glm::vec3(0.0f, 1.0f, 0.0f));
 
-		if (zapWindow.isKeyPressed(zap::Key::ESC))
-			zapWindow.Close();
 
 		//from here draw starts
 		//there starts general draw
@@ -172,9 +181,10 @@ int main()
 		zapWindow.ClearBackground(zap::BackgroundColors::BLACK);
 		//here starts current VAO for current program draw
 		mesh.bind(); //set current context before any draw routines, it prevents mess in more complex programs
-		glUniformMatrix4fv(modelLocationId, 1, GL_FALSE, glm::value_ptr(model));
-		glUniformMatrix4fv(viewLocationId, 1, GL_FALSE, glm::value_ptr(view));
-		glUniformMatrix4fv(projectionLocationId, 1, GL_FALSE, glm::value_ptr(projection));
+		//update uniforms
+		//glUniformMatrix4fv ( modelLocationId,       1,  GL_FALSE, glm::value_ptr (model)  );
+		glUniformMatrix4fv ( viewLocationId,        1,  GL_FALSE, glm::value_ptr (view)  );
+		//glUniformMatrix4fv ( projectionLocationId,  1,  GL_FALSE, glm::value_ptr (projection)  );
 		mesh.UseTexture(texture0Id); //return false if texture not found
 		mesh.Write();
 		//here draw ends
