@@ -41,7 +41,7 @@ void main()
     FragColor = texture(ourTexture, TexCoord);
 })glsl";
 
-// Du musst auch das mesh transformieren ! Du musst uniform model auc verändern !
+// Du musst auch das mesh transformieren ! Du musst uniform model auc verÃ¤ndern !
 
 int main()
 {
@@ -81,7 +81,7 @@ int main()
 
 	//Camera
 
-	std::array<unsigned int, 2> size = window.GetSize(); // Funktioniert noch nicht ganz gibt keine refernz zurück !
+	std::array<unsigned int, 2> size = window.GetSize(); // Funktioniert noch nicht ganz gibt keine refernz zurÃ¼ck !
 
 	zap::Camera camera(size[0], size[1]);
 
@@ -103,7 +103,7 @@ int main()
 
 	//Remove the absolute path pointing to file location on your computer
 	//TODO: Texture must be added into the project. The project must be self sufficient.
-	auto texture = mesh.AddTexture(0, "C:/Dev/Test/New_v13/Zap-Library/Zap3DDemo/Zap3DTrianglesBasic/textures/texture.png", zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE);
+	auto texture = mesh.AddTexture(0, "textures/texture.png", zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE);
 
 	mesh.Finish();
 
@@ -169,6 +169,7 @@ int main()
 	zap::Delete();
 
 }
+
 
 
 
