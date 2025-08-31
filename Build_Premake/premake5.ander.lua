@@ -1,4 +1,4 @@
-workspace "Zap-Project"
+workspace "Zap-ProjectAnder"
     architecture "x64"
     location "ProjectAnder"
     configurations
@@ -15,7 +15,7 @@ project "Zap"
     files { "../src/**.h"}
     includedirs {"../3rdparty/glad.gl4.6/include/"}
     includedirs {"../3rdparty/glfw-3.4.bin.WIN64/include"}
-    includedirs {"../3rdparty/glm-0.9.9.7/glm/"}
+    includedirs {"../3rdparty/glm-0.9.9.7/"}
     includedirs {"../3rdparty/stb"}
     files {"../extern/stb_image.h"}
     cppdialect "C++17"
@@ -28,7 +28,7 @@ project "Application"
     files {"../3rdparty/glad.gl4.6/src/glad.c"}
     includedirs {"../3rdparty/glad.gl4.6/include/"}
     includedirs {"../3rdparty/glfw-3.4.bin.WIN64/include"}
-    includedirs {"../3rdparty/glm-0.9.9.7/glm/"}
+    includedirs {"../3rdparty/glm-0.9.9.7/"}
     includedirs {"../3rdparty/stb"}
     includedirs {"../src/"}
     libdirs {"../3rdparty/glfw-3.4.bin.WIN64/lib-vc2022/"}
