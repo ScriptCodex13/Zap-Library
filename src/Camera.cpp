@@ -83,7 +83,9 @@ void Camera::onMouseMove(float xoffset, float yoffset, GLboolean constrainPitch)
 
 void Camera::onMouseScroll(float yoffset)
 {
+	//If zoom in bounds then update zoom
 	if (zoom >= 1.0f && zoom <= 45.0f) zoom -= yoffset;
+	//If updated zoom out of bounds then get it back in bounds
 	if (zoom <= 1.0f) zoom = 1.0f;
 	if (zoom >= 45.0f) zoom = 45.0f;
 }

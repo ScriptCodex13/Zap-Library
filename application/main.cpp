@@ -109,9 +109,10 @@ int main()
 
 	//
 
-
-	unsigned int modelLocationId = mesh.GetUniformLocation("model");
-
+	mesh.bind();
+	unsigned int modelLocationId      = mesh.GetUniformLocation("model");
+	unsigned int viewLocationId       = mesh.GetUniformLocation("view");
+	unsigned int projectionLocationId = mesh.GetUniformLocation("projection");
 	glm::vec3 pos(0.0f, 0.0f, 0.0f);
 	
 	// Window settings
@@ -122,40 +123,36 @@ int main()
 
 	//
 
-	const float currentTime = (float)glfwGetTime();
-
+	const double currentTime = glfwGetTime();
+	glm::mat4 model      = glm::translate(glm::mat4(1.0), glm::vec3(0.1f, -0.1f, 0.0f));
+	glm::mat4 view       = camera.GetView();
+	glm::mat4 projection = camera.GetProjection();
+	mesh.bind();
+	glUniformMatrix4fv(modelLocationId,      1, GL_FALSE, glm::value_ptr(model));        //As of now doesn't change during execution
+	glUniformMatrix4fv(projectionLocationId, 1, GL_FALSE, glm::value_ptr(projection));   //As of now doesn't change during execution
+	//glUniformMatrix4fv(viewLocationId,       1, GL_FALSE, glm::value_ptr(view));         //Changes every frame
 	while (window.Open())
 	{
-		window.ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
-
-		glClear(GL_DEPTH_BUFFER_BIT); // PR
-
-		camera.Rotate(0.0f, 0.01f, 0.0f); // Doesn't work
-		
-
-		glm::mat4 model = glm::translate(glm::mat4(1.0), glm::vec3(0.1f, -0.1f, 0.0f));
-
-
-		camera.UpdateProjection(mesh.GetProgram(), "projection"); // Maybe also 
-		camera.UpdateView(mesh.GetProgram(), "view");
-		camera.UpdateRotation();
-
-		model = glm::translate(glm::mat4(1.0), pos);
-		model = glm::rotate(model, currentTime, glm::vec3(0.0f, 1.0f, 0.0f));
-
+		double deltaTime = glfwGetTime() - currentTime;
 		if (window.isKeyPressed(zap::Key::ESC))
 		{
 			window.Close();
 		}
 
-		//from here draw starts
-		//there starts general draw
+		//TODO: Keep the workflow. Here starts general draw
+		glClear(GL_DEPTH_BUFFER_BIT); // PR
 		window.ShowWireFrame(window.isKeyPressed(zap::Key::F10));
+		window.ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
 
+
+		camera.RotateAbsolute(-90.0f, cos(deltaTime) * 30.f , 0.0f); // Doesn't work
+
+		camera.UpdateRotation(); // Update camera vectors based on changed yaw and pitch
+		view = camera.GetView();
 
 		//here starts current VAO for current program draw
 		mesh.bind(); //set current context before any draw routines, it prevents mess in more complex programs
-		glUniformMatrix4fv(modelLocationId, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(viewLocationId, 1, GL_FALSE, glm::value_ptr(view));
 		mesh.UseTexture(texture.i_id); //return false if texture not found
 		mesh.Write();
 		//here draw ends

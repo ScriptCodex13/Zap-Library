@@ -24,7 +24,8 @@ namespace zap
 		~Camera();
 
 		void SetPosition(float x, float y, float z);
-		void Rotate(float yaw, float pitch, float roll);
+		void RotateDelta(float yaw, float pitch, float roll);
+		void RotateAbsolute(float yaw, float pitch, float roll);
 		void SetFOV(float new_fov);
 
 		glm::mat4 GetProjection();
