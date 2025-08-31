@@ -112,8 +112,8 @@
     <PostBuildEvent>
       <Command>mkdir $(exportdir)include || echo all done
 mkdir $(exportdir)lib_win\$(Platform)\$(Configuration) || echo all done
-del mkdir $(exportdir)include\*  || echo all done
-del (exportdir)\lib_win\$(LibrariesArchitecture)\$(Configuration)\*
+del /Q $(exportdir)include\*  || echo all done
+del /Q $(exportdir)\lib_win\$(LibrariesArchitecture)\$(Configuration)\*
 copy /Y *h $(exportdir)include
 copy /Y $(OutDir)* $(exportdir)lib_win\$(LibrariesArchitecture)\$(Configuration)</Command>
     </PostBuildEvent>
@@ -134,10 +134,10 @@ copy /Y $(OutDir)* $(exportdir)lib_win\$(LibrariesArchitecture)\$(Configuration)
     <PostBuildEvent>
       <Command>mkdir $(exportdir)include || echo all done
 mkdir $(exportdir)lib_win\$(Platform)\$(Configuration) || echo all done
-del mkdir $(exportdir)include\*  || echo all done
-del (exportdir)\lib_win\$(LibrariesArchitecture)\$(Configuration)\*
+del /Q $(exportdir)include\*  || echo all done
+del /Q $(exportdir)\lib_win\$(LibrariesArchitecture)\$(Configuration)\*
 copy /Y *.h $(exportdir)include
-copy /Y $(OutDir)* $(exportdir)\lib_win$(LibrariesArchitecture)\$(Configuration)</Command>
+copy /Y $(OutDir)* $(exportdir)lib_win\$(LibrariesArchitecture)\$(Configuration)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -150,6 +150,7 @@ copy /Y $(OutDir)* $(exportdir)\lib_win$(LibrariesArchitecture)\$(Configuration)
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="Resources.cpp" />
+    <ClCompile Include="SceneCamera.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -163,6 +164,7 @@ copy /Y $(OutDir)* $(exportdir)\lib_win$(LibrariesArchitecture)\$(Configuration)
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="Resources.h" />
+    <ClInclude Include="SceneCamera.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Window.h" />

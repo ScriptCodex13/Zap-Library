@@ -64,12 +64,13 @@ namespace zap
 		void Finish(); // Everything is finished you can't change the settings of the mesh anymore
 		bool UseTexture (unsigned int id); //TODO: This is Bind, not Set, should be renamed | Done - ScriptCodex13
 		//separate functions will be very useful in more complex logic
-		unsigned int getUniformLocation(const GLchar* name);
-		unsigned int getProgram ();
+		unsigned int GetUniformLocation(const GLchar* name);
+		unsigned int GetProgram ();
 		void useProgram ();
 		void bindVAO    ();
 		void bind       ();
-		void Write      (int vertices_count = 0);
+		//TODO: This is not write. This is Draw, must be named accordingly. To remove comment after seen.
+		void Draw       (int vertices_count = 0);
 		// Transform func
 
 	private:

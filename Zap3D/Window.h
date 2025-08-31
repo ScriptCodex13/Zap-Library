@@ -55,9 +55,11 @@ namespace zap
 		//      It is a full OpenGL Renderer function, not Window/GLFW API
 		void ClearBackground(BackgroundColors color);                       // Clears the backround with a predefined color 
 		void ClearBackground(float RED, float GREEN, float BLUE, float ALPHA);  // Clears the Background with a self defined color based on the RGBA settings given in the parameters
+		void ClearDepthBuffer();											// Clears the depth buffer
 		float GetFPS();                                                     // Returns the current FPS of the window as a float. ! Cannot be replaced with manual FPS checking if .Draw() is used !
 		float GetDelta();                                                   // Returns the current Frametime as Delta
 		void SetSize(unsigned int new_width, unsigned int new_height);      // Set the new size of the window 
+		std::array<unsigned int, 2> GetSize();
 		void SetPosition(int x, int y);                                     // Set the Position of the window on the screen
 		void SetFPSLimit(unsigned int limit);                               // Limit the max amount of frame updates per second
 		void SetTitle(const std::string title);                             // Set the title of the window 

@@ -1,5 +1,6 @@
 #include "Resources.h"
 #include "Message.h"
+
 namespace zap
 {
 	void Init()
@@ -36,6 +37,10 @@ namespace zap
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			messages::PrintMessage("Failed to initialize GLAD", "EasyGL.cpp/void InitGlad()", MessageTypes::fatal_error);
+		}
+		else
+		{
+			glEnable(GL_DEPTH_TEST);			// Enable Depth if glad can be used 
 		}
 	}
 

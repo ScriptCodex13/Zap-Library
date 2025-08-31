@@ -6,6 +6,7 @@
 //this is separate application and should treat the Zap library as external
 //everyone using this library will do, this is a standard practice
 #include <Zap.h> //TODO: This is not the correct way to use libraries
+#include "SceneCamera.h"
 #include <iostream>
 #include <vector>
 
@@ -77,7 +78,7 @@ int main()
 
 	std::array<unsigned int, 2> size = window.GetSize(); // Not a Ref to the window size !
 
-	zap::Camera camera(size[0], size[1]);
+	zap::SceneCamera camera(size[0], size[1]);
 
 	//
 
@@ -149,8 +150,8 @@ int main()
 		//TODO: Keep the workflow. Here starts general draw
 
 		//TODO: Keep the workflow. Here starts general draw
-		glClear(GL_DEPTH_BUFFER_BIT); // PR
 		glEnable(GL_DEPTH_TEST); // Move it here. Any rendering function must be invoked here.
+		glClear(GL_DEPTH_BUFFER_BIT); // PR
 		window.ClearDepthBuffer();
 		window.ShowWireFrame(window.isKeyPressed(zap::Key::F10));
 		window.ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);

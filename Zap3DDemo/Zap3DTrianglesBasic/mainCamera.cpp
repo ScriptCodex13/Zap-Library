@@ -134,9 +134,9 @@ int main()
 	mesh.Finish();
 	mesh.bind();
 
-	unsigned int modelLocationId      = mesh.getUniformLocation("model");
-	unsigned int viewLocationId       = mesh.getUniformLocation("view");
-	unsigned int projectionLocationId = mesh.getUniformLocation("projection");
+	unsigned int modelLocationId      = mesh.GetUniformLocation("model");
+	unsigned int viewLocationId       = mesh.GetUniformLocation("view");
+	unsigned int projectionLocationId = mesh.GetUniformLocation("projection");
 	//
 	float lastFrame = (float)glfwGetTime();
 	float deltaTime = 0.f;
@@ -177,6 +177,7 @@ int main()
 
 		//from here draw starts
 		//there starts general draw
+		glClear(GL_DEPTH_BUFFER_BIT); // PR
 		zapWindow.ShowWireFrame(zapWindow.isKeyPressed(zap::Key::F10));
 		zapWindow.ClearBackground(zap::BackgroundColors::BLACK);
 		//here starts current VAO for current program draw
@@ -186,7 +187,7 @@ int main()
 		glUniformMatrix4fv ( viewLocationId,        1,  GL_FALSE, glm::value_ptr (view)  );
 		//glUniformMatrix4fv ( projectionLocationId,  1,  GL_FALSE, glm::value_ptr (projection)  );
 		mesh.UseTexture(texture0Id); //return false if texture not found
-		mesh.Write();
+		mesh.Draw();
 		//here draw ends
 
 		zapWindow.SetTitle(std::to_string(zapWindow.GetDelta()));

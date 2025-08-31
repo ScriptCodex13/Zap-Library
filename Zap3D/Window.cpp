@@ -1,7 +1,9 @@
 #include "Window.h"
 #include "stb_image.h"
+#include "Util.h"
 
 #include <algorithm>
+
 namespace zap
 {
 	/***********************************************************************************/
@@ -46,14 +48,15 @@ namespace zap
 
 		intern_window = glfwCreateWindow(scale_x, scale_y, Title.c_str(), monitor, other_window);
 
-		if (intern_window)
-		{
-			currentMonitor = glfwGetWindowMonitor(intern_window);
-		}
-
 		if (!intern_window)
 		{
 			messages::PrintMessage("Failed to create window", "Window.cpp/Window::Window(...)", MessageTypes::fatal_error);
+			ZAP_INTERRUPT_FATAL_ERROR;
+		}
+
+		if (intern_window)
+		{
+			currentMonitor = glfwGetWindowMonitor(intern_window);
 		}
 
 		if (intern_window)
@@ -67,14 +70,15 @@ namespace zap
 	{
 		intern_window = extern_window;
 
-		if (intern_window)
-		{
-			currentMonitor = glfwGetWindowMonitor(intern_window);
-		}
-
 		if (!intern_window)
 		{
 			messages::PrintMessage("Failed to get extern window", "Window.cpp/zap::Window::Window(...)", MessageTypes::fatal_error);
+			ZAP_INTERRUPT_FATAL_ERROR;
+		}
+
+		if (intern_window)
+		{
+			currentMonitor = glfwGetWindowMonitor(intern_window);
 		}
 
 		if (intern_window)
@@ -261,6 +265,11 @@ namespace zap
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
+	void Window::ClearDepthBuffer()
+	{
+		glClear(GL_DEPTH_BUFFER_BIT);
+	}
+
 	void Window::SetIcon(const std::string path)
 	{
 		windowIcon[0].pixels = stbi_load(path.c_str(), &windowIcon[0].width, &windowIcon[0].height, &icon_channels, 0);
@@ -293,6 +302,11 @@ namespace zap
 				glfwSetWindowMonitor(intern_window, currentMonitor, pos_x, pos_y, width, height, current_refresh_rate);
 			}
 		}
+	}
+
+	std::array<unsigned int, 2> Window::GetSize()
+	{
+		return { (unsigned int)width, (unsigned int)height };
 	}
 
 	void Window::SetPosition(int x, int y)
@@ -478,6 +492,9 @@ namespace zap
 
 			input::UpdateInputs(intern_window); // Update the key states
 
+			glfwGetWindowSize(intern_window, &width, &height);
+
+			// TODO Maybe update the monitor var etc.
 		}
 	}
 

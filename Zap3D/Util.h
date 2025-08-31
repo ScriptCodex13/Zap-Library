@@ -3,6 +3,18 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include "Message.h"
+
+#include <cstdlib>
+
+/**********************************************************************************/
+
+// API defines 
+
+#define ZAP_INTERRUPT_FATAL_ERROR messages::PrintMessage("Fatal error caused zap to terminate", "", MessageTypes::fatal_error, false); abort();
+
+/**********************************************************************************/
+
 namespace zap
 {
 	namespace util 
