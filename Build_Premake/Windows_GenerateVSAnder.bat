@@ -3,7 +3,8 @@ echo off
 @rem Unpack third party libraries for usage
 @set cpwd=%cd%
 @cd ../3rdparty
-@call extract_libs.cmd
+@rem don't violate the drive, launch extract_libs.cmd, mmanually only when needed
+@rem call extract_libs.cmd
 @cd %cpwd%
 
 setlocal ENABLEDELAYEDEXPANSION

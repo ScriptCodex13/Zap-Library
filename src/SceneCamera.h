@@ -30,8 +30,27 @@ namespace zap
 		glm::mat4 GetProjection();
 		glm::mat4 GetView();
 
+		// TODO: Uniforms do not belong to camera. They belong to shader program.
+		//       To be moved to correct locations in the code
 		void UpdateProjection(unsigned int shader_program, const std::string projection_uniform_name);
 		void UpdateView(unsigned int shader_program, const std::string view_uniform_name);
+		// TODO: Implemeht first three moves from the list. There are four main types of camera movement: 
+		// 1. Rotation   (around an axis which is fixed in space)
+		// 2. Travelling (move the axys to a different position)
+		//        Travelling towards an object:
+		//            1. Changes prerspective
+		//            2. Gives the impression of camera approaching the object
+		//            3. Used to show real movement in a scene
+		// 3. Transfocation (zoom)
+		//        Zooming an object:
+		//            1. Does not change perspective
+		//            2. Gives the impression of object approaching the camera
+		//            3. Used to attract attention to something particular
+		// 4. Transtrav (Travelling compensated by transfocation)
+		//        Travelling and zooming at the same time:
+		//            1. Changes perspective
+		//            2. The object remains the same size in the frame
+		//			  3. Used for dramatic or bizarre effects (some examples https://www.youtube.com/watch?v=ahxjOPVstPo)
 		void UpdateRotation();
 
 	private:
