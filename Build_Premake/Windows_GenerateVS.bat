@@ -4,8 +4,9 @@ setlocal ENABLEDELAYEDEXPANSION
 @REM mkdir "..\Project"
 mkdir Project
 premake5.exe vs2022
-move "../Zap3DDemo/Zap3DTrianglesBasic/textures" "./Project/Application"
+xcopy/s ../Zap3DDemo/Zap3DTrianglesBasic/textures ./Project/Application
 endlocal
 PAUSE
+
 
 
