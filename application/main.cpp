@@ -109,11 +109,11 @@ int main()
 
 	//
 
-	const double currentTime = glfwGetTime();
-	glm::mat4 model      = glm::translate(glm::mat4(1.0), glm::vec3(0.1f, -0.1f, 0.0f));
-	glm::mat4 view       = camera.GetView();
-	glm::mat4 projection = camera.GetProjection();
-	mesh.bind();
+	//const double currentTime = glfwGetTime();
+	//glm::mat4 model      = glm::translate(glm::mat4(1.0), glm::vec3(0.1f, -0.1f, 0.0f));
+	//glm::mat4 view       = camera.GetView();
+	//glm::mat4 projection = camera.GetProjection();
+	//mesh.bind();
 	//Initialize uniformorms. Later change any of them only when really needed:
 	//glUniformMatrix4fv(modelLocationId,      1, GL_FALSE, glm::value_ptr(model));        //As of now doesn't change during execution
 	//glUniformMatrix4fv(projectionLocationId, 1, GL_FALSE, glm::value_ptr(projection));   //As of now doesn't change during execution
@@ -173,6 +173,7 @@ int main()
 	zap::Delete();
 
 }
+
 
 
 
