@@ -131,11 +131,11 @@ int main()
 		}
 		if (window.isKeyPressed(zap::Key::left_arrow))
 		{
-			camera.RotateDelta(0.1f * window.GetDelta() * 20.0f/*<- base speed*/, 0.00f, 0.0f);
+			camera.RotateDelta(0.1f * window.GetDelta() * 1.0f/*<- base speed: 20 is too fast*/, 0.00f, 0.0f);
 		}
 		if (window.isKeyPressed(zap::Key::right_arrow))
 		{
-			camera.RotateDelta(-0.1f * window.GetDelta() * 20.0f /*<- base speed*/, 0.00f, 0.0f);
+			camera.RotateDelta(-0.1f * window.GetDelta() * 1.0f /*<- base speed: 20 is too fast*/, 0.00f, 0.0f);
 		}
 		if (window.GetInput(zap::Key::A, zap::State::EZ_PRESSED))
 		{
@@ -155,14 +155,14 @@ int main()
 		window.ShowWireFrame(window.isKeyPressed(zap::Key::F10));
 		window.ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
 
-		double deltaTime = glfwGetTime() - currentTime;
-		camera.RotateAbsolute(-90.0f, cos(deltaTime) * 30.f, 0.0f); // Doesn't work
 
-		camera.UpdateRotation(); // Update camera vectors based on changed yaw and pitch
-		view = camera.GetView();
 
 		//here starts current VAO for current program draw
 		mesh.bind(); //set current context before any draw routines, it prevents mess in more complex programs
+		double deltaTime = glfwGetTime() - currentTime;
+		//camera.RotateAbsolute(-90.0f, cos(deltaTime) * 30.f, 0.0f); // Uncomment to see results of absolute rotation
+		camera.UpdateRotation(); // Update camera vectors based on changed yaw and pitch
+		view = camera.GetView();
 		glUniformMatrix4fv(viewLocationId, 1, GL_FALSE, glm::value_ptr(view));
 		mesh.UseTexture(texture.i_id); //return false if texture not found
 
