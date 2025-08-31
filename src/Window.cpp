@@ -45,12 +45,17 @@ namespace zap
 	{
 
 		intern_window = glfwCreateWindow(scale_x, scale_y, Title.c_str(), monitor, other_window);
+		//TODO: Validate window pointer in first place
+		//      Interrupt any execution here if window creation fails
+		//      because if window creation fails, there is nothing more that can be done
 
 		if (intern_window)
 		{
 			currentMonitor = glfwGetWindowMonitor(intern_window);
 		}
 
+		//TODO: There is nothing you can do if wihdow creation fails.
+		//	    Interrupt any execution here if window creation fails
 		if (!intern_window)
 		{
 			messages::PrintMessage("Failed to create window", "Window.cpp/Window::Window(...)", MessageTypes::fatal_error);
