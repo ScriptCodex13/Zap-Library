@@ -24,34 +24,70 @@ namespace zap
 		i_camera_position = glm::vec3(x, y, z);
 	}
 
-	void Camera::Rotate(float yaw, float pitch, float roll /* <- Doesnt work*/)
+	//void Camera::Rotate(float yaw, float pitch, float roll /* <- Doesnt work*/)
+	//{
+	//
+	//	std::cout << yaw << std::endl;
+	//
+	//	i_yaw += yaw;
+	//
+	//	if (i_yaw > 360.0f)
+	//	{
+	//		i_yaw = 0.0f;
+	//	}
+	//	if (i_yaw < -360.0f)
+	//	{
+	//		i_yaw = 0.0f;
+	//	}
+	//
+	//	i_pitch += pitch;
+	//
+	//	if (i_pitch > 360.0f)
+	//	{
+	//		i_pitch = 0.0f;
+	//	}
+	//	if (i_pitch < -360.0f)
+	//	{
+	//		i_pitch = 0.0f;
+	//	}
+	//
+	//	std::cout << i_yaw << std::endl;
+	//}
+
+	void Camera::RotateDelta(float yaw, float pitch, float roll /* <- Doesnt work*/)
 	{
+		this->RotateAbsolute(i_yaw + yaw, i_pitch + pitch, i_roll + roll);
+	}
 
-		std::cout << yaw << std::endl;
+	void Camera::RotateAbsolute(float yaw, float pitch, float roll /* <- Doesnt work*/)
+	{
+		i_yaw = yaw;
 
-		i_yaw += yaw;
-
-		if (i_yaw > 360.0f)
+		//Keep yaw between -89 and 89 degrees. So when pitch is out of bounds, screen doesn't get flipped
+		const float yaw_clamp = 360.0f; //30 degrees should be enough
+		//*
+		if (i_yaw > yaw_clamp)
 		{
-			i_yaw = 0.0f;
+			i_yaw = yaw_clamp;
 		}
-		if (i_yaw < -360.0f)
+		if (i_yaw < -yaw_clamp)
 		{
-			i_yaw = 0.0f;
+			i_yaw = -yaw_clamp;
+		}
+		//*/
+
+		const float pitch_clamp = 360.0f; //30 degrees should be enough
+		i_pitch = pitch;
+
+		if (i_pitch > pitch_clamp)
+		{
+			i_pitch = pitch_clamp;
+		}
+		if (i_pitch < -pitch_clamp)
+		{
+			i_pitch = -pitch_clamp;
 		}
 
-		i_pitch += pitch;
-
-		if (i_pitch > 360.0f)
-		{
-			i_pitch = 0.0f;
-		}
-		if (i_pitch < -360.0f)
-		{
-			i_pitch = 0.0f;
-		}
-
-		std::cout << i_yaw << std::endl;
 	}
 
 	void Camera::SetFOV(float new_fov)
@@ -89,13 +125,11 @@ namespace zap
 
 	void Camera::UpdateProjection(unsigned int shader_program, const std::string projection_uniform_name) 
 	{
-		projection = glm::perspective(glm::radians(i_fov), (float)i_screen_width / (float)i_screen_height, 0.1f, 100.0f);
 		glUniformMatrix4fv(glGetUniformLocation(shader_program, projection_uniform_name.c_str()), 1, GL_FALSE, glm::value_ptr(projection));
 	}
 
 	void Camera::UpdateView(unsigned int shader_program, const std::string view_uniform_name)
 	{
-		view = glm::lookAt(i_camera_position, i_camera_position + i_camera_front, i_camera_up);
 		glUniformMatrix4fv(glGetUniformLocation(shader_program, view_uniform_name.c_str()), 1, GL_FALSE, glm::value_ptr(view));
 	}
 
@@ -110,6 +144,8 @@ namespace zap
 
 		i_camera_right = glm::normalize(glm::cross(i_camera_front, i_world_up));
 		i_camera_up = glm::normalize(glm::cross(i_camera_right, i_camera_front));
+		projection = glm::perspective(glm::radians(i_fov), (float)i_screen_width / (float)i_screen_height, 0.1f, 100.0f);
+		view = glm::lookAt(i_camera_position, i_camera_position + i_camera_front, i_camera_up);
 
 	}
 }

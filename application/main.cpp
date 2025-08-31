@@ -108,30 +108,22 @@ int main()
 	window.SetFPSLimit(120);
 
 	//
+	mesh.bind();
+	unsigned int modelLocationId      = mesh.GetUniformLocation("model");
+	unsigned int viewLocationId       = mesh.GetUniformLocation("view");
+	unsigned int projectionLocationId = mesh.GetUniformLocation("projection");
+	const double currentTime = glfwGetTime();
+	glm::mat4 model      = glm::translate(glm::mat4(1.0), glm::vec3(0.1f, -0.1f, 0.0f));
+	glm::mat4 view       = camera.GetView();
+	glm::mat4 projection = camera.GetProjection();
+	mesh.bind();
+	//Initialize uniforms. Later change any of them only when really needed:
+	glUniformMatrix4fv(modelLocationId,      1, GL_FALSE, glm::value_ptr(model));        //As of now doesn't change during execution
+	glUniformMatrix4fv(projectionLocationId, 1, GL_FALSE, glm::value_ptr(projection));   //As of now doesn't change during execution
+	glUniformMatrix4fv(viewLocationId,       1, GL_FALSE, glm::value_ptr(view));         //Changes every frame
 
-	//const double currentTime = glfwGetTime();
-	//glm::mat4 model      = glm::translate(glm::mat4(1.0), glm::vec3(0.1f, -0.1f, 0.0f));
-	//glm::mat4 view       = camera.GetView();
-	//glm::mat4 projection = camera.GetProjection();
-	//mesh.bind();
-	//Initialize uniformorms. Later change any of them only when really needed:
-	//glUniformMatrix4fv(modelLocationId,      1, GL_FALSE, glm::value_ptr(model));        //As of now doesn't change during execution
-	//glUniformMatrix4fv(projectionLocationId, 1, GL_FALSE, glm::value_ptr(projection));   //As of now doesn't change during execution
-	//glUniformMatrix4fv(viewLocationId,       1, GL_FALSE, glm::value_ptr(view));         //Changes every frame
 	while (window.Open())
 	{
-		window.ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
-		
-		window.ClearDepthBuffer();
-
-		camera.GetModel() = glm::translate(glm::mat4(1.0), glm::vec3(0.1f, -0.1f, 0.0f));
-
-
-		camera.UpdateModel(mesh.GetProgram(), "model");
-		camera.UpdateProjection(mesh.GetProgram(), "projection");
-		camera.UpdateView(mesh.GetProgram(), "view");
-		camera.UpdateRotation();
-
 
 		if (window.isKeyPressed(zap::Key::ESC))
 		{
@@ -139,11 +131,11 @@ int main()
 		}
 		if (window.isKeyPressed(zap::Key::left_arrow))
 		{
-			camera.Rotate(0.1f * window.GetDelta() * 20.0f/*<- base speed*/, 0.00f, 0.0f);
+			camera.RotateDelta(0.1f * window.GetDelta() * 20.0f/*<- base speed*/, 0.00f, 0.0f);
 		}
 		if (window.isKeyPressed(zap::Key::right_arrow))
 		{
-			camera.Rotate(-0.1f * window.GetDelta() * 20.0f /*<- base speed*/, 0.00f, 0.0f);
+			camera.RotateDelta(-0.1f * window.GetDelta() * 20.0f /*<- base speed*/, 0.00f, 0.0f);
 		}
 		if (window.GetInput(zap::Key::A, zap::State::EZ_PRESSED))
 		{
@@ -156,9 +148,23 @@ int main()
 
 		//TODO: Keep the workflow. Here starts general draw
 
-		glEnable (GL_DEPTH_TEST); // Move it here. Any rendering function must be invoked here.
-		glClear  (GL_DEPTH_BUFFER_BIT); // PR
+		//TODO: Keep the workflow. Here starts general draw
+		glClear(GL_DEPTH_BUFFER_BIT); // PR
+		glEnable(GL_DEPTH_TEST); // Move it here. Any rendering function must be invoked here.
+		window.ClearDepthBuffer();
 		window.ShowWireFrame(window.isKeyPressed(zap::Key::F10));
+		window.ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
+
+		double deltaTime = glfwGetTime() - currentTime;
+		camera.RotateAbsolute(-90.0f, cos(deltaTime) * 30.f, 0.0f); // Doesn't work
+
+		camera.UpdateRotation(); // Update camera vectors based on changed yaw and pitch
+		view = camera.GetView();
+
+		//here starts current VAO for current program draw
+		mesh.bind(); //set current context before any draw routines, it prevents mess in more complex programs
+		glUniformMatrix4fv(viewLocationId, 1, GL_FALSE, glm::value_ptr(view));
+		mesh.UseTexture(texture.i_id); //return false if texture not found
 
 		//here starts current VAO for current program draw
 		mesh.bind(); //set current context before any draw routines, it prevents mess in more complex programs
