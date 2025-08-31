@@ -115,9 +115,9 @@ int main()
 	glm::mat4 projection = camera.GetProjection();
 	mesh.bind();
 	//Initialize uniformorms. Later change any of them only when really needed:
-	glUniformMatrix4fv(modelLocationId,      1, GL_FALSE, glm::value_ptr(model));        //As of now doesn't change during execution
-	glUniformMatrix4fv(projectionLocationId, 1, GL_FALSE, glm::value_ptr(projection));   //As of now doesn't change during execution
-	glUniformMatrix4fv(viewLocationId,       1, GL_FALSE, glm::value_ptr(view));         //Changes every frame
+	//glUniformMatrix4fv(modelLocationId,      1, GL_FALSE, glm::value_ptr(model));        //As of now doesn't change during execution
+	//glUniformMatrix4fv(projectionLocationId, 1, GL_FALSE, glm::value_ptr(projection));   //As of now doesn't change during execution
+	//glUniformMatrix4fv(viewLocationId,       1, GL_FALSE, glm::value_ptr(view));         //Changes every frame
 	while (window.Open())
 	{
 		window.ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
@@ -173,6 +173,7 @@ int main()
 	zap::Delete();
 
 }
+
 
 
 
