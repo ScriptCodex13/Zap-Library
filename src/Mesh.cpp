@@ -210,7 +210,7 @@ namespace zap
 		bindVAO ();
 	}
 
-	void Mesh2D::Write(int vertices_count)
+	void Mesh2D::Draw(int vertices_count)
 	{
 		if (!indices.empty())
 		{

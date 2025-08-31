@@ -69,7 +69,8 @@ namespace zap
 		void useProgram ();
 		void bindVAO    ();
 		void bind       ();
-		void Write      (int vertices_count = 0);
+		//TODO: This is not write. This is Draw, must be named accordingly. To remove comment after seen.
+		void Draw       (int vertices_count = 0);
 		// Transform func
 
 	private:

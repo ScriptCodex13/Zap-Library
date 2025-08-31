@@ -109,8 +109,15 @@ int main()
 
 	//
 
-	const float currentTime = (float)glfwGetTime();
-
+	const double currentTime = glfwGetTime();
+	glm::mat4 model      = glm::translate(glm::mat4(1.0), glm::vec3(0.1f, -0.1f, 0.0f));
+	glm::mat4 view       = camera.GetView();
+	glm::mat4 projection = camera.GetProjection();
+	mesh.bind();
+	//Initialize uniformorms. Later change any of them only when really needed:
+	glUniformMatrix4fv(modelLocationId,      1, GL_FALSE, glm::value_ptr(model));        //As of now doesn't change during execution
+	glUniformMatrix4fv(projectionLocationId, 1, GL_FALSE, glm::value_ptr(projection));   //As of now doesn't change during execution
+	glUniformMatrix4fv(viewLocationId,       1, GL_FALSE, glm::value_ptr(view));         //Changes every frame
 	while (window.Open())
 	{
 		window.ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
@@ -147,15 +154,16 @@ int main()
 			camera.SetFOV(60);
 		}
 
-		//from here draw starts
-		//there starts general draw
-		window.ShowWireFrame(window.isKeyPressed(zap::Key::F10));
+		//TODO: Keep the workflow. Here starts general draw
 
+		glEnable (GL_DEPTH_TEST); // Move it here. Any rendering function must be invoked here.
+		glClear  (GL_DEPTH_BUFFER_BIT); // PR
+		window.ShowWireFrame(window.isKeyPressed(zap::Key::F10));
 
 		//here starts current VAO for current program draw
 		mesh.bind(); //set current context before any draw routines, it prevents mess in more complex programs
 		mesh.UseTexture(texture.i_id); //return false if texture not found
-		mesh.Write();
+		mesh.Draw();
 		//here draw ends
 		
 		window.Update();
