@@ -54,17 +54,13 @@ namespace zap
 			ZAP_INTERRUPT_FATAL_ERROR;
 		}
 
-		if (intern_window)
-		{
-			currentMonitor = glfwGetWindowMonitor(intern_window);
-		}
+		//TODO: intern_window is already checked, why check it again? Remove comment affter read.
+		currentMonitor = glfwGetWindowMonitor(intern_window);
 
-		if (intern_window)
-		{
-			glfwMakeContextCurrent(intern_window);
-			glfwGetWindowSize(intern_window, &width, &height);
-			glfwGetWindowPos(intern_window, &pos_x, &pos_y);
-		}
+		glfwMakeContextCurrent(intern_window);
+		glfwGetWindowSize(intern_window, &width, &height);
+		glfwGetWindowPos(intern_window, &pos_x, &pos_y);
+
 	}
 	Window::Window(GLFWwindow* extern_window)
 	{
@@ -76,17 +72,13 @@ namespace zap
 			ZAP_INTERRUPT_FATAL_ERROR;
 		}
 
-		if (intern_window)
-		{
-			currentMonitor = glfwGetWindowMonitor(intern_window);
-		}
+		//TODO: intern_window is already checked, why check it again? Remove comment affter read.
+		currentMonitor = glfwGetWindowMonitor(intern_window);
 
-		if (intern_window)
-		{
-			glfwMakeContextCurrent(intern_window);
-			glfwGetWindowSize(intern_window, &width, &height);
-			glfwGetWindowPos(intern_window, &pos_x, &pos_y);
-		}
+		glfwMakeContextCurrent(intern_window);
+		glfwGetWindowSize(intern_window, &width, &height);
+		glfwGetWindowPos(intern_window, &pos_x, &pos_y);
+
 	}
 
 	Window::~Window()
@@ -96,14 +88,9 @@ namespace zap
 
 	GLFWwindow* Window::GetNativeWindow()
 	{
-		if (intern_window)
-		{
-			return intern_window;
-		}
-		else
-		{
-			return nullptr;
-		}
+		//TODO: the code is identically the same with if and else block.
+		//      Remove comment after read.
+		return intern_window;
 	}
 
 	bool Window::Open()
@@ -114,11 +101,8 @@ namespace zap
 			{
 				return true;
 			}
-			
-			return false;
-			
 		}
-		
+		//TODO: The previous return false is redundant. Remove comment after read.
 		return false;
 	}
 
@@ -444,8 +428,9 @@ namespace zap
 	}
 
 
-	// Please let this in here 
-
+	// Please let this in here
+	// NOTE: It is ok here, because it is tied to Window (glfw) and not to rendering (gl)
+	// TODO: This function causes huge performance issues with heavy visual impact. Fix it later.
 	void Window::InternSwapBuffers()
 	{
 		if (intern_window)

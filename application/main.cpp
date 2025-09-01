@@ -117,27 +117,35 @@ int main()
 	glm::mat4 model      = glm::translate(glm::mat4(1.0), glm::vec3(0.1f, -0.1f, 0.0f));
 	glm::mat4 view       = camera.GetView();
 	glm::mat4 projection = camera.GetProjection();
-	mesh.bind();
 	//Initialize uniforms. Later change any of them only when really needed:
 	glUniformMatrix4fv(modelLocationId,      1, GL_FALSE, glm::value_ptr(model));        //As of now doesn't change during execution
 	glUniformMatrix4fv(projectionLocationId, 1, GL_FALSE, glm::value_ptr(projection));   //As of now doesn't change during execution
 	glUniformMatrix4fv(viewLocationId,       1, GL_FALSE, glm::value_ptr(view));         //Changes every frame
 
+	std::cout << "Menu (key press): " << std::endl;
+	std::cout << "    <1>   Enable FPS Limit" << std::endl;
+	std::cout << "    <2>   Disable FPS Limit" << std::endl;
+	std::cout << "    <Q>   Move camera LEFT/RIGHT with Array keys LEFT/RIGHT" << std::endl;
+	std::cout << "    <W>   Move camera UP/DOWN with Time Bouncing" << std::endl;
+	std::cout << "    <A>   Keep button pressed for 120 FOW and released for 60 FOW" << std::endl;
+	std::cout << "    <F10> Keep button pressed for Wireframe mode and released for Surface mode" << std::endl;
+	std::cout << "    <ESC> Quit Application" << std::endl;
+	double currentTime2 = glfwGetTime();
+	int pathway = 1;
+	const int keyboardArray = 1, bounceTimed = 2;
+	int useDrawing = keyboardArray;
 	while (window.Open())
 	{
 
+		if (glfwGetKey(window.GetNativeWindow(), GLFW_KEY_1) == GLFW_PRESS) pathway = 1;
+		if (glfwGetKey(window.GetNativeWindow(), GLFW_KEY_2) == GLFW_PRESS) pathway = 2;
+		if (glfwGetKey(window.GetNativeWindow(), GLFW_KEY_Q) == GLFW_PRESS) useDrawing = keyboardArray;
+		if (glfwGetKey(window.GetNativeWindow(), GLFW_KEY_W) == GLFW_PRESS) useDrawing = bounceTimed;
 		if (window.isKeyPressed(zap::Key::ESC))
 		{
 			window.Close();
 		}
-		if (window.isKeyPressed(zap::Key::left_arrow))
-		{
-			camera.RotateDelta(0.1f * window.GetDelta() * 1.0f/*<- base speed: 20 is too fast*/, 0.00f, 0.0f);
-		}
-		if (window.isKeyPressed(zap::Key::right_arrow))
-		{
-			camera.RotateDelta(-0.1f * window.GetDelta() * 1.0f /*<- base speed: 20 is too fast*/, 0.00f, 0.0f);
-		}
+
 		if (window.GetInput(zap::Key::A, zap::State::EZ_PRESSED))
 		{
 			camera.SetFOV(120);
@@ -148,8 +156,6 @@ int main()
 		}
 
 		//TODO: Keep the workflow. Here starts general draw
-
-		//TODO: Keep the workflow. Here starts general draw
 		glEnable(GL_DEPTH_TEST); // Move it here. Any rendering function must be invoked here.
 		glClear(GL_DEPTH_BUFFER_BIT); // PR
 		window.ClearDepthBuffer();
@@ -157,24 +163,41 @@ int main()
 		window.ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
 
 
+		//here starts transformation calculations for current VAO
+		double deltaTime2 = glfwGetTime() - currentTime2, deltaTime = glfwGetTime() - currentTime;
+		currentTime2 += deltaTime2;
+		switch (useDrawing)
+		{
+		case keyboardArray:
+			if (window.isKeyPressed(zap::Key::left_arrow))
+			{
+				if (pathway == 1) camera.RotateDelta(0.1f * window.GetDelta() * 1.0f/*<- base speed: 20 is too fast*/, 0.00f, 0.0f);
+				else if (pathway == 2) camera.RotateDelta(deltaTime2 * 50.f, 0.00f, 0.0f);
+			}
+			else if (window.isKeyPressed(zap::Key::right_arrow))
+			{
+				if (pathway == 1) camera.RotateDelta(-0.1f * window.GetDelta() * 1.0f /*<- base speed: 20 is too fast*/, 0.00f, 0.0f);
+				else if (pathway == 2) camera.RotateDelta(-deltaTime2 * 50.f, 0.00f, 0.0f);
+			}
+			break;
+		case bounceTimed:
+			camera.RotateAbsolute(-90.0f, cos(deltaTime) * 30.f, 0.0f);
+			break;
+		}
 
-		//here starts current VAO for current program draw
-		mesh.bind(); //set current context before any draw routines, it prevents mess in more complex programs
-		double deltaTime = glfwGetTime() - currentTime;
-		//camera.RotateAbsolute(-90.0f, cos(deltaTime) * 30.f, 0.0f); // Uncomment to see results of absolute rotation
 		camera.UpdateRotation(); // Update camera vectors based on changed yaw and pitch
 		view = camera.GetView();
-		glUniformMatrix4fv(viewLocationId, 1, GL_FALSE, glm::value_ptr(view));
-		mesh.UseTexture(texture.i_id); //return false if texture not found
 
 		//here starts current VAO for current program draw
-		mesh.bind(); //set current context before any draw routines, it prevents mess in more complex programs
+		mesh.bind(); //set current context before any draw routines, it prevents mess in more complex workflow
+		glUniformMatrix4fv(viewLocationId, 1, GL_FALSE, glm::value_ptr(view));
 		mesh.UseTexture(texture.i_id); //return false if texture not found
 		mesh.Draw();
 		//here draw ends
 		
 		window.Update();
-		window.Draw();
+		if (pathway == 1) window.Draw();
+		else if (pathway == 2) glfwSwapBuffers(window.GetNativeWindow());
 	}
 
 	zap::Delete();
