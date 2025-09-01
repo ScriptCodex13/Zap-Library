@@ -32,7 +32,7 @@ namespace zap
 		/******************************************************************************/
 	}
 
-	void InitGlad()
+	void InitGlad(bool activate_depth_test)
 	{
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
@@ -40,7 +40,10 @@ namespace zap
 		}
 		else
 		{
-			glEnable(GL_DEPTH_TEST);			// Enable Depth if glad can be used 
+			if(activate_depth_test)
+			{
+				glEnable(GL_DEPTH_TEST);			// Enable Depth if glad can be used 
+			}
 		}
 	}
 
@@ -60,3 +63,4 @@ namespace zap
 	}
 
 }
+
