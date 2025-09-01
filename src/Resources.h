@@ -13,7 +13,8 @@ namespace zap
 	//APIs Resources
 
 	void Init();       // Initialize GLFW 
-	void InitGlad(bool activate_depth_test = false);   // Initialize glad
+	void InitGlad();   // Initialize glad
+	void UseDepthTest();
 	void Delete();     // Delete GLFW resources
 
 	/*****************************************************************************/
