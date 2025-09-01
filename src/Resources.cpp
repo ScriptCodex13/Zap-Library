@@ -32,19 +32,17 @@ namespace zap
 		/******************************************************************************/
 	}
 
-	void InitGlad(bool activate_depth_test)
+	void InitGlad()
 	{
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			messages::PrintMessage("Failed to initialize GLAD", "EasyGL.cpp/void InitGlad()", MessageTypes::fatal_error);
 		}
-		else
-		{
-			if(activate_depth_test)
-			{
-				glEnable(GL_DEPTH_TEST);			// Enable Depth if glad can be used 
-			}
-		}
+	}
+
+ 	void UseDepthTest()
+	{
+		glEnable(GL_DEPTH_TEST);	
 	}
 
 	void Delete()
@@ -63,4 +61,5 @@ namespace zap
 	}
 
 }
+
 
