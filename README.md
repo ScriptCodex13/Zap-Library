@@ -90,7 +90,7 @@ Glad is a library that handles the OpenGL function locations. All you need to kn
 ```c++
 while (window.Open())
 {
-	window.ClearBackground(zap::BackgroundColors::ORANGE);
+	zap::ClearBackground(zap::BackgroundColors::ORANGE);
 
 	if (window.GetInput(zap::Key::ESC, zap::State::EZ_PRESSED))
 	{
