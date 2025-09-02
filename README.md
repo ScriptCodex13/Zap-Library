@@ -49,7 +49,7 @@ int main()
 
 	while (window.Open())
 	{
-		window.ClearBackground(zap::BackgroundColors::ORANGE);
+		zap::ClearBackground(zap::BackgroundColors::ORANGE);
 
 		if (window.GetInput(zap::Key::ESC, zap::State::EZ_PRESSED))
 		{
