@@ -40,13 +40,14 @@ namespace zap
 												FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
 											}
 									)glsl";
+
 	class Mesh2D
 	{
 	public:
 		Mesh2D(std::vector<float>* extern_vertices, std::vector<unsigned int>* extern_indices);
 		~Mesh2D();
 
-		//Cofig Process
+		//Config Process
 
 		void SetVertexShaderSource   (const std::string& source);
 		void SetFragmentShaderSource (const std::string& source);
@@ -69,7 +70,6 @@ namespace zap
 		void useProgram ();
 		void bindVAO    ();
 		void bind       ();
-		//TODO: This is not write. This is Draw, must be named accordingly. To remove comment after seen.
 		void Draw       (int vertices_count = 0);
 		// Transform func
 

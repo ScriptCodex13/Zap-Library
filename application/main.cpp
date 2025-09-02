@@ -106,7 +106,7 @@ int main()
 
 	window.UpdateViewport(true);
 
-	window.SetFPSLimit(120);
+	window.SetFPSLimit(100);
 
 	//
 	mesh.bind();
@@ -158,9 +158,9 @@ int main()
 		//TODO: Keep the workflow. Here starts general draw
 		glEnable(GL_DEPTH_TEST); // Move it here. Any rendering function must be invoked here.
 		glClear(GL_DEPTH_BUFFER_BIT); // PR
-		window.ClearDepthBuffer();
-		window.ShowWireFrame(window.isKeyPressed(zap::Key::F10));
-		window.ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
+		zap::ClearDepthBuffer();
+		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
+		zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
 
 
 		//here starts transformation calculations for current VAO
@@ -176,7 +176,7 @@ int main()
 			}
 			else if (window.isKeyPressed(zap::Key::right_arrow))
 			{
-				if (pathway == 1) camera.RotateDelta(-0.1f * window.GetDelta() * 1.0f /*<- base speed: 20 is too fast*/, 0.00f, 0.0f);
+				if (pathway == 1) camera.RotateDelta(-0.1f * window.GetDelta() * 1.0f/*<- base speed: 20 is too fast*/, 0.00f, 0.0f);
 				else if (pathway == 2) camera.RotateDelta(-deltaTime2 * 50.f, 0.00f, 0.0f);
 			}
 			break;
@@ -197,7 +197,7 @@ int main()
 		
 		window.Update();
 		if (pathway == 1) window.Draw();
-		else if (pathway == 2) glfwSwapBuffers(window.GetNativeWindow());
+		if (pathway == 2) glfwSwapBuffers(window.GetNativeWindow());
 	}
 
 	zap::Delete();

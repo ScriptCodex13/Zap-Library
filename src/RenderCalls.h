@@ -1,0 +1,32 @@
+#pragma once
+
+#ifndef RENDER_CALLS_H
+#define RENDER_CALLS_H
+
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <algorithm>
+
+enum class BackgroundColors
+{
+	WHITE,
+	BLACK,
+	RED,
+	GREEN,
+	BLUE,
+	YELLOW,
+	ORANGE,
+	PURPLE,
+	PINK
+
+};
+
+namespace zap
+{
+	void ClearBackground(BackgroundColors color);                       // Clears the backround with a predefined color 
+	void ClearBackground(float RED, float GREEN, float BLUE, float ALPHA);  // Clears the Background with a self defined color based on the RGBA settings given in the parameters
+	void ShowWireFrame(bool state);                                     // Enable or disable the wireframe
+	void ClearDepthBuffer();											// Clears the depth buffer
+}
+
+#endif

@@ -2,8 +2,6 @@
 #include "stb_image.h"
 #include "Util.h"
 
-#include <algorithm>
-
 namespace zap
 {
 	/***********************************************************************************/
@@ -72,7 +70,6 @@ namespace zap
 			ZAP_INTERRUPT_FATAL_ERROR;
 		}
 
-		//TODO: intern_window is already checked, why check it again? Remove comment affter read.
 		currentMonitor = glfwGetWindowMonitor(intern_window);
 
 		glfwMakeContextCurrent(intern_window);
@@ -88,8 +85,6 @@ namespace zap
 
 	GLFWwindow* Window::GetNativeWindow()
 	{
-		//TODO: the code is identically the same with if and else block.
-		//      Remove comment after read.
 		return intern_window;
 	}
 
@@ -102,7 +97,7 @@ namespace zap
 				return true;
 			}
 		}
-		//TODO: The previous return false is redundant. Remove comment after read.
+
 		return false;
 	}
 
@@ -193,65 +188,6 @@ namespace zap
 		{
 			glfwIconifyWindow(intern_window);
 		}
-	}
-
-	void Window::ClearBackground(BackgroundColors color)
-	{
-		switch (color)
-		{
-		case BackgroundColors::WHITE:
-			glClearColor(1.0f, 1.0f, 1.0f, 0.5f);
-			glClear(GL_COLOR_BUFFER_BIT);
-			return;
-		case BackgroundColors::BLACK:
-			glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
-			glClear(GL_COLOR_BUFFER_BIT);
-			return;
-		case BackgroundColors::RED:
-			glClearColor(1.0f, 0.0f, 0.0f, 0.5f);
-			glClear(GL_COLOR_BUFFER_BIT);
-			return;
-		case BackgroundColors::GREEN:
-			glClearColor(0.0f, 1.0f, 0.0f, 0.5f);
-			glClear(GL_COLOR_BUFFER_BIT);
-			return;
-		case BackgroundColors::BLUE:
-			glClearColor(0.0f, 0.0f, 1.0f, 0.5f);
-			glClear(GL_COLOR_BUFFER_BIT);
-			return;
-		case BackgroundColors::YELLOW:
-			glClearColor(1.0f, 0.9f, 0.0f, 0.5f);
-			glClear(GL_COLOR_BUFFER_BIT);
-			return;
-		case BackgroundColors::ORANGE:
-			glClearColor(1.0f, 0.7f, 0.0f, 0.5f);
-			glClear(GL_COLOR_BUFFER_BIT);
-			return;
-		case BackgroundColors::PURPLE:
-			glClearColor(0.8f, 0.0f, 1.0f, 0.5f);
-			glClear(GL_COLOR_BUFFER_BIT);
-			return;
-		case BackgroundColors::PINK:
-			glClearColor(1.0f, 0.0f, 0.5f, 0.5f);
-			glClear(GL_COLOR_BUFFER_BIT);
-			return;
-		}
-	}
-
-	void Window::ClearBackground(float RED, float GREEN, float BLUE, float ALPHA)
-	{
-		RED = std::clamp(RED, 0.0f, 1.0f);
-		GREEN = std::clamp(GREEN, 0.0f, 1.0f);
-		BLUE = std::clamp(BLUE, 0.0f, 1.0f);
-		ALPHA = std::clamp(ALPHA, 0.0f, 1.0f);
-
-		glClearColor(RED, GREEN, BLUE, ALPHA);
-		glClear(GL_COLOR_BUFFER_BIT);
-	}
-
-	void Window::ClearDepthBuffer()
-	{
-		glClear(GL_DEPTH_BUFFER_BIT);
 	}
 
 	void Window::SetIcon(const std::string path)
@@ -382,18 +318,6 @@ namespace zap
 		}
 
 		return glfwGetMouseButton (intern_window, key) == GLFW_RELEASE;
-	}
-
-	void Window::ShowWireFrame(bool state)
-	{
-		if (state)
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		}
-		else
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		}
 	}
 
 	std::array<double, 2> Window::GetMousePosition()
