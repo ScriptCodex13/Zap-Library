@@ -68,7 +68,7 @@ namespace zap
 
 	namespace input
 	{
-		void UpdateInputs(GLFWwindow* window)
+		void UpdateInputs(GLFWwindow* window) // Takes a lot of update time (26,70%) ToDo: Optimize that later on
 		{
 			if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 			{
