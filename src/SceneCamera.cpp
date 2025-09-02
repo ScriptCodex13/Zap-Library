@@ -61,40 +61,17 @@ namespace zap
 
 	void SceneCamera::RotateAbsolute(float yaw, float pitch, float roll /* <- Doesnt work*/)
 	{
-		i_yaw = yaw;
-
-		//Keep yaw between -89 and 89 degrees. So when pitch is out of bounds, screen doesn't get flipped
 		const float yaw_clamp = 360.0f; //30 degrees should be enough
-		//*
-		if (i_yaw > yaw_clamp)
-		{
-			i_yaw = yaw_clamp;
-		}
-		if (i_yaw < -yaw_clamp)
-		{
-			i_yaw = -yaw_clamp;
-		}
-		//*/
-
 		const float pitch_clamp = 360.0f; //30 degrees should be enough
-		i_pitch = pitch;
 
-		if (i_pitch > pitch_clamp)
-		{
-			i_pitch = pitch_clamp;
-		}
-		if (i_pitch < -pitch_clamp)
-		{
-			i_pitch = -pitch_clamp;
-		}
+		i_yaw = std::clamp(yaw, -yaw_clamp, yaw_clamp);
+		i_pitch = std::clamp (pitch, -pitch_clamp, pitch_clamp);
 
 	}
 
 	void SceneCamera::SetFOV(float new_fov)
 	{
-		new_fov = std::clamp(new_fov, 10.0f, 120.0f);
-
-		i_fov = new_fov;
+		i_fov = std::clamp(new_fov, 10.0f, 120.0f);
 	}
 
 	void SceneCamera::Move(float x, float y, float z)
