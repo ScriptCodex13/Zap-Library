@@ -6,7 +6,6 @@
 //this is separate application and should treat the Zap library as external
 //everyone using this library will do, this is a standard practice
 #include <Zap.h> //TODO: This is not the correct way to use libraries
-#include "SceneCamera.h"
 #include <iostream>
 #include <vector>
 

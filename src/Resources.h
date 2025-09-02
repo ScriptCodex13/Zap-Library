@@ -14,7 +14,6 @@ namespace zap
 
 	void Init();       // Initialize GLFW 
 	void InitGlad();   // Initialize glad
-	void UseDepthTest();
 	void Delete();     // Delete GLFW resources
 
 	/*****************************************************************************/

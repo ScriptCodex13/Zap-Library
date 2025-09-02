@@ -11,7 +11,7 @@
 
 // API defines 
 
-#define ZAP_INTERRUPT_FATAL_ERROR messages::PrintMessage("Fatal error caused zap to terminate", "", MessageTypes::fatal_error, false); abort();
+#define ZAP_INTERRUPT_FATAL_ERROR messages::PrintMessage("Fatal error caused zap to terminate the application", "", MessageTypes::fatal_error, false); abort();
 
 /**********************************************************************************/
 

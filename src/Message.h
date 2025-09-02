@@ -14,7 +14,7 @@ enum class MessageTypes
 	warning,
 	error,
 	fatal_error,
-	engine_core_info
+	api_core_info
 };
 
 namespace messages

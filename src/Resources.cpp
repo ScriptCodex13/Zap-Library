@@ -1,5 +1,6 @@
 #include "Resources.h"
 #include "Message.h"
+#include "Util.h"
 
 namespace zap
 {
@@ -9,6 +10,7 @@ namespace zap
 		if (!glfwInit())
 		{
 			messages::PrintMessage("Failed to initialize GLFW", "EasyGL.cpp/void Init()", MessageTypes::fatal_error);
+			ZAP_INTERRUPT_FATAL_ERROR;
 		}
 
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -22,6 +24,7 @@ namespace zap
 
 			#elif TARGET_OS_IPHONE
 				#error Zap is not for iOS !
+				ZAP_INTERRUPT_FATAL_ERROR;
 			#endif
 		#endif
 
@@ -30,6 +33,8 @@ namespace zap
 		#endif
 
 		/******************************************************************************/
+
+		messages::PrintMessage("Using OpenGL Version 3.3", "", MessageTypes::api_core_info, false);
 	}
 
 	void InitGlad()
@@ -37,12 +42,12 @@ namespace zap
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			messages::PrintMessage("Failed to initialize GLAD", "EasyGL.cpp/void InitGlad()", MessageTypes::fatal_error);
+			ZAP_INTERRUPT_FATAL_ERROR;
 		}
-	}
-
- 	void UseDepthTest()
-	{
-		glEnable(GL_DEPTH_TEST);	
+		else
+		{
+			messages::PrintMessage("glad initialized sucessfully", "", MessageTypes::api_core_info, false);
+		}
 	}
 
 	void Delete()
@@ -56,6 +61,8 @@ namespace zap
 		#ifndef GLFW_DELETE
 			#define GLFW_DELETE
 		#endif
+
+		messages::PrintMessage("Deleted reseources", "", MessageTypes::api_core_info, false);
 
 		/******************************************************************************/
 	}

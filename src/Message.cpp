@@ -74,7 +74,7 @@ namespace messages
 			}
 			return std::cerr;
 		}
-		if (Type == MessageTypes::engine_core_info)
+		if (Type == MessageTypes::api_core_info)
 		{
 			std::cout << "\033[32m[CORE] " << message_content << "\033[0m" << std::endl;
 		}
