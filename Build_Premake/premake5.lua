@@ -27,6 +27,7 @@ project "Application"
     language "C++"
     files {"../application/main.cpp"}
     files {"../extern/glad.c"}
+    files {"./Project/Application/shader/**.glsl"}
     includedirs {"../extern/DEPENDENCIES (glad)(GLFW)/include/"}
     includedirs {"../src/"}
     includedirs {"../extern/"}
