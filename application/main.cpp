@@ -154,13 +154,6 @@ int main()
 			camera.SetFOV(60);
 		}
 
-		//TODO: Keep the workflow. Here starts general draw
-		glEnable(GL_DEPTH_TEST); // Move it here. Any rendering function must be invoked here.
-		glClear(GL_DEPTH_BUFFER_BIT); // PR
-		zap::ClearDepthBuffer();
-		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
-		zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
-
 
 		//here starts transformation calculations for current VAO
 		double deltaTime2 = glfwGetTime() - currentTime2, deltaTime = glfwGetTime() - currentTime;
@@ -189,6 +182,13 @@ int main()
 
 		//here starts current VAO for current program draw
 		mesh.bind(); //set current context before any draw routines, it prevents mess in more complex workflow
+
+		
+		glEnable(GL_DEPTH_TEST); // Move it here. Any rendering function must be invoked here.
+		glClear(GL_DEPTH_BUFFER_BIT); // PR
+		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
+		zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
+
 		glUniformMatrix4fv(viewLocationId, 1, GL_FALSE, glm::value_ptr(view));
 		mesh.UseTexture(texture.i_id); //return false if texture not found
 		mesh.Draw();
