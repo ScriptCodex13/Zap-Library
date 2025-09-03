@@ -351,6 +351,14 @@ namespace zap
 		}
 	}
 
+	void Window::SetVSync(bool state)
+	{
+		if (intern_window)
+		{
+			glfwSwapInterval(state);
+		}
+	}
+
 
 	// Please let this in here
 	// NOTE: It is ok here, because it is tied to Window (glfw) and not to rendering (gl)
@@ -359,36 +367,20 @@ namespace zap
 	{
 		if (intern_window)
 		{
-			auto now = std::chrono::steady_clock::now();
-
 			float CurrentTime = glfwGetTime();
 
-			std::chrono::duration<float> Time = now - currentTime;
-
 			float Frametime = CurrentTime - LastTime;
+			LastTime = glfwGetTime();
 
-			FrametimeBuffer += Frametime;
+			glfwSwapBuffers(intern_window);
 
-			if (FrametimeBuffer >= TargetTime)
-			{
-				glfwSwapBuffers(intern_window);
+			current_FPS = 1.0f / Frametime;
+			current_Frametime = Frametime;
 
-				current_FPS = 1.0f / FrametimeBuffer;
-
-				FrametimeBuffer = 0.0f;
-
-				auto now = std::chrono::steady_clock::now();
-
-				std::chrono::duration<float> frametime = now - waitTime;
-				current_Frametime = frametime.count();
-
-				waitTime = std::chrono::steady_clock::now();
-			}
+			FrametimeBuffer = 0.0f;
+			
 		}
 
-		currentTime = std::chrono::steady_clock::now(); // Restart the time counter
-
-		LastTime = glfwGetTime();
 	}
 
 	//
@@ -401,7 +393,7 @@ namespace zap
 
 			glfwGetWindowSize(intern_window, &width, &height);
 
-			// TODO Maybe update the monitor var etc.
+			currentMonitor = glfwGetWindowMonitor(intern_window);
 		}
 	}
 

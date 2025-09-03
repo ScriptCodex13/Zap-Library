@@ -53,11 +53,10 @@ namespace zap
 		bool isMousePressed(int key);
 		bool isMouseReleased(Key key);
 		bool isMouseReleased(int key);
-		//TODO: ShowWireFrame does not belong to Window class, should be moved to a different class
-		//      It is a full OpenGL Renderer function, not Window/GLFW API
 		void SetIcon(const std::string path);                               // Loads the new window icon at the specified path
 		std::array<double, 2> GetMousePosition();                           // Returns the cursor position in pixels relative to the top left corner of the window 
 		void HideCursor(bool state);                                        // Hide or unhide the cursor if the window is entered
+		void SetVSync(bool state);
 
 		void Update();
 		void Draw();
@@ -84,9 +83,6 @@ namespace zap
 		float FrametimeBuffer = 0;						// Adds the Frametimes together until the TargetTime is reached. 
 
 		float LastTime;
-
-		std::chrono::steady_clock::time_point waitTime;
-		std::chrono::steady_clock::time_point currentTime; // Keeps track of the time which is passed to limit the FPS correctly
 
 	private:
 		void InternSwapBuffers(); // Better for managing the FPSLimit

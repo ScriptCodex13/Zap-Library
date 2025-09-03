@@ -99,13 +99,15 @@ int main()
 	
 	//
 
+	//glfwSwapInterval(1);
 
+	window.SetVSync(true);
 
 	// Window settings
 
 	window.UpdateViewport(true);
 
-	window.SetFPSLimit(100);
+	// window.SetFPSLimit(100);
 
 	//
 	mesh.bind();
@@ -163,12 +165,12 @@ int main()
 		case keyboardArray:
 			if (window.isKeyPressed(zap::Key::left_arrow))
 			{
-				if (pathway == 1) camera.RotateDelta(0.1f * window.GetDelta() * 1.0f/*<- base speed: 20 is too fast*/, 0.00f, 0.0f);
+				if (pathway == 1) camera.RotateDelta(1.0f * window.GetDelta() * 20.0f/*<- base speed: 20 is too fast*/, 0.00f, 0.0f);
 				else if (pathway == 2) camera.RotateDelta(deltaTime2 * 50.f, 0.00f, 0.0f);
 			}
-			else if (window.isKeyPressed(zap::Key::right_arrow))
+			if (window.isKeyPressed(zap::Key::right_arrow))
 			{
-				if (pathway == 1) camera.RotateDelta(-0.1f * window.GetDelta() * 1.0f/*<- base speed: 20 is too fast*/, 0.00f, 0.0f);
+				if (pathway == 1) camera.RotateDelta(-1.0f * window.GetDelta() * 20.0f/*<- base speed: 20 is too fast*/, 0.00f, 0.0f);
 				else if (pathway == 2) camera.RotateDelta(-deltaTime2 * 50.f, 0.00f, 0.0f);
 			}
 			break;
@@ -197,6 +199,8 @@ int main()
 		window.Update();
 		if (pathway == 1) window.Draw();
 		if (pathway == 2) glfwSwapBuffers(window.GetNativeWindow());
+
+		std::cout << window.GetFPS() << std::endl;
 	}
 
 	zap::Delete();
