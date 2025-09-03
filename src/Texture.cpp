@@ -43,7 +43,7 @@ namespace zap
 
 		stbi_set_flip_vertically_on_load(true);
 
-		unsigned char* pTextureData = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Bessere Lösung nutze Filepath wie im Tutorial !
+		unsigned char* pTextureData = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0);
 		//Use scope_guard to free texture data whenever going out of scope
 		util::scope_guard freeTextureData([pTextureData]() { if (pTextureData) stbi_image_free(pTextureData); });
 		if (!pTextureData)

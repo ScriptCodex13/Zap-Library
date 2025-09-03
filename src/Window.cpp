@@ -399,8 +399,6 @@ namespace zap
 		{
 			glfwPollEvents();                   // Should be called everytime 
 
-			input::UpdateInputs(intern_window); // Update the key states
-
 			glfwGetWindowSize(intern_window, &width, &height);
 
 			// TODO Maybe update the monitor var etc.

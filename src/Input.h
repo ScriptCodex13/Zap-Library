@@ -182,13 +182,6 @@ namespace zap
 	};
 
 	Device AssignController(); // sets the settings for the new device class 
-
-	namespace input
-	{
-		inline std::unordered_map<Key, State> key_states; // saves and manages all key states
-		void UpdateInputs(GLFWwindow* window); // Updates all key states
-		bool CheckInput(Key key, State state); // checks a key state
-	};
 }
 
 
