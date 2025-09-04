@@ -17,16 +17,6 @@
 
 namespace zap
 {
-<<<<<<< HEAD
-	class Camera // Dont know if it works
-	{
-	public:
-		Camera(unsigned int& window_width, unsigned int& window_height, const std::array<float, 3> position = { 0.0f, 0.0f, 3.0f }, std::array<float, 3> up = { 0.0f, 1.0f, 0.0f });
-		~Camera();
-
-		void SetPosition(float x, float y, float z);
-		void Rotate(float yaw, float pitch, float roll);
-=======
 	class SceneCamera // Dont know if it works
 	{
 	public:
@@ -36,7 +26,6 @@ namespace zap
 		void SetPosition(float x, float y, float z);
 		void RotateDelta(float yaw, float pitch, float roll);
 		void RotateAbsolute(float yaw, float pitch, float roll);
->>>>>>> 09c8a20d8a7b093eaf3d273304a5ce183f635844
 		void SetFOV(float new_fov);
 		void Move(float x, float y, float z);
 
