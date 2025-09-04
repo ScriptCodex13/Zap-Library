@@ -22,11 +22,6 @@ namespace zap
 
 	//Viewport function
 
-	void i_setFramebuffersize(GLFWwindow* window, int size_x, int size_y)
-	{
-		glViewport(0, 0, size_x, size_y);
-	}
-
 	void i_FramebuffersizeCallback(GLFWwindow* window ,int size_x, int size_y)
 	{
 		if (window)
@@ -37,7 +32,7 @@ namespace zap
 		}
 	}
 
-    void i_nFramebuffersizeCallback(GLFWwindow* window ,int size_x, int size_y){}
+	void i_nFramebuffersizeCallback(GLFWwindow* window, int size_x, int size_y) {}
 
 	/***********************************************/
 
@@ -107,19 +102,22 @@ namespace zap
 	{
 		if (intern_window)
 		{
-			glfwSetFramebufferSizeCallback(intern_window, i_FramebuffersizeCallback);
-		}
-		else
-		{
-			glfwSetFramebufferSizeCallback(intern_window, i_nFramebuffersizeCallback);
+			if (state)
+			{
+				glfwSetFramebufferSizeCallback(intern_window, i_FramebuffersizeCallback);
+			}
+			else 
+			{
+				glfwSetFramebufferSizeCallback(intern_window, i_nFramebuffersizeCallback);
+			}
 		}
 	}
 
-	void Window::SetViewport(unsigned int new_width, unsigned int new_height)
+	void Window::SetViewport(int x, int y, unsigned int new_width, unsigned int new_height)
 	{
 		if (intern_window)
 		{
-			i_setFramebuffersize(intern_window, new_width, new_height);
+			glViewport(x, y, new_width, new_height);
 		}
 	}
 
@@ -245,12 +243,12 @@ namespace zap
 		}
 	}
 
-	void Window::SetFPSLimit(unsigned int limit)
+	/*void Window::SetFPSLimit(unsigned int limit)
 	{
 		FPSLimit = limit;
 
 		TargetFrameTime = std::round(1.0f / FPSLimit * 100000) / 100000;
-	}
+	}*/
 
 	void Window::SetTitle( const std::string title)
 	{

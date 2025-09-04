@@ -31,7 +31,7 @@ namespace zap
 		GLFWwindow* GetNativeWindow();                                      // Returns the intern GLFWwindow instance 
 		bool Open();                                                        // Checks if the window should be open
 		void UpdateViewport(bool state = true);                             // Enable viewport changes if the window resizes
-		void SetViewport(unsigned int new_width, unsigned int new_height);  // Set the new viewport of the window
+		void SetViewport(int x, int y, unsigned int new_width, unsigned int new_height);  // Set the new viewport of the window
 		void Close();                                                       // Closes the window 
 		void SetFullscreen(bool state);                                     // Sets the window to fullacreen or to windowed based on the state
 		void SetFullscreen(bool state, GLFWmonitor* monitor);               // Changes the fullscreen mode. If sate = true. The provided GLFWmonitor is going to be used 

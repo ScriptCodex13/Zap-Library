@@ -103,9 +103,7 @@ int main()
 
 	// Window settings
 
-	//window.UpdateViewport(true); Doesnt work
-
-	window.SetFPSLimit(120);
+	window.UpdateViewport(true);
 
 	//
 	mesh.bind();
