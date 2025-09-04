@@ -77,7 +77,11 @@ int main()
 
 	std::array<unsigned int, 2> size = window.GetSize(); // Not a Ref to the window size !
 
+<<<<<<< HEAD
+	zap::Camera camera(size[0], size[1]);
+=======
 	zap::SceneCamera camera(size[0], size[1]);
+>>>>>>> 09c8a20d8a7b093eaf3d273304a5ce183f635844
 
 	//
 
@@ -101,7 +105,20 @@ int main()
 
 	//window.SetVSync(true);
 
+<<<<<<< HEAD
+
 	// Window settings
+
+	window.UpdateViewport(true);
+
+	window.SetFPSLimit(120);
+
+	//
+
+	const float currentTime = (float)glfwGetTime();
+=======
+	// Window settings
+>>>>>>> 09c8a20d8a7b093eaf3d273304a5ce183f635844
 
 	window.UpdateViewport(true);
 
@@ -133,6 +150,21 @@ int main()
 	int useDrawing = keyboardArray;
 	while (window.Open())
 	{
+<<<<<<< HEAD
+		window.ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
+		
+		window.ClearDepthBuffer();
+
+		camera.GetModel() = glm::translate(glm::mat4(1.0), glm::vec3(0.1f, -0.1f, 0.0f));
+
+
+		camera.UpdateModel(mesh.GetProgram(), "model");
+		camera.UpdateProjection(mesh.GetProgram(), "projection");
+		camera.UpdateView(mesh.GetProgram(), "view");
+		camera.UpdateRotation();
+
+=======
+>>>>>>> 09c8a20d8a7b093eaf3d273304a5ce183f635844
 
 		if (glfwGetKey(window.GetNativeWindow(), GLFW_KEY_1) == GLFW_PRESS) pathway = 1;
 		if (glfwGetKey(window.GetNativeWindow(), GLFW_KEY_2) == GLFW_PRESS) pathway = 2;
@@ -142,7 +174,38 @@ int main()
 		{
 			window.Close();
 		}
+		if (window.isKeyPressed(zap::Key::left_arrow))
+		{
+			camera.Rotate(0.1f * window.GetDelta() * 20.0f/*<- base speed*/, 0.00f, 0.0f);
+		}
+		if (window.isKeyPressed(zap::Key::right_arrow))
+		{
+			camera.Rotate(-0.1f * window.GetDelta() * 20.0f /*<- base speed*/, 0.00f, 0.0f);
+		}
+		if (window.GetInput(zap::Key::A, zap::State::EZ_PRESSED))
+		{
+			camera.SetFOV(120);
+		}
+		if (window.GetInput(zap::Key::A, zap::State::EZ_RELEASED))
+		{
+			camera.SetFOV(60);
+		}
 
+<<<<<<< HEAD
+		//from here draw starts
+		//there starts general draw
+		window.ShowWireFrame(window.isKeyPressed(zap::Key::F10));
+
+
+		//here starts current VAO for current program draw
+		mesh.bind(); //set current context before any draw routines, it prevents mess in more complex programs
+		mesh.UseTexture(texture.i_id); //return false if texture not found
+		mesh.Write();
+		//here draw ends
+		
+		window.Update();
+		window.Draw();
+=======
 		if (window.GetInput(zap::Key::A, zap::State::EZ_PRESSED))
 		{
 			camera.SetFOV(120);
@@ -197,6 +260,7 @@ int main()
 		if (pathway == 2) glfwSwapBuffers(window.GetNativeWindow());
 
 		//std::cout << window.GetFPS() << std::endl;
+>>>>>>> 09c8a20d8a7b093eaf3d273304a5ce183f635844
 	}
 
 	zap::Delete();
