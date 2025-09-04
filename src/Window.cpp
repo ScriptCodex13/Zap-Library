@@ -59,6 +59,8 @@ namespace zap
 		glfwGetWindowSize(intern_window, &width, &height);
 		glfwGetWindowPos(intern_window, &pos_x, &pos_y);
 
+		TargetFrameTime = std::round(1.0f / FPSLimit * 100000) / 100000;
+
 	}
 	Window::Window(GLFWwindow* extern_window)
 	{
@@ -247,7 +249,7 @@ namespace zap
 	{
 		FPSLimit = limit;
 
-		TargetTime = std::round(1.0f / limit * 1000) / 1000;
+		TargetFrameTime = std::round(1.0f / FPSLimit * 100000) / 100000;
 	}
 
 	void Window::SetTitle( const std::string title)
@@ -367,17 +369,25 @@ namespace zap
 	{
 		if (intern_window)
 		{
+			glfwSwapBuffers(intern_window);
+
 			float CurrentTime = glfwGetTime();
 
 			float Frametime = CurrentTime - LastTime;
+			// float wait_time = (TargetFrameTime - Frametime) * 1000;
+
 			LastTime = glfwGetTime();
 
-			glfwSwapBuffers(intern_window);
+			// Now use sleep operation with wait time
 
 			current_FPS = 1.0f / Frametime;
 			current_Frametime = Frametime;
 
-			FrametimeBuffer = 0.0f;
+
+
+			//FrametimeBuffer = 0.0f;
+
+			//std::cout << TargetFrameTime << std::endl;
 			
 		}
 
@@ -391,7 +401,7 @@ namespace zap
 		{
 			glfwPollEvents();                   // Should be called everytime 
 
-			glfwGetWindowSize(intern_window, &width, &height);
+			glfwGetWindowSize(intern_window, &width, &height); 
 
 			currentMonitor = glfwGetWindowMonitor(intern_window);
 		}

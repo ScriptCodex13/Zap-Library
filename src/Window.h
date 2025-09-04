@@ -11,6 +11,7 @@
 #include <GLFW/glfw3.h>
 #include <array>
 #include <chrono>
+#include <thread>
 
 
 namespace zap
@@ -41,7 +42,7 @@ namespace zap
 		void SetSize(unsigned int new_width, unsigned int new_height);      // Set the new size of the window 
 		std::array<unsigned int, 2> GetSize();
 		void SetPosition(int x, int y);                                     // Set the Position of the window on the screen
-		void SetFPSLimit(unsigned int limit);                               // Limit the max amount of frame updates per second
+		// void SetFPSLimit(unsigned int limit);                               // Limit the max amount of frame updates per second
 		void SetTitle(const std::string title);                             // Set the title of the window 
 		bool GetInput(Key key, State state);                                // Checks the state of a key
 		bool GetInput(int key, int   state);
@@ -79,8 +80,8 @@ namespace zap
 		float current_Frametime = 0;
 
 		unsigned int FPSLimit = 1000000;
-		float TargetTime;
-		float FrametimeBuffer = 0;						// Adds the Frametimes together until the TargetTime is reached. 
+		float TargetFrameTime;
+		//float FrametimeBuffer = 0;						// Adds the Frametimes together until the TargetTime is reached. 
 
 		float LastTime;
 

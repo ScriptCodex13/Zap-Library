@@ -99,15 +99,13 @@ int main()
 	
 	//
 
-	//glfwSwapInterval(1);
-
-	window.SetVSync(true);
+	//window.SetVSync(true);
 
 	// Window settings
 
-	window.UpdateViewport(true);
+	//window.UpdateViewport(true); Doesnt work
 
-	// window.SetFPSLimit(100);
+	window.SetFPSLimit(120);
 
 	//
 	mesh.bind();
@@ -200,7 +198,7 @@ int main()
 		if (pathway == 1) window.Draw();
 		if (pathway == 2) glfwSwapBuffers(window.GetNativeWindow());
 
-		std::cout << window.GetFPS() << std::endl;
+		//std::cout << window.GetFPS() << std::endl;
 	}
 
 	zap::Delete();
