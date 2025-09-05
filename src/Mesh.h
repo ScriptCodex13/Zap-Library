@@ -9,6 +9,12 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+
+
 #include <vector>
 #include <string>
 
@@ -64,6 +70,10 @@ namespace zap
 		void GenObject();
 		void Finish(); // Everything is finished you can't change the settings of the mesh anymore
 		bool UseTexture (unsigned int id); //TODO: This is Bind, not Set, should be renamed | Done - ScriptCodex13
+		
+		void UpdateModel(const std::string model_uniform_name); // For use with camera
+		glm::mat4& GetModel();
+
 		//separate functions will be very useful in more complex logic
 		unsigned int GetUniformLocation(const GLchar* name);
 		unsigned int GetProgram ();
@@ -74,6 +84,9 @@ namespace zap
 	private: // private functions for intern use 
 		void useProgram();
 		void bindVAO();
+
+	private:
+		glm::mat4 model; // PR
 
 	private:
 		//Sources

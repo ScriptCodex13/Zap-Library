@@ -43,9 +43,9 @@ namespace zap
 
 		stbi_set_flip_vertically_on_load(true);
 
-		unsigned char* pTextureData = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0);
+		unsigned char* pTextureData = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Maybe move this process to Loader.h
 		//Use scope_guard to free texture data whenever going out of scope
-		util::scope_guard freeTextureData([pTextureData]() { if (pTextureData) stbi_image_free(pTextureData); });
+		util::scope_guard freeTextureData([pTextureData]() { if (pTextureData) stbi_image_free(pTextureData); }); 
 		if (!pTextureData)
 		{
 			messages::PrintMessage("Failed to load Texture at path: " + i_path, "Mesh.cpp/zap::Texture::Texture(...)", MessageTypes::error)

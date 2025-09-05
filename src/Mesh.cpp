@@ -186,6 +186,16 @@ namespace zap
 		return false;
 	}
 
+	void Mesh2D::UpdateModel(const std::string model_uniform_name)
+	{
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, model_uniform_name.c_str()), 1, GL_FALSE, glm::value_ptr(model));
+	}
+
+	glm::mat4& Mesh2D::GetModel()
+	{
+		return model;
+	}
+
 	unsigned int Mesh2D::GetUniformLocation(const GLchar* name)
 	{ 
 		return glGetUniformLocation(shaderProgram, name);

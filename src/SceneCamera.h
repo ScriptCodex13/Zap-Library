@@ -24,16 +24,15 @@ namespace zap
 		~SceneCamera();
 
 		void SetPosition(float x, float y, float z);
-		void RotateDelta(float yaw, float pitch, float roll);
-		void RotateAbsolute(float yaw, float pitch, float roll);
+		void Rotate(float yaw, float pitch, float roll);
 		void SetFOV(float new_fov);
 		void Move(float x, float y, float z);
+		void SetRotationLimit(float yaw_limit, float pitch_limit, float roll_limit);
+		void ActivateRotationLimit(bool state);
 
-		glm::mat4& GetModel();
 		glm::mat4& GetProjection();
 		glm::mat4& GetView();
 
-		void UpdateModel(unsigned int shader_program, const std::string model_uniform_name);
 		void UpdateProjection(unsigned int shader_program, const std::string projection_uniform_name);
 		void UpdateView(unsigned int shader_program, const std::string view_uniform_name);
 		void UpdateRotation();
@@ -44,6 +43,11 @@ namespace zap
 		float i_roll = 0.0f;
 		float i_fov = 60;
 		
+		float i_yaw_clamp = 360.0f;  // keeps track on when to clamp
+		float i_pitch_clamp = 360.0f;
+		float i_roll_clamp = 360.0f;
+		bool i_limit_rotation = false;
+
 		glm::vec3 i_camera_position;
 		glm::vec3 i_camera_front;
 		glm::vec3 i_camera_up;
@@ -51,7 +55,6 @@ namespace zap
 
 		glm::vec3 i_world_up;
 
-		glm::mat4 model;
 		glm::mat4 projection;
 		glm::mat4 view;
 

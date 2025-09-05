@@ -11,20 +11,20 @@
 
 const char* vertexShaderSource = R"glsl(#version 330 core
 layout(location = 0) in vec3 aPos;
-layout(location = 1) in vec3 aColor;
+// layout(location = 1) in vec3 aColor;
 layout(location = 2) in vec2 aTexCoord;
 
 uniform mat4 model;      //takes local coordinates for thing and moves it into world coordinates
 uniform mat4 view;       //moves world space objects around based on camera
 uniform mat4 projection; //converts values to normalised device coordinates (use sweet math for perspective)
 
-out vec3 ourColor;
+// out vec3 ourColor;
 
 out vec2 TexCoord;
 void main()
 {
 	gl_Position = projection * view * model * vec4(aPos, 1.0);
-	ourColor = aColor;
+	// ourColor = aColor;
 })glsl";
 
 const char* fragmentShaderSource = R"glsl(#version 330 core
@@ -51,18 +51,15 @@ int main()
 
 	std::vector<float> vertices =
 	{
-		// positions          // colors           // texture coords
-		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right 
-		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left
-
+		0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
+		0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, -0.5f, 1.0f, 1.0f
 	};
 
 	std::vector<unsigned int> indices =
 	{
-		0, 1, 3,
-		1, 2, 3
+		0, 1, 2
+		//1, 2, 3
 	};
 
 
@@ -92,7 +89,7 @@ int main()
 	
 
 	mesh.SetAttribPointer(0, 3, 8, 0);
-	mesh.SetAttribPointer(1, 3, 8, 3);
+	//mesh.SetAttribPointer(1, 3, 8, 3);
 	mesh.SetAttribPointer(2, 2, 8, 6);
 
 	auto texture = mesh.AddTexture(0, "textures/texture.png", zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE);
@@ -119,16 +116,16 @@ int main()
 
 		if (window.GetInput(zap::Key::left_arrow, zap::State::PRESSED))
 		{
-			camera.RotateDelta(1.0f * window.GetDelta() * 20.0f, 0.0f, 0.0f);
+			camera.Rotate(5.0f * window.GetDelta() * 20.0f, 0.0f, 0.0f);
 		}
 		if (window.GetInput(zap::Key::right_arrow, zap::State::PRESSED))
 		{
-			camera.RotateDelta(-1.0f * window.GetDelta() * 20.0f, 0.0f, 0.0f);
+			camera.Rotate(-5.0f * window.GetDelta() * 20.0f, 0.0f, 0.0f);
 		}
 
-		camera.GetModel() = glm::translate(glm::mat4(1.0), glm::vec3(0.1f, -0.1f, 0.0f));
+		mesh.GetModel() = glm::translate(glm::mat4(1.0), glm::vec3(0.1f, -0.1f, 0.0f));
 
-		camera.UpdateModel(mesh.GetProgram(), "model");
+		mesh.UpdateModel("model");
 		camera.UpdateProjection(mesh.GetProgram(), "projection");
 		camera.UpdateView(mesh.GetProgram(), "view");
 		camera.UpdateRotation();
@@ -136,7 +133,6 @@ int main()
 		//here starts current VAO for current program draw
 		mesh.Bind(); //set current context before any draw routines, it prevents mess in more complex workflow
 
-		
 		glEnable(GL_DEPTH_TEST); // Move it here. Any rendering function must be invoked here.
 		glClear(GL_DEPTH_BUFFER_BIT); // PR
 

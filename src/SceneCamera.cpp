@@ -4,6 +4,22 @@
 
 namespace zap
 {
+
+	inline float FastClamp(float var, float min, float max)
+	{
+		if (var < min)
+		{
+			return var = min;
+		}
+
+		if (var > max)
+		{
+			return var = max;
+		}
+
+		return var;
+	}
+
 	SceneCamera::SceneCamera(unsigned int& window_width, unsigned int& window_height, const std::array<float, 3> position, std::array<float, 3> world_up)
 		: i_screen_width(window_width), i_screen_height(window_height)
 	{
@@ -54,19 +70,29 @@ namespace zap
 	//	std::cout << i_yaw << std::endl;
 	//}
 
-	void SceneCamera::RotateDelta(float yaw, float pitch, float roll /* <- Doesnt work*/)
+	void SceneCamera::Rotate(float yaw, float pitch, float roll /* <- Doesnt work*/)
 	{
-		this->RotateAbsolute(i_yaw + yaw, i_pitch + pitch, i_roll + roll);
-	}
+		i_yaw += yaw;
 
-	void SceneCamera::RotateAbsolute(float yaw, float pitch, float roll /* <- Doesnt work*/)
-	{
-		const float yaw_clamp = 360.0f; //30 degrees should be enough
-		const float pitch_clamp = 360.0f; //30 degrees should be enough
-
-		i_yaw = std::clamp(yaw, -yaw_clamp, yaw_clamp);
-		i_pitch = std::clamp (pitch, -pitch_clamp, pitch_clamp);
-
+		if (i_yaw > 360.0f)
+		{
+			i_yaw = 0.0f;
+		}
+		if (i_yaw < -360.0f)
+		{
+			i_yaw = 0.0f;
+		}
+		
+			i_pitch += pitch;
+		
+		if (i_pitch > 360.0f)
+		{
+			i_pitch = 0.0f;
+		}
+		if (i_pitch < -360.0f)
+		{
+			i_pitch = 0.0f;
+		}
 	}
 
 	void SceneCamera::SetFOV(float new_fov)
@@ -80,11 +106,19 @@ namespace zap
 		i_camera_position += velocity * i_camera_front;
 	}
 
-	glm::mat4& SceneCamera::GetModel()
+	void SceneCamera::SetRotationLimit(float yaw_limit, float pitch_limit, float roll_limit) // You only need to give in positive numbers
 	{
-		return model;
+		i_yaw_clamp = yaw_limit;
+		i_pitch_clamp = pitch_limit;
+		i_roll_clamp = roll_limit;
 	}
 
+	void SceneCamera::ActivateRotationLimit(bool state)
+	{
+		i_limit_rotation = state;
+	}
+
+	
 	glm::mat4& SceneCamera::GetProjection()
 	{
 		return projection;
@@ -93,11 +127,6 @@ namespace zap
 	glm::mat4& SceneCamera::GetView()
 	{
 		return view;
-	}
-
-	void SceneCamera::UpdateModel(unsigned int shader_program, const std::string model_uniform_name)
-	{
-		glUniformMatrix4fv(glGetUniformLocation(shader_program, model_uniform_name.c_str()), 1, GL_FALSE, glm::value_ptr(model));
 	}
 
 	void SceneCamera::UpdateProjection(unsigned int shader_program, const std::string projection_uniform_name) 
@@ -112,6 +141,13 @@ namespace zap
 
 	void SceneCamera::UpdateRotation()
 	{
+		if (i_limit_rotation)
+		{
+			i_yaw = FastClamp(i_yaw, -i_yaw_clamp, i_yaw_clamp);
+			i_pitch = FastClamp(i_pitch, -i_pitch_clamp, i_pitch_clamp);
+			i_roll = FastClamp(i_roll, -i_roll_clamp, i_roll_clamp);
+		}
+
 		glm::vec3 front;
 		front.x = cos(glm::radians(i_yaw)) * cos(glm::radians(i_pitch));
 		front.y = sin(glm::radians(i_pitch));
