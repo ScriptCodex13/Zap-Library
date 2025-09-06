@@ -47,11 +47,11 @@ namespace zap
 											}
 									)glsl";
 
-	class Mesh2D
+	class Mesh
 	{
 	public:
-		Mesh2D(std::vector<float> extern_vertices, std::vector<unsigned int> extern_indices);
-		~Mesh2D();
+		Mesh(std::vector<float> extern_vertices, std::vector<unsigned int> extern_indices);
+		~Mesh();
 
 		//Config Process
 

@@ -12,12 +12,12 @@ namespace zap
 {
 
 
-	Mesh2D::Mesh2D(std::vector<float> extern_vertices, std::vector<unsigned int> extern_indices)
+	Mesh::Mesh(std::vector<float> extern_vertices, std::vector<unsigned int> extern_indices)
 	{
 		vertices = extern_vertices;
 		indices  = extern_indices;
 	}
-	Mesh2D::~Mesh2D()
+	Mesh::~Mesh()
 	{
 		glDeleteVertexArrays(1, &VAO);
 		glDeleteBuffers(1, &VBO);
@@ -25,7 +25,7 @@ namespace zap
 		glDeleteProgram(shaderProgram);
 	}
 
-	void Mesh2D::SetVertexShaderSource(const std::string& source)
+	void Mesh::SetVertexShaderSource(const std::string& source)
 	{
 		if (!vSourceset)
 		{
@@ -34,7 +34,7 @@ namespace zap
 		}
 	}
 
-	void Mesh2D::SetFragmentShaderSource(const std::string& source) 
+	void Mesh::SetFragmentShaderSource(const std::string& source)
 	{
 		if (!fSourceset)
 		{
@@ -43,27 +43,27 @@ namespace zap
 		}
 	}
 
-	void Mesh2D::SetVBOAccessMode(BufferAccessModes mode)
+	void Mesh::SetVBOAccessMode(BufferAccessModes mode)
 	{
 		VBO_ACCESS_MODE = mode;
 	}
 
-	void Mesh2D::SetEBOAccessMode(BufferAccessModes mode)
+	void Mesh::SetEBOAccessMode(BufferAccessModes mode)
 	{
 		EBO_ACCESS_MODE = mode;
 	}
 
-	AttributeConfig& Mesh2D::SetAttribPointer (int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos)
+	AttributeConfig& Mesh::SetAttribPointer (int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos)
 	{
 		return attribcfg.emplace_back(AttributeConfig { shader_location, value_ct, data_stride, start_pos });
 	}
 
-	Texture& Mesh2D::AddTexture (unsigned int id, const std::string path, TextureFilters filter, MipmapSettings settings, TextureWrapping wrapping)
+	Texture& Mesh::AddTexture (unsigned int id, const std::string path, TextureFilters filter, MipmapSettings settings, TextureWrapping wrapping)
 	{
 		return texturecfg.emplace_back(Texture{ id, path, filter, settings, wrapping });
 	}
 
-	void Mesh2D::BuildProgram()
+	void Mesh::BuildProgram()
 	{
 		vertexShader = glCreateShader(GL_VERTEX_SHADER);
 		const char* src = vertexShaderSource.c_str();
@@ -120,7 +120,7 @@ namespace zap
 
 	}
 
-	void Mesh2D::GenObject()
+	void Mesh::GenObject()
 	{
 		/*****************************************************************************************/
 		// Buffer
@@ -150,7 +150,7 @@ namespace zap
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
-	void Mesh2D::Finish()
+	void Mesh::Finish()
 	{
 		/******************************************************************************************/
 		if (shaderProgram == -1)
@@ -169,7 +169,7 @@ namespace zap
 		/*****************************************************************************************/
 	}
 
-	bool Mesh2D::UseTexture(unsigned int id)
+	bool Mesh::UseTexture(unsigned int id)
 	{
 		//auto cfg = std::find_if(texturecfg.begin(), texturecfg.end(), [id] (const auto& x) {return x.i_id == id; });
 		
@@ -186,51 +186,51 @@ namespace zap
 		return false;
 	}
 
-	std::vector<float>& Mesh2D::GetVertices()
+	std::vector<float>& Mesh::GetVertices()
 	{
 		return vertices;
 	}
 
-	std::vector<unsigned int>& Mesh2D::GetIndices()
+	std::vector<unsigned int>& Mesh::GetIndices()
 	{
 		return indices;
 	}
 
-	void Mesh2D::UpdateModel(const std::string model_uniform_name)
+	void Mesh::UpdateModel(const std::string model_uniform_name)
 	{
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, model_uniform_name.c_str()), 1, GL_FALSE, glm::value_ptr(model));
 	}
 
-	glm::mat4& Mesh2D::GetModel()
+	glm::mat4& Mesh::GetModel()
 	{
 		return model;
 	}
 
-	unsigned int Mesh2D::GetUniformLocation(const GLchar* name)
+	unsigned int Mesh::GetUniformLocation(const GLchar* name)
 	{ 
 		return glGetUniformLocation(shaderProgram, name);
 	}
-	unsigned int Mesh2D::GetProgram()
+	unsigned int Mesh::GetProgram()
 	{ 
 		return shaderProgram;
 	}
-	void Mesh2D::UseProgram() 
+	void Mesh::UseProgram()
 	{ 
 		glUseProgram (shaderProgram); 
 	}
 
-	void Mesh2D::BindVAO() 
+	void Mesh::BindVAO()
 	{ 
 		glBindVertexArray (VAO); 
 	}
 
-	void Mesh2D::Bind()
+	void Mesh::Bind()
 	{
 		UseProgram ();
 		BindVAO ();
 	}
 
-	void Mesh2D::Draw(int vertices_count)
+	void Mesh::Draw(int vertices_count)
 	{
 		if (!indices.empty())
 		{
