@@ -163,7 +163,7 @@ int main()
 
 
 	//Mesh
-	zap::Mesh2D cube(vertices, indices);
+	zap::Mesh cube(vertices, indices);
 
 	cube.SetVertexShaderSource(vertexShaderSourcecube);
 	cube.SetFragmentShaderSource(fragmentShaderSourcecube);
@@ -175,7 +175,7 @@ int main()
 
 
 
-	zap::Mesh2D light(vertices, indices);
+	zap::Mesh light(vertices, indices);
 
 	light.SetVertexShaderSource(vertexShaderSourcelight);
 	light.SetFragmentShaderSource(fragmentShaderSourcelight);
@@ -283,6 +283,7 @@ int main()
 	zap::Delete();
 
 }
+
 
 
 
