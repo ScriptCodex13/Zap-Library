@@ -135,6 +135,6 @@ You can visit the wiki [here](https://github.com/ScriptCodex13/Zap-Library/wiki)
 
 Come to our [discord server](https://discord.gg/hr2vjemJSV) to ask questions and chat with the developers.
 
-# Please Note 
+# Contributing
 
-Zap isnt finished yet. To be precise, it is a fresh project. There are some Issues and the API is missing planned features. But if you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Help will be greatly appriciated ! 
+If you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Help will be greatly appriciated ! 
