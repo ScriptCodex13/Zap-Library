@@ -84,9 +84,9 @@ namespace zap
 		void Draw       (int vertices_count = 0);
 		// Transform func
 
-	private: // private functions for intern use 
-		void useProgram();
-		void bindVAO();
+	    // private functions for intern use 
+		void UseProgram();
+		void BindVAO();
 
 	private:
 		glm::mat4 model; // PR

@@ -129,6 +129,11 @@ namespace zap
 		return view;
 	}
 
+	glm::vec3& SceneCamera::GetPosition()
+	{
+		return i_camera_position;
+	}
+
 	void SceneCamera::UpdateProjection(unsigned int shader_program, const std::string projection_uniform_name) 
 	{
 		glUniformMatrix4fv(glGetUniformLocation(shader_program, projection_uniform_name.c_str()), 1, GL_FALSE, glm::value_ptr(projection));

@@ -214,20 +214,20 @@ namespace zap
 	{ 
 		return shaderProgram;
 	}
-	void Mesh2D::useProgram() 
+	void Mesh2D::UseProgram() 
 	{ 
 		glUseProgram (shaderProgram); 
 	}
 
-	void Mesh2D::bindVAO() 
+	void Mesh2D::BindVAO() 
 	{ 
 		glBindVertexArray (VAO); 
 	}
 
 	void Mesh2D::Bind()
 	{
-		useProgram ();
-		bindVAO ();
+		UseProgram ();
+		BindVAO ();
 	}
 
 	void Mesh2D::Draw(int vertices_count)
