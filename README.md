@@ -24,7 +24,7 @@ Windows:
 
 clone this repository and run the Windows_GenerateVS.bat in the Build_Premake folder
 
-If you want more detailed information look at the [wiki](https://github.com/ScriptCodex13/Zap-Library/wiki/Project-setup).
+If you want more detailed information look at the [wiki]([https://github.com/ScriptCodex13/Zap-Library/wiki/Project-setup](https://github.com/ScriptCodex13/Zap-Library/wiki/Project-setup-with-Windows-and-Visual-Studio-2022)).
 
 
   
