@@ -12,10 +12,10 @@ namespace zap
 {
 
 
-	Mesh2D::Mesh2D(std::vector<float>* extern_vertices, std::vector<unsigned int>* extern_indices)
+	Mesh2D::Mesh2D(std::vector<float> extern_vertices, std::vector<unsigned int> extern_indices)
 	{
-		vertices = *extern_vertices;
-		indices  = *extern_indices;
+		vertices = extern_vertices;
+		indices  = extern_indices;
 	}
 	Mesh2D::~Mesh2D()
 	{
@@ -184,6 +184,16 @@ namespace zap
 		}
 		
 		return false;
+	}
+
+	std::vector<float>& Mesh2D::GetVertices()
+	{
+		return vertices;
+	}
+
+	std::vector<unsigned int>& Mesh2D::GetIndices()
+	{
+		return indices;
 	}
 
 	void Mesh2D::UpdateModel(const std::string model_uniform_name)

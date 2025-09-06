@@ -81,7 +81,7 @@ int main()
 
 	//Mesh
 
-	zap::Mesh2D mesh(&vertices, &indices);
+	zap::Mesh2D mesh(vertices, indices);
 
 	mesh.SetVertexShaderSource(vertexShaderSource);
 	mesh.SetFragmentShaderSource(fragmentShaderSource);

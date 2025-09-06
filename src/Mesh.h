@@ -50,7 +50,7 @@ namespace zap
 	class Mesh2D
 	{
 	public:
-		Mesh2D(std::vector<float>* extern_vertices, std::vector<unsigned int>* extern_indices);
+		Mesh2D(std::vector<float> extern_vertices, std::vector<unsigned int> extern_indices);
 		~Mesh2D();
 
 		//Config Process
@@ -70,6 +70,9 @@ namespace zap
 		void GenObject();
 		void Finish(); // Everything is finished you can't change the settings of the mesh anymore
 		bool UseTexture (unsigned int id); //TODO: This is Bind, not Set, should be renamed | Done - ScriptCodex13
+
+		std::vector<float>& GetVertices();
+		std::vector<unsigned int>& GetIndices();
 		
 		void UpdateModel(const std::string model_uniform_name); // For use with camera
 		glm::mat4& GetModel();
