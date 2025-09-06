@@ -25,6 +25,8 @@ Windows:
 
 Visual Studio: Run the Windows_GenerateVS.bat in the Build_Premake folder
 
+If you want more detailed information look at the [wiki](https://github.com/ScriptCodex13/Zap-Library/wiki/Project-setup).
+
 
   
  	
