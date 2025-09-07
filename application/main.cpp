@@ -214,32 +214,18 @@ int main()
 	
 	float sensitivity = 0.1f;
 
-	bool first_mouse = true;
 
+	std::array<double, 2> oldPos = window.GetMousePosition();
 	
 	while (window.Open())
 	{
 		// Mouse Input
-
-		float lastX;
-		float lastY;
-
-		float x_pos_2;
-		float y_pos_2;
-
-		std::array<double, 2> pos = window.GetMousePosition();
-
-		if (first_mouse)
-		{
-			lastX = pos[0];
-			lastY = pos[1];
-			first_mouse = false;
-		}
-
-		float xoffset = (pos[0] - lastX) * sensitivity;
-		float yoffset = (lastY - pos[1]) * sensitivity;
-		lastX = pos[0];
-		lastY = pos[1];
+		std::array<double, 2> newpos = window.GetMousePosition();
+	
+		float xoffset = (newpos[0] - oldPos[0]) * sensitivity;
+		float yoffset = (oldPos[1] - newpos[1]) * sensitivity;
+		
+		oldPos = newpos;
 
 		camera.Rotate(xoffset, yoffset, 0.0f);
 
