@@ -74,25 +74,25 @@ namespace zap
 	{
 		i_yaw += yaw;
 
-		if (i_yaw > 360.0f)
+		/*if (i_yaw > 360.0f)
 		{
 			i_yaw = 0.0f;
 		}
 		if (i_yaw < -360.0f)
 		{
 			i_yaw = 0.0f;
-		}
+		}*/
 		
 			i_pitch += pitch;
 		
-		if (i_pitch > 360.0f)
+		/*if (i_pitch > 360.0f)
 		{
 			i_pitch = 0.0f;
 		}
 		if (i_pitch < -360.0f)
 		{
 			i_pitch = 0.0f;
-		}
+		}*/
 	}
 
 	void SceneCamera::SetFOV(float new_fov)
@@ -146,16 +146,6 @@ namespace zap
 	glm::vec3& SceneCamera::GetPosition()
 	{
 		return i_camera_position;
-	}
-
-	void SceneCamera::UpdateProjection(unsigned int shader_program, const std::string projection_uniform_name) 
-	{
-		glUniformMatrix4fv(glGetUniformLocation(shader_program, projection_uniform_name.c_str()), 1, GL_FALSE, glm::value_ptr(projection));
-	}
-
-	void SceneCamera::UpdateView(unsigned int shader_program, const std::string view_uniform_name)
-	{
-		glUniformMatrix4fv(glGetUniformLocation(shader_program, view_uniform_name.c_str()), 1, GL_FALSE, glm::value_ptr(view));
 	}
 
 	void SceneCamera::UpdateRotation()

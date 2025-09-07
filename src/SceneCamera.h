@@ -39,8 +39,6 @@ namespace zap
 
 		glm::vec3& GetPosition();
 
-		void UpdateProjection(unsigned int shader_program, const std::string projection_uniform_name);
-		void UpdateView(unsigned int shader_program, const std::string view_uniform_name);
 		void UpdateRotation();
 
 	private:

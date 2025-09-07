@@ -216,6 +216,19 @@ int main()
 
 
 	std::array<double, 2> oldPos = window.GetMousePosition();
+
+	// Getting uniform locations
+	
+	//cube
+	unsigned int view_location_cube = glGetUniformLocation(cube.GetProgram(), "view");
+	unsigned int projection_location_cube = glGetUniformLocation(cube.GetProgram(), "projection");
+
+	//light
+
+	unsigned int view_location_light = glGetUniformLocation(light.GetProgram(), "view");
+	unsigned int projection_location_light = glGetUniformLocation(light.GetProgram(), "projection");
+
+	//
 	
 	while (window.Open())
 	{
@@ -281,8 +294,10 @@ int main()
 		glUniform3fv(glGetUniformLocation(cube.GetProgram(), "lightPos"), 1, &lightPos[0]);
 		glUniform3fv(glGetUniformLocation(cube.GetProgram(), "viewPos"), 1, &camera.GetPosition()[0]);
 
-		camera.UpdateProjection(cube.GetProgram(), "projection");
-		camera.UpdateView(cube.GetProgram(), "view");
+		
+		glUniformMatrix4fv(projection_location_cube, 1, GL_FALSE, glm::value_ptr(camera.GetProjection()));
+		glUniformMatrix4fv(view_location_cube, 1, GL_FALSE, glm::value_ptr(camera.GetView()));
+
 		cube.GetModel() = glm::translate(glm::mat4(1.0), glm::vec3(1.4f, -0.1f, -2.0f));
 		cube.GetModel() = glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), glm::vec3(0.0f, rotation, 0.0f));
 		cube.UpdateModel("model");
@@ -299,10 +314,11 @@ int main()
 
 		camera.UpdateRotation();
 
-		camera.UpdateProjection(light.GetProgram(), "projection");
-		camera.UpdateView(light.GetProgram(), "view");
+		glUniformMatrix4fv(projection_location_light, 1, GL_FALSE, glm::value_ptr(camera.GetProjection()));
+		glUniformMatrix4fv(view_location_light, 1, GL_FALSE, glm::value_ptr(camera.GetView()));
+
 		light.GetModel() = glm::mat4(1.0f);
-		light.GetModel() = glm::translate(light.GetModel(), lightPos);
+		light.GetModel() = glm::translate(light.GetModel(), lightPos); // Does work without problems
 		light.GetModel() = glm::scale(light.GetModel(), glm::vec3(0.2f));
 		light.UpdateModel("model");
 
