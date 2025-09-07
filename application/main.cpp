@@ -236,13 +236,10 @@ int main()
 			first_mouse = false;
 		}
 
-		float xoffset = pos[0] - lastX;
-		float yoffset = lastY - pos[1];
+		float xoffset = (pos[0] - lastX) * sensitivity;
+		float yoffset = (lastY - pos[1]) * sensitivity;
 		lastX = pos[0];
 		lastY = pos[1];
-
-		xoffset *= sensitivity;
-		yoffset *= sensitivity;
 
 		camera.Rotate(xoffset, yoffset, 0.0f);
 
@@ -345,6 +342,7 @@ int main()
 	zap::Delete();
 
 }
+
 
 
 
