@@ -23,10 +23,22 @@ namespace zap
 
 	};
 
+	enum class Instructions
+	{
+		ANTIALIASING = GL_MULTISAMPLE,
+		DEPTH = GL_DEPTH_TEST
+
+	};
+
 	void ClearBackground(BackgroundColors color);                       // Clears the backround with a predefined color 
 	void ClearBackground(float RED, float GREEN, float BLUE, float ALPHA);  // Clears the Background with a self defined color based on the RGBA settings given in the parameters
 	void ShowWireFrame(bool state);                                     // Enable or disable the wireframe
 	void ClearDepthBuffer();											// Clears the depth buffer
+
+	void Enable(Instructions instruction);
+	void Disable(Instructions instruction);
+
+
 }
 
 #endif

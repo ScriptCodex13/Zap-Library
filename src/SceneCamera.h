@@ -26,9 +26,13 @@ namespace zap
 		void SetPosition(float x, float y, float z);
 		void Rotate(float yaw, float pitch, float roll);
 		void SetFOV(float new_fov);
-		void Move(float x, float y, float z);
 		void SetRotationLimit(float yaw_limit, float pitch_limit, float roll_limit);
 		void ActivateRotationLimit(bool state);
+
+		void MoveForward(float speed_factor); // You need delta here
+		void MoveBackward(float speed_factor);
+		void MoveLeft(float speed_factor);
+		void MoveRight(float speed_factor);
 
 		glm::mat4& GetProjection();
 		glm::mat4& GetView();

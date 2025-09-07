@@ -359,6 +359,26 @@ namespace zap
 		}
 	}
 
+	
+	void Window::SetCursorinCameraMode(bool state)
+	{
+		if (intern_window)
+		{
+			if (state)
+			{
+				glfwSetInputMode(intern_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+				if (glfwRawMouseMotionSupported())
+				{
+					glfwSetInputMode(intern_window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+				}
+			}
+			else
+			{
+				glfwSetInputMode(intern_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			}
+		}
+	}
 
 	// Please let this in here
 	// NOTE: It is ok here, because it is tied to Window (glfw) and not to rendering (gl)

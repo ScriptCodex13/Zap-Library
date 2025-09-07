@@ -58,6 +58,7 @@ namespace zap
 		std::array<double, 2> GetMousePosition();                           // Returns the cursor position in pixels relative to the top left corner of the window 
 		void HideCursor(bool state);                                        // Hide or unhide the cursor if the window is entered
 		void SetVSync(bool state);
+		void SetCursorinCameraMode(bool state);
 
 		void Update();
 		void Draw();
@@ -85,9 +86,13 @@ namespace zap
 
 		float LastTime;
 
+	public:
+		bool first_mouse = true;
+		float xoffset = 0.0f;
+		float yoffset = 0.0f;
+
 	private:
 		void InternSwapBuffers(); // Better for managing the FPSLimit
-
 
 	};
 

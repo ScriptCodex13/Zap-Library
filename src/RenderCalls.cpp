@@ -72,4 +72,14 @@ namespace zap
 	{
 		glClear(GL_DEPTH_BUFFER_BIT);
 	}
+
+	void Enable(Instructions instruction)
+	{
+		glEnable((GLenum)instruction);
+	}
+
+	void Disable(Instructions instruction)
+	{
+		glDisable((GLenum)instruction);
+	}
 }

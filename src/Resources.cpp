@@ -32,6 +32,8 @@ namespace zap
 			#define GLFW_INIT
 		#endif
 
+		glfwWindowHint(GLFW_SAMPLES, 4);
+
 		/******************************************************************************/
 
 		messages::PrintMessage("Using OpenGL Version 3.3", "", MessageTypes::api_core_info, false);

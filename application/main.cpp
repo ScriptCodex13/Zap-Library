@@ -8,6 +8,8 @@
 #include <Zap.h> //TODO: This is not the correct way to use libraries
 #include <iostream>
 #include <vector>
+#include <array>
+#include <Windows.h>
 
 const char* vertexShaderSourcelight = R"glsl(#version 330 core
 layout (location = 0) in vec3 aPos;
@@ -163,7 +165,7 @@ int main()
 
 
 	//Mesh
-	zap::Mesh2D cube(vertices, indices);
+	zap::Mesh cube(vertices, indices);
 
 	cube.SetVertexShaderSource(vertexShaderSourcecube);
 	cube.SetFragmentShaderSource(fragmentShaderSourcecube);
@@ -175,7 +177,7 @@ int main()
 
 
 
-	zap::Mesh2D light(vertices, indices);
+	zap::Mesh light(vertices, indices);
 
 	light.SetVertexShaderSource(vertexShaderSourcelight);
 	light.SetFragmentShaderSource(fragmentShaderSourcelight);
@@ -192,25 +194,65 @@ int main()
 	
 	//
 
-	window.SetVSync(true);
-
 	// Window settings
 
 	window.UpdateViewport(true);
+	window.SetVSync(true);
 
-	//
-	//cube.Bind();
-	//light.Bind();
+	
+	zap::Enable(zap::Instructions::DEPTH); 
 
-	glEnable(GL_DEPTH_TEST); // Move it here. Any rendering function must be invoked here.
+	zap::Enable(zap::Instructions::ANTIALIASING);
+
+	window.Maximize();
+	window.SetCursorinCameraMode(true);
+
+
+	
+
 
 	glm::vec3 lightPos(1.0f, 0.0f, 2.0f);
 
 	float rotation = 0.0f;
 	
+	float sensitivity = 0.1f;
+
+	bool first_mouse = true;
+
+	
 	while (window.Open())
 	{
-		//glm::mat4 model = glm::mat4(1.0f);
+		// Mouse Input
+
+		float lastX;
+		float lastY;
+
+		float x_pos_2;
+		float y_pos_2;
+
+		std::array<double, 2> pos = window.GetMousePosition();
+
+		if (first_mouse)
+		{
+			lastX = pos[0];
+			lastY = pos[1];
+			first_mouse = false;
+		}
+
+		float xoffset = pos[0] - lastX;
+		float yoffset = lastY - pos[1];
+		lastX = pos[0];
+		lastY = pos[1];
+
+		xoffset *= sensitivity;
+		yoffset *= sensitivity;
+
+		camera.Rotate(xoffset, yoffset, 0.0f);
+
+		//
+
+
+		//Input
 
 		if (window.isKeyPressed(zap::Key::ESC))
 		{
@@ -225,10 +267,34 @@ int main()
 		{
 			camera.Rotate(5.0f * window.GetDelta() * 20.0f, 0.0f, 0.0f);
 		}
-		glClear(GL_DEPTH_BUFFER_BIT); // PR
+		if (window.GetInput(zap::Key::W, zap::State::PRESSED))
+		{
+			camera.MoveForward(0.5f * window.GetDelta() * 20.0f);
+		}
+		if (window.GetInput(zap::Key::S, zap::State::PRESSED))
+		{
+			camera.MoveBackward(0.5f * window.GetDelta() * 20.0f);
+		}
+		if (window.GetInput(zap::Key::A, zap::State::PRESSED))
+		{
+			camera.MoveLeft(0.5f * window.GetDelta() * 20.0f);
+		}
+		if (window.GetInput(zap::Key::D, zap::State::PRESSED))
+		{
+			camera.MoveRight(0.5f * window.GetDelta() * 20.0f);
+		}
 
-		
+		//
+
+
+		glClear(GL_DEPTH_BUFFER_BIT); // PR
+		zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
+
+		//Cube
+
 		cube.UseProgram();
+
+		camera.UpdateRotation();
 
 		glUniform3f(glGetUniformLocation(cube.GetProgram(), "objectColor"), 1.0f, 0.5f, 0.31f);
 		glUniform3f(glGetUniformLocation(cube.GetProgram(), "lightColor"), 1.0f, 1.0f, 1.0f);
@@ -241,12 +307,18 @@ int main()
 		cube.GetModel() = glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), glm::vec3(0.0f, rotation, 0.0f));
 		cube.UpdateModel("model");
 
-		camera.UpdateRotation();
-
 		cube.Bind();
 		cube.Draw(36);
 
+		//
+
+
+		//Light cube
+
 		light.UseProgram();
+
+		camera.UpdateRotation();
+
 		camera.UpdateProjection(light.GetProgram(), "projection");
 		camera.UpdateView(light.GetProgram(), "view");
 		light.GetModel() = glm::mat4(1.0f);
@@ -254,12 +326,10 @@ int main()
 		light.GetModel() = glm::scale(light.GetModel(), glm::vec3(0.2f));
 		light.UpdateModel("model");
 
-		camera.UpdateRotation();
-
 		light.Bind(); //set current context before any draw routines, it prevents mess in more complex workflow
 		light.Draw(36);
 
-
+		//
 
 		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
 		//zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
@@ -272,12 +342,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // PR
 		
 		rotation += 1.0f;
-
-		/*if (rotation >= 360.0f)
-		{
-			rotation = 0;
-		}*/
-		//std::cout << window.GetFPS() << std::endl;
+		
 	}
 
 	zap::Delete();

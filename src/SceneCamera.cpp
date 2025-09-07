@@ -100,12 +100,6 @@ namespace zap
 		i_fov = std::clamp(new_fov, 10.0f, 120.0f);
 	}
 
-	void SceneCamera::Move(float x, float y, float z)
-	{
-		glm::vec3 velocity = glm::vec3(x, y, z);
-		i_camera_position += velocity * i_camera_front;
-	}
-
 	void SceneCamera::SetRotationLimit(float yaw_limit, float pitch_limit, float roll_limit) // You only need to give in positive numbers
 	{
 		i_yaw_clamp = yaw_limit;
@@ -116,6 +110,26 @@ namespace zap
 	void SceneCamera::ActivateRotationLimit(bool state)
 	{
 		i_limit_rotation = state;
+	}
+
+	void SceneCamera::MoveForward(float speed_factor)
+	{
+		i_camera_position += glm::vec3(i_camera_front * speed_factor);
+	}
+
+	void SceneCamera::MoveBackward(float speed_factor)
+	{
+		i_camera_position -= glm::vec3(i_camera_front * speed_factor);
+	}
+
+	void SceneCamera::MoveLeft(float speed_factor)
+	{
+		i_camera_position -= glm::normalize(glm::cross(i_camera_front, i_camera_up)) * speed_factor;
+	}
+
+	void SceneCamera::MoveRight(float speed_factor)
+	{
+		i_camera_position += glm::normalize(glm::cross(i_camera_front, i_camera_up)) * speed_factor;
 	}
 
 	
@@ -151,6 +165,24 @@ namespace zap
 			i_yaw = FastClamp(i_yaw, -i_yaw_clamp, i_yaw_clamp);
 			i_pitch = FastClamp(i_pitch, -i_pitch_clamp, i_pitch_clamp);
 			i_roll = FastClamp(i_roll, -i_roll_clamp, i_roll_clamp);
+		}
+
+		if (i_yaw > 359.9f) // Prevents clipping or teleporting of objects in the scene
+		{
+			i_yaw = 0.0f;
+		}
+		if (i_yaw < -359.9f)
+		{
+			i_yaw = 0.0f;
+		}
+
+		if (i_pitch > 359.9f)
+		{
+			i_pitch = 0.0f;
+		}
+		if (i_pitch < -359.9f)
+		{
+			i_pitch = 0.0f;
 		}
 
 		glm::vec3 front;
