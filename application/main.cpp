@@ -1,6 +1,4 @@
 // Just a example
-
-
 // PR = Prototyping -> only for testing 
 
 //this is separate application and should treat the Zap library as external
@@ -9,7 +7,6 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include <Windows.h>
 
 const char* vertexShaderSourcelight = R"glsl(#version 330 core
 layout (location = 0) in vec3 aPos;
