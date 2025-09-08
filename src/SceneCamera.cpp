@@ -145,14 +145,8 @@ namespace zap
 
 		// Prevents clipping or teleporting of objects in the scene
 
-		if (i_yaw > 359.9f) i_yaw = 0.0f;
-		
-		if (i_yaw < -359.9f) i_yaw = 0.0f;
-		
-
-		if (i_pitch > 359.9f) i_pitch = 0.0f;
-		
-		if (i_pitch < -359.9f) i_pitch = 0.0f;
+		i_yaw = zap::util::rewind(i_yaw, 0.0f, -360.0f, 360.0f);
+		i_pitch = zap::util::rewind(i_pitch, 0.0f, -360.0f, 360.0f);
 		
 
 		glm::vec3 front;

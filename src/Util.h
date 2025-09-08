@@ -19,6 +19,31 @@ namespace zap
 {
 	namespace util 
 	{
+		template<typename T>
+		inline bool between(T value, T min, T max)
+		{
+			return value >= min && value <= max;
+		}
+
+		template<typename T>
+		inline bool exclusive_between(T value, T min, T max)
+		{
+			return value > min && value < max;
+		}
+
+		template<typename T>
+		inline T rewind(T value, T rew, T min, T max)
+		{
+			if (exclusive_between(value, min, max))
+				return value;
+
+			messages::PrintMessage
+			(
+				"rewinding " + std::to_string(value) + " to " + std::to_string(rew), "Util.h/inline bool zap::util::rewind(..)",
+				MessageTypes::api_core_info
+			);
+		}
+
 		//Scope guard for RAII
 		template<typename T> class scope_guard
 		{

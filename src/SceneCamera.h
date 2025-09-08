@@ -10,6 +10,8 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
+#include "Util.h"
+
 #include <string>
 #include <array>
 #include <algorithm> // For std::clamp in SetFOV
