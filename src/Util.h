@@ -39,7 +39,7 @@ namespace zap
 
 			messages::PrintMessage
 			(
-				"rewinding " + std::to_string(value) + " to " + std::to_string(rew), "Util.h/inline bool zap::util::rewind(..)",
+				"rewinding " + std::to_string(value) + " to " + std::to_string(rew), "Util.h/inline T zap::util::rewind(..)",
 				MessageTypes::api_core_info
 			);
 		}
