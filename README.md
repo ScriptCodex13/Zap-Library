@@ -3,7 +3,7 @@
 
 # What is Zap?
 
-Zap is an OpenGL abstraction/ graphics library for one of my game engine projects. I thought it could be useful for others because the APIs code is shorter than raw OpenGL code but still lets you control the important parts of the Zap code. The API can be used by anyone who is familiar with C++ and has expierience with GLSL and  some basics of OpenGL. But for everyone who know more OpenGL can also use more OpenGL code in combination with Zap. If you want to know more about GLSL take a look at the awesome Website [LearnOpenGL](https://learnopengl.com/Getting-started/Shaders).
+Zap is an OpenGL abstraction/ graphics library for one of my game engine projects. I thought it could be useful for others because the APIs code is shorter than raw OpenGL code but still lets you control the important parts of the Zap code. The API can be used by anyone who is familiar with C++ and has expierience with GLSL and some basics of OpenGL. But for everyone who know more OpenGL can also use more OpenGL code in combination with Zap. If you want to know more about GLSL take a look at the awesome Website [LearnOpenGL](https://learnopengl.com/Getting-started/Shaders).
 
 # What is it able to do ?
 
@@ -138,4 +138,4 @@ Come to our [discord server](https://discord.gg/hr2vjemJSV) to ask questions and
 
 # Contributing
 
-If you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Help will be greatly appriciated ! 
+We need more help with this project to grow and improve. So if you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Any help will be greatly appriciated ! 
