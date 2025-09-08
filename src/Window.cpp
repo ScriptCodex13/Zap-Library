@@ -87,117 +87,117 @@ namespace zap
 
 	bool Window::Open()
 	{
-		if (intern_window)
-		{
-			if (!glfwWindowShouldClose(intern_window))
-			{
-				return true;
-			}
-		}
+		if (!intern_window) return false;
 
+		if (!glfwWindowShouldClose(intern_window))
+		{
+			return true;
+		}
+		
 		return false;
 	}
 
 	void Window::UpdateViewport(bool state)
 	{
-		if (intern_window)
+		if (!intern_window) return;
+		
+		if (state)
 		{
-			if (state)
-			{
-				glfwSetFramebufferSizeCallback(intern_window, i_FramebuffersizeCallback);
-			}
-			else 
-			{
-				glfwSetFramebufferSizeCallback(intern_window, i_nFramebuffersizeCallback);
-			}
+			glfwSetFramebufferSizeCallback(intern_window, i_FramebuffersizeCallback);
 		}
+		else
+		{
+
+			glfwSetFramebufferSizeCallback(intern_window, i_nFramebuffersizeCallback);
+		}
+		
 	}
 
 	void Window::SetViewport(int x, int y, unsigned int new_width, unsigned int new_height)
 	{
-		if (intern_window)
-		{
-			glViewport(x, y, new_width, new_height);
-		}
+		if (!intern_window) return;
+		
+		glViewport(x, y, new_width, new_height);
+		
 	}
 
 	void Window::Close()
 	{
-		if (intern_window)
-		{
-			glfwSetWindowShouldClose(intern_window, true);
-		}
+		if (!intern_window) return;
+
+		glfwSetWindowShouldClose(intern_window, true);
+		
 	}
 
 	void Window::SetFullscreen(bool state)
 	{
-		if (intern_window)
+		if (!intern_window) return;
+		
+		if (state)
 		{
-			if (state)
-			{
-				glfwSetWindowMonitor(intern_window, currentMonitor, pos_x, pos_y, width, height, current_refresh_rate);
-			}
-			else
-			{
-				glfwSetWindowMonitor(intern_window, NULL, pos_x, pos_y, width, height, current_refresh_rate);
-			}
-			
+			glfwSetWindowMonitor(intern_window, currentMonitor, pos_x, pos_y, width, height, current_refresh_rate);
 		}
+		else
+		{
+			glfwSetWindowMonitor(intern_window, NULL, pos_x, pos_y, width, height, current_refresh_rate);
+		}
+			
+		
 	}
 
 	void Window::SetFullscreen(bool state, GLFWmonitor* monitor)
 	{
-		if (intern_window)
+		if (intern_window) return;
+		
+		if (state)
 		{
-			if (state)
-			{
-				glfwSetWindowMonitor(intern_window, monitor, pos_x, pos_y, width, height, current_refresh_rate);
-				currentMonitor = glfwGetWindowMonitor(intern_window);
-			}
-			else
-			{
-				glfwSetWindowMonitor(intern_window, NULL, pos_x, pos_y, width, height, current_refresh_rate);
-			}
-
+			glfwSetWindowMonitor(intern_window, monitor, pos_x, pos_y, width, height, current_refresh_rate);
+			currentMonitor = glfwGetWindowMonitor(intern_window);
 		}
+		else
+		{
+			glfwSetWindowMonitor(intern_window, NULL, pos_x, pos_y, width, height, current_refresh_rate);
+		}
+
+		
 	}
 
 	void Window::Maximize(bool update_viewport)
 	{
-		if (intern_window)
+		if (!intern_window) return;
+		
+		glfwMaximizeWindow(intern_window);
+		
+		//Updating the Viewport
+
+		if (update_viewport)
 		{
-			glfwMaximizeWindow(intern_window);
-			
-			//Updating the Viewport
+			int width, height;
 
-			if (update_viewport)
-			{
-				int width, height;
-
-				glfwGetWindowSize(intern_window, &width, &height);
-				glViewport(0, 0, width, height);
-			}
-
-			//
+			glfwGetWindowSize(intern_window, &width, &height);
+			glViewport(0, 0, width, height);
 		}
+
+		//
+		
 	}
 
 	void Window::Minimize()
 	{
-		if (intern_window)
-		{
-			glfwIconifyWindow(intern_window);
-		}
+		if (!intern_window) return;
+		
+		glfwIconifyWindow(intern_window);
+		
 	}
 
 	void Window::SetIcon(const std::string path)
 	{
-		windowIcon[0].pixels = stbi_load(path.c_str(), &windowIcon[0].width, &windowIcon[0].height, &icon_channels, 0);
+		if (!intern_window) return;
 
-		if (intern_window)
-		{
-			glfwSetWindowIcon(intern_window, 1, windowIcon);
-		}
+		windowIcon[0].pixels = stbi_load(path.c_str(), &windowIcon[0].width, &windowIcon[0].height, &icon_channels, 0);
+		
+		glfwSetWindowIcon(intern_window, 1, windowIcon);
+		
 	}
 
 	float Window::GetFPS()
@@ -212,16 +212,16 @@ namespace zap
 
 	void Window::SetSize(unsigned int new_width, unsigned int new_height)
 	{
+		if (!intern_window) return;
+
 		width = new_width;
 		height = new_height;
 
-		if (intern_window)
+		if (currentMonitor)
 		{
-			if (currentMonitor)
-			{
-				glfwSetWindowMonitor(intern_window, currentMonitor, pos_x, pos_y, width, height, current_refresh_rate);
-			}
+			glfwSetWindowMonitor(intern_window, currentMonitor, pos_x, pos_y, width, height, current_refresh_rate);
 		}
+		
 	}
 
 	std::array<unsigned int, 2> Window::GetSize()
@@ -231,16 +231,16 @@ namespace zap
 
 	void Window::SetPosition(int x, int y)
 	{
+		if (!intern_window) return;
+
 		pos_x = x;
 		pos_y = y;
 
-		if (intern_window)
+		if (currentMonitor)
 		{
-			if (currentMonitor)
-			{
-				glfwSetWindowMonitor(intern_window, currentMonitor, pos_x, pos_y, width, height, current_refresh_rate);
-			}
+			glfwSetWindowMonitor(intern_window, currentMonitor, pos_x, pos_y, width, height, current_refresh_rate);
 		}
+		
 	}
 
 	/*void Window::SetFPSLimit(unsigned int limit)
@@ -268,7 +268,7 @@ namespace zap
 		{
 			return false;
 		}
-
+		
 		return glfwGetKey(intern_window, key) == state;
 	}
 	bool Window::isKeyPressed (Key key) 
@@ -290,7 +290,11 @@ namespace zap
 	}
 	bool Window::isKeyReleased (int key)
 	{
-		if (!intern_window) return false;
+		if (!intern_window)
+		{
+			return false;
+		}
+
 		return glfwGetKey(intern_window, key) == GLFW_RELEASE;
 	}
 	bool Window::isMousePressed (Key key) 
@@ -338,46 +342,44 @@ namespace zap
 
 	void Window::HideCursor(bool state)
 	{
-		if (intern_window)
+		if (!intern_window) return;
+		
+		if (state)
 		{
-			if (state)
-			{
-				glfwSetInputMode(intern_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-			}
-			else
-			{
-				glfwSetInputMode(intern_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-			}
+			glfwSetInputMode(intern_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 		}
+		else
+		{
+			glfwSetInputMode(intern_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		}
+		
 	}
 
 	void Window::SetVSync(bool state)
 	{
-		if (intern_window)
-		{
-			glfwSwapInterval(state);
-		}
+		if (intern_window) glfwSwapInterval(state);
+		
 	}
 
 	
 	void Window::SetCursorinCameraMode(bool state)
 	{
-		if (intern_window)
+		if (!intern_window) return;
+		
+		if (state)
 		{
-			if (state)
-			{
-				glfwSetInputMode(intern_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			glfwSetInputMode(intern_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-				if (glfwRawMouseMotionSupported())
-				{
-					glfwSetInputMode(intern_window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
-				}
-			}
-			else
+			if (glfwRawMouseMotionSupported())
 			{
-				glfwSetInputMode(intern_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+				glfwSetInputMode(intern_window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 			}
 		}
+		else
+		{
+			glfwSetInputMode(intern_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		}
+		
 	}
 
 	// Please let this in here

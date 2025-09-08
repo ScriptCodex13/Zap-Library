@@ -46,7 +46,7 @@ namespace zap
 			messages::PrintMessage("Failed to initialize GLAD", "EasyGL.cpp/void InitGlad()", MessageTypes::fatal_error);
 			ZAP_INTERRUPT_FATAL_ERROR;
 		}
-		else
+		else 
 		{
 			messages::PrintMessage("glad initialized sucessfully", "", MessageTypes::api_core_info, false);
 		}

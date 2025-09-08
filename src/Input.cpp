@@ -12,10 +12,7 @@ namespace zap
 		{
 			present = glfwJoystickPresent((int)ID);
 			
-			if (present)
-			{
-				return true;
-			}
+			if (present) return true;
 		}
 
 		return false;
@@ -27,13 +24,9 @@ namespace zap
 
 		const unsigned char* buttons = glfwGetJoystickButtons((int)ID, &count);
 
-		if (Controller_assigned)
-		{
-			if (buttons[(int)button] == (GLenum)state)
-			{
-				return true;
-			}
-		}
+		if (!Controller_assigned) return false;
+
+		if (buttons[(int)button] == (GLenum)state) return true;
 		
 		return false;
 	}

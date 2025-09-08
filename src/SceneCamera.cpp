@@ -157,23 +157,17 @@ namespace zap
 			i_roll = FastClamp(i_roll, -i_roll_clamp, i_roll_clamp);
 		}
 
-		if (i_yaw > 359.9f) // Prevents clipping or teleporting of objects in the scene
-		{
-			i_yaw = 0.0f;
-		}
-		if (i_yaw < -359.9f)
-		{
-			i_yaw = 0.0f;
-		}
+		// Prevents clipping or teleporting of objects in the scene
 
-		if (i_pitch > 359.9f)
-		{
-			i_pitch = 0.0f;
-		}
-		if (i_pitch < -359.9f)
-		{
-			i_pitch = 0.0f;
-		}
+		if (i_yaw > 359.9f) i_yaw = 0.0f;
+		
+		if (i_yaw < -359.9f) i_yaw = 0.0f;
+		
+
+		if (i_pitch > 359.9f) i_pitch = 0.0f;
+		
+		if (i_pitch < -359.9f) i_pitch = 0.0f;
+		
 
 		glm::vec3 front;
 		front.x = cos(glm::radians(i_yaw)) * cos(glm::radians(i_pitch));
