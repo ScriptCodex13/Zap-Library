@@ -141,7 +141,7 @@ int main()
 
 	std::vector<unsigned int> indices =
 	{
-	
+
 	};
 
 
@@ -179,7 +179,7 @@ int main()
 	light.SetVertexShaderSource(vertexShaderSourcelight);
 	light.SetFragmentShaderSource(fragmentShaderSourcelight);
 
-	
+
 
 	light.SetAttribPointer(0, 3, 6, 0);
 	//light.SetAttribPointer(1, 3, 6, 3);
@@ -188,7 +188,7 @@ int main()
 	//auto texture = light.AddTexture(0, "textures/texture.png", zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE);
 
 	light.Finish();
-	
+
 	//
 
 	// Window settings
@@ -196,29 +196,29 @@ int main()
 	window.UpdateViewport(true);
 	window.SetVSync(true);
 
-	
-	zap::Enable(zap::Instructions::DEPTH); 
+
+	zap::Enable(zap::Instructions::DEPTH);
 
 	zap::Enable(zap::Instructions::ANTIALIASING);
 
-	window.Maximize();
+	//window.Maximize();
 	window.SetCursorinCameraMode(true);
 
 
-	
+
 
 
 	glm::vec3 lightPos(1.0f, 0.0f, 2.0f);
 
 	float rotation = 0.0f;
-	
+
 	float sensitivity = 0.1f;
 
 
 	std::array<double, 2> oldPos = window.GetMousePosition();
 
 	// Getting uniform locations
-	
+
 	//cube
 	unsigned int view_location_cube = glGetUniformLocation(cube.GetProgram(), "view");
 	unsigned int projection_location_cube = glGetUniformLocation(cube.GetProgram(), "projection");
@@ -229,15 +229,29 @@ int main()
 	unsigned int projection_location_light = glGetUniformLocation(light.GetProgram(), "projection");
 
 	//
+
 	
+
 	while (window.Open())
 	{
+		if (glfwJoystickPresent(GLFW_JOYSTICK_1))
+		{
+			int axesCount;
+			const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axesCount);
+
+			//std::cout << axes[0] << std::endl;
+			//std::cout << axes[1] << std::endl;
+			std::cout << axes[3] << std::endl;
+		}
+
+
+
 		// Mouse Input
 		std::array<double, 2> newpos = window.GetMousePosition();
-	
+
 		float xoffset = (newpos[0] - oldPos[0]) * sensitivity;
 		float yoffset = (oldPos[1] - newpos[1]) * sensitivity;
-		
+
 		oldPos = newpos;
 
 		camera.Rotate(xoffset, yoffset, 0.0f);
@@ -294,7 +308,7 @@ int main()
 		glUniform3fv(glGetUniformLocation(cube.GetProgram(), "lightPos"), 1, &lightPos[0]);
 		glUniform3fv(glGetUniformLocation(cube.GetProgram(), "viewPos"), 1, &camera.GetPosition()[0]);
 
-		
+
 		glUniformMatrix4fv(projection_location_cube, 1, GL_FALSE, glm::value_ptr(camera.GetProjection()));
 		glUniformMatrix4fv(view_location_cube, 1, GL_FALSE, glm::value_ptr(camera.GetView()));
 
@@ -331,14 +345,13 @@ int main()
 		//zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
 		//here starts current VAO for current program draw
 		//here draw ends
-		
+
 		window.Update();
 		window.Draw();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // PR
-		
+
 		rotation += 1.0f;
-		
 	}
 
 	zap::Delete();

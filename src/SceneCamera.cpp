@@ -4,27 +4,13 @@
 
 namespace zap
 {
-
-	inline float FastClamp(float var, float min, float max)
-	{
-		if (var < min)
-		{
-			return var = min;
-		}
-
-		if (var > max)
-		{
-			return var = max;
-		}
-
-		return var;
-	}
-
 	SceneCamera::SceneCamera(unsigned int& window_width, unsigned int& window_height, const std::array<float, 3> position, std::array<float, 3> world_up)
 		: i_screen_width(window_width), i_screen_height(window_height)
 	{
 		i_camera_position = glm::vec3(position[0], position[1], position[2]);
 		i_world_up = glm::vec3(world_up[0], world_up[1], world_up[2]);
+
+		//i_camera_up = i_world_up;
 
 		projection = glm::perspective(glm::radians(i_fov), (float)i_screen_width / (float)i_screen_height, 0.1f, 100.0f);
 		view = glm::lookAt(i_camera_position, i_camera_position + i_camera_front, i_camera_up);
@@ -152,9 +138,9 @@ namespace zap
 	{
 		if (i_limit_rotation)
 		{
-			i_yaw = FastClamp(i_yaw, -i_yaw_clamp, i_yaw_clamp);
-			i_pitch = FastClamp(i_pitch, -i_pitch_clamp, i_pitch_clamp);
-			i_roll = FastClamp(i_roll, -i_roll_clamp, i_roll_clamp);
+			i_yaw = std::clamp(i_yaw, -i_yaw_clamp, i_yaw_clamp);
+			i_pitch = std::clamp(i_pitch, -i_pitch_clamp, i_pitch_clamp);
+			i_roll = std::clamp(i_roll, -i_roll_clamp, i_roll_clamp);
 		}
 
 		// Prevents clipping or teleporting of objects in the scene
@@ -176,7 +162,7 @@ namespace zap
 
 		i_camera_front = glm::normalize(front);
 
-		i_camera_right = glm::normalize(glm::cross(i_camera_front, i_world_up));
+		i_camera_right = glm::normalize(glm::cross(i_camera_front, i_world_up ));
 		i_camera_up = glm::normalize(glm::cross(i_camera_right, i_camera_front));
 		projection = glm::perspective(glm::radians(i_fov), (float)i_screen_width / (float)i_screen_height, 0.1f, 100.0f);
 		view = glm::lookAt(i_camera_position, i_camera_position + i_camera_front, i_camera_up);
