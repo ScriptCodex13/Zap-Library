@@ -40,6 +40,12 @@ namespace zap
 			return rew;
 		}
 
+		template<typename T>
+		inline T always_rewind(T value, T min, T max)
+		{
+			return rewind(value, T(0), min, max);
+		}
+
 		//Scope guard for RAII
 		template<typename T> class scope_guard
 		{
