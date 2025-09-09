@@ -94,12 +94,6 @@ int main()
 
 	zap::InitGlad();
 
-	std::vector<unsigned int> indices =
-	{
-
-	};
-
-
 	//Controller 
 
 	// zap::Device controller = zap::AssignController(); For later prototyping with the controller
@@ -123,7 +117,7 @@ int main()
 
 
 	//Mesh
-	zap::Mesh cube(zap::standard_cube::standardcubevertices, indices);
+	zap::Mesh cube(zap::standard_cube::standardcubevertices, zap::standard_cube::standardcubeindices);
 
 	cube.SetVertexShaderSource(vertexShaderSourcecube);
 	cube.SetFragmentShaderSource(fragmentShaderSourcecube);
@@ -135,7 +129,7 @@ int main()
 
 
 
-	zap::Mesh light(zap::standard_cube::standardcubevertices, indices);
+	zap::Mesh light(zap::standard_cube::standardcubevertices, zap::standard_cube::standardcubeindices);
 
 	light.SetVertexShaderSource(vertexShaderSourcelight);
 	light.SetFragmentShaderSource(fragmentShaderSourcelight);
