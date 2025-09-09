@@ -41,7 +41,7 @@ namespace zap
 		}
 
 		template<typename T>
-		inline T always_rewind(T value, T min, T max)
+		inline T rewind(T value, T min, T max)
 		{
 			return rewind(value, T(0), min, max);
 		}
