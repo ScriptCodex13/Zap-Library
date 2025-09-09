@@ -326,13 +326,13 @@ namespace zap
 
 	std::array<double, 2> Window::GetMousePosition()
 	{
-		double x, y;
+		std::array<double, 2> pos;
 
 		if (intern_window)
 		{
-			glfwGetCursorPos(intern_window, &x, &y);
+			glfwGetCursorPos(intern_window, &pos[0], &pos[1]);
 			
-			return { x, y };
+			return { pos };
 		}
 
 		messages::PrintMessage("Can not get the mouse Position", "Window.cpp/std::array<double, 2> zap::Window::GetMousePosition()", MessageTypes::error);

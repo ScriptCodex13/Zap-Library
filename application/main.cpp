@@ -114,8 +114,6 @@ int main()
 	//
 
 
-
-
 	//Mesh
 	zap::Mesh cube(zap::standard_cube::standardcubevertices, zap::standard_cube::standardcubeindices);
 
@@ -185,7 +183,7 @@ int main()
 
 	//
 
-	
+	glEnable(GL_CULL_FACE);
 
 	while (window.Open())
 	{
@@ -256,7 +254,7 @@ int main()
 		glUniformMatrix4fv(view_location_cube, 1, GL_FALSE, glm::value_ptr(camera.GetView()));
 
 		cube.GetModel() = glm::translate(glm::mat4(1.0), glm::vec3(1.4f, -0.1f, -2.0f));
-		cube.GetModel() = glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), glm::vec3(0.0f, rotation, 0.0f));
+		//cube.GetModel() = glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), glm::vec3(0.0f, rotation, 0.0f));
 		cube.UpdateModel("model");
 
 		cube.Bind();
