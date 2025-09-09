@@ -175,11 +175,18 @@ int main()
 	//cube
 	unsigned int view_location_cube = glGetUniformLocation(cube.GetProgram(), "view");
 	unsigned int projection_location_cube = glGetUniformLocation(cube.GetProgram(), "projection");
+	unsigned int model_uniform_location_cube = glGetUniformLocation(cube.GetProgram(), "model");
+
+	unsigned int object_color_location_cube = glGetUniformLocation(cube.GetProgram(), "objectColor");
+	unsigned int light_color_location_cube = glGetUniformLocation(cube.GetProgram(), "lightColor");
+	unsigned int light_position_location_cube = glGetUniformLocation(cube.GetProgram(), "lightPos");
+	unsigned int view_position_location_cube = glGetUniformLocation(cube.GetProgram(), "viewPos");
 
 	//light
 
 	unsigned int view_location_light = glGetUniformLocation(light.GetProgram(), "view");
 	unsigned int projection_location_light = glGetUniformLocation(light.GetProgram(), "projection");
+	unsigned int model_uniform_location_light = glGetUniformLocation(light.GetProgram(), "model");
 
 	//
 
@@ -244,18 +251,18 @@ int main()
 
 		camera.UpdateRotation();
 
-		glUniform3f(glGetUniformLocation(cube.GetProgram(), "objectColor"), 1.0f, 0.5f, 0.31f);
-		glUniform3f(glGetUniformLocation(cube.GetProgram(), "lightColor"), 1.0f, 1.0f, 1.0f);
-		glUniform3fv(glGetUniformLocation(cube.GetProgram(), "lightPos"), 1, &lightPos[0]);
-		glUniform3fv(glGetUniformLocation(cube.GetProgram(), "viewPos"), 1, &camera.GetPosition()[0]);
+		glUniform3f(object_color_location_cube, 1.0f, 0.5f, 0.31f);
+		glUniform3f(light_color_location_cube, 1.0f, 1.0f, 1.0f);
+		glUniform3fv(light_position_location_cube, 1, &lightPos[0]);
+		glUniform3fv(view_position_location_cube, 1, &camera.GetPosition()[0]);
 
 
 		glUniformMatrix4fv(projection_location_cube, 1, GL_FALSE, glm::value_ptr(camera.GetProjection()));
 		glUniformMatrix4fv(view_location_cube, 1, GL_FALSE, glm::value_ptr(camera.GetView()));
 
 		cube.GetModel() = glm::translate(glm::mat4(1.0), glm::vec3(1.4f, -0.1f, -2.0f));
-		//cube.GetModel() = glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), glm::vec3(0.0f, rotation, 0.0f));
-		cube.UpdateModel("model");
+		cube.GetModel() = glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), glm::vec3(0.0f, rotation, 0.0f));
+		cube.UpdateModel(model_uniform_location_cube);
 
 		cube.Bind();
 		cube.Draw(36);
@@ -275,7 +282,7 @@ int main()
 		light.GetModel() = glm::mat4(1.0f);
 		light.GetModel() = glm::translate(light.GetModel(), lightPos); // Does work without problems
 		light.GetModel() = glm::scale(light.GetModel(), glm::vec3(0.2f));
-		light.UpdateModel("model");
+		light.UpdateModel(model_uniform_location_light);
 
 		light.Bind(); //set current context before any draw routines, it prevents mess in more complex workflow
 		light.Draw(36);

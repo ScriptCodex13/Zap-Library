@@ -196,9 +196,9 @@ namespace zap
 		return indices;
 	}
 
-	void Mesh::UpdateModel(const std::string model_uniform_name)
+	void Mesh::UpdateModel(unsigned int model_uniform_location)
 	{
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, model_uniform_name.c_str()), 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(model_uniform_location, 1, GL_FALSE, glm::value_ptr(model));
 	}
 
 	glm::mat4& Mesh::GetModel()

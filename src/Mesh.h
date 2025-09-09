@@ -74,7 +74,7 @@ namespace zap
 		std::vector<float>& GetVertices();
 		std::vector<unsigned int>& GetIndices();
 		
-		void UpdateModel(const std::string model_uniform_name); // For use with camera
+		void UpdateModel(unsigned int model_uniform_location); // For use with camera
 		glm::mat4& GetModel();
 
 		//separate functions will be very useful in more complex logic
