@@ -148,7 +148,7 @@ int main()
 
 	window.UpdateViewport(true);
 	window.SetVSync(true);
-
+	window.Maximize();
 
 	zap::Enable(zap::Instructions::DEPTH);
 
