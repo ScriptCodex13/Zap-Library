@@ -113,6 +113,10 @@ int main()
 
 	zap::SceneCamera camera(size[0], size[1]);
 
+	camera.SetRotationLimit(361.0f, 89.0f, 0.0f);
+
+	camera.ActivateRotationLimit(true);
+
 	//
 
 

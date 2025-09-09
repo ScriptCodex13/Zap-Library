@@ -37,11 +37,7 @@ namespace zap
 			if (exclusive_between(value, min, max))
 				return value;
 
-			messages::PrintMessage
-			(
-				"rewinding " + std::to_string(value) + " to " + std::to_string(rew), "Util.h/inline T zap::util::rewind(..)",
-				MessageTypes::api_core_info
-			);
+			return rew;
 		}
 
 		//Scope guard for RAII

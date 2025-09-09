@@ -156,7 +156,7 @@ namespace zap
 
 		i_camera_front = glm::normalize(front);
 
-		i_camera_right = glm::normalize(glm::cross(i_camera_front, i_world_up ));
+		i_camera_right = glm::normalize(glm::cross(i_camera_front, i_world_up));
 		i_camera_up = glm::normalize(glm::cross(i_camera_right, i_camera_front));
 		projection = glm::perspective(glm::radians(i_fov), (float)i_screen_width / (float)i_screen_height, 0.1f, 100.0f);
 		view = glm::lookAt(i_camera_position, i_camera_position + i_camera_front, i_camera_up);
