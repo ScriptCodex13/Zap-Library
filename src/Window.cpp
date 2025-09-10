@@ -29,7 +29,6 @@ namespace zap
 			int width, height;
 			glfwGetWindowSize(window, &width, &height);
 			glViewport(0, 0, width, height);
-			glClear(GL_COLOR_BUFFER_BIT);
 		}
 	}
 
@@ -431,6 +430,7 @@ namespace zap
 	void Window::Draw()
 	{
 		InternSwapBuffers(); // Only executes the draw call if the target frame time is passed
+		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
 }
