@@ -20,6 +20,9 @@ project "Zap"
     includedirs {"../extern/DEPENDENCIES (glad)(GLFW)/include/"}
     cppdialect "C++17"
 
+    filter "configurations:Debug"
+        staticruntime "off"
+
 
 project "Application"
     location "Project/Application"
@@ -46,6 +49,9 @@ project "Application"
         links { "glfw", "glad" }
         linkoptions { "-framework OpenGL" }
 
+    filter "configurations:Debug"
+        staticruntime "off"
+    
    
 
 
