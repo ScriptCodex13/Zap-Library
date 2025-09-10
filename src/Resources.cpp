@@ -2,9 +2,16 @@
 #include "Message.h"
 #include "Util.h"
 
+#include <cmath>
+
 namespace zap
 {
 	void Init()
+	{
+		Init(3, 3);
+	}
+
+	void Init(unsigned int version_major, unsigned int version_minor)
 	{
 		/******************************************************************************/
 		if (!glfwInit())
@@ -13,8 +20,8 @@ namespace zap
 			ZAP_INTERRUPT_FATAL_ERROR;
 		}
 
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version_major);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, version_minor);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 		#ifdef __APPLE__
@@ -36,7 +43,7 @@ namespace zap
 
 		/******************************************************************************/
 
-		messages::PrintMessage("Using OpenGL Version 3.3", "", MessageTypes::api_core_info, false);
+		messages::PrintMessage("Using OpenGL Version " + std::to_string(version_major) + "." + std::to_string(version_minor), "", MessageTypes::api_core_info, false);
 	}
 
 	void InitGlad()
