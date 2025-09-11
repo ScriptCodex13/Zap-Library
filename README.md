@@ -55,7 +55,7 @@ int main()
 	{
 		zap::ClearBackground(zap::BackgroundColors::ORANGE);
 
-		if (window.GetInput(zap::Key::ESC, zap::State::EZ_PRESSED))
+		if (window.GetInput(zap::Key::ESC, zap::State::PRESSED))
 		{
 			window.Close();
 		}
@@ -96,7 +96,7 @@ while (window.Open())
 {
 	zap::ClearBackground(zap::BackgroundColors::ORANGE);
 
-	if (window.GetInput(zap::Key::ESC, zap::State::EZ_PRESSED))
+	if (window.GetInput(zap::Key::ESC, zap::State::PRESSED))
 	{
 		window.Close();
 	}
