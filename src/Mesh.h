@@ -51,6 +51,7 @@ namespace zap
 	{
 	public:
 		Mesh(std::vector<float> extern_vertices, std::vector<unsigned int> extern_indices);
+		Mesh(std::vector<float> extern_vertices);
 		~Mesh();
 
 		//Config Process
@@ -122,6 +123,8 @@ namespace zap
 
 		//Textures
 		std::vector<Texture> texturecfg; // Needed to use shared_ptr because otherwise the Program crashes. Please do not change. If that here is very problematic we can find out a solution together.
+
+		bool use_indices = true;
 		
 	};
 

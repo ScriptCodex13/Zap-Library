@@ -16,6 +16,14 @@ namespace zap
 	{
 		vertices = extern_vertices;
 		indices  = extern_indices;
+
+		if (indices.empty()) use_indices = false;
+	}
+	Mesh::Mesh(std::vector<float> extern_vertices)
+	{
+		vertices = extern_vertices;
+
+		use_indices = false;
 	}
 	Mesh::~Mesh()
 	{
@@ -232,7 +240,7 @@ namespace zap
 
 	void Mesh::Draw(int vertices_count)
 	{
-		if (!indices.empty())
+		if (use_indices)
 		{
 			glUseProgram (shaderProgram);
 			glBindVertexArray (VAO);
