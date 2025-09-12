@@ -18,6 +18,7 @@ project "Zap"
     includedirs {"../extern/"}
     files {"../extern/stb_image.h"}
     includedirs {"../extern/DEPENDENCIES (glad)(GLFW)/include/"}
+    includedirs {"../extern/freetype/include"}
     cppdialect "C++17"
 
     filter "configurations:Debug"
@@ -32,9 +33,11 @@ project "Application"
     files {"../application/main.cpp"}
     files {"../extern/glad.c"}
     includedirs {"../extern/DEPENDENCIES (glad)(GLFW)/include/"}
+    includedirs {"../extern/freetype/include"}
     includedirs {"../src/"}
     includedirs {"../extern/"}
     libdirs {"../extern/DEPENDENCIES (glad)(GLFW)/lib/"}
+    libdirs {"../extern/freetype/lib"}
     libdirs {"../Project/Zap/bin/"}
     links {"Zap"}
 
@@ -45,7 +48,7 @@ project "Application"
         runtime "Debug"
     
     filter "system:windows"
-        links {"glfw3","opengl32","user32", "gdi32","shell32"}
+        links {"glfw3","opengl32","user32", "gdi32","shell32", "freetype"} -- Add other platforms support with freetype later
     
     filter "system:linux"
         links { "glfw", "GL", "dl", "pthread", "X11", "Xrandr", "Xi", "Xxf86vm", "m" }
