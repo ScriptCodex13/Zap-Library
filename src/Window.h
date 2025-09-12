@@ -86,11 +86,6 @@ namespace zap
 
 		float LastTime;
 
-	public:
-		bool first_mouse = true;
-		float xoffset = 0.0f;
-		float yoffset = 0.0f;
-
 	private:
 		void InternSwapBuffers(); // Better for managing the FPSLimit
 
