@@ -22,6 +22,7 @@ project "Zap"
 
     filter "configurations:Debug"
         staticruntime "off"
+        runtime "Debug"
 
 
 project "Application"
@@ -38,6 +39,10 @@ project "Application"
     links {"Zap"}
 
     cppdialect "C++17"
+
+    filter "configurations:Debug"
+        staticruntime "off"
+        runtime "Debug"
     
     filter "system:windows"
         links {"glfw3","opengl32","user32", "gdi32","shell32"}
@@ -49,8 +54,7 @@ project "Application"
         links { "glfw", "glad" }
         linkoptions { "-framework OpenGL" }
 
-    filter "configurations:Debug"
-        staticruntime "off"
+    
     
    
 
