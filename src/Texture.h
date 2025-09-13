@@ -34,6 +34,9 @@ namespace zap
 	struct Texture
 	{
 		Texture(unsigned int id, const std::string path, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
+		Texture(unsigned int id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
+
+		~Texture();
 
 		void genTexture();
 		void bind();
@@ -52,6 +55,12 @@ namespace zap
 		int i_nrChannels;
 
 		bool i_usePNG = false;
+
+		bool i_load_data_manual = false;
+
+		unsigned char* i_TextureData;
+
+		GLenum i_Type;
 
 		unsigned int i_id;
 	};

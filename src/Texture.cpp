@@ -30,6 +30,36 @@ namespace zap
 		glGenTextures(1, &i_texture);
 	}
 
+	Texture::Texture // For Developers
+	(
+		unsigned int id,
+		unsigned char* texture_data,
+		int texture_width,
+		int texture_height,
+		GLenum Type,
+		TextureFilters filter,
+		MipmapSettings settings,
+		TextureWrapping wrapping
+	) :
+		i_id(id),
+		i_TextureData(texture_data),
+		i_width(texture_width),
+		i_height(texture_height),
+		i_Type(Type),
+		i_filter(filter),
+		i_settings(settings),
+		i_wrapping(wrapping)
+	{
+		i_path = "";
+		glGenTextures(1, &i_texture);
+		i_load_data_manual = true;
+	}
+
+	Texture::~Texture()
+	{
+		//delete i_TextureData;
+	}
+
 	void Texture::genTexture()
 	{
 		bind();
@@ -38,29 +68,48 @@ namespace zap
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,     (GLint)i_wrapping);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLint)i_settings);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLint)i_filter);
+;
+		unsigned char* pTextureData;
 
 		bool usePng = std::filesystem::path(i_path).extension() == ".png";
 
-		stbi_set_flip_vertically_on_load(true);
-
-		unsigned char* pTextureData = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Maybe move this process to Loader.h
-		//Use scope_guard to free texture data whenever going out of scope
-		util::scope_guard freeTextureData([pTextureData]() { if (pTextureData) stbi_image_free(pTextureData); }); 
-		if (!pTextureData)
+		if (!i_load_data_manual)
 		{
-			messages::PrintMessage("Failed to load Texture at path: " + i_path, "Mesh.cpp/zap::Texture::Texture(...)", MessageTypes::error)
-				<< "current working directory: " << std::filesystem::current_path() << std::endl;
-			return;
-		}
+			stbi_set_flip_vertically_on_load(true);
 
-		if (usePng)
-		{
-			//TODO: be aware of internal format and format difference
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, i_width, i_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pTextureData);
+			pTextureData = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Maybe move this process to Loader.h
+			//Use scope_guard to free texture data whenever going out of scope
+			util::scope_guard freeTextureData([pTextureData]() { if (pTextureData) stbi_image_free(pTextureData); });
+
+
+			if (!pTextureData)
+			{
+				messages::PrintMessage("Failed to load Texture at path: " + i_path, "Mesh.cpp/zap::Texture::Texture(...)", MessageTypes::error)
+					<< "current working directory: " << std::filesystem::current_path() << std::endl;
+				return;
+			}
 		}
 		else
 		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, i_width, i_height, 0, GL_RGB, GL_UNSIGNED_BYTE, pTextureData);
+			pTextureData = i_TextureData;
+		}
+
+
+		if (i_load_data_manual)
+		{
+			glTexImage2D(GL_TEXTURE_2D, 0, i_Type, i_width, i_height, 0, i_Type, GL_UNSIGNED_BYTE, pTextureData);
+		}
+		else
+		{
+			if (usePng)
+			{
+				//TODO: be aware of internal format and format difference
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, i_width, i_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pTextureData);
+			}
+			else
+			{
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, i_width, i_height, 0, GL_RGB, GL_UNSIGNED_BYTE, pTextureData);
+			}
 		}
 
 		glGenerateMipmap(GL_TEXTURE_2D);

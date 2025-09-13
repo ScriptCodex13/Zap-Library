@@ -6,6 +6,7 @@
 #include "Message.h"
 #include "Texture.h"
 #include "AttributeConfig.h"
+#include "Util.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -17,6 +18,7 @@
 
 #include <vector>
 #include <string>
+#include <bitset>
 
 
 namespace zap
@@ -65,7 +67,8 @@ namespace zap
 		AttributeConfig& SetAttribPointer(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos);
 		//
 
-		Texture& AddTexture(unsigned int id, const std::string path, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping i_wrapping = TextureWrapping::CLAMP_TO_BORDER);
+		Texture& AddTexture(unsigned int id, const std::string path, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
+		Texture& AddTexture(unsigned int id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER); // Add texture but with manual loaded texture_data
 
 		void BuildProgram();
 		void GenObject();
@@ -77,6 +80,10 @@ namespace zap
 		
 		void UpdateModel(unsigned int model_uniform_location); // For use with camera
 		glm::mat4& GetModel();
+
+		unsigned int& GetVBO();
+		unsigned int& GetVAO();
+		unsigned int& GetEBO();
 
 		//separate functions will be very useful in more complex logic
 		unsigned int GetUniformLocation(const GLchar* name);

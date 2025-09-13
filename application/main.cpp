@@ -88,7 +88,7 @@ void main()
 
 int main()
 {
-	zap::Init();
+	zap::Init(4, 6);
 
 	zap::Window window(1920, 1080, "Hello Window");
 
@@ -99,6 +99,10 @@ int main()
 	// zap::Device controller = zap::AssignController(); For later prototyping with the controller
 
 	//
+
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
 	//Camera
@@ -158,7 +162,7 @@ int main()
 	window.SetCursorinCameraMode(true);
 
 
-
+	zap::Text text("C:/Windows/Fonts/arial.ttf", "Text", window.GetSize());
 
 
 	glm::vec3 lightPos(1.0f, 0.0f, 2.0f);
@@ -247,7 +251,7 @@ int main()
 
 		//Cube
 
-		cube.UseProgram();
+		/*cube.UseProgram();
 
 		camera.UpdateRotation();
 
@@ -287,12 +291,15 @@ int main()
 		light.Bind(); //set current context before any draw routines, it prevents mess in more complex workflow
 		light.Draw(36);
 
-		//
+		//*/
 
 		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
 		//zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
 		//here starts current VAO for current program draw
 		//here draw ends
+
+
+		text.Draw();
 
 		window.Update();
 		window.Draw();

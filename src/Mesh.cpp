@@ -71,6 +71,17 @@ namespace zap
 		return texturecfg.emplace_back(Texture{ id, path, filter, settings, wrapping });
 	}
 
+	Texture& Mesh::AddTexture(unsigned int id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilters filter, MipmapSettings settings, TextureWrapping wrapping)
+	{
+		if (texture_width < 0 || texture_height < 0)
+		{
+			messages::PrintMessage("Given texture dimensions are not valid", "Texture& zap::Mesh::AddTexture(...)", MessageTypes::fatal_error);
+			ZAP_INTERRUPT_FATAL_ERROR;
+		}
+
+		return texturecfg.emplace_back(Texture{ id, texture_data, texture_width, texture_height, Type, filter, settings, wrapping });
+	}
+
 	void Mesh::BuildProgram()
 	{
 		vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -148,7 +159,7 @@ namespace zap
 		}
 
 		// EBO
-		if (!indices.empty())
+		if (use_indices)
 		{
 			glGenBuffers(1, &EBO);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
@@ -212,6 +223,21 @@ namespace zap
 	glm::mat4& Mesh::GetModel()
 	{
 		return model;
+	}
+
+	unsigned int& Mesh::GetVBO()
+	{
+		return VBO;
+	}
+
+	unsigned int& Mesh::GetVAO()
+	{
+		return VAO;
+	}
+
+	unsigned int& Mesh::GetEBO()
+	{
+		return EBO;
 	}
 
 	unsigned int Mesh::GetUniformLocation(const GLchar* name)
