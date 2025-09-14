@@ -54,6 +54,15 @@ namespace zap
 			scope_guard(T _t) :t(_t) {}
 			~scope_guard() { t(); }
 		};
+		//Callback invoker, for wrapping event handlers.
+        //  It will be handful for building better responsibility separation
+		template <typename T> class callback_invoker
+		{
+			T callback;
+		public:
+			inline callback_invoker(T _callback) : callback(_callback) {}
+			void operator () () { callback(); }
+		};
 	};
 }
 
