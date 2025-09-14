@@ -1,5 +1,4 @@
 #include "Texture.h"
-#include "Mesh.h"
 #include "Util.h"
 #include <stb_image.h>
 
