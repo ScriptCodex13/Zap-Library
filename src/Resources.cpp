@@ -2,8 +2,6 @@
 #include "Message.h"
 #include "Util.h"
 
-#include <cmath>
-
 namespace zap
 {
 	void Init()
