@@ -1,7 +1,5 @@
 #include "AttributeConfig.h"
 
-#include <filesystem>
-
 namespace zap
 {
 	AttributeConfig::AttributeConfig(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos) :
