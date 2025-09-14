@@ -20,6 +20,7 @@
 #include "Resources.h"
 #include "Loader.h"
 #include "Util.h"
+#include "GlfwUtil.h"
 
 //
 

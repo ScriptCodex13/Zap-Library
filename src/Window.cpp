@@ -47,8 +47,11 @@ namespace zap
 			ZAP_INTERRUPT_FATAL_ERROR;
 		}
 
-		//TODO: intern_window is already checked, why check it again? Remove comment affter read.
-		currentMonitor = glfwGetWindowMonitor(intern_window);
+		if (monitor == NULL) currentMonitor = glfwGetPrimaryMonitor();
+
+		else currentMonitor = glfwGetWindowMonitor(intern_window); // The same for the other constructor
+
+		
 
 		glfwMakeContextCurrent(intern_window);
 		glfwGetWindowSize(intern_window, &width, &height);
@@ -67,7 +70,9 @@ namespace zap
 			ZAP_INTERRUPT_FATAL_ERROR;
 		}
 
-		currentMonitor = glfwGetWindowMonitor(intern_window);
+		if (glfwGetWindowMonitor(intern_window) == NULL) currentMonitor = glfwGetPrimaryMonitor();
+		
+		else currentMonitor = glfwGetWindowMonitor(intern_window);
 
 		glfwMakeContextCurrent(intern_window);
 		glfwGetWindowSize(intern_window, &width, &height);
