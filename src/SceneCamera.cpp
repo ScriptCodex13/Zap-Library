@@ -1,5 +1,6 @@
 #include "SceneCamera.h"
 
+//TODO: consider removing iostream header
 #include <iostream>
 
 namespace zap
@@ -26,59 +27,10 @@ namespace zap
 		i_camera_position = glm::vec3(x, y, z);
 	}
 
-	//void Camera::Rotate(float yaw, float pitch, float roll /* <- Doesnt work*/)
-	//{
-	//
-	//	std::cout << yaw << std::endl;
-	//
-	//	i_yaw += yaw;
-	//
-	//	if (i_yaw > 360.0f)
-	//	{
-	//		i_yaw = 0.0f;
-	//	}
-	//	if (i_yaw < -360.0f)
-	//	{
-	//		i_yaw = 0.0f;
-	//	}
-	//
-	//	i_pitch += pitch;
-	//
-	//	if (i_pitch > 360.0f)
-	//	{
-	//		i_pitch = 0.0f;
-	//	}
-	//	if (i_pitch < -360.0f)
-	//	{
-	//		i_pitch = 0.0f;
-	//	}
-	//
-	//	std::cout << i_yaw << std::endl;
-	//}
-
 	void SceneCamera::Rotate(float yaw, float pitch, float roll /* <- Doesnt work*/)
 	{
 		i_yaw += yaw;
-
-		/*if (i_yaw > 360.0f)
-		{
-			i_yaw = 0.0f;
-		}
-		if (i_yaw < -360.0f)
-		{
-			i_yaw = 0.0f;
-		}*/
-		
-			i_pitch += pitch;
-		
-		/*if (i_pitch > 360.0f)
-		{
-			i_pitch = 0.0f;
-		}
-		if (i_pitch < -360.0f)
-		{
-			i_pitch = 0.0f;
-		}*/
+		i_pitch += pitch;
 	}
 
 	void SceneCamera::SetFOV(float new_fov)
