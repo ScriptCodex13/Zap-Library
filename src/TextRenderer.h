@@ -29,6 +29,20 @@ namespace zap
 {
 	// Text class will be here
 
+	enum class TextColors
+	{
+		WHITE,
+		BLACK,
+		RED,
+		GREEN,
+		BLUE,
+		YELLOW,
+		ORANGE,
+		PURPLE,
+		PINK
+
+	};
+
 	struct Character 
 	{
 		unsigned int TextureID;
@@ -43,11 +57,12 @@ namespace zap
 		Text(const std::string font_path, const std::string content, std::array<unsigned int, 2> window_size);
 		~Text();
 
-		void SetContent();
-		void SetSize();
-		void SetPosition();
-		void SetColor();
-		void Scale();
+		void SetContent(const std::string new_content);
+		void SetCharacterSize(unsigned int new_size_pixel);
+		void SetPosition(float new_x, float new_y);
+		void SetColor(TextColors color);
+		void SetColor(float RED, float GREEN, float BLUE);
+		void SetScale(float scale_x, float scale_y);
 
 		void Draw();
 		void GenerateCharacters();
@@ -58,7 +73,8 @@ namespace zap
 
 		unsigned int i_character_size = 24;
 
-		float i_scale = 1.0f;
+		float i_scale_x = 1.0f;
+		float i_scale_y = 1.0f;
 
 		glm::mat4 projection;
 
@@ -70,7 +86,7 @@ namespace zap
 
 		std::map<GLchar, Character> Characters;
 
-		glm::vec3 i_text_color = glm::vec3(0.0f, 0.0f, 1.0f);
+		glm::vec3 i_text_color = glm::vec3(1.0f, 0.0f, 0.0f);
 
 		float pos_x = 10.0f;
 		float pos_y = 10.0f;

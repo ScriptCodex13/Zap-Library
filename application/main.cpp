@@ -164,6 +164,9 @@ int main()
 
 	zap::Text text("C:/Windows/Fonts/arial.ttf", "Text", window.GetSize());
 
+	text.SetCharacterSize(32);
+	text.SetColor(0.0f, 1.0f, 0.0f);
+
 
 	glm::vec3 lightPos(1.0f, 0.0f, 2.0f);
 
@@ -251,7 +254,7 @@ int main()
 
 		//Cube
 
-		/*cube.UseProgram();
+		cube.UseProgram();
 
 		camera.UpdateRotation();
 
@@ -298,6 +301,7 @@ int main()
 		//here starts current VAO for current program draw
 		//here draw ends
 
+		text.SetContent(std::to_string(std::round(window.GetFPS())));
 
 		text.Draw();
 

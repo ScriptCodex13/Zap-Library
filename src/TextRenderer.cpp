@@ -72,7 +72,7 @@ namespace zap
 
 	void Text::GenerateCharacters()
 	{
-        FT_Set_Pixel_Sizes(i_font, 0, 48); // Or i carracter size
+        FT_Set_Pixel_Sizes(i_font, 0, i_character_size); // Or i carracter size
 
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
@@ -103,6 +103,74 @@ namespace zap
 		
 	}
 
+	void Text::SetContent(const std::string new_content)
+	{
+		i_content = new_content;
+	}
+
+	void Text::SetCharacterSize(unsigned int new_size_pixel)
+	{
+		i_character_size = new_size_pixel;
+		GenerateCharacters(); // Regenerate the characters with the new character size
+	}
+
+	void Text::SetPosition(float new_x, float new_y)
+	{
+		//ToDo: Flip the y axis so the orign (0,0) is in the top left corner of the window 
+
+		pos_x = new_x;
+		pos_y = new_y;
+	}
+
+	void Text::SetColor(TextColors color)
+	{
+		switch (color)
+		{
+		case TextColors::WHITE:
+			i_text_color = glm::vec3(1.0f, 1.0f, 1.0f);
+			return;
+		case TextColors::BLACK:
+			i_text_color = glm::vec3(0.0f, 0.0f, 0.0f);
+			return;
+		case TextColors::RED:
+			i_text_color = glm::vec3(0.8f, 0.0f, 0.0f);
+			return;
+		case TextColors::GREEN:
+			i_text_color = glm::vec3(0.0f, 0.8f, 0.0f);
+			return;
+		case TextColors::BLUE:
+			i_text_color = glm::vec3(0.0f, 0.0f, 0.8f);
+			return;
+		case TextColors::YELLOW:
+			i_text_color = glm::vec3(1.0f, 0.9f, 0.0f);
+			return;
+		case TextColors::ORANGE:
+			i_text_color = glm::vec3(1.0f, 0.7f, 0.0f);
+			return;
+		case TextColors::PURPLE:
+			i_text_color = glm::vec3(0.8f, 0.0f, 1.0f);
+			return;
+		case TextColors::PINK:
+			i_text_color = glm::vec3(1.0f, 0.0f, 0.5f);
+			return;
+		}
+	}
+
+	void Text::SetColor(float RED, float GREEN, float BLUE)
+	{
+		RED = std::clamp(RED, 0.0f, 1.0f);
+		GREEN = std::clamp(GREEN, 0.0f, 1.0f);
+		BLUE = std::clamp(BLUE, 0.0f, 1.0f);
+
+		i_text_color = glm::vec3(RED, GREEN, BLUE);
+	}
+
+	void Text::SetScale(float scale_x, float scale_y)
+	{
+		i_scale_x = scale_x;
+		i_scale_y = scale_y;
+	}
+
 	void Text::Draw()
 	{
 		i_text_mesh->UseProgram();
@@ -119,11 +187,11 @@ namespace zap
 		{
 			Character ch = Characters[*c];
 
-			float xpos = x + ch.Bearing.x * i_scale;
-			float ypos = y - (ch.Size.y - ch.Bearing.y) * i_scale;
+			float xpos = x + ch.Bearing.x * i_scale_x;
+			float ypos = y - (ch.Size.y - ch.Bearing.y) * i_scale_y;
 
-			float w = ch.Size.x * i_scale;
-			float h = ch.Size.y * i_scale;
+			float w = ch.Size.x * i_scale_x;
+			float h = ch.Size.y * i_scale_y;
 			// update VBO for each character
 			float vertices[6][4] = 
 			{
@@ -152,7 +220,7 @@ namespace zap
 			
 
 			//
-			x += (ch.Advance >> 6) * i_scale;
+			x += (ch.Advance >> 6) * i_scale_x;
 		}
 
 		glBindVertexArray(0);
