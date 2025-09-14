@@ -83,11 +83,13 @@ namespace zap
 				messages::PrintMessage("Failed to load glyph", "TextRenderer.cpp/ void zap::Text::GenerateCharacters(...)", MessageTypes::error);
 			}
             
-			unsigned int texture_id = i_text_mesh->AddTexture((unsigned int)c, i_font->glyph->bitmap.buffer, i_font->glyph->bitmap.width, i_font->glyph->bitmap.rows, GL_RED, zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE).i_id;
+			Texture& tex = i_text_mesh->AddTexture((unsigned int)c, i_font->glyph->bitmap.buffer, i_font->glyph->bitmap.width, i_font->glyph->bitmap.rows, GL_RED, zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE);
 
+			tex.genTexture();
+		
 			Character character =
 			{
-				texture_id,
+				tex.i_texture,
 				glm::ivec2(i_font->glyph->bitmap.width, i_font->glyph->bitmap.rows),
 				glm::ivec2(i_font->glyph->bitmap_left, i_font->glyph->bitmap_top),
 				(unsigned int)i_font->glyph->advance.x
@@ -144,9 +146,9 @@ namespace zap
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			
-			glDrawArrays(GL_TRIANGLES, 0, 6);
+			//glDrawArrays(GL_TRIANGLES, 0, 6);
 
-			//i_text_mesh->Draw(6);
+			i_text_mesh->Draw(6);
 			
 
 			//

@@ -25,17 +25,17 @@
 
 // ToDo add function to load a font in the loader or here
 
-struct Character 
-{
-	unsigned int TextureID; 
-	glm::ivec2   Size;      
-	glm::ivec2   Bearing;   
-	unsigned int Advance;   
-};
-
 namespace zap
 {
 	// Text class will be here
+
+	struct Character 
+	{
+		unsigned int TextureID;
+		glm::ivec2   Size;      
+		glm::ivec2   Bearing;   
+		unsigned int Advance;   
+	};
 
 	class Text
 	{
