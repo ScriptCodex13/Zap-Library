@@ -1,6 +1,5 @@
 #include "AttributeConfig.h"
 
-#include <stb_image.h>
 #include <filesystem>
 
 namespace zap
