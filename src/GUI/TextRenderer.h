@@ -7,9 +7,9 @@
 
 // includes
 
-#include "Mesh.h"
-#include "Message.h"
-#include "Util.h"
+#include "../Graphics/Mesh.h"
+#include "../Util/Message.h"
+#include "../Util/Util.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H  

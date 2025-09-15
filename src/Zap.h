@@ -8,19 +8,20 @@
 
 // Additional includes
 
-#include "Message.h"
-#include "Input.h"
+#include "Util/Message.h"
+#include "Window/Input.h"
 
 //
 
 // Library includes
 
-#include "Window.h"
-#include "Graphics.h"
-#include "Resources.h"
-#include "Loader.h"
-#include "Util.h"
-#include "GlfwUtil.h"
+#include "Window/Window.h"
+#include "Graphics/Graphics.h"
+#include "Util/Resources.h"
+#include "Util/Loader.h"
+#include "Util/Util.h"
+#include "Graphics/GlfwUtil.h"
+#include "GUI/GUI.h"
 
 //
 

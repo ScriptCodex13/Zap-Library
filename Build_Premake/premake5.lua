@@ -15,6 +15,14 @@ project "Zap"
     language "C++"
     files { "../src/**.cpp"}
     files { "../src/**.h"}
+    files { "../src/Graphics/**.cpp"}
+    files { "../src/Graphics/**.h"}
+    files { "../src/GUI**.cpp"}
+    files { "../src/GUI/**.h"}
+    files { "../src/Util/**.cpp"}
+    files { "../src/Util/**.h"}
+    files { "../src/Window/**.cpp"}
+    files { "../src/Window/**.h"}
     includedirs {"../extern/"}
     files {"../extern/stb_image.h"}
     includedirs {"../extern/DEPENDENCIES (glad)(GLFW)/include/"}

@@ -3,10 +3,10 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include "Message.h"
+#include "../Util/Message.h"
 #include "Texture.h"
 #include "AttributeConfig.h"
-#include "Util.h"
+#include "../Util/Util.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
