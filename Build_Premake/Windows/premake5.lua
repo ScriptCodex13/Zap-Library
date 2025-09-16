@@ -24,7 +24,6 @@ project "Zap"
     files { "../../src/Window/**.cpp"}
     files { "../../src/Window/**.h"}
     includedirs {"../../extern/"}
-    files {"../../extern/stb_image.h"}
     includedirs {"../../extern/glad/include/"}
     includedirs {"../../extern/GLFW/include/"}
     includedirs {"../../extern/freetype/include"}
