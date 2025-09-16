@@ -25,7 +25,8 @@ project "Zap"
     files { "../../src/Window/**.h"}
     includedirs {"../../extern/"}
     files {"../../extern/stb_image.h"}
-    includedirs {"../../extern/DEPENDENCIES (glad)(GLFW)/include/"}
+    includedirs {"../../extern/glad/include/"}
+    includedirs {"../../extern/GLFW/include/"}
     includedirs {"../../extern/freetype/include"}
     cppdialect "C++17"
 
@@ -40,11 +41,12 @@ project "Application"
     language "C++"
     files {"../../application/main.cpp"}
     files {"../../extern/glad.c"}
-    includedirs {"../../extern/DEPENDENCIES (glad)(GLFW)/include/"}
+    includedirs {"../../extern/glad/include/"}
+    includedirs {"../../extern/GLFW/include/"}
     includedirs {"../../extern/freetype/include"}
     includedirs {"../../src/"}
     includedirs {"../../extern/"}
-    libdirs {"../../extern/DEPENDENCIES (glad)(GLFW)/lib/"}
+    libdirs {"../../extern/GLFW/lib"}
     libdirs {"../../extern/freetype/lib"}
     libdirs {"../../Project/Zap/bin/"}
     links {"Zap"}
