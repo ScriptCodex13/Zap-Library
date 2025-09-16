@@ -46,8 +46,8 @@ project "Application"
     includedirs {"../../extern/freetype/include"}
     includedirs {"../../src/"}
     includedirs {"../../extern/"}
-    libdirs {"../../extern/GLFW/lib"}
-    libdirs {"../../extern/freetype/lib"}
+    libdirs {"../../extern/GLFW/lib/Windows"}
+    libdirs {"../../extern/freetype/lib/Windows"}
     libdirs {"../../Project/Zap/bin/"}
     links {"Zap"}
 
