@@ -54,7 +54,7 @@ namespace zap
 		
 
 		glfwMakeContextCurrent(intern_window);
-		glfwGetWindowSize(intern_window, &width, &height);
+		glfwGetWindowSize(intern_window, &i_window_dimensions[0], &i_window_dimensions[1]);
 		glfwGetWindowPos(intern_window, &pos_x, &pos_y);
 
 		TargetFrameTime = std::round(1.0f / FPSLimit * 100000) / 100000;
@@ -75,7 +75,7 @@ namespace zap
 		else currentMonitor = glfwGetWindowMonitor(intern_window);
 
 		glfwMakeContextCurrent(intern_window);
-		glfwGetWindowSize(intern_window, &width, &height);
+		glfwGetWindowSize(intern_window, &i_window_dimensions[0], &i_window_dimensions[1]);
 		glfwGetWindowPos(intern_window, &pos_x, &pos_y);
 
 	}
@@ -140,11 +140,11 @@ namespace zap
 		
 		if (state)
 		{
-			glfwSetWindowMonitor(intern_window, currentMonitor, pos_x, pos_y, width, height, current_refresh_rate);
+			glfwSetWindowMonitor(intern_window, currentMonitor, pos_x, pos_y, i_window_dimensions[0], i_window_dimensions[1], current_refresh_rate);
 		}
 		else
 		{
-			glfwSetWindowMonitor(intern_window, NULL, pos_x, pos_y, width, height, current_refresh_rate);
+			glfwSetWindowMonitor(intern_window, NULL, pos_x, pos_y, i_window_dimensions[0], i_window_dimensions[1], current_refresh_rate);
 		}
 			
 		
@@ -156,12 +156,12 @@ namespace zap
 		
 		if (state)
 		{
-			glfwSetWindowMonitor(intern_window, monitor, pos_x, pos_y, width, height, current_refresh_rate);
+			glfwSetWindowMonitor(intern_window, monitor, pos_x, pos_y, i_window_dimensions[0], i_window_dimensions[1], current_refresh_rate);
 			currentMonitor = glfwGetWindowMonitor(intern_window);
 		}
 		else
 		{
-			glfwSetWindowMonitor(intern_window, NULL, pos_x, pos_y, width, height, current_refresh_rate);
+			glfwSetWindowMonitor(intern_window, NULL, pos_x, pos_y, i_window_dimensions[0], i_window_dimensions[1], current_refresh_rate);
 		}
 
 		
@@ -219,19 +219,24 @@ namespace zap
 	{
 		if (!intern_window) return;
 
-		width = new_width;
-		height = new_height;
+		i_window_dimensions[0] = new_width;
+		i_window_dimensions[1] = new_height;
 
 		if (currentMonitor)
 		{
-			glfwSetWindowMonitor(intern_window, currentMonitor, pos_x, pos_y, width, height, current_refresh_rate);
+			glfwSetWindowMonitor(intern_window, currentMonitor, pos_x, pos_y, i_window_dimensions[0], i_window_dimensions[1], current_refresh_rate);
 		}
 		
 	}
 
-	std::array<unsigned int, 2> Window::GetSize()
+	std::array<int, 2>& Window::GetSizeR()
 	{
-		return { (unsigned int)width, (unsigned int)height };
+		return i_window_dimensions;
+	}
+
+	std::array<int, 2> Window::GetSize()
+	{
+		return i_window_dimensions;
 	}
 
 	void Window::SetPosition(int x, int y)
@@ -243,7 +248,7 @@ namespace zap
 
 		if (currentMonitor)
 		{
-			glfwSetWindowMonitor(intern_window, currentMonitor, pos_x, pos_y, width, height, current_refresh_rate);
+			glfwSetWindowMonitor(intern_window, currentMonitor, pos_x, pos_y, i_window_dimensions[0], i_window_dimensions[1], current_refresh_rate);
 		}
 		
 	}
@@ -426,7 +431,7 @@ namespace zap
 		{
 			glfwPollEvents();                   // Should be called everytime 
 
-			glfwGetWindowSize(intern_window, &width, &height); 
+			glfwGetWindowSize(intern_window, &i_window_dimensions[0], &i_window_dimensions[1]);
 
 			currentMonitor = glfwGetWindowMonitor(intern_window);
 		}

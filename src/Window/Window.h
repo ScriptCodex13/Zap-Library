@@ -40,7 +40,8 @@ namespace zap
 		float GetFPS();                                                     // Returns the current FPS of the window as a float. ! Cannot be replaced with manual FPS checking if .Draw() is used !
 		float GetDelta();                                                   // Returns the current Frametime as Delta
 		void SetSize(unsigned int new_width, unsigned int new_height);      // Set the new size of the window 
-		std::array<unsigned int, 2> GetSize();
+		std::array<int, 2>& GetSizeRef();
+		std::array<int, 2> GetSize();
 		void SetPosition(int x, int y);                                     // Set the Position of the window on the screen
 		// void SetFPSLimit(unsigned int limit);                               // Limit the max amount of frame updates per second
 		void SetTitle(const std::string title);                             // Set the title of the window 
@@ -66,8 +67,7 @@ namespace zap
 	private:
 		GLFWwindow* intern_window = nullptr;
 		GLFWmonitor* currentMonitor = nullptr;
-		int width  = 0;
-		int height = 0;
+		std::array<int, 2> i_window_dimensions = { 0,0 };
 		int pos_x  = 0;
 		int pos_y  = 0;
 		int current_refresh_rate = 1000000000;

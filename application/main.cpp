@@ -107,7 +107,7 @@ int main()
 
 	//Camera
 
-	std::array<unsigned int, 2> size = window.GetSize(); // Not a Ref to the window size !
+	std::array<int, 2> size = window.GetSize(); // Not a Ref to the window size !
 
 	zap::SceneCamera camera(size[0], size[1]);
 
@@ -162,10 +162,11 @@ int main()
 	window.SetCursorinCameraMode(true);
 
 
-	zap::Text text("C:/Windows/Fonts/arial.ttf", "Text", window.GetSize());
+	zap::Text text("C:/Windows/Fonts/arial.ttf", "Text", window.GetSizeRef()); // It's better to use GetSizeRef here
 
 	text.SetCharacterSize(32);
 	text.SetColor(0.0f, 1.0f, 0.0f);
+	text.SetPosition(100.0f, 100.0f); // A quick test
 
 
 	glm::vec3 lightPos(1.0f, 0.0f, 2.0f);

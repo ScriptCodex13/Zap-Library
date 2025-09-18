@@ -54,7 +54,7 @@ namespace zap
 	class Text
 	{
 	public:
-		Text(const std::string font_path, const std::string content, std::array<unsigned int, 2> window_size);
+		Text(const std::string font_path, const std::string content, std::array<int, 2>& window_size);
 		~Text();
 
 		void SetContent(const std::string new_content);
@@ -72,6 +72,8 @@ namespace zap
 		std::string i_font_path;
 
 		unsigned int i_character_size = 24;
+
+		std::array<int, 2>* e_window_size;
 
 		float i_scale_x = 1.0f;
 		float i_scale_y = 1.0f;

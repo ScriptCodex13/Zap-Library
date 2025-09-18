@@ -5,7 +5,7 @@
 
 namespace zap
 {
-	SceneCamera::SceneCamera(unsigned int& window_width, unsigned int& window_height, const std::array<float, 3> position, std::array<float, 3> world_up)
+	SceneCamera::SceneCamera(int& window_width, int& window_height, const std::array<float, 3> position, std::array<float, 3> world_up)
 		: i_screen_width(window_width), i_screen_height(window_height)
 	{
 		i_camera_position = glm::vec3(position[0], position[1], position[2]);

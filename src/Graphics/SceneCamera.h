@@ -22,7 +22,7 @@ namespace zap
 	class SceneCamera // Dont know if it works
 	{
 	public:
-		SceneCamera(unsigned int& window_width, unsigned int& window_height, const std::array<float, 3> position = { 0.0f, 0.0f, 3.0f }, std::array<float, 3> up = { 0.0f, 1.0f, 0.0f });
+		SceneCamera(int& window_width, int& window_height, const std::array<float, 3> position = { 0.0f, 0.0f, 3.0f }, std::array<float, 3> up = { 0.0f, 1.0f, 0.0f });
 		~SceneCamera();
 
 		void SetPosition(float x, float y, float z);
