@@ -25,6 +25,7 @@ namespace zap
 		bool Released();
 		bool Pressed();
 
+		void SetButtonText();
 		void SetTextOffset();
 
 		void Update();

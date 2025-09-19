@@ -200,6 +200,10 @@ int main()
 
 	glEnable(GL_CULL_FACE);
 
+	auto coord = zap::util::convert_pixel_to_window(window.GetSize(), 1.0f, 1.0f);
+
+	std::cout << "x: " << coord[0] << ",y: " << coord[1] << std::endl;
+
 	while (window.Open())
 	{
 		// Mouse Input

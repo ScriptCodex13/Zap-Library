@@ -229,7 +229,7 @@ namespace zap
 		
 	}
 
-	std::array<int, 2>& Window::GetSizeR()
+	std::array<int, 2>& Window::GetSizeRef()
 	{
 		return i_window_dimensions;
 	}

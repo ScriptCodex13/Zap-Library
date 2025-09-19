@@ -20,6 +20,15 @@ namespace zap
 	namespace util 
 	{
 		template<typename T>
+		inline std::array<T, 2> convert_pixel_to_window(std::array<int, 2> dimensions, T x, T y)
+		{
+			// Converts pixel coordinates to the OpenGL coordinate system
+			std::array<float, 2> n_dimensions = { (float)dimensions[0], (float)dimensions[1] };
+
+			return { (x / ((T)n_dimensions[0] / 2)) - 1 , (y / ((T)n_dimensions[1] / 2)) - 1};
+		}
+
+		template<typename T>
 		inline bool between(T value, T min, T max)
 		{
 			return value >= min && value <= max;
