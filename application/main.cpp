@@ -85,6 +85,89 @@ void main()
 
 )glsl";
 
+class Cube : public zap::Mesh
+{
+	unsigned int view_location;
+	unsigned int projection_location;
+	unsigned int model_location;
+
+	unsigned int object_color_location;
+	unsigned int light_color_location;
+	unsigned int light_position_location;
+	unsigned int view_position_location;
+public:
+	Cube() : zap::Mesh (zap::standard_cube::standardcubevertices) {
+		SetVertexShaderSource(vertexShaderSourcecube);
+		SetFragmentShaderSource(fragmentShaderSourcecube);
+
+		SetAttribPointer(0, 3, 6, 0);
+		SetAttribPointer(1, 3, 6, 3);
+
+		Finish();
+		view_location = glGetUniformLocation(GetProgram(), "view");
+		projection_location = glGetUniformLocation(GetProgram(), "projection");
+		model_location = glGetUniformLocation(GetProgram(), "model");
+
+		object_color_location = glGetUniformLocation(GetProgram(), "objectColor");
+		light_color_location = glGetUniformLocation(GetProgram(), "lightColor");
+		light_position_location = glGetUniformLocation(GetProgram(), "lightPos");
+		view_position_location = glGetUniformLocation(GetProgram(), "viewPos");
+	}
+	void setColorUniform3f(float r, float g, float b) {
+		glUniform3f(object_color_location, r, g, b);
+	}
+	void setLightColorUniform3f(float r, float g, float b) {
+		glUniform3f(light_color_location, r, g, b);
+	}
+	void setLightPositionUniform3fv(glm::vec3 pos) {
+		glUniform3fv(light_position_location, 1, &pos[0]);
+	}
+	void setViewPositionUniform3fv(glm::vec3 pos) {
+		glUniform3fv(view_position_location, 1, &pos[0]);
+	}
+
+	void SetProjection(glm::mat4 proj)
+	{
+		glUniformMatrix4fv(projection_location, 1, GL_FALSE, glm::value_ptr(proj));
+	}
+	void SetView(glm::mat4 view)
+	{
+		glUniformMatrix4fv(view_location, 1, GL_FALSE, glm::value_ptr(view));
+	}
+
+	void UpdateModel(glm::mat4 mdl) {
+		glUniformMatrix4fv(model_location, 1, GL_FALSE, glm::value_ptr(mdl));
+	}
+
+};
+
+class LightCube : public zap::Mesh
+{
+	unsigned int view_location;
+	unsigned int projection_location;
+	unsigned int model_location;
+public:
+	LightCube() : zap::Mesh(zap::standard_cube::standardcubevertices) {
+		SetVertexShaderSource(vertexShaderSourcelight);
+		SetFragmentShaderSource(fragmentShaderSourcelight);
+		SetAttribPointer(0, 3, 6, 0);
+		Finish();
+		view_location = glGetUniformLocation(GetProgram(), "view");
+		projection_location = glGetUniformLocation(GetProgram(), "projection");
+		model_location = glGetUniformLocation(GetProgram(), "model");
+	}
+	void SetProjection(glm::mat4 proj)
+	{
+		glUniformMatrix4fv(projection_location, 1, GL_FALSE, glm::value_ptr(proj));
+	}
+	void SetView(glm::mat4 view)
+	{
+		glUniformMatrix4fv(view_location, 1, GL_FALSE, glm::value_ptr(view));
+	}
+	void UpdateModel(glm::mat4 mdl) {
+		glUniformMatrix4fv(model_location, 1, GL_FALSE, glm::value_ptr(mdl));
+	}
+};
 
 int main()
 {
@@ -112,50 +195,19 @@ int main()
 	zap::SceneCamera camera(size[0], size[1]);
 
 	camera.SetRotationLimit(361.0f, 89.0f, 0.0f);
-
 	camera.ActivateRotationLimit(true);
 
 	//
 
 
-	//Mesh
-	zap::Mesh cube(zap::standard_cube::standardcubevertices, zap::standard_cube::standardcubeindices);
-
-	cube.SetVertexShaderSource(vertexShaderSourcecube);
-	cube.SetFragmentShaderSource(fragmentShaderSourcecube);
-
-	cube.SetAttribPointer(0, 3, 6, 0);
-	cube.SetAttribPointer(1, 3, 6, 3);
-
-	cube.Finish();
-
-
-
-	zap::Mesh light(zap::standard_cube::standardcubevertices, zap::standard_cube::standardcubeindices);
-
-	light.SetVertexShaderSource(vertexShaderSourcelight);
-	light.SetFragmentShaderSource(fragmentShaderSourcelight);
-
-
-
-	light.SetAttribPointer(0, 3, 6, 0);
-	//light.SetAttribPointer(1, 3, 6, 3);
-	//mesh.SetAttribPointer(2, 2, 8, 6);
-
-	//auto texture = light.AddTexture(0, "textures/texture.png", zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE);
-
-	light.Finish();
-
-	//
 
 	// Window settings
 
 	window.UpdateViewport(true);
 	window.SetVSync(true);
-	window.Maximize();
+	//window.Maximize();
 
 	zap::Enable(zap::Instructions::DEPTH);
-
 	zap::Enable(zap::Instructions::ANTIALIASING);
 
 	//window.Maximize();
@@ -178,24 +230,6 @@ int main()
 
 	std::array<double, 2> oldPos = window.GetMousePosition();
 
-	// Getting uniform locations
-
-	//cube
-	unsigned int view_location_cube = glGetUniformLocation(cube.GetProgram(), "view");
-	unsigned int projection_location_cube = glGetUniformLocation(cube.GetProgram(), "projection");
-	unsigned int model_uniform_location_cube = glGetUniformLocation(cube.GetProgram(), "model");
-
-	unsigned int object_color_location_cube = glGetUniformLocation(cube.GetProgram(), "objectColor");
-	unsigned int light_color_location_cube = glGetUniformLocation(cube.GetProgram(), "lightColor");
-	unsigned int light_position_location_cube = glGetUniformLocation(cube.GetProgram(), "lightPos");
-	unsigned int view_position_location_cube = glGetUniformLocation(cube.GetProgram(), "viewPos");
-
-	//light
-
-	unsigned int view_location_light = glGetUniformLocation(light.GetProgram(), "view");
-	unsigned int projection_location_light = glGetUniformLocation(light.GetProgram(), "projection");
-	unsigned int model_uniform_location_light = glGetUniformLocation(light.GetProgram(), "model");
-
 	//
 
 	glEnable(GL_CULL_FACE);
@@ -203,6 +237,10 @@ int main()
 	auto coord = zap::util::convert_pixel_to_window(window.GetSize(), 1.0f, 1.0f);
 
 	std::cout << "x: " << coord[0] << ",y: " << coord[1] << std::endl;
+
+	//////Mesh
+	Cube cube;
+	LightCube lightCube;
 
 	while (window.Open())
 	{
@@ -259,23 +297,17 @@ int main()
 
 		//Cube
 
-		cube.UseProgram();
-
 		camera.UpdateRotation();
+	
 
-		glUniform3f(object_color_location_cube, 1.0f, 0.5f, 0.31f);
-		glUniform3f(light_color_location_cube, 1.0f, 1.0f, 1.0f);
-		glUniform3fv(light_position_location_cube, 1, &lightPos[0]);
-		glUniform3fv(view_position_location_cube, 1, &camera.GetPosition()[0]);
-
-
-		glUniformMatrix4fv(projection_location_cube, 1, GL_FALSE, glm::value_ptr(camera.GetProjection()));
-		glUniformMatrix4fv(view_location_cube, 1, GL_FALSE, glm::value_ptr(camera.GetView()));
-
-		cube.GetModel() = glm::translate(glm::mat4(1.0), glm::vec3(1.4f, -0.1f, -2.0f));
-		cube.GetModel() = glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), glm::vec3(0.0f, rotation, 0.0f));
-		cube.UpdateModel(model_uniform_location_cube);
-
+		cube.UseProgram();
+		cube.setColorUniform3f(1.0f, 0.5f, 0.31f);
+		cube.setLightColorUniform3f(1.0f, 1.0f, 1.0f);
+		cube.setLightPositionUniform3fv(lightPos);
+		cube.setViewPositionUniform3fv(camera.GetPosition());
+		cube.SetProjection(camera.GetProjection());
+		cube.SetView(camera.GetView());
+		cube.UpdateModel(glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f)));
 		cube.Bind();
 		cube.Draw(36);
 
@@ -284,20 +316,13 @@ int main()
 
 		//Light cube
 
-		light.UseProgram();
-
-		camera.UpdateRotation();
-
-		glUniformMatrix4fv(projection_location_light, 1, GL_FALSE, glm::value_ptr(camera.GetProjection()));
-		glUniformMatrix4fv(view_location_light, 1, GL_FALSE, glm::value_ptr(camera.GetView()));
-
-		light.GetModel() = glm::mat4(1.0f);
-		light.GetModel() = glm::translate(light.GetModel(), lightPos); // Does work without problems
-		light.GetModel() = glm::scale(light.GetModel(), glm::vec3(0.2f));
-		light.UpdateModel(model_uniform_location_light);
-
-		light.Bind(); //set current context before any draw routines, it prevents mess in more complex workflow
-		light.Draw(36);
+		lightCube.UseProgram();
+		lightCube.SetProjection(camera.GetProjection());
+		lightCube.SetView(camera.GetView());
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), lightPos);
+		lightCube.UpdateModel(glm::scale(model, glm::vec3(0.2f)));
+		lightCube.Bind();
+		lightCube.Draw(36);
 
 		//*/
 
@@ -319,6 +344,7 @@ int main()
 	}
 
 	zap::Delete();
+	return 0;
 
 }
 

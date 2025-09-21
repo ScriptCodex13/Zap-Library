@@ -1,0 +1,8 @@
+Unpack zip package on some library folder
+Create a new Win64 project in VisualStudio
+Add cuda, glfw, glm, stb, freetype to Additional Include Directories
+Add zap to Additional Include Directories
+Add glfw to Additional Library Folders
+Add zap to Additional Library Folders
+Add glfw.lib and zap.lib to libraries
+Build project sample and run.
