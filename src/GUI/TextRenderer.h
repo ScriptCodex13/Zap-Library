@@ -51,7 +51,7 @@ namespace zap
 		unsigned int Advance;   
 	};
 
-	class Text
+	class Text : public zap::Mesh
 	{
 	public:
 		Text(const std::string font_path, const std::string content, std::array<int, 2>& window_size);
@@ -80,7 +80,6 @@ namespace zap
 
 		glm::mat4 projection;
 
-		std::unique_ptr<Mesh> i_text_mesh;
 		std::map<GLchar, Character> i_character_map;
 
 		unsigned int i_text_color_uniform_location;

@@ -218,24 +218,43 @@ namespace zap
 		glUniformMatrix4fv(model_uniform_location, 1, GL_FALSE, glm::value_ptr(model));
 	}
 
-	glm::mat4& Mesh::GetModel()
+	//TODO: Never return reference in a getter
+	//      There are explicit coding conventions for getters and setters
+	//      Getters return by value, setters set the value
+	glm::mat4 Mesh::GetModel()
 	{
 		return model;
 	}
+	void Mesh::SetModel(const glm::mat4& mdl)
+	{
+		model = mdl;
+	}
 
-	unsigned int& Mesh::GetVBO()
+	unsigned int Mesh::GetVBO()
 	{
 		return VBO;
 	}
+	void Mesh::SetVBO(unsigned int& BO)
+	{
+		VBO = BO;
+	}
 
-	unsigned int& Mesh::GetVAO()
+	unsigned int Mesh::GetVAO()
 	{
 		return VAO;
 	}
+	void Mesh::SetVAO(unsigned int& AO)
+	{
+		VAO = AO;
+	}
 
-	unsigned int& Mesh::GetEBO()
+	unsigned int Mesh::GetEBO()
 	{
 		return EBO;
+	}
+	void Mesh::SetEBO(unsigned int& EB)
+	{
+		EBO = EB;
 	}
 
 	unsigned int Mesh::GetUniformLocation(const GLchar* name)

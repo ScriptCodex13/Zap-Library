@@ -3,7 +3,7 @@
 namespace zap
 {
 
-	Text::Text(const std::string font_path, const std::string content, std::array<int, 2>& window_size)
+	Text::Text(const std::string font_path, const std::string content, std::array<int, 2>& window_size) : Mesh({})
 	{
 		projection = glm::ortho(0.0f, (float)window_size[0], 0.0f, (float)window_size[1]);
 
@@ -14,20 +14,17 @@ namespace zap
 
 		// i_text_mesh init
 
-		std::vector<float> empty_vertices = {}; // For 
 
-		i_text_mesh = std::make_unique<Mesh>(empty_vertices);
+		SetVertexShaderSource(i_vertex_shader_source);
+		SetFragmentShaderSource(i_fragment_shader_source);
+		//
+		auto config = SetAttribPointer(0, 4, 4, 0);
+		//
+		Finish();
+		UseProgram();
 
-		i_text_mesh->SetVertexShaderSource(i_vertex_shader_source);
-		i_text_mesh->SetFragmentShaderSource(i_fragment_shader_source);
-
-		//auto config = i_text_mesh->SetAttribPointer(0, 4, 4, 0);
-
-		i_text_mesh->BuildProgram();
-		i_text_mesh->UseProgram();
-
-		i_text_color_uniform_location = glGetUniformLocation(i_text_mesh->GetProgram(), "textColor");
-		i_text_projection_uniform_location = glGetUniformLocation(i_text_mesh->GetProgram(), "projection");
+		i_text_color_uniform_location = glGetUniformLocation(GetProgram(), "textColor");
+		i_text_projection_uniform_location = glGetUniformLocation(GetProgram(), "projection");
 
 		glUniformMatrix4fv(i_text_projection_uniform_location, 1, GL_FALSE, glm::value_ptr(projection));
 
@@ -49,17 +46,13 @@ namespace zap
 		}
 
 		// Do the steps of Mesh::Finish manually
-		glGenVertexArrays(1, &i_text_mesh->GetVAO());
-		glGenBuffers(1, &i_text_mesh->GetVBO());
-		glBindVertexArray(i_text_mesh->GetVAO());
-		glBindBuffer(GL_ARRAY_BUFFER, i_text_mesh->GetVBO());
+
+		glBindBuffer(GL_ARRAY_BUFFER, GetVBO());
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
-
-
 
 		//config.vertexAttribPointer();
 
@@ -85,7 +78,7 @@ namespace zap
 				messages::PrintMessage("Failed to load glyph", "TextRenderer.cpp/ void zap::Text::GenerateCharacters(...)", MessageTypes::error);
 			}
             
-			Texture& tex = i_text_mesh->AddTexture((unsigned int)c, i_font->glyph->bitmap.buffer, i_font->glyph->bitmap.width, i_font->glyph->bitmap.rows, GL_RED, zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE);
+			Texture& tex = AddTexture((unsigned int)c, i_font->glyph->bitmap.buffer, i_font->glyph->bitmap.width, i_font->glyph->bitmap.rows, GL_RED, zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE);
 
 			tex.genTexture();
 		
@@ -175,10 +168,9 @@ namespace zap
 
 	void Text::Draw()
 	{
-		i_text_mesh->UseProgram();
+		Bind();
 		glUniform3f(i_text_color_uniform_location, i_text_color.x, i_text_color.y, i_text_color.z);
 		glActiveTexture(GL_TEXTURE0);
-		i_text_mesh->BindVAO();
 
 		std::string::const_iterator c;
 
@@ -211,14 +203,14 @@ namespace zap
 
 			glBindTexture(GL_TEXTURE_2D, ch.TextureID);
 			// update content of VBO memory
-			glBindBuffer(GL_ARRAY_BUFFER, i_text_mesh->GetVBO());
+			glBindBuffer(GL_ARRAY_BUFFER, GetVBO());
 			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			
 			//glDrawArrays(GL_TRIANGLES, 0, 6);
 
-			i_text_mesh->Draw(6);
+			Mesh::Draw(6);
 			
 
 			//

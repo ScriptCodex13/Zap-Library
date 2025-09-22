@@ -78,12 +78,19 @@ namespace zap
 		std::vector<float>& GetVertices();
 		std::vector<unsigned int>& GetIndices();
 		
+		//TODO: Never return reference in a getter
+		//      There are explicit coding conventions for getters and setters
+		//      Getters return by value, setters set the value
 		void UpdateModel(unsigned int model_uniform_location); // For use with camera
-		glm::mat4& GetModel();
+		glm::mat4 GetModel();
+		void SetModel(const glm::mat4 &);
 
-		unsigned int& GetVBO();
-		unsigned int& GetVAO();
-		unsigned int& GetEBO();
+		unsigned int GetVBO();
+		void Mesh::SetVBO(unsigned int&);
+		unsigned int GetVAO();
+		void SetVAO(unsigned int&);
+		unsigned int GetEBO();
+		void SetEBO(unsigned int&);
 
 		//separate functions will be very useful in more complex logic
 		unsigned int GetUniformLocation(const GLchar* name);
