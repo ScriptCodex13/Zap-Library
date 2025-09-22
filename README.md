@@ -39,7 +39,7 @@ If you want more detailed information look at the [wiki](https://github.com/Scri
 
 ## Use the compiled Library
 
-Coming soon
+Choose your [release](https://github.com/ScriptCodex13/Zap-Library/releases) and follow the provided instructions.
 
 ## Start with your first code
 
