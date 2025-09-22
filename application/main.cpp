@@ -100,13 +100,13 @@ public:
 	void setViewPositionUniform3fv(glm::vec3 pos) {
 		glUniform3fv(view_position_location, 1, &pos[0]);
 	}
-	void MoveUpdate(const zap::SceneCamera& camera, glm::vec3 lightPos, float time)
+	void MoveUpdate(const zap::SceneCamera& camera, glm::vec3 lightPos, double time)
 	{
 		setLightPositionUniform3fv(lightPos);
 		setViewPositionUniform3fv(camera.GetPosition());
 		SetProjection(camera.GetProjection());
 		SetView(camera.GetView());
-		UpdateModel(glm::rotate(glm::mat4(1.0), time, glm::vec3(0.0f, 1.0f, 0.0f)));
+		UpdateModel(glm::rotate(glm::mat4(1.0), (float)time, glm::vec3(0.0f, 1.0f, 0.0f)));
 	}
 
 };
@@ -142,7 +142,7 @@ public:
 		SetAttribPointer(0, 3, 6, 0);
 		Finish();
 	}
-	void MoveUpdate(const zap::SceneCamera& camera, glm::vec3 lightPos, float time)
+	void MoveUpdate(const zap::SceneCamera& camera, glm::vec3 lightPos, double time)
 	{
 		SetProjection(camera.GetProjection());
 		SetView(camera.GetView());
@@ -291,7 +291,7 @@ int main()
 		cube.Bind();
 		cube.setColorUniform3f(1.0f, 0.5f, 0.31f);
 		cube.setLightColorUniform3f(1.0f, 1.0f, 1.0f);
-		cube.MoveUpdate(camera, lightPos, (float)glfwGetTime());
+		cube.MoveUpdate(camera, lightPos, glfwGetTime());
 		cube.Draw(36);
 
 		//
@@ -299,7 +299,7 @@ int main()
 		//Light cube
 
 		lightCube.Bind();
-		lightCube.MoveUpdate(camera, lightPos, (float)glfwGetTime());
+		lightCube.MoveUpdate(camera, lightPos, glfwGetTime());
 		lightCube.Draw(36);
 
 		//*/
