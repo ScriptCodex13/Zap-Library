@@ -145,4 +145,4 @@ Come to our [discord server](https://discord.gg/hr2vjemJSV) to ask questions and
 
 # Contributing
 
-We need more help with this project to grow and improve. So if you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Any help will be greatly appriciated ! 
+We need more help with this project to grow and improve. So if you want to change something or you have got a question, feel free to write a Pull Request or an Issue. Any help will be greatly appriciated ! Here is our [contributing page](https://github.com/ScriptCodex13/Zap-Library?tab=contributing-ov-file).
