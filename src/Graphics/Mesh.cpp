@@ -23,6 +23,10 @@ namespace zap
 
 		use_indices = false;
 	}
+	Mesh::Mesh()
+	{
+		use_indices = false;
+	}
 	Mesh::~Mesh()
 	{
 		glDeleteVertexArrays(1, &VAO);

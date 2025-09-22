@@ -52,6 +52,7 @@ namespace zap
 	class Mesh
 	{
 	public:
+		Mesh();
 		Mesh(std::vector<float> extern_vertices, std::vector<unsigned int> extern_indices);
 		Mesh(std::vector<float> extern_vertices);
 		~Mesh();
