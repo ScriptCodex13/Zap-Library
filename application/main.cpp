@@ -9,7 +9,7 @@
 #include <array>
 
 
-
+//TODO: Modularize: Move these classes to separate .h/.cpp modules
 class Cube : public zap::Mesh
 {
 	unsigned int object_color_location;
@@ -111,6 +111,7 @@ public:
 
 };
 
+//TODO: Modularize: Move these classes to separate .h/.cpp modules
 class LightCube : public zap::Mesh
 {
 	const char* vertexShaderSource = R"glsl(#version 330 core
@@ -149,6 +150,45 @@ public:
 		UpdateModel(glm::scale(model, glm::vec3(0.2f)));
 	}
 };
+
+//TODO: Modularize: Move these classes to separate .h/.cpp modules
+template <typename T> class window_camera_invoker : public zap::util::callback_invoker<T>
+{
+public:
+	inline window_camera_invoker(T _callback) : callback_invoker(_callback) {}
+	template<typename A1, typename A2> void operator () (A1& a1, A2& a2) { callback(a1, a2); }
+};
+window_camera_invoker  cbi([](zap::Window& window, zap::SceneCamera& camera) {
+	if (window.isKeyPressed(zap::Key::ESC))
+	{
+		window.Close();
+	}
+
+	if (window.GetInput(zap::Key::left_arrow, zap::State::PRESSED))
+	{
+		camera.Rotate(-5.0f * window.GetDelta() * 20.0f, 0.0f, 0.0f);
+	}
+	if (window.GetInput(zap::Key::right_arrow, zap::State::PRESSED))
+	{
+		camera.Rotate(5.0f * window.GetDelta() * 20.0f, 0.0f, 0.0f);
+	}
+	if (window.GetInput(zap::Key::W, zap::State::PRESSED))
+	{
+		camera.MoveForward(0.5f * window.GetDelta() * 20.0f);
+	}
+	if (window.GetInput(zap::Key::S, zap::State::PRESSED))
+	{
+		camera.MoveBackward(0.5f * window.GetDelta() * 20.0f);
+	}
+	if (window.GetInput(zap::Key::A, zap::State::PRESSED))
+	{
+		camera.MoveLeft(0.5f * window.GetDelta() * 20.0f);
+	}
+	if (window.GetInput(zap::Key::D, zap::State::PRESSED))
+	{
+		camera.MoveRight(0.5f * window.GetDelta() * 20.0f);
+	}
+});
 
 int main()
 {
@@ -204,15 +244,11 @@ int main()
 
 	glm::vec3 lightPos(1.0f, 0.0f, 2.0f);
 
-	float rotation = 0.0f;
-
-	float sensitivity = 0.1f;
-
+	float rotation = 0.0f, sensitivity = 0.1f;
 
 	std::array<double, 2> oldPos = window.GetMousePosition();
 
 	//
-
 	glEnable(GL_CULL_FACE);
 
 	auto coord = zap::util::convert_pixel_to_window(window.GetSize(), 1.0f, 1.0f);
@@ -222,6 +258,7 @@ int main()
 	//////Mesh
 	Cube cube;
 	LightCube lightCube;
+
 
 	while (window.Open())
 	{
@@ -238,36 +275,8 @@ int main()
 		//
 
 		//Input
-
-		if (window.isKeyPressed(zap::Key::ESC))
-		{
-			window.Close();
-		}
-
-		if (window.GetInput(zap::Key::left_arrow, zap::State::PRESSED))
-		{
-			camera.Rotate(-5.0f * window.GetDelta() * 20.0f, 0.0f, 0.0f);
-		}
-		if (window.GetInput(zap::Key::right_arrow, zap::State::PRESSED))
-		{
-			camera.Rotate(5.0f * window.GetDelta() * 20.0f, 0.0f, 0.0f);
-		}
-		if (window.GetInput(zap::Key::W, zap::State::PRESSED))
-		{
-			camera.MoveForward(0.5f * window.GetDelta() * 20.0f);
-		}
-		if (window.GetInput(zap::Key::S, zap::State::PRESSED))
-		{
-			camera.MoveBackward(0.5f * window.GetDelta() * 20.0f);
-		}
-		if (window.GetInput(zap::Key::A, zap::State::PRESSED))
-		{
-			camera.MoveLeft(0.5f * window.GetDelta() * 20.0f);
-		}
-		if (window.GetInput(zap::Key::D, zap::State::PRESSED))
-		{
-			camera.MoveRight(0.5f * window.GetDelta() * 20.0f);
-		}
+		//All the window/camera magic happens here
+		cbi(window, camera);
 
 		//
 

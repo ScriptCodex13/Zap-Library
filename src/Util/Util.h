@@ -67,6 +67,7 @@ namespace zap
         //  It will be handful for building better responsibility separation
 		template <typename T> class callback_invoker
 		{
+		protected:
 			T callback;
 		public:
 			inline callback_invoker(T _callback) : callback(_callback) {}
