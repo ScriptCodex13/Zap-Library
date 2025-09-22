@@ -42,4 +42,4 @@ Step 1 - Contact us on our [discord server](https://discord.gg/hr2vjemJSV) and t
 
 Step 2 - We will then assign you a new role name applicant. So you can enter the applicant chat. There we'll just look at your example project. (Don't worry it won't be like a job interview :) )
 
-Step 3 - We will tell you if you're a contributor if not you can stay applicant and try again.
+Step 3 - We will tell you if you're a contributor now. If you're not you can stay applicant and try again later on.
