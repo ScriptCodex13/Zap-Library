@@ -36,10 +36,10 @@ namespace zap
 		void MoveLeft(float speed_factor);
 		void MoveRight(float speed_factor);
 
-		glm::mat4& GetProjection();
-		glm::mat4& GetView();
+		glm::mat4 GetProjection() const;
+		glm::mat4 GetView() const;
 
-		glm::vec3& GetPosition();
+		glm::vec3 GetPosition() const;
 
 		void UpdateRotation();
 

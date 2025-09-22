@@ -14,18 +14,13 @@ namespace zap
 	{
 		vertices = extern_vertices;
 		indices  = extern_indices;
-
-		if (indices.empty()) use_indices = false;
 	}
 	Mesh::Mesh(std::vector<float> extern_vertices)
 	{
 		vertices = extern_vertices;
-
-		use_indices = false;
 	}
 	Mesh::Mesh()
 	{
-		use_indices = false;
 	}
 	Mesh::~Mesh()
 	{
@@ -161,7 +156,7 @@ namespace zap
 		}
 
 		// EBO
-		if (use_indices)
+		if (!indices.empty ())
 		{
 			glGenBuffers(1, &EBO);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
@@ -170,6 +165,12 @@ namespace zap
 		//
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+	void Mesh::UpdateMvpLocations()
+	{
+		mvp.view_location = GetUniformLocation("view");
+		mvp.projection_location = GetUniformLocation("projection");
+		mvp.model_location = GetUniformLocation("model");
 	}
 	void Mesh::Finish()
 	{
@@ -180,7 +181,7 @@ namespace zap
 		}
 
 		GenObject();
-
+		UpdateMvpLocations();
 		//f
 		//Textures
 		for (auto& texcfg : texturecfg)
@@ -217,15 +218,27 @@ namespace zap
 		return indices;
 	}
 
-	void Mesh::UpdateModel(unsigned int model_uniform_location)
+	void Mesh::UpdateModel()
 	{
-		glUniformMatrix4fv(model_uniform_location, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(mvp.model_location, 1, GL_FALSE, glm::value_ptr(model));
+	}
+	void Mesh::SetProjection(glm::mat4 proj)
+	{
+		glUniformMatrix4fv(mvp.projection_location, 1, GL_FALSE, glm::value_ptr(proj));
+	}
+	void Mesh::SetView(glm::mat4 view)
+	{
+		glUniformMatrix4fv(mvp.view_location, 1, GL_FALSE, glm::value_ptr(view));
+	}
+
+	void Mesh::UpdateModel(glm::mat4 mdl) {
+		glUniformMatrix4fv(mvp.model_location, 1, GL_FALSE, glm::value_ptr(mdl));
 	}
 
 	//TODO: Never return reference in a getter
 	//      There are explicit coding conventions for getters and setters
 	//      Getters return by value, setters set the value
-	glm::mat4 Mesh::GetModel()
+	glm::mat4 Mesh::GetModel() const
 	{
 		return model;
 	}
@@ -234,7 +247,7 @@ namespace zap
 		model = mdl;
 	}
 
-	unsigned int Mesh::GetVBO()
+	unsigned int Mesh::GetVBO() const
 	{
 		return VBO;
 	}
@@ -243,7 +256,7 @@ namespace zap
 		VBO = BO;
 	}
 
-	unsigned int Mesh::GetVAO()
+	unsigned int Mesh::GetVAO() const
 	{
 		return VAO;
 	}
@@ -252,7 +265,7 @@ namespace zap
 		VAO = AO;
 	}
 
-	unsigned int Mesh::GetEBO()
+	unsigned int Mesh::GetEBO() const
 	{
 		return EBO;
 	}
@@ -287,7 +300,7 @@ namespace zap
 
 	void Mesh::Draw(int vertices_count)
 	{
-		if (use_indices)
+		if (!indices.empty())
 		{
 			glUseProgram (shaderProgram);
 			glBindVertexArray (VAO);

@@ -71,17 +71,17 @@ namespace zap
 	}
 
 	
-	glm::mat4& SceneCamera::GetProjection()
+	glm::mat4 SceneCamera::GetProjection() const
 	{
 		return projection;
 	}
 
-	glm::mat4& SceneCamera::GetView()
+	glm::mat4 SceneCamera::GetView() const
 	{
 		return view;
 	}
 
-	glm::vec3& SceneCamera::GetPosition()
+	glm::vec3 SceneCamera::GetPosition() const
 	{
 		return i_camera_position;
 	}

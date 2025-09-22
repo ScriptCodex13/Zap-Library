@@ -30,19 +30,19 @@ namespace zap
 		HIGH_ACESS_DYNAMIC  = GL_DYNAMIC_DRAW
 	};
 
-	inline const char* defaultVertexShaderSource = R"glsl(
+	//This is general code, it must be static and not contained in the object instances
+	//It is accessible like this and does not make sense to make it non-static
+	inline static const char* defaultVertexShaderSource = R"glsl(
 											#version 330 core
 											layout (location = 0) in vec3 aPos;
-
 											void main()
 											{
 												gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
 											}
 									)glsl";
-	inline const char* defaultFragmentShaderSource = R"glsl(
+	inline static const char* defaultFragmentShaderSource = R"glsl(
 											#version 330 core
 											out vec4 FragColor;
-
 											void main()
 											{
 												FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
@@ -74,6 +74,7 @@ namespace zap
 		void BuildProgram();
 		void GenObject();
 		void Finish(); // Everything is finished you can't change the settings of the mesh anymore
+		void UpdateMvpLocations();
 		bool UseTexture (unsigned int id); //TODO: This is Bind, not Set, should be renamed | Done - ScriptCodex13
 
 		std::vector<float>& GetVertices();
@@ -82,15 +83,18 @@ namespace zap
 		//TODO: Never return reference in a getter
 		//      There are explicit coding conventions for getters and setters
 		//      Getters return by value, setters set the value
-		void UpdateModel(unsigned int model_uniform_location); // For use with camera
-		glm::mat4 GetModel();
+		void Mesh::UpdateModel(); // For use with camera
+		void SetProjection(glm::mat4 proj);
+		void SetView(glm::mat4 view);
+		void UpdateModel(glm::mat4 mdl);
+		glm::mat4 GetModel() const;
 		void SetModel(const glm::mat4 &);
 
-		unsigned int GetVBO();
+		unsigned int GetVBO() const;
 		void Mesh::SetVBO(unsigned int&);
-		unsigned int GetVAO();
+		unsigned int GetVAO() const;
 		void SetVAO(unsigned int&);
-		unsigned int GetEBO();
+		unsigned int GetEBO() const;
 		void SetEBO(unsigned int&);
 
 		//separate functions will be very useful in more complex logic
@@ -104,6 +108,13 @@ namespace zap
 		void UseProgram();
 		void BindVAO();
 
+	protected:
+		struct
+		{
+			unsigned int view_location = -1;
+			unsigned int projection_location = -1;
+			unsigned int model_location = -1;
+		} mvp;
 	private:
 		glm::mat4 model; // PR
 
@@ -139,8 +150,7 @@ namespace zap
 		//Textures
 		std::vector<Texture> texturecfg; // Needed to use shared_ptr because otherwise the Program crashes. Please do not change. If that here is very problematic we can find out a solution together.
 
-		bool use_indices = true;
-		
+		//TODO:  variable use_indices is greatly redundant. The vector indices is a clear indicator showing the use of them.
 	};
 
 };
