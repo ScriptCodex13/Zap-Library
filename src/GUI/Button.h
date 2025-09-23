@@ -17,7 +17,7 @@ namespace zap
 	class Button
 	{
 	public:
-		Button(zap::Window& window, const std::string button_text, const std::string button_font_path);
+		Button(zap::Window& window, const std::string button_text = "", const std::string button_text_font_path = "");
 		~Button();
 
 		bool OnMouseHovered();
@@ -32,21 +32,25 @@ namespace zap
 		void Draw();
 
 	private:
-		std::vector<float> i_button_vertices = 
+		std::vector<float> i_button_vertices = // Doesn't work because of face culling and CCW
 		{
-
+			  0.5f,  0.5f, 0.0f,  
+			  0.5f, -0.5f, 0.0f,  
+			 -0.5f, -0.5f, 0.0f, 
+			 -0.5f,  0.5f, 0.0f
 		};
 
 		std::vector<unsigned int> i_button_indices = 
 		{
-
+			0, 1, 2,
+			1, 2, 3
 		};
 
 		const char* i_vertex_shader_source = 
 			R"glsl(
 					#version 330 core 
 					
-					layout(location = 0) vec3 aPos;
+					layout(location = 0) in vec3 aPos;
 
 					void main()
 					{

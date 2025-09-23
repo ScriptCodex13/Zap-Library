@@ -9,7 +9,7 @@
 #include <array>
 
 
-//TODO: Modularize: Move these classes to separate .h/.cpp modules
+//TODO: Modularize: Move these classes to separate .h/.cpp modules | these are only example classes we are only going to focus on basic functionality for now. We can plan on some easy profile later on
 class Cube : public zap::Mesh
 {
 	unsigned int object_color_location;
@@ -248,9 +248,6 @@ int main()
 
 	std::array<double, 2> oldPos = window.GetMousePosition();
 
-	//
-	glEnable(GL_CULL_FACE);
-
 	auto coord = zap::util::convert_pixel_to_window(window.GetSize(), 1.0f, 1.0f);
 
 	std::cout << "x: " << coord[0] << ",y: " << coord[1] << std::endl;
@@ -258,6 +255,8 @@ int main()
 	//////Mesh
 	Cube cube;
 	LightCube lightCube;
+
+	zap::Button button(window);
 
 
 	while (window.Open())
@@ -312,6 +311,9 @@ int main()
 		text.SetContent(std::to_string(std::round(window.GetFPS())));
 
 		text.Draw();
+
+		button.Update();
+		button.Draw();
 
 		window.Update();
 		window.Draw();
