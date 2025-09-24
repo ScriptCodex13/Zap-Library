@@ -248,7 +248,7 @@ namespace zap
 	}
 	bool Window::GetInput (int key, int state)
 	{
-		if (key == 0 || key == 1 || key == 2) // Checks if the key is a mouse button and uses a different function
+		if (util::in(key, 0, 1, 2)) // Checks if the key is a mouse button and uses a different function
 		{
 			return glfwGetMouseButton(intern_window, key) == state;
 		}
