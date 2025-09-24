@@ -39,6 +39,8 @@ project "Application"
     kind "ConsoleApp"
     language "C++"
     files {"../../application/main.cpp"}
+    files {"../../application/Cube.*"}
+    files {"../../application/LightCube.*"}
     files {"../../extern/glad.c"}
     includedirs {"../../extern/glad/include/"}
     includedirs {"../../extern/GLFW/include/"}
