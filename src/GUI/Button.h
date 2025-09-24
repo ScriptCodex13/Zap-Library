@@ -20,13 +20,15 @@ namespace zap
 		Button(zap::Window& window, const std::string button_text = "", const std::string button_text_font_path = "");
 		~Button();
 
-		bool OnMouseHovered();
+		bool Hovered();
 
-		bool Released();
-		bool Pressed();
+		bool Pressed(zap::Key key); // Returns true if button is pressed and false if not
+		bool Released(zap::Key key);
 
+		void SetPosition();
 		void SetButtonText();
 		void SetTextOffset();
+		void SetZCoordinate(); // Don't know if you need it
 
 		void Update();
 		void Draw();
@@ -34,16 +36,16 @@ namespace zap
 	private:
 		std::vector<float> i_button_vertices = // Doesn't work because of face culling and CCW
 		{
-			  0.5f,  0.5f, 0.0f,  
-			  0.5f, -0.5f, 0.0f,  
-			 -0.5f, -0.5f, 0.0f, 
-			 -0.5f,  0.5f, 0.0f
+			  0.5f,  0.5f, 0.0f,  // 0, 1, 2
+			  0.5f, -0.5f, 0.0f,  // 3, 4, 5
+			 -0.5f, -0.5f, 0.0f,  // 6, 7, 8
+			 -0.5f,  0.5f, 0.0f   // 9, 10, 11
 		};
 
 		std::vector<unsigned int> i_button_indices = 
 		{
-			0, 1, 2,
-			1, 2, 3
+			2, 1, 0,
+			0, 3, 2
 		};
 
 		const char* i_vertex_shader_source = 

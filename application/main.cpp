@@ -88,7 +88,7 @@ int main()
 	zap::Enable(zap::Instructions::ANTIALIASING);
 
 	//window.Maximize();
-	window.SetCursorinCameraMode(true);
+	//window.SetCursorinCameraMode(false);
 
 
 	zap::Text text("C:/Windows/Fonts/arial.ttf", "Text", window.GetSizeRef()); // It's better to use GetSizeRef here
@@ -114,18 +114,17 @@ int main()
 
 	zap::Button button(window);
 
-
 	while (window.Open())
 	{
-		// Mouse Input
-		std::array<double, 2> newpos = window.GetMousePosition();
+		// Mouse Input -> Commented out temporary
+		/*std::array<double, 2> newpos = window.GetMousePosition();
 
 		float xoffset = (newpos[0] - oldPos[0]) * sensitivity;
 		float yoffset = (oldPos[1] - newpos[1]) * sensitivity;
 
-		oldPos = newpos;
+		oldPos = newpos; 
 
-		camera.Rotate(xoffset, yoffset, 0.0f);
+		camera.Rotate(xoffset, yoffset, 0.0f);*/ 
 
 		//
 
@@ -167,6 +166,11 @@ int main()
 		text.SetContent(std::to_string(std::round(window.GetFPS())));
 
 		text.Draw();
+
+		if (button.Pressed(zap::Key::RIGHT_MOUSE))
+		{
+			std::cerr << "Pressed" << std::endl;
+		}
 
 		button.Update();
 		button.Draw();

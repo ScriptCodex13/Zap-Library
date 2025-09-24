@@ -279,6 +279,11 @@ namespace zap
 			return false;
 		}
 		
+		if (key == 0 || key == 1 || key == 2) // Checks if the key is a mouse button and uses a different function
+		{
+			return glfwGetMouseButton(intern_window, key) == state;
+		}
+
 		return glfwGetKey(intern_window, key) == state;
 	}
 	bool Window::isKeyPressed (Key key) 

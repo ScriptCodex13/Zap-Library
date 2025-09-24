@@ -23,6 +23,37 @@ namespace zap
 
 	}
 
+	bool Button::Hovered()
+	{
+		auto mouse_pos = zap::util::convert_pixel_to_window(e_window->GetSize(), e_window->GetMousePosition()[0], e_window->GetMousePosition()[1]);
+
+		return 
+			(
+				mouse_pos[0] <= i_button_vertices[0] && 
+				mouse_pos[0] <= i_button_vertices[3] && 
+				mouse_pos[0] >= i_button_vertices[9] && 
+				mouse_pos[0] >= i_button_vertices[6] && 
+				mouse_pos[1] <= i_button_vertices[1] && 
+				mouse_pos[1] <= i_button_vertices[10] && 
+				mouse_pos[1] >= i_button_vertices[7] && 
+				mouse_pos[1] >= i_button_vertices[4]
+			);
+	}
+
+	bool Button::Pressed(zap::Key key)
+	{
+		if (!Hovered()) return false;
+
+		return e_window->GetInput(key, zap::State::PRESSED);
+	}
+
+	bool Button::Released(zap::Key key)
+	{
+		if (!Hovered()) return false;
+
+		return e_window->GetInput(key, zap::State::RELEASED);
+	}
+
 	void Button::Update()
 	{
 		i_button_mesh->UseProgram();
