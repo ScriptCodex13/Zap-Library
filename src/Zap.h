@@ -3,6 +3,13 @@
 #ifndef ZAP_H
 #define ZAP_H
 
+/*/
+
+This is the APIs main include header. All segment Headers will be included here.
+Please do NOT include your new headers here. Put them in the corresponding segment header instead.
+
+/*/
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -17,9 +24,7 @@
 
 #include "Window/Window.h"
 #include "Graphics/Graphics.h"
-#include "Util/Resources.h"
-#include "Util/Loader.h"
-#include "Util/Util.h"
+#include "Util/UtilBind.h"
 #include "Graphics/GlfwUtil.h"
 #include "GUI/GUI.h"
 
