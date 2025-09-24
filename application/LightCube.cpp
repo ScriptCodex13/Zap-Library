@@ -1,8 +1,4 @@
-// Just a example
-// PR = Prototyping -> only for testing 
-
-//this is separate application and should treat the Zap library as external
-//everyone using this library will do, this is a standard practice
+// Just a sample
 #include <Zap.h>
 
 #include "LightCube.h"

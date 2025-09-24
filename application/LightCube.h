@@ -1,5 +1,5 @@
-// Just a example
-
+#pragma once
+// Just a sample
 #include <Zap.h>
 
 

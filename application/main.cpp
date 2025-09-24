@@ -1,8 +1,6 @@
 // Just a example
 // PR = Prototyping -> only for testing 
 
-//this is separate application and should treat the Zap library as external
-//everyone using this library will do, this is a standard practice
 #include <Zap.h>
 #include <iostream>
 #include <vector>
@@ -10,7 +8,6 @@
 #include "Cube.h"
 #include "LightCube.h"
 
-//TODO: Modularize: Move these classes to separate .h/.cpp modules
 template <typename T> class window_camera_invoker : public zap::util::callback_invoker<T>
 {
 public:
