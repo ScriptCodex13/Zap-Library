@@ -2,10 +2,13 @@
 setlocal ENABLEDELAYEDEXPANSION
 @REM the newly created folder is ignored by premake tool
 @REM mkdir "..\Project"
-mkdir Project
-xcopy /S /I ..\..\shader .\Project\Application\shader
+@set resource_dir=..\..\resource\
+@set projects_dir=.\Project\
+@set application_dir=%projects_dir%\Application\
+mkdir %projects_dir%
 premake5.exe vs2022
-xcopy /S /I ..\..\Zap3DDemo\Zap3DTrianglesBasic\textures .\Project\Application\textures
+xcopy /S /I %resource_dir%shader   %application_dir%shader
+xcopy /S /I %resource_dir%textures %application_dir%textures
 endlocal
 PAUSE
 
