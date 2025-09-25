@@ -9,10 +9,31 @@
 
 /**********************************************************************************/
 
-// API defines 
+// DIAGNOSE #defines 
 
 #define ZAP_INTERRUPT_FATAL_ERROR messages::PrintMessage("Fatal error caused zap to terminate the application", "", MessageTypes::fatal_error, false); abort();
 
+//NDEBUG def widely compatible accross compilers
+#ifndef NDEBUG
+#define ZAP_DEBUG
+#endif
+
+//if needed in release mode, ZAP_DEBUG still can be #defined outside NDEBUG section
+#ifdef ZAP_DEBUG
+// Debug mode
+// Interrupt if requirement not met
+#define ZAP_REQUIRE(x) if(!(x)) { messages::PrintMessage("Assertion failed: " #x, __FILE__, MessageTypes::fatal_error); ZAP_INTERRUPT_FATAL_ERROR }
+// Assert but do not interrupt
+#define ZAP_ASSERT_TRUE(x) assert(x)
+// Break then start the debugger
+#define ZAP_BREAK_IF_NOT(x) if(!(x)) { messages::PrintMessage("Assertion failed: " #x, __FILE__, MessageTypes::error); __debugbreak (); }
+#else
+// No Debug mode (ie Release)
+// Don't generate any code for the macros
+#define ZAP_REQUIRE(x)
+#define ZAP_ASSERT_TRUE(x)
+#define ZAP_BREAK_IF_NOT(x)
+#endif
 /**********************************************************************************/
 
 namespace zap
@@ -28,6 +49,17 @@ namespace zap
 			return { (x / ((T)n_dimensions[0] / 2)) - 1 , (y / ((T)n_dimensions[1] / 2)) - 1};
 		}
 
+		template<typename T>
+		inline bool in(T val, T arg)
+		{
+			return val == arg;
+		}
+		template <typename T, typename ... Ts>
+		inline bool in(T val, T arg, Ts ... args)
+		{
+			if (val == arg) return true;
+			return in(val, args...);
+		}
 		template<typename T>
 		inline bool between(T value, T min, T max)
 		{
@@ -56,11 +88,11 @@ namespace zap
 		}
 
 		//Scope guard for RAII
-		template<typename T> class scope_guard
+		template<typename Deleter> class scope_guard
 		{
-			T t;
+			Deleter t;
 		public:
-			scope_guard(T _t) :t(_t) {}
+			scope_guard(Deleter _t) :t(_t) {}
 			~scope_guard() { t(); }
 		};
 		//Callback invoker, for wrapping event handlers.

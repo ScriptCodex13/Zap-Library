@@ -7,13 +7,10 @@ namespace zap
 	/***********************************************************************************/
 
 	//Intern callback functions
-
+	//A null window can't invoke callbacks
 	void internwindowCloseCallback(GLFWwindow* window)
 	{
-		if (window)
-		{
-			glfwSetWindowShouldClose(window, true);
-		}
+		glfwSetWindowShouldClose(window, true);
 	}
 
 	/***********************************************************************************/
@@ -21,15 +18,12 @@ namespace zap
 	/***********************************************/
 
 	//Viewport function
-
+	//A null window can't invoke callbacks
 	void i_FramebuffersizeCallback(GLFWwindow* window ,int size_x, int size_y)
 	{
-		if (window)
-		{
-			int width, height;
-			glfwGetWindowSize(window, &width, &height);
-			glViewport(0, 0, width, height);
-		}
+		int width, height;
+		glfwGetWindowSize(window, &width, &height);
+		glViewport(0, 0, width, height);
 	}
 
 	void i_nFramebuffersizeCallback(GLFWwindow* window, int size_x, int size_y) {}
@@ -248,7 +242,7 @@ namespace zap
 	}
 	bool Window::GetInput (int key, int state)
 	{
-		if (key == 0 || key == 1 || key == 2) // Checks if the key is a mouse button and uses a different function
+		if (util::in(key, 0, 1, 2)) // Checks if the key is a mouse button and uses a different function
 		{
 			return glfwGetMouseButton(intern_window, key) == state;
 		}
