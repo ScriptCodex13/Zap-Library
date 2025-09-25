@@ -82,7 +82,7 @@ int main()
 
 	window.UpdateViewport(true);
 	window.SetVSync(true);
-	//window.Maximize();
+	window.Maximize();
 
 	zap::Enable(zap::Instructions::DEPTH);
 	zap::Enable(zap::Instructions::ANTIALIASING);
@@ -91,11 +91,11 @@ int main()
 	//window.SetCursorinCameraMode(false);
 
 
-	zap::Text text("C:/Windows/Fonts/arial.ttf", "Text", window.GetSizeRef()); // It's better to use GetSizeRef here
+	zap::Text text("C:/Windows/Fonts/arial.ttf", "Text", window.GetSize()); // It's better to use GetSize here
 
 	text.SetCharacterSize(32);
 	text.SetColor(0.0f, 1.0f, 0.0f);
-	text.SetPosition(100.0f, 100.0f); // A quick test
+	text.SetPosition(500.0f, 500.0f); // A quick test
 
 
 	glm::vec3 lightPos(1.0f, 0.0f, 2.0f);

@@ -10,6 +10,7 @@
 #include "../Graphics/Mesh.h"
 #include "../Util/Message.h"
 #include "../Util/Util.h"
+#include "../Window/Window.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H  
@@ -54,7 +55,7 @@ namespace zap
 	class Text : public zap::Mesh
 	{
 	public:
-		Text(const std::string font_path, const std::string content, std::array<int, 2>& window_size);
+		Text(const std::string font_path, const std::string content, std::array<int, 2>& window_size); // ToDo: Add function to Update the window size var if you don't provide reference
 		~Text();
 
 		void SetContent(const std::string new_content);

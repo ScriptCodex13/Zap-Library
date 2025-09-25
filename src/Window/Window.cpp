@@ -368,7 +368,6 @@ namespace zap
 		glfwGetWindowSize(intern_window, &i_window_dimensions[0], &i_window_dimensions[1]);
 
 		currentMonitor = glfwGetWindowMonitor(intern_window);
-		
 	}
 
 	void Window::Draw()
@@ -376,6 +375,7 @@ namespace zap
 		InternSwapBuffers(); // Only executes the draw call if the target frame time is passed
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
+
 
 }
 
