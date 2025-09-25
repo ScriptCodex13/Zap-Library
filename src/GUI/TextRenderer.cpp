@@ -78,7 +78,7 @@ namespace zap
 				messages::PrintMessage("Failed to load glyph", "TextRenderer.cpp/ void zap::Text::GenerateCharacters(...)", MessageTypes::error);
 			}
             
-			Texture& tex = AddTexture((unsigned int)c, i_font->glyph->bitmap.buffer, i_font->glyph->bitmap.width, i_font->glyph->bitmap.rows, GL_RED, zap::TextureFilters::LINEAR, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_EDGE);
+			Texture& tex = AddTexture((unsigned int)c, i_font->glyph->bitmap.buffer, i_font->glyph->bitmap.width, i_font->glyph->bitmap.rows, GL_RED, i_texture_filter, i_mipmap_setting, zap::TextureWrapping::CLAMP_TO_EDGE);
 
 			tex.genTexture();
 		
@@ -164,6 +164,20 @@ namespace zap
 	{
 		i_scale_x = scale_x;
 		i_scale_y = scale_y;
+	}
+
+	void Text::SetTextureFilter(zap::TextureFilters filter)
+	{
+		i_texture_filter = filter;
+
+		GenerateCharacters();
+	}
+
+	void Text::SetMipmapSettings(zap::MipmapSettings setting)
+	{
+		i_mipmap_setting = setting;
+
+		GenerateCharacters();
 	}
 
 	void Text::Draw()

@@ -93,9 +93,14 @@ int main()
 
 	zap::Text text("C:/Windows/Fonts/arial.ttf", "Text", window.GetSize()); // It's better to use GetSize here
 
-	text.SetCharacterSize(32);
+	text.SetCharacterSize(48);
 	text.SetColor(0.0f, 1.0f, 0.0f);
 	text.SetPosition(500.0f, 500.0f); // A quick test
+
+	text.SetTextureFilter(zap::TextureFilters::LINEAR);
+	text.SetMipmapSettings(zap::MipmapSettings::LINEAR_MIPMAP_LINEAR);
+
+	text.SetScale(2.0f, 2.0f);
 
 
 	glm::vec3 lightPos(1.0f, 0.0f, 2.0f);

@@ -52,7 +52,7 @@ namespace zap
 		unsigned int Advance;   
 	};
 
-	class Text : public zap::Mesh
+	class Text : protected zap::Mesh
 	{
 	public:
 		Text(const std::string font_path, const std::string content, std::array<int, 2>& window_size); // ToDo: Add function to Update the window size var if you don't provide reference
@@ -65,10 +65,16 @@ namespace zap
 		void SetColor(float RED, float GREEN, float BLUE);
 		void SetScale(float scale_x, float scale_y);
 
+		void SetTextureFilter(zap::TextureFilters filter);
+		void SetMipmapSettings(zap::MipmapSettings setting);
+
 		void Draw();
 		void GenerateCharacters();
 
 	private:
+		zap::TextureFilters i_texture_filter = zap::TextureFilters::LINEAR;
+		zap::MipmapSettings i_mipmap_setting = zap::MipmapSettings::LINEAR_MIPMAP_NEAREST;
+
 		std::string i_content;
 		std::string i_font_path;
 
