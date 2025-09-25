@@ -14,10 +14,12 @@
 
 namespace zap
 {
-	class Button
+	class Button : zap::Mesh
 	{
+
 	public:
 		Button(zap::Window& window, const std::string button_text = "", const std::string button_text_font_path = "");
+		Button(zap::Window& window, const std::array<float, 4>& bounds, const std::string button_text = "", const std::string button_text_font_path = "");
 		~Button();
 
 		bool Hovered();
@@ -34,13 +36,7 @@ namespace zap
 		void Draw();
 
 	private:
-		std::vector<float> i_button_vertices = // Doesn't work because of face culling and CCW
-		{
-			  0.5f,  0.5f, 0.0f,  // 0, 1, 2
-			  0.5f, -0.5f, 0.0f,  // 3, 4, 5
-			 -0.5f, -0.5f, 0.0f,  // 6, 7, 8
-			 -0.5f,  0.5f, 0.0f   // 9, 10, 11
-		};
+		std::array<float, 4> bounds; // x_min, x_max, y_min, y_max
 
 		std::vector<unsigned int> i_button_indices = 
 		{

@@ -41,12 +41,17 @@ namespace zap
 	namespace util 
 	{
 		template<typename T>
-		inline std::array<T, 2> convert_pixel_to_window(std::array<int, 2> dimensions, T x, T y)
+		inline std::array<T, 2> pixel_to_gl_coords(const std::array<int, 2>& dimensions, T x, T y)
 		{
 			// Converts pixel coordinates to the OpenGL coordinate system
 			std::array<float, 2> n_dimensions = { (float)dimensions[0], (float)dimensions[1] };
 
-			return { (x / ((T)n_dimensions[0] / 2)) - 1 , (y / ((T)n_dimensions[1] / 2)) - 1};
+			return { (x / ((T)n_dimensions[0] / 2)) - T(1) , T(1) - (y / ((T)n_dimensions[1] / 2))};
+		}
+		template<typename T>
+		inline std::array<T, 2> pixel_to_gl_coords(const std::array<int, 2>& dimensions, const std::array<T, 2>& mouse_pos)
+		{
+			return pixel_to_gl_coords(dimensions, mouse_pos[0], mouse_pos[1]);
 		}
 
 		template<typename T>
@@ -60,10 +65,31 @@ namespace zap
 			if (val == arg) return true;
 			return in(val, args...);
 		}
-		template<typename T>
-		inline bool between(T value, T min, T max)
+		//Inclusive 1D between
+		template<typename T, typename BT>
+		inline bool between(T value, BT min, BT max)
 		{
 			return value >= min && value <= max;
+		}
+		//Inclusive 2D between
+		template<typename T, typename BT>
+		inline bool between(const std::array<T, 2>& value, BT xmin, BT xmax, BT ymin, BT ymax)
+		{
+			if (between(value[0], xmin, xmax))
+				return (between(value[1], ymin, ymax));
+			return false;
+		}
+		//Inclusive 2D between with xbounds and ybounds as arrays
+		template<typename T, typename BT>
+		inline bool between(const std::array<T, 2>& value, const std::array<BT, 2>& xbounds, const std::array<BT, 2>& ybounds)
+		{
+			return between(value, xbounds[0], xbounds[1], ybounds[0], ybounds[1]);
+		}
+		//Inclusive 2D between with bounds as arrays
+		template<typename T, typename BT>
+		inline bool between(const std::array<T, 2>& value, const std::array<BT, 4>& bounds) // bounds = {xmin, ymin, xmax, ymax}
+		{
+			return between(value, bounds[0], bounds[2], bounds[1], bounds[3]);
 		}
 
 		template<typename T>

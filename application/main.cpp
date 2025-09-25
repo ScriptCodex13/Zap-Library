@@ -104,7 +104,7 @@ int main()
 
 	std::array<double, 2> oldPos = window.GetMousePosition();
 
-	auto coord = zap::util::convert_pixel_to_window(window.GetSize(), 1.0f, 1.0f);
+	auto coord = zap::util::pixel_to_gl_coords(window.GetSize(), 1.0f, 1.0f);
 
 	std::cout << "x: " << coord[0] << ",y: " << coord[1] << std::endl;
 
@@ -112,7 +112,7 @@ int main()
 	Cube cube;
 	LightCube lightCube;
 
-	zap::Button button(window);
+	zap::Button button(window, std::array<float,4> { -0.5, 0.6, 0.2, 0.8 });
 
 	while (window.Open())
 	{

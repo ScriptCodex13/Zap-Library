@@ -83,7 +83,7 @@ namespace zap
 		//TODO: Never return reference in a getter
 		//      There are explicit coding conventions for getters and setters
 		//      Getters return by value, setters set the value
-		void Mesh::UpdateModel(); // For use with camera
+		void UpdateModel(); // For use with camera
 		void SetProjection(glm::mat4 proj);
 		void SetView(glm::mat4 view);
 		void UpdateModel(glm::mat4 mdl);
@@ -91,7 +91,7 @@ namespace zap
 		void SetModel(const glm::mat4 &);
 
 		unsigned int GetVBO() const;
-		void Mesh::SetVBO(unsigned int&);
+		void SetVBO(unsigned int&);
 		unsigned int GetVAO() const;
 		void SetVAO(unsigned int&);
 		unsigned int GetEBO() const;
