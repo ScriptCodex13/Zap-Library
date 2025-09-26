@@ -12,6 +12,7 @@
 // DIAGNOSE #defines 
 
 #define ZAP_INTERRUPT_FATAL_ERROR messages::PrintMessage("Fatal error caused zap to terminate the application", "", MessageTypes::fatal_error, false); abort();
+#define ZAP_REQUIRE_ALL(x) if(!(x)) { messages::PrintMessage("Assertion failed: " #x, __FILE__, MessageTypes::fatal_error); ZAP_INTERRUPT_FATAL_ERROR }
 
 //NDEBUG def widely compatible accross compilers
 #ifndef NDEBUG
@@ -131,7 +132,8 @@ namespace zap
 			inline callback_invoker(T _callback) : callback(_callback) {}
 			void operator () () { callback(); }
 		};
-	};
+		extern std::string LoadFromTextFile(const char* shaderSourceFilePath);
+	}
 }
 
 

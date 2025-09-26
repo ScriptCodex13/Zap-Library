@@ -30,27 +30,6 @@ namespace zap
 		glDeleteProgram(shaderProgram);
 	}
 
-	void Mesh::SetVertexShaderSource(const std::string& source)
-	{
-		ZAP_ASSERT_TRUE(vertexShaderSource.empty() && "Vertex Shader Source was already set, redundant code should be identified and removed");
-		vertexShaderSource = source;
-	}
-
-	void Mesh::SetFragmentShaderSource(const std::string& source)
-	{
-		ZAP_ASSERT_TRUE(fragmentShaderSource.empty() && "Fragment Shader Source was already set, redundant code should be identified and removed");
-		fragmentShaderSource = source;
-	}
-	//TODO: To implement these placeholder functions
-	void Mesh::SetVertexShaderFilePath(const std::string& vertexShaderFilepath)
-	{
-		ZAP_ASSERT_TRUE(vertexShaderSource.empty() && "Vertex Shader Source was already set, redundant code should be identified and removed");
-	}
-	void Mesh::SetFragmentShaderFilePath(const std::string& fragmentShaderFilepath)
-	{
-		ZAP_ASSERT_TRUE(fragmentShaderSource.empty() && "Fragment Shader Source was already set, redundant code should be identified and removed");
-	}
-
 	void Mesh::SetVBOAccessMode(BufferAccessModes mode)
 	{
 		VBO_ACCESS_MODE = mode;
@@ -80,6 +59,30 @@ namespace zap
 		}
 
 		return texturecfg.emplace_back(Texture{ id, texture_data, texture_width, texture_height, Type, filter, settings, wrapping });
+	}
+
+	// TODO: Move the shader functionality to a separate class, totally five functions to be moved
+	void Mesh::SetVertexShaderSource(const std::string& source)
+	{
+		ZAP_ASSERT_TRUE(vertexShaderSource.empty() && "Vertex Shader Source was already set, redundant code should be identified and removed");
+		vertexShaderSource = source;
+	}
+
+	void Mesh::SetFragmentShaderSource(const std::string& source)
+	{
+		ZAP_ASSERT_TRUE(fragmentShaderSource.empty() && "Fragment Shader Source was already set, redundant code should be identified and removed");
+		fragmentShaderSource = source;
+	}
+
+	void Mesh::SetVertexShaderFilePath(const std::string& vertexShaderFilepath)
+	{
+		ZAP_ASSERT_TRUE(vertexShaderSource.empty() && "Vertex Shader Source was already set, redundant code should be identified and removed");
+		vertexShaderSource = zap::util::LoadFromTextFile(vertexShaderFilepath.c_str());
+	}
+	void Mesh::SetFragmentShaderFilePath(const std::string& fragmentShaderFilepath)
+	{
+		ZAP_ASSERT_TRUE(fragmentShaderSource.empty() && "Fragment Shader Source was already set, redundant code should be identified and removed");
+		fragmentShaderSource = zap::util::LoadFromTextFile(fragmentShaderFilepath.c_str());
 	}
 
 	void Mesh::BuildProgram()
@@ -142,6 +145,7 @@ namespace zap
 		glDeleteShader(fragmentShader);
 
 	}
+	// END TODO:
 
 	void Mesh::GenObject()
 	{

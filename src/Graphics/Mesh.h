@@ -58,11 +58,13 @@ namespace zap
 		~Mesh();
 
 		//Config Process
-
+		// TODO: Move the shader functionality to a separate class, totally five functions to be moved
 		void SetVertexShaderSource     (const std::string& source);
 		void SetFragmentShaderSource   (const std::string& source);
 		void SetVertexShaderFilePath   (const std::string& source);
 		void SetFragmentShaderFilePath (const std::string& source);
+		void BuildProgram();
+		// END TODO:
 
 		void SetVBOAccessMode  (BufferAccessModes mode);
 		void SetEBOAccessMode  (BufferAccessModes mode);
@@ -73,7 +75,6 @@ namespace zap
 		Texture& AddTexture(unsigned int id, const std::string path, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
 		Texture& AddTexture(unsigned int id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER); // Add texture but with manual loaded texture_data
 
-		void BuildProgram();
 		void GenObject();
 		void Finish(); // Everything is finished you can't change the settings of the mesh anymore
 		void UpdateMvpLocations();
