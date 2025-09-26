@@ -7,7 +7,7 @@ namespace zap
 {
 	namespace util
 	{
-		std::string LoadFromTextFile(const char* shaderSourceFilePath)
+		std::string GetTextFileContent(const char* shaderSourceFilePath)
 		{
 			ZAP_REQUIRE_ALL(std::filesystem::exists(shaderSourceFilePath) && "File path can not be found: " && shaderSourceFilePath);
 			using std::cout;

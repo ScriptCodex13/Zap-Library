@@ -132,7 +132,7 @@ namespace zap
 			inline callback_invoker(T _callback) : callback(_callback) {}
 			void operator () () { callback(); }
 		};
-		extern std::string LoadFromTextFile(const char* shaderSourceFilePath);
+		extern std::string GetTextFileContent(const char* shaderSourceFilePath);
 	}
 }
 

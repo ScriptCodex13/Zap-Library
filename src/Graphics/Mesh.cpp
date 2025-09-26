@@ -77,12 +77,12 @@ namespace zap
 	void Mesh::SetVertexShaderFilePath(const std::string& vertexShaderFilepath)
 	{
 		ZAP_ASSERT_TRUE(vertexShaderSource.empty() && "Vertex Shader Source was already set, redundant code should be identified and removed");
-		vertexShaderSource = zap::util::LoadFromTextFile(vertexShaderFilepath.c_str());
+		vertexShaderSource = zap::util::GetTextFileContent(vertexShaderFilepath.c_str());
 	}
 	void Mesh::SetFragmentShaderFilePath(const std::string& fragmentShaderFilepath)
 	{
 		ZAP_ASSERT_TRUE(fragmentShaderSource.empty() && "Fragment Shader Source was already set, redundant code should be identified and removed");
-		fragmentShaderSource = zap::util::LoadFromTextFile(fragmentShaderFilepath.c_str());
+		fragmentShaderSource = zap::util::GetTextFileContent(fragmentShaderFilepath.c_str());
 	}
 
 	void Mesh::BuildProgram()
