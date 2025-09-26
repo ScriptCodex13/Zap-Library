@@ -52,7 +52,8 @@ namespace zap
 		glGenTextures(1, &i_TextureId);
 	}
 
-	void Texture::genTextureFromFile() {
+	void Texture::genTextureFromFile()
+	{
 		bind();
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)i_wrapping);
@@ -85,7 +86,8 @@ namespace zap
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	void Texture::genTextureFromData() {
+	void Texture::genTextureFromData()
+	{
 		bind();
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)i_wrapping);
