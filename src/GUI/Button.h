@@ -10,6 +10,9 @@
 #include "../Graphics/Mesh.h"
 #include "../Window/Window.h"
 
+#include <GLFW/glfw3.h>
+#include <glad/glad.h>
+
 #include "TextRenderer.h"
 
 namespace zap
@@ -27,7 +30,7 @@ namespace zap
 		bool Pressed(zap::Key key); // Returns true if button is pressed and false if not
 		bool Released(zap::Key key);
 
-		void SetPosition();
+		void SetPosition(float x, float y); // Sets the top left point to the given coordinates
 		void SetButtonText();
 		void SetTextOffset();
 		void SetZCoordinate(); // Don't know if you need it
@@ -36,7 +39,13 @@ namespace zap
 		void Draw();
 
 	private:
-		std::array<float, 4> bounds; // x_min, x_max, y_min, y_max
+		unsigned int i_bounds_uniform_location;
+
+		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max
+		std::array<float, 4> i_scale;
+		std::array<float, 2> i_pos; // top left corner of the button
+
+		glm::mat4 i_position_transform;
 
 		std::vector<unsigned int> i_button_indices = 
 		{
@@ -50,9 +59,11 @@ namespace zap
 					
 					layout(location = 0) in vec3 aPos;
 
+					uniform mat4 bounds;
+					
 					void main()
 					{
-						gl_Position = vec4(aPos, 1.0);
+						gl_Position = bounds * vec4(aPos, 1.0);
 					}
 			)glsl";
 

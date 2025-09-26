@@ -109,7 +109,8 @@ namespace zap
 		if (!i_path.empty())
 		{
 			genTextureFromFile();
-		} else
+		} 
+		else
 		{
 			genTextureFromData();
 		}

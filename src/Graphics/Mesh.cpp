@@ -242,7 +242,8 @@ namespace zap
 		glUniformMatrix4fv(mvp.view_location, 1, GL_FALSE, glm::value_ptr(view));
 	}
 
-	void Mesh::UpdateModel(glm::mat4 mdl) {
+	void Mesh::UpdateModel(glm::mat4 mdl) 
+	{
 		glUniformMatrix4fv(mvp.model_location, 1, GL_FALSE, glm::value_ptr(mdl));
 	}
 

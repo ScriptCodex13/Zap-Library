@@ -6,6 +6,8 @@
 #include <string>
 #include <iostream>
 
+#include "Util.h"
+
 enum class MessageTypes
 {
 	None = 0,

@@ -76,7 +76,7 @@ namespace zap
 		Texture& AddTexture(unsigned int id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER); // Add texture but with manual loaded texture_data
 
 		void GenObject();
-		void Finish(); // Everything is finished you can't change the settings of the mesh anymore
+		void Finish(); // ToDo: Check if one of the functions which require Finish is called before and throw errors 
 		void UpdateMvpLocations();
 		bool UseTexture (unsigned int id); //TODO: This is Bind, not Set, should be renamed | Done - ScriptCodex13
 

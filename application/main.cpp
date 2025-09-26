@@ -95,7 +95,7 @@ int main()
 
 	text.SetCharacterSize(48);
 	text.SetColor(0.0f, 1.0f, 0.0f);
-	text.SetPosition(500.0f, 500.0f); // A quick test
+	text.SetPosition(500.0f, 500.0f); // ToDo: Maybe use gl_coords here
 
 	text.SetTextureFilter(zap::TextureFilters::LINEAR);
 	text.SetMipmapSettings(zap::MipmapSettings::LINEAR_MIPMAP_LINEAR);
@@ -118,6 +118,8 @@ int main()
 	LightCube lightCube;
 
 	zap::Button button(window, std::array<float,4> { -0.5, 0.6, 0.2, 0.8 });
+
+	button.SetPosition(0.0f, 0.0f); // Funktioniert noch nicht !
 
 	while (window.Open())
 	{
@@ -168,6 +170,10 @@ int main()
 		//here starts current VAO for current program draw
 		//here draw ends
 
+		glDisable(GL_DEPTH_TEST);
+		button.Update();
+		button.Draw();
+
 		text.SetContent(std::to_string(std::round(window.GetFPS())));
 
 		text.Draw();
@@ -176,9 +182,7 @@ int main()
 		{
 			std::cerr << "Pressed" << std::endl;
 		}
-
-		button.Update();
-		button.Draw();
+		glEnable(GL_DEPTH_TEST);
 
 		window.Update();
 		window.Draw();

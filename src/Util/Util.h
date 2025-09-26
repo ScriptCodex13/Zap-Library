@@ -6,6 +6,19 @@
 #include "Message.h"
 
 #include <cstdlib>
+#include <stdbool.h>
+
+/**********************************************************************************/
+
+//vars
+
+namespace zap_state_vars
+{
+	inline bool disable_outputs = false;
+}
+
+/**********************************************************************************/
+
 
 /**********************************************************************************/
 
@@ -13,6 +26,8 @@
 
 #define ZAP_INTERRUPT_FATAL_ERROR messages::PrintMessage("Fatal error caused zap to terminate the application", "", MessageTypes::fatal_error, false); abort();
 #define ZAP_REQUIRE_ALL(x) if(!(x)) { messages::PrintMessage("Assertion failed: " #x, __FILE__, MessageTypes::fatal_error); ZAP_INTERRUPT_FATAL_ERROR }
+
+#define ZAP_DISABLE_OUTPUTS(x) zap_state_vars::disable_outputs = x; // Disables the zap information and debug outputs ! including most of the errors and warnings ! 
 
 //NDEBUG def widely compatible accross compilers
 #ifndef NDEBUG
@@ -50,9 +65,9 @@ namespace zap
 			return { (x / ((T)n_dimensions[0] / 2)) - T(1) , T(1) - (y / ((T)n_dimensions[1] / 2))};
 		}
 		template<typename T>
-		inline std::array<T, 2> pixel_to_gl_coords(const std::array<int, 2>& dimensions, const std::array<T, 2>& mouse_pos)
+		inline std::array<T, 2> pixel_to_gl_coords(const std::array<int, 2>& dimensions, const std::array<T, 2>& points)
 		{
-			return pixel_to_gl_coords(dimensions, mouse_pos[0], mouse_pos[1]);
+			return pixel_to_gl_coords(dimensions, points[0], points[1]);
 		}
 
 		template<typename T>

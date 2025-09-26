@@ -4,6 +4,10 @@ namespace messages
 {
 	std::ostream& PrintMessage(const std::string& message_content, const std::string& File /*which File sends the Message ?*/, MessageTypes Type, bool show_file)
 	{
+		
+		if (zap_state_vars::disable_outputs) return std::cout;
+		
+
 		if (Type == MessageTypes::notification)
 		{
 			std::cout << "[INFO] " << message_content;
@@ -68,7 +72,7 @@ namespace messages
 			{
 				std::cerr << " ( " << File << " )" << "\033[0m" << std::endl;
 			}
-			else
+			else				
 			{
 				std::cerr << "\033[0m" << std::endl;
 			}
@@ -78,6 +82,7 @@ namespace messages
 		{
 			std::cout << "\033[32m[CORE] " << message_content << "\033[0m" << std::endl;
 		}
+	
 		return std::cout;
 	};
 }
