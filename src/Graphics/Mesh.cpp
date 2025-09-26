@@ -32,20 +32,23 @@ namespace zap
 
 	void Mesh::SetVertexShaderSource(const std::string& source)
 	{
-		if (!vSourceset)
-		{
-			vertexShaderSource = source;
-			vSourceset = true;
-		}
+		ZAP_ASSERT_TRUE(vertexShaderSource.empty() && "Vertex Shader Source was already set, redundant code should be identified and removed");
+		vertexShaderSource = source;
 	}
 
 	void Mesh::SetFragmentShaderSource(const std::string& source)
 	{
-		if (!fSourceset)
-		{
-			fragmentShaderSource = source;
-			fSourceset = true;
-		}
+		ZAP_ASSERT_TRUE(fragmentShaderSource.empty() && "Fragment Shader Source was already set, redundant code should be identified and removed");
+		fragmentShaderSource = source;
+	}
+	//TODO: To implement these placeholder functions
+	void Mesh::SetVertexShaderFilePath(const std::string& vertexShaderFilepath)
+	{
+		ZAP_ASSERT_TRUE(vertexShaderSource.empty() && "Vertex Shader Source was already set, redundant code should be identified and removed");
+	}
+	void Mesh::SetFragmentShaderFilePath(const std::string& fragmentShaderFilepath)
+	{
+		ZAP_ASSERT_TRUE(fragmentShaderSource.empty() && "Fragment Shader Source was already set, redundant code should be identified and removed");
 	}
 
 	void Mesh::SetVBOAccessMode(BufferAccessModes mode)
@@ -81,6 +84,10 @@ namespace zap
 
 	void Mesh::BuildProgram()
 	{
+		// Use default shaders when none provided
+		if (vertexShaderSource.empty ()) vertexShaderSource = defaultVertexShaderSource;
+		if (fragmentShaderSource.empty()) fragmentShaderSource = defaultFragmentShaderSource;
+
 		vertexShader = glCreateShader(GL_VERTEX_SHADER);
 		const char* src = vertexShaderSource.c_str();
 		glShaderSource(vertexShader, 1, &src, NULL);
@@ -198,7 +205,7 @@ namespace zap
 		//why did you replace the STL find?
 		for (auto cfg : texturecfg)
 		{
-			if (cfg.i_id == id) 
+			if (cfg.getHash() == id)
 			{
 				cfg.bind();
 				return true;

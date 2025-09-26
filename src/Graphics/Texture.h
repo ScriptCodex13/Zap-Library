@@ -31,38 +31,37 @@ namespace zap
 		CLAMP_TO_BORDER = GL_CLAMP_TO_BORDER
 	};
 
-	struct Texture
+	class Texture
 	{
-		Texture(unsigned int id, const std::string path, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
-		Texture(unsigned int id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
-
-		~Texture();
+	public:
+		Texture(unsigned int external_id, const std::string path, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
+		Texture(unsigned int external_id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
 
 		void genTexture();
 		void bind();
-
-		unsigned int i_texture;
-		std::string i_path;
+		inline unsigned int getID() const { return i_TextureId; }
+		inline unsigned int getHash() const { return i_ExternalId; }
+	private:
+		void genTextureFromFile();
+		void genTextureFromData();
+		unsigned int i_TextureId;
+		unsigned int i_ExternalId;
+	private:
 
 		TextureFilters i_filter    = TextureFilters::LINEAR;
 		MipmapSettings i_settings  = MipmapSettings::LINEAR_MIPMAP_LINEAR;
 		TextureWrapping i_wrapping = TextureWrapping::CLAMP_TO_BORDER;
 
-		bool i_textureloaded = false;
+		std::string i_path;
 
 		int i_width;
 		int i_height;
 		int i_nrChannels;
 
-		bool i_usePNG = false;
-
-		bool i_load_data_manual = false;
-
-		unsigned char* i_TextureData;
+		unsigned char* i_TextureData = nullptr;
 
 		GLenum i_Type;
 
-		unsigned int i_id;
 	};
 
 };

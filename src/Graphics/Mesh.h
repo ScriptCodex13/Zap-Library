@@ -59,8 +59,10 @@ namespace zap
 
 		//Config Process
 
-		void SetVertexShaderSource   (const std::string& source);
-		void SetFragmentShaderSource (const std::string& source);
+		void SetVertexShaderSource     (const std::string& source);
+		void SetFragmentShaderSource   (const std::string& source);
+		void SetVertexShaderFilePath   (const std::string& source);
+		void SetFragmentShaderFilePath (const std::string& source);
 
 		void SetVBOAccessMode  (BufferAccessModes mode);
 		void SetEBOAccessMode  (BufferAccessModes mode);
@@ -123,11 +125,8 @@ namespace zap
 		std::vector<float> vertices;
 		std::vector<unsigned int> indices;
 
-		std::string vertexShaderSource   = defaultVertexShaderSource;
-		std::string fragmentShaderSource = defaultFragmentShaderSource;
-
-		bool vSourceset = false;
-		bool fSourceset = false;
+		std::string vertexShaderSource;
+		std::string fragmentShaderSource;
 
 		//Shaders
 		unsigned int vertexShader;
@@ -150,7 +149,6 @@ namespace zap
 		//Textures
 		std::vector<Texture> texturecfg; // Needed to use shared_ptr because otherwise the Program crashes. Please do not change. If that here is very problematic we can find out a solution together.
 
-		//TODO:  variable use_indices is greatly redundant. The vector indices is a clear indicator showing the use of them.
 	};
 
 };

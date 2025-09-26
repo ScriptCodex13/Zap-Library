@@ -84,7 +84,7 @@ namespace zap
 		
 			Character character =
 			{
-				tex.i_texture,
+				tex.getID(),
 				glm::ivec2(i_font->glyph->bitmap.width, i_font->glyph->bitmap.rows),
 				glm::ivec2(i_font->glyph->bitmap_left, i_font->glyph->bitmap_top),
 				(unsigned int)i_font->glyph->advance.x
