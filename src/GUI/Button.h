@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "../Graphics/Mesh.h"
-#include "../Window/Window.h"
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
@@ -30,7 +29,11 @@ namespace zap
 		bool Pressed(zap::Key key); // Returns true if button is pressed and false if not
 		bool Released(zap::Key key);
 
-		void SetPosition(float x, float y); // Sets the top left point to the given coordinates
+		void SetGlPosition(float xmin, float ymin); // Equivalent to move window to XY pos. Sets the xmin/ymin = bottom/left point to the given coordinates
+		void SetGlPosition(std::array<float, 2>& gl_xy_min); // Equivalent to move window to XY pos. Sets the top left point to the given coordinates
+		void SetGlPosition(float xmin, float ymin, float xmax, float ymax); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
+		void SetGlPosition(std::array<float, 2>& gl_xy_min, std::array<float, 2>& gl_xy_max); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
+		void SetGlPosition(std::array<float, 4>& gl_xy_min_xy_max); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
 		void SetButtonText();
 		void SetTextOffset();
 		void SetZCoordinate(); // Don't know if you need it
@@ -42,10 +45,6 @@ namespace zap
 		unsigned int i_bounds_uniform_location;
 
 		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max
-		std::array<float, 4> i_scale;
-		std::array<float, 2> i_pos; // top left corner of the button
-
-		glm::mat4 i_position_transform;
 
 		std::vector<unsigned int> i_button_indices = 
 		{
@@ -58,12 +57,10 @@ namespace zap
 					#version 330 core 
 					
 					layout(location = 0) in vec3 aPos;
-
-					uniform mat4 bounds;
 					
 					void main()
 					{
-						gl_Position = bounds * vec4(aPos, 1.0);
+						gl_Position = vec4(aPos, 1.0);
 					}
 			)glsl";
 

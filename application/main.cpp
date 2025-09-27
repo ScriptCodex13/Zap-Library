@@ -83,12 +83,11 @@ int main()
 
 	window.UpdateViewport(true);
 	window.SetVSync(true);
-	window.Maximize();
+	//window.Maximize();
 
 	zap::Enable(zap::Instructions::DEPTH);
 	zap::Enable(zap::Instructions::ANTIALIASING);
 
-	//window.Maximize();
 	//window.SetCursorinCameraMode(false);
 
 
@@ -118,9 +117,11 @@ int main()
 	Cube cube;
 	LightCube lightCube;
 
-	zap::Button button(window, std::array<float,4> { -0.5, 0.6, 0.2, 0.8 });
+	zap::Button button(window, std::array<float, 4> { -0.5, 0.6, 0.2, 0.8 });
 
-	button.SetPosition(0.0f, 0.0f); // Funktioniert noch nicht !
+
+
+	button.SetGlPosition(std::array<float, 2> {- 0.9f, 0.7f}); // Nutzen wir GL Koordinaten
 
 	while (window.Open())
 	{
@@ -172,7 +173,7 @@ int main()
 		//here draw ends
 
 		glDisable(GL_DEPTH_TEST);
-		button.Update();
+		//button.Update(); //TODO: Do this only when needed, not on each while loop rendering iteration
 		button.Draw();
 
 		text.SetContent(std::to_string(std::round(window.GetFPS())));

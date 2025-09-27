@@ -108,10 +108,32 @@ namespace zap
 			return between(value, bounds[0], bounds[2], bounds[1], bounds[3]);
 		}
 
+		//Exclusive 1D between
 		template<typename T>
 		inline bool exclusive_between(T value, T min, T max)
 		{
 			return value > min && value < max;
+		}
+		//TODO: None of Exclusive 2D are actually tested. To be tested.
+		//Exclusive 2D between
+		template<typename T, typename BT>
+		inline bool exclusive_between(const std::array<T, 2>& value, BT xmin, BT xmax, BT ymin, BT ymax)
+		{
+			if (exclusive_between(value[0], xmin, xmax))
+				return (exclusive_between(value[1], ymin, ymax));
+			return false;
+		}
+		//Inclusive 2D between with xbounds and ybounds as arrays
+		template<typename T, typename BT>
+		inline bool exclusive_between(const std::array<T, 2>& value, const std::array<BT, 2>& xbounds, const std::array<BT, 2>& ybounds)
+		{
+			return exclusive_between(value, xbounds[0], xbounds[1], ybounds[0], ybounds[1]);
+		}
+		//Exclusive 2D between with bounds as arrays
+		template<typename T, typename BT>
+		inline bool exclusive_between(const std::array<T, 2>& value, const std::array<BT, 4>& bounds) // bounds = {xmin, ymin, xmax, ymax}
+		{
+			return exclusive_between(value, bounds[0], bounds[2], bounds[1], bounds[3]);
 		}
 
 		template<typename T>

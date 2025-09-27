@@ -10,13 +10,13 @@
 namespace zap
 {
 
-
-	Mesh::Mesh(std::vector<float> extern_vertices, std::vector<unsigned int> extern_indices)
+	// Avoid copy by value for large data structures
+	Mesh::Mesh(const std::vector<float>& extern_vertices, const std::vector<unsigned int>& extern_indices)
 	{
 		vertices = extern_vertices;
 		indices  = extern_indices;
 	}
-	Mesh::Mesh(std::vector<float> extern_vertices)
+	Mesh::Mesh(const std::vector<float>& extern_vertices)
 	{
 		vertices = extern_vertices;
 	}
@@ -177,6 +177,21 @@ namespace zap
 	}
 	// END TODO:
 
+	//
+	void Mesh::vertexBufferData()
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), (GLenum)VBO_ACCESS_MODE);
+	}
+	void Mesh::vertexBufferData (const std::vector<float>& newBufferData)
+	{
+		ZAP_REQUIRE(newBufferData.size() == vertices.size() && "New buffer data must be of the same size as the existing vertex buffer data");
+		//glDeleteBuffers(1, &VBO);
+		//glGenBuffers(1, &VBO);
+		//VBO_ACCESS_MODE = BufferAccessModes::HIGH_ACESS_DYNAMIC; // Reset to default
+		vertices = newBufferData;
+		vertexBufferData();
+	}
 	void Mesh::GenObject()
 	{
 		/*****************************************************************************************/
@@ -188,8 +203,7 @@ namespace zap
 		// VBO
 		// F
 		glGenBuffers(1, &VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), (GLenum)VBO_ACCESS_MODE);
+		vertexBufferData();
 
 		for (auto& cfg : attribcfg)
 		{

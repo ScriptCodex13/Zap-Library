@@ -53,8 +53,9 @@ namespace zap
 	{
 	public:
 		Mesh();
-		Mesh(std::vector<float> extern_vertices, std::vector<unsigned int> extern_indices);
-		Mesh(std::vector<float> extern_vertices);
+		// Avoid copy by value for large data structures
+		Mesh(const std::vector<float>& extern_vertices, const std::vector<unsigned int>& extern_indices);
+		Mesh(const std::vector<float>& extern_vertices);
 		~Mesh();
 
 		//Config Process
@@ -76,6 +77,10 @@ namespace zap
 
 		Texture& AddTexture(unsigned int id, const std::string path, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
 		Texture& AddTexture(unsigned int id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER); // Add texture but with manual loaded texture_data
+
+		//Separate vertex buffer data functions for more complex logic
+		void vertexBufferData();
+		void vertexBufferData(const std::vector<float>& newBufferData);
 
 		void GenObject();
 		void Finish(); // ToDo: Check if one of the functions which require Finish is called before and throw errors 
