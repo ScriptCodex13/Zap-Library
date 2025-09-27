@@ -186,9 +186,6 @@ namespace zap
 	void Mesh::vertexBufferData (const std::vector<float>& newBufferData)
 	{
 		ZAP_REQUIRE(newBufferData.size() == vertices.size() && "New buffer data must be of the same size as the existing vertex buffer data");
-		//glDeleteBuffers(1, &VBO);
-		//glGenBuffers(1, &VBO);
-		//VBO_ACCESS_MODE = BufferAccessModes::HIGH_ACESS_DYNAMIC; // Reset to default
 		vertices = newBufferData;
 		vertexBufferData();
 	}
