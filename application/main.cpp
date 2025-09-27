@@ -51,6 +51,7 @@ int main()
 	zap::Init(4, 6);
 
 	zap::Window window(1920, 1080, "Hello Window");
+	zap::util::scope_guard closeWindow(zap::Delete);
 
 	zap::InitGlad();
 
@@ -192,7 +193,6 @@ int main()
 		rotation += 1.0f;
 	}
 
-	zap::Delete();
 	return 0;
 
 }

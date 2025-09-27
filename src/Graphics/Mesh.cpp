@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include<filesystem>
 
 /**************************************************************************************/
 
@@ -64,26 +65,55 @@ namespace zap
 	// TODO: Move the shader functionality to a separate class, totally five functions to be moved
 	void Mesh::SetVertexShaderSource(const std::string& source)
 	{
+		// Just assert nothing fatal here. Nothing truly bad happens if the source is set multiple times, but it indicates bad redundant code.
 		ZAP_ASSERT_TRUE(vertexShaderSource.empty() && "Vertex Shader Source was already set, redundant code should be identified and removed");
 		vertexShaderSource = source;
 	}
 
 	void Mesh::SetFragmentShaderSource(const std::string& source)
 	{
+		// Just assert nothing fatal here. Nothing truly bad happens if the source is set multiple times, but it indicates bad redundant code.
 		ZAP_ASSERT_TRUE(fragmentShaderSource.empty() && "Fragment Shader Source was already set, redundant code should be identified and removed");
 		fragmentShaderSource = source;
 	}
 
 	void Mesh::SetVertexShaderFilePath(const std::string& vertexShaderFilepath)
 	{
-		ZAP_ASSERT_TRUE(vertexShaderSource.empty() && "Vertex Shader Source was already set, redundant code should be identified and removed");
-		vertexShaderSource = zap::util::GetTextFileContent(vertexShaderFilepath.c_str());
+		//Require path to exist. Missing path is a fatal error, no go from this point.
+		ZAP_REQUIRE_ALL(std::filesystem::exists(vertexShaderFilepath.c_str()) && "Vertex Shader File Path can not be found: " && vertexShaderFilepath.c_str());
+		SetVertexShaderSource(zap::util::GetTextFileContent(vertexShaderFilepath.c_str())); // Reuse code, avoid redundancy
 	}
 	void Mesh::SetFragmentShaderFilePath(const std::string& fragmentShaderFilepath)
 	{
-		ZAP_ASSERT_TRUE(fragmentShaderSource.empty() && "Fragment Shader Source was already set, redundant code should be identified and removed");
-		fragmentShaderSource = zap::util::GetTextFileContent(fragmentShaderFilepath.c_str());
+		//Require path to exist. Missing path is a fatal error, no go from this point.
+		ZAP_REQUIRE_ALL(std::filesystem::exists(fragmentShaderFilepath.c_str()) && "Vertex Shader File Path can not be found: " && fragmentShaderFilepath.c_str());
+		SetFragmentShaderSource (zap::util::GetTextFileContent(fragmentShaderFilepath.c_str())); // Reuse code, avoid redundancy
 	}
+	void Mesh::SetVertexShader(const std::string& source)
+	{
+		// If source is an existing path, load from path, else use as source code
+		if (std::filesystem::exists(source.c_str()))
+		{
+			SetVertexShaderFilePath(source);
+		}
+		else
+		{
+			SetVertexShaderSource(source);
+		}
+	}
+	void Mesh::SetFragmentShader(const std::string& source)
+	{
+		// If source is an existing path, load from path, else use as source code
+		if (std::filesystem::exists(source.c_str()))
+		{
+			SetFragmentShaderFilePath(source);
+		}
+		else
+		{
+			SetFragmentShaderSource(source);
+		}
+	}
+
 
 	void Mesh::BuildProgram()
 	{

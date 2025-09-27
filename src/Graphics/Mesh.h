@@ -58,11 +58,13 @@ namespace zap
 		~Mesh();
 
 		//Config Process
-		// TODO: Move the shader functionality to a separate class, totally five functions to be moved
+		// TODO: Move the shader functionality to a separate class, totally seven functions to be moved
 		void SetVertexShaderSource     (const std::string& source);
 		void SetFragmentShaderSource   (const std::string& source);
 		void SetVertexShaderFilePath   (const std::string& source);
 		void SetFragmentShaderFilePath (const std::string& source);
+		void SetVertexShader           (const std::string& source); // Automatic: If source is an existing path, load from path, else use as source code
+		void SetFragmentShader         (const std::string& source); // Automatic: If source is an existing path, load from path, else use as source code
 		void BuildProgram();
 		// END TODO:
 
