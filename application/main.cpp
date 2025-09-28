@@ -117,7 +117,7 @@ int main()
 	LightCube lightCube;
 
 	zap::Button button(window, std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 });
-	button.SetGlPosition(std::array<float, 2> {- 0.9f, 0.7f}); // Nutzen wir GL Koordinaten
+	//button.SetGlPosition(std::array<float, 2> {- 0.9f, 0.7f}); // Nutzen wir GL Koordinaten
 	//button.SetGlPosition(- 0.9f, 0.7f, 0.2, 0.8 ); // Nutzen wir GL Koordinaten
 	//button.SetGlSize(std::array<float, 2> {0.1f, 0.1f});
 	//button.SetGlWidth(0.7);
@@ -177,7 +177,6 @@ int main()
 		button.Draw();
 
 		text.SetContent(std::to_string(std::round(window.GetFPS())));
-
 		text.Draw();
 
 		if (button.Pressed(zap::Key::RIGHT_MOUSE))

@@ -11,14 +11,14 @@ namespace zap
 {
 
 	// Avoid copy by value for large data structures
-	Mesh::Mesh(const std::vector<float>& extern_vertices, const std::vector<unsigned int>& extern_indices)
+	Mesh::Mesh(const std::vector<float>& extern_vertices, const std::vector<unsigned int>& extern_indices) : Mesh (extern_vertices)
 	{
-		vertices = extern_vertices;
-		indices  = extern_indices;
+		
+		PreSetIndices (extern_indices);
 	}
-	Mesh::Mesh(const std::vector<float>& extern_vertices)
+	Mesh::Mesh(const std::vector<float>& extern_vertices) : Mesh()
 	{
-		vertices = extern_vertices;
+		PreSetVertices(extern_vertices);
 	}
 	Mesh::Mesh()
 	{
@@ -31,6 +31,14 @@ namespace zap
 		glDeleteProgram(shaderProgram);
 	}
 
+	void Mesh::PreSetVertices(const std::vector<float>& extern_vertices)
+	{
+		vertices = extern_vertices;
+	}
+	void Mesh::PreSetIndices(const std::vector<unsigned int>& extern_indices)
+	{
+		indices = extern_indices;
+	}
 	void Mesh::SetVBOAccessMode(BufferAccessModes mode)
 	{
 		VBO_ACCESS_MODE = mode;

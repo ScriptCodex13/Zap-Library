@@ -52,12 +52,6 @@ namespace zap
 
 		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max
 
-		std::vector<unsigned int> i_button_indices = 
-		{
-			2, 1, 0,
-			0, 3, 2
-		};
-
 		const char* i_vertex_shader_source = 
 			R"glsl(
 					#version 330 core 
@@ -69,7 +63,6 @@ namespace zap
 					void main()
 					{
 						gl_Position = pos * size * vec4(aPos, 1.0);
-						//gl_Position = vec4(aPos, 1.0);
 					}
 			)glsl";
 
@@ -86,8 +79,8 @@ namespace zap
 			)glsl";
 
 
-		std::unique_ptr<zap::Text> i_button_text;
-		std::unique_ptr<zap::Mesh> i_button_mesh;
+		//std::unique_ptr<zap::Text> i_button_text;
+		//std::unique_ptr<zap::Mesh> i_button_mesh;
 
 		zap::Window* e_window;
 	};

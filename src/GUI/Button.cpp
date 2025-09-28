@@ -8,28 +8,28 @@ namespace zap
 
 	}
 	Button::Button(zap::Window& window, const std::array<float, 4>& _bounds, const std::string button_text, const std::string button_text_font_path):
-		i_bounds(_bounds)
+		i_bounds(_bounds), zap::Mesh (
+			{
+				  1.0f,  1.0f, 0.1f,  // 0, 1, 2
+				  1.0f,  0.0f, 0.1f,  // 3, 4, 5
+				  0.0f,  0.0f, 0.1f,  // 6, 7, 8
+				  0.0f,  1.0f, 0.1f   // 9, 10, 11
+			},
+			{
+				2, 1, 0,
+				0, 3, 2
+			})
 	{
 		e_window = &window;
-		std::vector<float> i_button_vertices =
-		{
-			  1.0f,  1.0f, 0.1f,  // 0, 1, 2
-			  1.0f,  0.0f, 0.1f,  // 3, 4, 5
-			  0.0f,  0.0f, 0.1f,  // 6, 7, 8
-			  0.0f,  1.0f, 0.1f   // 9, 10, 11
-		};
+		SetVertexShaderSource(i_vertex_shader_source);
+		SetFragmentShaderSource(i_fragment_shader_source);
 
-		i_button_mesh = std::make_unique<zap::Mesh>(i_button_vertices, i_button_indices);
-		i_button_mesh->SetVertexShaderSource(i_vertex_shader_source);
-		i_button_mesh->SetFragmentShaderSource(i_fragment_shader_source);
+		SetAttribPointer(0, 3, 3, 0);
 
-		i_button_mesh->SetAttribPointer(0, 3, 3, 0);
+		Finish();
 
-		i_button_mesh->Finish();
-
-		i_size_uniform_location = glGetUniformLocation(i_button_mesh->GetProgram(), "size");
-		 i_pos_uniform_location = glGetUniformLocation(i_button_mesh->GetProgram(), "pos");
-		i_button_mesh->Bind();
+		i_size_uniform_location = glGetUniformLocation(GetProgram(), "size");
+		i_pos_uniform_location = glGetUniformLocation(GetProgram(), "pos");
 
 		UpdatePosition();
 	}
@@ -45,8 +45,8 @@ namespace zap
 		float y0 = i_bounds[1], dy = i_bounds[3] - i_bounds[1];
 		glm::mat4 resize = glm::scale(glm::mat4(1.0f), glm::vec3(dx, dy, 1.0f));
 		glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(x0, y0, 0.0f));
-		i_button_mesh->Bind();
 
+		Bind();
 		glUniformMatrix4fv(i_size_uniform_location, 1, GL_FALSE, glm::value_ptr(resize));
 		glUniformMatrix4fv(i_pos_uniform_location, 1, GL_FALSE, glm::value_ptr(translate));
 	}
@@ -102,6 +102,10 @@ namespace zap
 			i_bounds[1] + dy        // y_min + delta_y
 		});
 	}
+	void Button::SetGlPosition(float xmin, float ymin)
+	{
+		SetGlPosition(std::array<float, 2> {xmin, ymin});
+	}
 	void Button::SetGlPosition(std::array<float, 2>& gl_xy_min)
 	{
 		SetGlPosition(std::array<float, 4>{
@@ -141,8 +145,7 @@ namespace zap
 
 	void Button::Draw()
 	{
-		i_button_mesh->Bind();
-		i_button_mesh->Draw();
-
+		Bind();
+		zap::Mesh::Draw();
 	}
 }

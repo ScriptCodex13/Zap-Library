@@ -72,6 +72,8 @@ namespace zap
 		void SetVBOAccessMode  (BufferAccessModes mode);
 		void SetEBOAccessMode  (BufferAccessModes mode);
 
+		void PreSetVertices(const std::vector<float>& extern_vertices);
+		void PreSetIndices(const std::vector<unsigned int>& extern_indices);
 		AttributeConfig& SetAttribPointer(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos);
 		//
 
