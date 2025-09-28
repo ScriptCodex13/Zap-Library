@@ -3,14 +3,14 @@
 namespace zap
 {
 
-	Text::Text(const std::string font_path, const std::string content, std::array<int, 2>& window_size) : Mesh({})
+	Text::Text(const std::string font_path, const std::string content, std::array<int, 2> window_size) : Mesh({})
 	{
 		projection = glm::ortho(0.0f, (float)window_size[0], 0.0f, (float)window_size[1]);
 
 		i_font_path = font_path;
 		i_content = content;
 
-		e_window_size = &window_size;
+		e_window_size = window_size;
 
 		// i_text_mesh init
 
@@ -189,7 +189,7 @@ namespace zap
 		std::string::const_iterator c;
 
 		float x = pos_x;
-		float y = e_window_size->at(1) - pos_y;
+		float y = e_window_size.at(1) - pos_y;
 
 		for (c = i_content.begin(); c != i_content.end(); c++)
 		{

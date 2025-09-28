@@ -55,7 +55,7 @@ namespace zap
 	class Text : protected zap::Mesh
 	{
 	public:
-		Text(const std::string font_path, const std::string content, std::array<int, 2>& window_size); // ToDo: Add function to Update the window size var if you don't provide reference
+		Text(const std::string font_path, const std::string content, std::array<int, 2> window_size); // ToDo: Add function to Update the window size var if you don't provide reference
 		~Text();
 
 		void SetContent(const std::string new_content);
@@ -80,7 +80,7 @@ namespace zap
 
 		unsigned int i_character_size = 24;
 
-		std::array<int, 2>* e_window_size;
+		std::array<int, 2> e_window_size;
 
 		float i_scale_x = 1.0f;
 		float i_scale_y = 1.0f;
