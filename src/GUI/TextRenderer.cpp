@@ -53,8 +53,6 @@ namespace zap
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 
-		//config.vertexAttribPointer();
-
 		//
 	}
 
@@ -180,15 +178,11 @@ namespace zap
 	void Text::SetTextureFilter(zap::TextureFilters filter)
 	{
 		i_texture_filter = filter;
-
-		GenerateCharacters();
 	}
 
 	void Text::SetMipmapSettings(zap::MipmapSettings setting)
 	{
 		i_mipmap_setting = setting;
-
-		GenerateCharacters();
 	}
 
 	void Text::Draw()

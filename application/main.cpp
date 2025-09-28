@@ -98,6 +98,7 @@ int main()
 
 	text.SetTextureFilter(zap::TextureFilters::LINEAR);
 	text.SetMipmapSettings(zap::MipmapSettings::LINEAR_MIPMAP_LINEAR);
+	text.GenerateCharacters();
 
 	text.SetScale(2.0f, 2.0f);
 
