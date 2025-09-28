@@ -3,7 +3,7 @@
 namespace zap
 {
 
-	Text::Text(const std::string font_path, const std::string content, std::array<int, 2> window_size) : Mesh({})
+	Text::Text(const std::string font_path, const std::string content, const std::array<int, 2>& window_size) : Mesh()
 	{
 		projection = glm::ortho(0.0f, (float)window_size[0], 0.0f, (float)window_size[1]);
 
@@ -13,7 +13,6 @@ namespace zap
 		e_window_size = window_size;
 
 		// i_text_mesh init
-
 
 		SetVertexShaderSource(i_vertex_shader_source);
 		SetFragmentShaderSource(i_fragment_shader_source);

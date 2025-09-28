@@ -55,7 +55,7 @@ namespace zap
 	class Text : protected zap::Mesh
 	{
 	public:
-		Text(const std::string font_path, const std::string content, std::array<int, 2> window_size); // ToDo: Add function to Update the window size var if you don't provide reference
+		Text(const std::string font_path, const std::string content, const std::array<int, 2>& window_size); // ToDo: Add function to Update the window size var if you don't provide reference
 		~Text();
 
 		void SetContent(const std::string new_content);
