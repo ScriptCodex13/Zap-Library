@@ -51,11 +51,11 @@ int main()
 	zap::Init(4, 6);
 
 	zap::Window window(1920, 1080, "Hello Window");
-	zap::util::scope_guard closeWindow(zap::Delete);
+	zap::util::scope_guard zapDeleter (zap::Delete);
 
 	zap::InitGlad();
 
-	//Controller 
+	//Controller
 
 	// zap::Device controller = zap::AssignController(); For later prototyping with the controller
 
@@ -90,7 +90,6 @@ int main()
 
 	//window.SetCursorinCameraMode(false);
 
-
 	zap::Text text("C:/Windows/Fonts/arial.ttf", "Text", window.GetSize()); // It's better to use GetSize here
 
 	text.SetCharacterSize(48);
@@ -117,11 +116,12 @@ int main()
 	Cube cube;
 	LightCube lightCube;
 
-	zap::Button button(window, std::array<float, 4> { -0.5, 0.6, 0.2, 0.8 });
-
-
-
+	zap::Button button(window, std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 });
 	button.SetGlPosition(std::array<float, 2> {- 0.9f, 0.7f}); // Nutzen wir GL Koordinaten
+	//button.SetGlPosition(- 0.9f, 0.7f, 0.2, 0.8 ); // Nutzen wir GL Koordinaten
+	//button.SetGlSize(std::array<float, 2> {0.1f, 0.1f});
+	//button.SetGlWidth(0.7);
+	button.SetGlHeight(0.28);
 
 	while (window.Open())
 	{

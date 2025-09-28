@@ -11,16 +11,13 @@ namespace zap
 		i_bounds(_bounds)
 	{
 		e_window = &window;
-		std::vector<float> i_button_vertices = // Doesn't work because of face culling and CCW
+		std::vector<float> i_button_vertices =
 		{
-			  i_bounds[2],  i_bounds[3], 0.1f,  // 0, 1, 2
-			  i_bounds[2],  i_bounds[1], 0.1f,  // 3, 4, 5
-			  i_bounds[0],  i_bounds[1], 0.1f,  // 6, 7, 8
-			  i_bounds[0],  i_bounds[3], 0.1f   // 9, 10, 11
+			  1.0f,  1.0f, 0.1f,  // 0, 1, 2
+			  1.0f,  0.0f, 0.1f,  // 3, 4, 5
+			  0.0f,  0.0f, 0.1f,  // 6, 7, 8
+			  0.0f,  1.0f, 0.1f   // 9, 10, 11
 		};
-
-
-		//i_button_text = std::make_unique<zap::Text>(button_text_font_path, button_text, e_window->GetSizeRef());
 
 		i_button_mesh = std::make_unique<zap::Mesh>(i_button_vertices, i_button_indices);
 		i_button_mesh->SetVertexShaderSource(i_vertex_shader_source);
@@ -30,7 +27,11 @@ namespace zap
 
 		i_button_mesh->Finish();
 
-		i_bounds_uniform_location = glGetUniformLocation(i_button_mesh->GetProgram(), "bounds");
+		i_size_uniform_location = glGetUniformLocation(i_button_mesh->GetProgram(), "size");
+		 i_pos_uniform_location = glGetUniformLocation(i_button_mesh->GetProgram(), "pos");
+		i_button_mesh->Bind();
+
+		UpdatePosition();
 	}
 
 	Button::~Button()
@@ -38,6 +39,17 @@ namespace zap
 
 	}
 
+	void Button::UpdatePosition()
+	{
+		float x0 = i_bounds[0], dx = i_bounds[2] - i_bounds[0];
+		float y0 = i_bounds[1], dy = i_bounds[3] - i_bounds[1];
+		glm::mat4 resize = glm::scale(glm::mat4(1.0f), glm::vec3(dx, dy, 1.0f));
+		glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(x0, y0, 0.0f));
+		i_button_mesh->Bind();
+
+		glUniformMatrix4fv(i_size_uniform_location, 1, GL_FALSE, glm::value_ptr(resize));
+		glUniformMatrix4fv(i_pos_uniform_location, 1, GL_FALSE, glm::value_ptr(translate));
+	}
 	bool Button::Hovered()
 	{
 		auto mouse_pos = zap::util::pixel_to_gl_coords(e_window->GetSize(), e_window->GetMousePosition());
@@ -59,9 +71,36 @@ namespace zap
 		return e_window->GetInput(key, zap::State::RELEASED);
 	}
 
-	void Button::SetGlPosition(float xmin, float ymin)
+	void Button::SetGlSize(float dx, float dy) 
 	{
-		SetGlPosition(std::array<float, 2>{xmin, ymin});
+		SetGlSize(std::array<float, 2> {dx, dy});
+	}
+	void Button::SetGlSize(std::array<float, 2>& dx_dy)
+	{
+		SetGlPosition(std::array<float, 4>{
+			i_bounds[0],            // x_min
+			i_bounds[1],            // y_min
+			i_bounds[0] + dx_dy[0], // x_min + delta_x
+			i_bounds[1] + dx_dy[1]  // y_min + delta_y
+		});
+	}
+	void Button::SetGlWidth(float dx)
+	{
+		SetGlPosition(std::array<float, 4>{
+			i_bounds[0],            // x_min
+			i_bounds[1],            // y_min
+			i_bounds[0] + dx,       // x_min + delta_x
+			i_bounds[3]             // y_max
+		});
+	}
+	void Button::SetGlHeight(float dy)
+	{
+		SetGlPosition(std::array<float, 4>{
+			i_bounds[0],            // x_min
+			i_bounds[1],            // y_min
+			i_bounds[2],            // x_max
+			i_bounds[1] + dy        // y_min + delta_y
+		});
 	}
 	void Button::SetGlPosition(std::array<float, 2>& gl_xy_min)
 	{
@@ -70,24 +109,25 @@ namespace zap
 			gl_xy_min[1],                             // y_min
 			gl_xy_min[0] + i_bounds[2] - i_bounds[0], // x_min + delta_x
 			gl_xy_min[1] + i_bounds[3] - i_bounds[1]  // y_min + delta_y
-			});
+		});
 	}
 	void Button::SetGlPosition(float xmin, float ymin, float xmax, float ymax)
 	{// Sets the xmin/ymin = bottom/left and xmax/ymax = top/right point to the given coordinates
 		SetGlPosition(std::array<float, 4>{
-				xmin, // x_min
-				ymin, // y_min
-				xmax, // x_max
-				ymax  // y_max
+			xmin, // x_min
+			ymin, // y_min
+			xmax, // x_max
+			ymax  // y_max
 		});
+		
 	}
 	void Button::SetGlPosition(std::array<float, 2>& gl_xy_min, std::array<float, 2>& gl_xy_max)
 	{// Sets the xmin/ymin = bottom/left and xmax/ymax = top/right point to the given coordinates
 		SetGlPosition(std::array<float, 4>{
-				gl_xy_min[0], // x_min
-				gl_xy_min[1], // y_min
-				gl_xy_max[0], // x_max
-				gl_xy_max[1]  // y_max
+			gl_xy_min[0], // x_min
+			gl_xy_min[1], // y_min
+			gl_xy_max[0], // x_max
+			gl_xy_max[1]  // y_max
 		});
 	}
 	void Button::SetGlPosition(std::array<float, 4>& gl_xy_min_xy_max)
@@ -96,19 +136,7 @@ namespace zap
 		ZAP_REQUIRE(gl_xy_min_xy_max[2] > -1.f && gl_xy_min_xy_max[3] > -1.f && "ZY max must not go outside lower left GL corner");
 
 		i_bounds = gl_xy_min_xy_max;
-		Update();
-
-	}
-
-	void Button::Update()
-	{
-		i_button_mesh->Bind();
-		i_button_mesh->vertexBufferData({
-			i_bounds[2],  i_bounds[3], 0.1f,  // 0, 1, 2
-			i_bounds[2],  i_bounds[1], 0.1f,  // 3, 4, 5
-			i_bounds[0],  i_bounds[1], 0.1f,  // 6, 7, 8
-			i_bounds[0],  i_bounds[3], 0.1f   // 9, 10, 11
-		});
+		UpdatePosition();
 	}
 
 	void Button::Draw()
@@ -116,6 +144,5 @@ namespace zap
 		i_button_mesh->Bind();
 		i_button_mesh->Draw();
 
-		//i_button_text->Draw();
 	}
 }

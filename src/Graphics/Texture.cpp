@@ -72,7 +72,6 @@ namespace zap
 		//Use scope_guard to free texture data whenever going out of scope
 		util::scope_guard freeTextureData([pTextureData]() { if (pTextureData) stbi_image_free(pTextureData); });
 
-
 		if (!pTextureData)
 		{
 			messages::PrintMessage("Failed to load Texture at path: " + i_path, "Mesh.cpp/zap::Texture::Texture(...)", MessageTypes::error)
@@ -82,7 +81,6 @@ namespace zap
 
 		//TODO: be aware of internal format and format difference
 		glTexImage2D(GL_TEXTURE_2D, 0, usePng ? GL_RGBA : GL_RGB, i_width, i_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pTextureData);
-
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}

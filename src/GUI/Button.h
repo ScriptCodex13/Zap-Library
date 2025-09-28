@@ -24,11 +24,16 @@ namespace zap
 		Button(zap::Window& window, const std::array<float, 4>& bounds, const std::string button_text = "", const std::string button_text_font_path = "");
 		~Button();
 
+		void UpdatePosition();
 		bool Hovered();
 
 		bool Pressed(zap::Key key); // Returns true if button is pressed and false if not
 		bool Released(zap::Key key);
 
+		void SetGlSize(float width, float height);
+		void SetGlSize(std::array<float, 2>& width_height);
+		void SetGlWidth(float width);
+		void SetGlHeight(float height);
 		void SetGlPosition(float xmin, float ymin); // Equivalent to move window to XY pos. Sets the xmin/ymin = bottom/left point to the given coordinates
 		void SetGlPosition(std::array<float, 2>& gl_xy_min); // Equivalent to move window to XY pos. Sets the top left point to the given coordinates
 		void SetGlPosition(float xmin, float ymin, float xmax, float ymax); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
@@ -38,11 +43,12 @@ namespace zap
 		void SetTextOffset();
 		void SetZCoordinate(); // Don't know if you need it
 
-		void Update();
+		//void Update();
 		void Draw();
 
 	private:
-		unsigned int i_bounds_uniform_location;
+		unsigned int i_size_uniform_location;
+		unsigned int i_pos_uniform_location;
 
 		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max
 
@@ -57,10 +63,13 @@ namespace zap
 					#version 330 core 
 					
 					layout(location = 0) in vec3 aPos;
+					uniform mat4 size;
+					uniform mat4 pos;
 					
 					void main()
 					{
-						gl_Position = vec4(aPos, 1.0);
+						gl_Position = pos * size * vec4(aPos, 1.0);
+						//gl_Position = vec4(aPos, 1.0);
 					}
 			)glsl";
 
