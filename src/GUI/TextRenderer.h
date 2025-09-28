@@ -65,6 +65,8 @@ namespace zap
 		void SetColor(float RED, float GREEN, float BLUE);
 		void SetScale(float scale_x, float scale_y);
 
+		void EnableRequriedOpenGLSettings();
+
 		void SetTextureFilter(zap::TextureFilters filter);
 		void SetMipmapSettings(zap::MipmapSettings setting);
 
