@@ -2,7 +2,7 @@
 
 namespace zap
 {
-	void ClearBackground(BackgroundColors color)
+	void ClearBackground(BackgroundColors color)  // Clears the backround with a predefined color 
 	{
 		switch (color)
 		{
@@ -45,7 +45,7 @@ namespace zap
 		}
 	}
 
-	void ClearBackground(float RED, float GREEN, float BLUE, float ALPHA)
+	void ClearBackground(float RED, float GREEN, float BLUE, float ALPHA)  // Clears the Background with a self defined color based on the RGBA settings given in the parameters
 	{
 		RED = std::clamp(RED, 0.0f, 1.0f);
 		GREEN = std::clamp(GREEN, 0.0f, 1.0f);
@@ -56,7 +56,7 @@ namespace zap
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
-	void ShowWireFrame(bool state)
+	void ShowWireFrame(bool state)  // Enable or disable the wireframe mode
 	{
 		if (state)
 		{
@@ -68,9 +68,14 @@ namespace zap
 		}
 	}
 
-	void ClearDepthBuffer()
+	void ClearDepthBuffer() // Clears the depth buffer
 	{
 		glClear(GL_DEPTH_BUFFER_BIT);
+	}
+
+	void ClearBuffers() // Clears color and depth buffer
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	void Enable(Instructions instruction)

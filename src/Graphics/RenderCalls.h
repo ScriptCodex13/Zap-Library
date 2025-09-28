@@ -34,6 +34,7 @@ namespace zap
 	void ClearBackground(float RED, float GREEN, float BLUE, float ALPHA);  // Clears the Background with a self defined color based on the RGBA settings given in the parameters
 	void ShowWireFrame(bool state);                                     // Enable or disable the wireframe
 	void ClearDepthBuffer();											// Clears the depth buffer
+	void ClearBuffers();												// Clears color and depth buffer
 
 	void Enable(Instructions instruction);
 	void Disable(Instructions instruction);

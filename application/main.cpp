@@ -188,6 +188,8 @@ int main()
 		window.Update();
 		window.Draw();
 
+		zap::ClearBuffers();
+
 
 		rotation += 1.0f;
 	}
