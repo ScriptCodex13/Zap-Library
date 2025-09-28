@@ -102,6 +102,10 @@ namespace zap
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
+	void Texture::deleteTexture()
+	{
+		glDeleteTextures(1, &i_TextureId);
+	}
 	void Texture::genTexture()
 	{
 		if (!i_path.empty())

@@ -70,17 +70,23 @@ namespace zap
 
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
+		for (auto& cfg : texturecfg)
+		{
+			cfg.deleteTexture();
+		}
+		texturecfg.clear();
+		texturecfg.reserve(128);
         for (unsigned char c = 0; c < 128; c++)
         {
             if (FT_Load_Char(i_font, c, FT_LOAD_RENDER))
             {
 				messages::PrintMessage("Failed to load glyph", "TextRenderer.cpp/ void zap::Text::GenerateCharacters(...)", MessageTypes::error);
 			}
-            
+
 			Texture& tex = AddTexture((unsigned int)c, i_font->glyph->bitmap.buffer, i_font->glyph->bitmap.width, i_font->glyph->bitmap.rows, GL_RED, i_texture_filter, i_mipmap_setting, zap::TextureWrapping::CLAMP_TO_EDGE);
 
 			tex.genTexture();
-		
+
 			Character character =
 			{
 				tex.getID(),

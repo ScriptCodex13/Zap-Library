@@ -156,6 +156,7 @@ namespace zap
 
 		std::vector<AttributeConfig> attribcfg;
 
+	protected:
 		//Textures
 		std::vector<Texture> texturecfg; // Needed to use shared_ptr because otherwise the Program crashes. Please do not change. If that here is very problematic we can find out a solution together.
 
