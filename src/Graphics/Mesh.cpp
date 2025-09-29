@@ -54,6 +54,14 @@ namespace zap
 		return attribcfg.emplace_back(AttributeConfig { shader_location, value_ct, data_stride, start_pos });
 	}
 
+	void Mesh::ClearAllTextures()
+	{
+		for (auto& cfg : texturecfg)
+		{
+			cfg.deleteTexture();
+		}
+		texturecfg.clear();
+	}
 	Texture& Mesh::AddTexture (unsigned int id, const std::string path, TextureFilters filter, MipmapSettings settings, TextureWrapping wrapping)
 	{
 		return texturecfg.emplace_back(Texture{ id, path, filter, settings, wrapping });

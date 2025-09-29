@@ -76,7 +76,7 @@ namespace zap
 		void PreSetIndices(const std::vector<unsigned int>& extern_indices);
 		AttributeConfig& SetAttribPointer(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos);
 		//
-
+		void ClearAllTextures();
 		Texture& AddTexture(unsigned int id, const std::string path, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
 		Texture& AddTexture(unsigned int id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER); // Add texture but with manual loaded texture_data
 

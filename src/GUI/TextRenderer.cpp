@@ -64,15 +64,12 @@ namespace zap
 
 	void Text::GenerateCharacters()
 	{
+		ClearAllTextures();
+
         FT_Set_Pixel_Sizes(i_font, 0, i_character_size); // Or i carracter size
 
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-		for (auto& cfg : texturecfg)
-		{
-			cfg.deleteTexture();
-		}
-		texturecfg.clear();
 		texturecfg.reserve(128);
         for (unsigned char c = 0; c < 128; c++)
         {
