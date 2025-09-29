@@ -27,10 +27,18 @@ namespace zap
 		i_camera_position = glm::vec3(x, y, z);
 	}
 
-	void SceneCamera::Rotate(float yaw, float pitch, float roll /* <- Doesnt work*/)
+	void SceneCamera::Rotate(float yaw, float pitch, float roll)
 	{
 		i_yaw += yaw;
 		i_pitch += pitch;
+		i_roll += roll;
+	}
+
+	void SceneCamera::SetRotation(float yaw, float pitch, float roll)
+	{
+		i_yaw = yaw;
+		i_pitch = pitch;
+		i_roll = roll;
 	}
 
 	void SceneCamera::SetFOV(float new_fov)
@@ -99,6 +107,7 @@ namespace zap
 
 		i_yaw = zap::util::rewind(i_yaw, -360.0f, 360.0f);
 		i_pitch = zap::util::rewind(i_pitch, -360.0f, 360.0f);
+		i_roll = zap::util::rewind(i_roll, -360.0f, 360.0f);
 		
 
 		glm::vec3 front;
@@ -109,7 +118,12 @@ namespace zap
 		i_camera_front = glm::normalize(front);
 
 		i_camera_right = glm::normalize(glm::cross(i_camera_front, i_world_up));
+
+		//glm::mat4 roll_matrix = glm::rotate(glm::mat4(1.0f), glm::radians(i_roll), i_camera_front);
+		//i_camera_up = glm::mat3(roll_matrix) * i_camera_up;
+
 		i_camera_up = glm::normalize(glm::cross(i_camera_right, i_camera_front));
+
 		projection = glm::perspective(glm::radians(i_fov), (float)i_screen_width / (float)i_screen_height, 0.1f, 100.0f);
 		view = glm::lookAt(i_camera_position, i_camera_position + i_camera_front, i_camera_up);
 

@@ -22,11 +22,11 @@ window_camera_invoker  cbi([](zap::Window& window, zap::SceneCamera& camera) {
 
 	if (window.GetInput(zap::Key::left_arrow, zap::State::PRESSED))
 	{
-		camera.Rotate(-5.0f * window.GetDelta() * 20.0f, 0.0f, 0.0f);
+		camera.Rotate(0.0f, 0.0f, -5.0f * window.GetDelta() * 20.0f);
 	}
 	if (window.GetInput(zap::Key::right_arrow, zap::State::PRESSED))
 	{
-		camera.Rotate(5.0f * window.GetDelta() * 20.0f, 0.0f, 0.0f);
+		camera.Rotate(0.0f, 0.0f, 5.0f * window.GetDelta() * 20.0f);
 	}
 	if (window.GetInput(zap::Key::W, zap::State::PRESSED))
 	{
@@ -117,12 +117,18 @@ int main()
 	Cube cube;
 	LightCube lightCube;
 
-	zap::Button button(window, std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 });
+	zap::Button button(window, std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, "Button", "C:/Windows/Fonts/arial.ttf");
 	//button.SetGlPosition(std::array<float, 2> {- 0.9f, 0.7f}); // Nutzen wir GL Koordinaten
 	//button.SetGlPosition(- 0.9f, 0.7f, 0.2, 0.8 ); // Nutzen wir GL Koordinaten
 	//button.SetGlSize(std::array<float, 2> {0.1f, 0.1f});
 	//button.SetGlWidth(0.7);
 	button.SetGlHeight(0.28);
+
+	//button.SetTextOffset()
+
+	auto coord_2 = zap::util::gl_coords_to_pixel(window.GetSize(), 0.9f, 0.0f);
+
+	std::cout << "x: " << coord_2[0] << ",y: " << coord[1] << std::endl;
 
 	while (window.Open())
 	{

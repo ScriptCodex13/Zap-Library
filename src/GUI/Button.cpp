@@ -20,6 +20,13 @@ namespace zap
 				0, 3, 2
 			})
 	{
+
+		if (button_text_font_path.empty())
+		{
+			i_use_text = false;
+			i_font_missing_flag = true;
+		}
+
 		e_window = &window;
 		SetVertexShaderSource(i_vertex_shader_source);
 		SetFragmentShaderSource(i_fragment_shader_source);
@@ -32,6 +39,8 @@ namespace zap
 		i_pos_uniform_location = glGetUniformLocation(GetProgram(), "pos");
 
 		UpdatePosition();
+
+		if(i_use_text) i_button_text = std::make_unique<zap::Text>(button_text_font_path, button_text, e_window->GetSize());
 	}
 
 	Button::~Button()
@@ -143,9 +152,48 @@ namespace zap
 		UpdatePosition();
 	}
 
+	void Button::UseText(bool state)
+	{
+		if (i_font_missing_flag)
+		{
+			messages::PrintMessage("Cannot use text because the text has got no font path", "Button.cpp/ void zap::Button::UseText(...)", MessageTypes::error);
+
+			return;
+		}
+
+		i_use_text = state;
+	}
+
+	void Button::SetButtonText(const std::string text)
+	{
+		i_button_text->SetContent(text);
+	}
+
+	void Button::SetTextOffset(float x_offset, float y_offset)
+	{
+		i_text_offset = { x_offset, y_offset };
+	}
+
+	void Button::Update()
+	{
+		auto position = i_text_offset;
+
+		position[0] += i_bounds[0];
+		position[1] += i_bounds[2];
+
+		//position = brauchen ene Umwandlung in Pixel coordinaten 
+
+		i_button_text->SetPosition(position[0], position[1]);
+	}
+
 	void Button::Draw()
 	{
+		Update();
+
+		UseProgram();
 		Bind();
 		zap::Mesh::Draw();
+	
+		if(i_use_text) i_button_text->Draw();
 	}
 }

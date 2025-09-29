@@ -39,12 +39,21 @@ namespace zap
 		void SetGlPosition(float xmin, float ymin, float xmax, float ymax); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
 		void SetGlPosition(std::array<float, 2>& gl_xy_min, std::array<float, 2>& gl_xy_max); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
 		void SetGlPosition(std::array<float, 4>& gl_xy_min_xy_max); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
-		void SetButtonText();
-		void SetTextOffset();
+		void UseText(bool state);
+		void SetButtonText(const std::string text);
+		void SetTextOffset(float x_offset, float y_offset);
 		void SetZCoordinate(); // Don't know if you need it
 
-		//void Update();
+		void Update();
 		void Draw();
+
+	private:
+		bool i_use_text = true;
+		bool i_font_missing_flag = false;
+
+		std::unique_ptr<zap::Text> i_button_text;
+
+		std::array<float, 2> i_text_offset = { 0.0f, 0.0f };
 
 	private:
 		unsigned int i_size_uniform_location;
@@ -78,8 +87,6 @@ namespace zap
 					}
 			)glsl";
 
-
-		//std::unique_ptr<zap::Text> i_button_text;
 		//std::unique_ptr<zap::Mesh> i_button_mesh;
 
 		zap::Window* e_window;

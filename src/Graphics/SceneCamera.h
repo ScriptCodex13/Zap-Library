@@ -27,6 +27,7 @@ namespace zap
 
 		void SetPosition(float x, float y, float z);
 		void Rotate(float yaw, float pitch, float roll);
+		void SetRotation(float yaw, float pitch, float roll);
 		void SetFOV(float new_fov);
 		void SetRotationLimit(float yaw_limit, float pitch_limit, float roll_limit);
 		void ActivateRotationLimit(bool state);
