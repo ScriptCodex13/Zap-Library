@@ -73,7 +73,7 @@ namespace zap
 		template<typename T>
 		inline std::array<T, 2> gl_coords_to_pixel(const std::array<int, 2>& dimensions, T x, T y)
 		{
-			return { (x + 1) * ((T)dimensions[0] / 2), (y + 1) * ((T)dimensions[1] / 2) };
+			return { (x + 1) * ((T)dimensions[0] / 2), (T)dimensions[1] - (y + (T)1) * ((T)dimensions[1] / 2) };
 		}
 		template<typename T>
 		inline std::array<T, 2> gl_coords_to_pixel(const std::array<int, 2>& dimensions, std::array<T, 2> point)

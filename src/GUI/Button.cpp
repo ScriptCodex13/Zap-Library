@@ -177,15 +177,15 @@ namespace zap
 
 	void Button::Update()
 	{
-		auto position = zap::util::gl_coords_to_pixel(e_window->GetSize(), i_text_offset); // using auto here because the util function returns a template dependent array
-		auto n_bounds = zap::util::gl_coords_to_pixel(e_window->GetSize(), i_bounds[0], i_bounds[2]);
+		auto position = i_text_offset; // using auto here because the util function returns a template dependent array
+		auto n_bounds = zap::util::gl_coords_to_pixel(e_window->GetSize(), i_bounds[0], i_bounds[1]);
 
 		// Something is wrong here
 
 		if (i_use_text_offset)
 		{
-			position[0] += n_bounds[0];
-			position[1] += n_bounds[1];
+			n_bounds[0] += position[0];
+			n_bounds[1] += position[1];
 
 			i_button_text->SetPosition(n_bounds[0], n_bounds[1]);
 
@@ -197,10 +197,10 @@ namespace zap
 			i_button_text->SetPosition(n_bounds[0], n_bounds[1]);
 		}
 
-		std::cout << position[0] << std::endl; // Sind falsch 
+		std::cout << position[0] << std::endl; 
 		std::cout << position[1] << std::endl;
 
-		std::cout << n_bounds[0] << std::endl; // sind falsch
+		std::cout << n_bounds[0] << std::endl; 
 		std::cout << n_bounds[1] << std::endl;
 
 		//

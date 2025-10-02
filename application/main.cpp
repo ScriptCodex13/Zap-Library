@@ -118,11 +118,11 @@ int main()
 	LightCube lightCube;
 
 	zap::Button button(window, std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, "Button", "C:/Windows/Fonts/arial.ttf");
-	//button.SetGlPosition(std::array<float, 2> {- 0.9f, 0.7f}); // Nutzen wir GL Koordinaten
-	//button.SetGlPosition(- 0.9f, 0.7f, 0.2, 0.8 ); // Nutzen wir GL Koordinaten
+	//button.SetGlPosition(std::array<float, 2> {- 0.9f, 0.7f});
+	//button.SetGlPosition(- 0.9f, 0.7f, 0.2, 0.8 );
 	//button.SetGlSize(std::array<float, 2> {0.1f, 0.1f});
 	//button.SetGlWidth(0.7);
-	button.SetGlHeight(0.28);
+	//button.SetGlHeight(0.28);
 	button.SetTextOffset(0.01f, 0.01f);
 
 	//button.SetTextOffset()
