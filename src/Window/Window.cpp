@@ -53,8 +53,9 @@ namespace zap
 
 		TargetFrameTime = std::round(1.0f / FPSLimit * 100000) / 100000;
 
+		i_original_resolution = { scale_x, scale_y };
 	}
-	Window::Window(GLFWwindow* extern_window)
+	Window::Window(GLFWwindow* extern_window, int base_resolution_x, int base_resolution)
 	{
 		intern_window = extern_window;
 
@@ -72,6 +73,7 @@ namespace zap
 		glfwGetWindowSize(intern_window, &i_window_dimensions[0], &i_window_dimensions[1]);
 		glfwGetWindowPos(intern_window, &pos_x, &pos_y);
 
+		i_original_resolution = { base_resolution_x, base_resolution };
 	}
 
 	Window::~Window()
@@ -329,9 +331,6 @@ namespace zap
 		
 	}
 
-	// Please let this in here
-	// NOTE: It is ok here, because it is tied to Window (glfw) and not to rendering (gl)
-	// TODO: This function causes huge performance issues with heavy visual impact. Fix it later.
 	void Window::InternSwapBuffers()
 	{
 	
@@ -359,6 +358,16 @@ namespace zap
 	}
 
 	//
+
+	std::array<float, 2> Window::GetWindowScaleDifference()
+	{
+		return { (float)i_original_resolution[0] / GetSize()[0], (float)i_original_resolution[1] / GetSize()[1] };
+	}
+
+	std::array<int, 2> Window::GetOriginalWindowResolution()
+	{
+		return { i_original_resolution };
+	}
 
 	void Window::Update()
 	{

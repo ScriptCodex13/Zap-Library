@@ -21,13 +21,14 @@ namespace zap
 			})
 	{
 
+		e_window = &window;
+
 		if (button_text_font_path.empty())
 		{
 			i_use_text = false;
 			i_font_missing_flag = true;
 		}
 
-		e_window = &window;
 		SetVertexShaderSource(i_vertex_shader_source);
 		SetFragmentShaderSource(i_fragment_shader_source);
 
@@ -177,32 +178,24 @@ namespace zap
 
 	void Button::Update()
 	{
-		auto position = i_text_offset; // using auto here because the util function returns a template dependent array
-		auto n_bounds = zap::util::gl_coords_to_pixel(e_window->GetSize(), i_bounds[0], i_bounds[1]);
+		//auto position = i_text_offset;
+		std::array n_bounds = { i_bounds[0], i_bounds[1] }; // using auto here because the util function returns a template dependent array
 
 		// Something is wrong here
 
 		if (i_use_text_offset)
 		{
-			n_bounds[0] += position[0];
-			n_bounds[1] += position[1];
+			//n_bounds[0] += position[0];
+			//n_bounds[1] += position[1];
 
-			i_button_text->SetPosition(n_bounds[0], n_bounds[1]);
+			auto new_pos = zap::util::gl_coords_to_pixel(e_window->GetOriginalWindowResolution(), i_text_offset[0] + n_bounds[0], i_text_offset[1] + n_bounds[1]);
 
-			//std::cout << position[0] << std::endl;
-			//std::cout << position[1] << std::endl;
+			i_button_text->SetPosition(new_pos[0], new_pos[1]);
 		}
 		else 
 		{
 			i_button_text->SetPosition(n_bounds[0], n_bounds[1]);
 		}
-
-		std::cout << position[0] << std::endl; 
-		std::cout << position[1] << std::endl;
-
-		std::cout << n_bounds[0] << std::endl; 
-		std::cout << n_bounds[1] << std::endl;
-
 		//
 	}
 

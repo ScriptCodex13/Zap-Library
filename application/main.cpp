@@ -111,7 +111,7 @@ int main()
 
 	auto coord = zap::util::pixel_to_gl_coords(window.GetSize(), 1.0f, 1.0f);
 
-	std::cout << "x: " << coord[0] << ",y: " << coord[1] << std::endl;
+	//std::cout << "x: " << coord[0] << ",y: " << coord[1] << std::endl;
 
 	//////Mesh
 	Cube cube;
@@ -123,7 +123,8 @@ int main()
 	//button.SetGlSize(std::array<float, 2> {0.1f, 0.1f});
 	//button.SetGlWidth(0.7);
 	//button.SetGlHeight(0.28);
-	button.SetTextOffset(0.01f, 0.01f);
+	button.SetTextOffset(0.31f, 0.075f);
+	button.UseText(false);
 
 	//button.SetTextOffset()
 
@@ -132,7 +133,7 @@ int main()
 
 	auto coord_2 = zap::util::gl_coords_to_pixel(window.GetSize(), 0.9f, 0.0f);
 
-	std::cout << "x: " << coord_2[0] << ",y: " << coord[1] << std::endl;
+	//std::cout << "x: " << coord_2[0] << ",y: " << coord[1] << std::endl;
 
 	while (window.Open())
 	{
@@ -190,7 +191,7 @@ int main()
 		text.SetContent(std::to_string(std::round(window.GetFPS())));
 		text.Draw();
 
-		if (button.Pressed(zap::Key::RIGHT_MOUSE))
+		if (button.Pressed(zap::Key::LEFT_MOUSE))
 		{
 			std::cerr << "Pressed" << std::endl;
 		}
@@ -201,6 +202,11 @@ int main()
 
 		zap::ClearBuffers();
 
+		float width, height;
+
+		glfwGetWindowContentScale(window.GetNativeWindow(), &width, &height);
+
+		std::cout << "width: " << width << "height: " << height << std::endl;
 
 		rotation += 1.0f;
 	}

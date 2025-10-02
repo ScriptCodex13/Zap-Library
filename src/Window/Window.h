@@ -23,7 +23,7 @@ namespace zap
 	{
 	public:
 		Window(int scale_x, int scale_y, const std::string Title, GLFWmonitor* monitor = NULL, GLFWwindow* other_window = NULL);
-		Window(GLFWwindow* extern_window); // You dont have to handle the window anymore it is now handled by Zap
+		Window(GLFWwindow* extern_window, int base_resolution_x = 1920, int base_resolution = 1080); // You dont have to handle the window anymore it is now handled by Zap
 		~Window();
 
 	public:
@@ -59,6 +59,8 @@ namespace zap
 		void HideCursor(bool state);                                        // Hide or unhide the cursor if the window is entered
 		void SetVSync(bool state);
 		void SetCursorinCameraMode(bool state);
+		std::array<float, 2> GetWindowScaleDifference();					// 
+		std::array<int, 2> GetOriginalWindowResolution();					// Get the original window resolution so you can scale elements properly even after resizing or upscaling
 
 		void Update();
 		void Draw();
@@ -70,6 +72,8 @@ namespace zap
 		int pos_x  = 0;
 		int pos_y  = 0;
 		int current_refresh_rate = 1000000000;
+
+		std::array<int, 2> i_original_resolution;
 
 	private: //Icon
 		GLFWimage windowIcon[1];
