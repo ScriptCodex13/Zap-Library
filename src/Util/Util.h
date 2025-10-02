@@ -44,7 +44,7 @@ namespace zap_state_vars
 // Break then start the debugger
 #define ZAP_BREAK_IF_NOT(x) if(!(x)) { messages::PrintMessage("Assertion failed: " #x, __FILE__, MessageTypes::error); __debugbreak (); }
 #else
-// No Debug mode (ie Release)
+// No Debug mode (in Release)
 // Don't generate any code for the macros
 #define ZAP_REQUIRE(x)
 #define ZAP_ASSERT_TRUE(x)
@@ -65,9 +65,9 @@ namespace zap
 			return { (x / ((T)n_dimensions[0] / 2)) - T(1) , T(1) - (y / ((T)n_dimensions[1] / 2))};
 		}
 		template<typename T>
-		inline std::array<T, 2> pixel_to_gl_coords(const std::array<int, 2>& dimensions, const std::array<T, 2>& points)
+		inline std::array<T, 2> pixel_to_gl_coords(const std::array<int, 2>& dimensions, const std::array<T, 2>& point)
 		{
-			return pixel_to_gl_coords(dimensions, points[0], points[1]);
+			return pixel_to_gl_coords(dimensions, point[0], point[1]);
 		}
 
 		template<typename T>
@@ -75,6 +75,12 @@ namespace zap
 		{
 			return { (x + 1) * ((T)dimensions[0] / 2), (y + 1) * ((T)dimensions[1] / 2) };
 		}
+		template<typename T>
+		inline std::array<T, 2> gl_coords_to_pixel(const std::array<int, 2>& dimensions, std::array<T, 2> point)
+		{
+			return { gl_coords_to_pixel(dimensions, point[0], point[1])};
+		}
+
 
 		template<typename T>
 		inline bool in(T val, T arg)

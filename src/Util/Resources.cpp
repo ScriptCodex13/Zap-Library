@@ -42,6 +42,7 @@ namespace zap
 		/******************************************************************************/
 
 		messages::PrintMessage("Using OpenGL Version " + std::to_string(version_major) + "." + std::to_string(version_minor), "", MessageTypes::api_core_info, false);
+
 	}
 
 	void InitGlad()
@@ -54,6 +55,7 @@ namespace zap
 		else 
 		{
 			messages::PrintMessage("glad initialized sucessfully", "", MessageTypes::api_core_info, false);
+			std::cout << "\033[32m[CORE] " << "Running on graphics device: " << glGetString(GL_RENDERER) << "\033[0m" << std::endl;
 		}
 	}
 

@@ -123,6 +123,10 @@ int main()
 	//button.SetGlSize(std::array<float, 2> {0.1f, 0.1f});
 	//button.SetGlWidth(0.7);
 	button.SetGlHeight(0.28);
+	button.SetTextOffset(0.01f, 0.01f);
+
+	//button.SetTextOffset()
+
 
 	//button.SetTextOffset()
 

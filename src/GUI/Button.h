@@ -51,6 +51,8 @@ namespace zap
 		bool i_use_text = true;
 		bool i_font_missing_flag = false;
 
+		bool i_use_text_offset = false;
+
 		std::unique_ptr<zap::Text> i_button_text;
 
 		std::array<float, 2> i_text_offset = { 0.0f, 0.0f };

@@ -172,18 +172,38 @@ namespace zap
 	void Button::SetTextOffset(float x_offset, float y_offset)
 	{
 		i_text_offset = { x_offset, y_offset };
+		i_use_text_offset = true;
 	}
 
 	void Button::Update()
 	{
-		auto position = i_text_offset;
+		auto position = zap::util::gl_coords_to_pixel(e_window->GetSize(), i_text_offset); // using auto here because the util function returns a template dependent array
+		auto n_bounds = zap::util::gl_coords_to_pixel(e_window->GetSize(), i_bounds[0], i_bounds[2]);
 
-		position[0] += i_bounds[0];
-		position[1] += i_bounds[2];
+		// Something is wrong here
 
-		//position = brauchen ene Umwandlung in Pixel coordinaten 
+		if (i_use_text_offset)
+		{
+			position[0] += n_bounds[0];
+			position[1] += n_bounds[1];
 
-		i_button_text->SetPosition(position[0], position[1]);
+			i_button_text->SetPosition(n_bounds[0], n_bounds[1]);
+
+			//std::cout << position[0] << std::endl;
+			//std::cout << position[1] << std::endl;
+		}
+		else 
+		{
+			i_button_text->SetPosition(n_bounds[0], n_bounds[1]);
+		}
+
+		std::cout << position[0] << std::endl; // Sind falsch 
+		std::cout << position[1] << std::endl;
+
+		std::cout << n_bounds[0] << std::endl; // sind falsch
+		std::cout << n_bounds[1] << std::endl;
+
+		//
 	}
 
 	void Button::Draw()
