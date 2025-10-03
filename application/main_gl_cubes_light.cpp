@@ -76,9 +76,6 @@ int main()
 	//
 
 
-
-
-
 	glm::vec3 lightPos(1.0f, 0.0f, 2.0f);
 
 	float rotation = 0.0f, sensitivity = 0.1f;
@@ -99,7 +96,7 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	while (window.Open())
 	{
-		// Mouse Input -> Commented out temporary
+		// Mouse Input
 		std::array<double, 2> newpos = window.GetMousePosition();
 
 		float xoffset = (newpos[0] - oldPos[0]) * sensitivity;
@@ -115,22 +112,22 @@ int main()
 		//All the window/camera magic happens here
 		cbi(window, camera);
 		//
+		camera.UpdateRotation(); //Make camera up to most recent maths
 
 		//Start rendering here
 		glClear(GL_DEPTH_BUFFER_BIT); // PR
 		zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
 
+		//Draw cubes here
 		//Cube
 
-		camera.UpdateRotation();
-	
+
+
 		cube.Bind();
 		cube.setColorUniform3f(1.0f, 0.5f, 0.31f);
 		cube.setLightColorUniform3f(1.0f, 1.0f, 1.0f);
 		cube.MoveUpdate(camera, lightPos, glfwGetTime());
 		cube.Draw(36);
-
-		//
 
 		//Light cube
 
@@ -143,8 +140,6 @@ int main()
 		window.Update();
 		window.Draw();
 
-
-		rotation += 1.0f;
 	}
 
 	return 0;
