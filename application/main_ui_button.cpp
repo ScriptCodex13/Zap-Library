@@ -8,13 +8,13 @@
 #include <array>
 
 
-template <typename T> class window_camera_invoker : public zap::util::callback_invoker<T>
+template <typename T> class window_invoker : public zap::util::callback_invoker<T>
 {
 public:
-	inline window_camera_invoker(T _callback) : callback_invoker(_callback) {}
+	inline window_invoker(T _callback) : callback_invoker(_callback) {}
 	template<typename A1> void operator () (A1& a1) { callback(a1); }
 };
-window_camera_invoker  cbi([](zap::Window& window) {
+window_invoker  cbi([](zap::Window& window) {
 	if (window.isKeyPressed(zap::Key::ESC))
 	{
 		window.Close();
