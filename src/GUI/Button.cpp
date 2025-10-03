@@ -58,32 +58,28 @@ namespace zap
 		float y0 = i_bounds[1], dy = i_bounds[3] - i_bounds[1];
 		glm::mat4 resize = glm::scale(glm::mat4(1.0f), glm::vec3(dx, dy, 1.0f));
 		glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(x0, y0, 0.0f));
-		glm::mat4 res = translate * resize;
+
 
 		Bind();
-		glUniformMatrix4fv(i_size_uniform_location, 1, GL_FALSE, glm::value_ptr(translate * resize)); // Multiply order here is inverse than in shader
-		//glUniformMatrix4fv(i_pos_uniform_location, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0)));
-		//glUniformMatrix4fv(i_size_uniform_location, 1, GL_FALSE, glm::value_ptr(resize));
-		//glUniformMatrix4fv(i_pos_uniform_location, 1, GL_FALSE, glm::value_ptr(translate));
+		// Premultiply in C++ and combine two matrices. Multiply order here is inverse than in shader
+		glUniformMatrix4fv(i_moveto_uniform_location, 1, GL_FALSE, glm::value_ptr(translate * resize));
+
 	}
 	bool Button::Hovered()
 	{
 		auto mouse_pos = zap::util::pixel_to_gl_coords(e_window->GetSize(), e_window->GetMousePosition());
-
 		return zap::util::between(mouse_pos, i_bounds);
 	}
 
 	bool Button::Pressed(zap::Key key)
 	{
 		if (!Hovered()) return false;
-
 		return e_window->GetInput(key, zap::State::PRESSED);
 	}
 
 	bool Button::Released(zap::Key key)
 	{
 		if (!Hovered()) return false;
-
 		return e_window->GetInput(key, zap::State::RELEASED);
 	}
 
@@ -190,7 +186,6 @@ namespace zap
 	void Button::SetTextColor(float RED, float GREEN, float BLUE) 
 	{
 		// Vars not clamped because the text class does it
-		
 		i_button_text->SetColor(RED, GREEN, BLUE);
 	};
 
