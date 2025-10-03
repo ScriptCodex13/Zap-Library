@@ -46,7 +46,7 @@ int main()
 
 	zap::Text text("C:/Windows/Fonts/arial.ttf", "Text", window.GetSize()); // It's better to use GetSize here
 
-	text.SetCharacterSize(48);
+	//text.SetCharacterSize(48);
 	text.SetColor(0.0f, 1.0f, 0.0f);
 	text.SetPosition(500.0f, 500.0f); // ToDo: Maybe use gl_coords here
 
@@ -59,8 +59,6 @@ int main()
 
 	glm::vec3 lightPos(1.0f, 0.0f, 2.0f);
 
-	float rotation = 0.0f, sensitivity = 0.1f;
-
 	std::array<double, 2> oldPos = window.GetMousePosition();
 
 	glDisable(GL_DEPTH_TEST);
@@ -71,10 +69,10 @@ int main()
 		cbi(window);
 
 		//
-
 		zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
 
 		text.SetContent(std::to_string(std::round(window.GetFPS())));
+		//text.SetContent("Button");
 		text.Draw();
 
 		window.Update();

@@ -35,9 +35,7 @@ int main()
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
-
-	std::array<int, 2> size = window.GetSize(); // Not a Ref to the window size !
-
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Window settings
 
@@ -46,39 +44,37 @@ int main()
 	zap::Enable(zap::Instructions::DEPTH);
 	zap::Enable(zap::Instructions::ANTIALIASING);
 
-	glm::vec3 lightPos(1.0f, 0.0f, 2.0f);
-
-	float rotation = 0.0f, sensitivity = 0.1f;
-
-	std::array<double, 2> oldPos = window.GetMousePosition();
-
 	//auto coord = zap::util::pixel_to_gl_coords(window.GetSize(), 1.0f, 1.0f);
 	//auto coord_2 = zap::util::gl_coords_to_pixel(window.GetSize(), 0.9f, 0.0f);
 
 	zap::Button button(window, std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, "Button", "C:/Windows/Fonts/arial.ttf");
 	button.SetTextOffset(0.31f, 0.075f);
 	button.SetTextColor(zap::TextColors::PURPLE);
-
-
+	//button.GetTextObject()->SetTextOffset(0.31f, 0.075f);
+	//button.GetTextObject()->SetTextColor(zap::TextColors::PURPLE);
+	//button.GetTextObject()->GenerateCharacters();
+	//button.SetGlPosition(std::array<float, 2> {- 0.9f, 0.7f});
+	//button.SetGlPosition(- 0.9f, 0.7f, 0.2, 0.8 );
+	//button.SetGlSize(std::array<float, 2> {0.1f, 0.1f});
+	//button.SetGlWidth(0.7);
+	//button.SetGlHeight(0.28);
+	button.SetGlHeight(0.10);
 
 	glDisable(GL_DEPTH_TEST);
 	while (window.Open())
 	{
-
 		//
 		cbi(window);
-
+		zap::ClearBuffers();
+		glClear(GL_COLOR_BUFFER_BIT);
 		zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
 
 		button.Draw();
-
 		if (button.Pressed(zap::Key::LEFT_MOUSE))
-			std::cerr << "Pressed" << std::endl;
+			std::cerr << "Pressed "<< std::to_string(std::round(window.GetFPS())) << std::endl;
 
 		window.Update();
 		window.Draw();
-
-		rotation += 1.0f;
 	}
 
 	return 0;

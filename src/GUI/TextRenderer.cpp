@@ -106,7 +106,6 @@ namespace zap
 	void Text::SetCharacterSize(unsigned int new_size_pixel)
 	{
 		i_character_size = new_size_pixel;
-		GenerateCharacters(); // Regenerate the characters with the new character size
 	}
 
 	void Text::SetPosition(float new_x, float new_y)
@@ -227,7 +226,6 @@ namespace zap
 			//glDrawArrays(GL_TRIANGLES, 0, 6);
 
 			Mesh::Draw(6);
-			
 
 			//
 			x += (ch.Advance >> 6) * i_scale_x;

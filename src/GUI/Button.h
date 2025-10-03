@@ -24,6 +24,7 @@ namespace zap
 		Button(zap::Window& window, const std::array<float, 4>& bounds, const std::string button_text = "", const std::string button_text_font_path = "");
 		~Button();
 
+		zap::Text* GetTextObject();
 		void UpdatePosition();
 		bool Hovered();
 
@@ -61,29 +62,23 @@ namespace zap
 		std::array<float, 2> i_text_offset = { 0.0f, 0.0f };
 
 	private:
-		unsigned int i_size_uniform_location;
-		unsigned int i_pos_uniform_location;
+		unsigned int i_moveto_uniform_location;
 
 		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max
 
 		const char* i_vertex_shader_source = 
-			R"glsl(
-					#version 330 core 
-					
+			R"glsl(#version 330 core 
 					layout(location = 0) in vec3 aPos;
-					uniform mat4 size;
-					uniform mat4 pos;
+					uniform mat4 moveto;
 					
 					void main()
 					{
-						gl_Position = pos * size * vec4(aPos, 1.0);
+						gl_Position = moveto * vec4(aPos, 1.0);
 					}
 			)glsl";
 
 		const char* i_fragment_shader_source = 
-			R"glsl(
-					#version 330 core
-
+			R"glsl(#version 330 core
 					out vec4 fragColor;
 
 					void main()
@@ -91,8 +86,6 @@ namespace zap
 						fragColor = vec4(1.0);
 					}
 			)glsl";
-
-		//std::unique_ptr<zap::Mesh> i_button_mesh;
 
 		zap::Window* e_window;
 	};

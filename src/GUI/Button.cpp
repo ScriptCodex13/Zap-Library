@@ -36,29 +36,35 @@ namespace zap
 
 		Finish();
 
-		i_size_uniform_location = glGetUniformLocation(GetProgram(), "size");
-		i_pos_uniform_location = glGetUniformLocation(GetProgram(), "pos");
+		i_moveto_uniform_location = glGetUniformLocation(GetProgram(), "moveto");
 
 		UpdatePosition();
 
 		if(i_use_text) i_button_text = std::make_unique<zap::Text>(button_text_font_path, button_text, e_window->GetSize());
 	}
 
+
 	Button::~Button()
 	{
 
 	}
-
+	zap::Text* Button::GetTextObject()
+	{
+		return i_button_text.get();
+	}
 	void Button::UpdatePosition()
 	{
 		float x0 = i_bounds[0], dx = i_bounds[2] - i_bounds[0];
 		float y0 = i_bounds[1], dy = i_bounds[3] - i_bounds[1];
 		glm::mat4 resize = glm::scale(glm::mat4(1.0f), glm::vec3(dx, dy, 1.0f));
 		glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(x0, y0, 0.0f));
+		glm::mat4 res = translate * resize;
 
 		Bind();
-		glUniformMatrix4fv(i_size_uniform_location, 1, GL_FALSE, glm::value_ptr(resize));
-		glUniformMatrix4fv(i_pos_uniform_location, 1, GL_FALSE, glm::value_ptr(translate));
+		glUniformMatrix4fv(i_size_uniform_location, 1, GL_FALSE, glm::value_ptr(translate * resize)); // Multiply order here is inverse than in shader
+		//glUniformMatrix4fv(i_pos_uniform_location, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0)));
+		//glUniformMatrix4fv(i_size_uniform_location, 1, GL_FALSE, glm::value_ptr(resize));
+		//glUniformMatrix4fv(i_pos_uniform_location, 1, GL_FALSE, glm::value_ptr(translate));
 	}
 	bool Button::Hovered()
 	{
