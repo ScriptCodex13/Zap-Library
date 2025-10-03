@@ -11,6 +11,21 @@ namespace zap
 
 	void Init(unsigned int version_major, unsigned int version_minor)
 	{
+		if (version_major < 3)
+		{
+			messages::PrintMessage("Zap only supports OpenGL versions above 3.3 - switching to 3.3", "Resources.cpp/ void zap::Init(...)", MessageTypes::warning, true);
+			
+			version_major = 3;
+			version_minor = 3;
+		}
+		else if (version_major == 3 && version_minor < 3)
+		{
+			messages::PrintMessage("Zap only supports OpenGL versions above 3.3 - switching to 3.3", "Resources.cpp/ void zap::Init(...)", MessageTypes::warning, true);
+
+			version_major = 3;
+			version_minor = 3;
+		}
+
 		/******************************************************************************/
 		if (!glfwInit())
 		{
@@ -41,6 +56,8 @@ namespace zap
 
 		/******************************************************************************/
 
+		
+
 		messages::PrintMessage("Using OpenGL Version " + std::to_string(version_major) + "." + std::to_string(version_minor), "", MessageTypes::api_core_info, false);
 
 	}
@@ -55,7 +72,9 @@ namespace zap
 		else 
 		{
 			messages::PrintMessage("glad initialized sucessfully", "", MessageTypes::api_core_info, false);
-			std::cout << "\033[32m[CORE] " << "Running on graphics device: " << glGetString(GL_RENDERER) << "\033[0m" << std::endl;
+			
+			if(zap_state_vars::disable_outputs == false) 
+				std::cout << "\033[32m[CORE] " << "Running on graphics device: " << glGetString(GL_RENDERER) << "\033[0m" << std::endl;
 		}
 	}
 

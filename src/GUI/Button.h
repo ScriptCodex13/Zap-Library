@@ -39,9 +39,12 @@ namespace zap
 		void SetGlPosition(float xmin, float ymin, float xmax, float ymax); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
 		void SetGlPosition(std::array<float, 2>& gl_xy_min, std::array<float, 2>& gl_xy_max); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
 		void SetGlPosition(std::array<float, 4>& gl_xy_min_xy_max); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
+		
 		void UseText(bool state);
 		void SetButtonText(const std::string text);
 		void SetTextOffset(float x_offset, float y_offset);
+		void SetTextColor(zap::TextColors color);
+		void SetTextColor(float RED, float GREEN, float BLUE);
 		void SetZCoordinate(); // Don't know if you need it
 
 		void Update();

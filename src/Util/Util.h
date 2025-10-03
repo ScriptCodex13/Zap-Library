@@ -5,6 +5,8 @@
 
 #include "Message.h"
 
+#include <glad/glad.h>
+
 #include <cstdlib>
 #include <stdbool.h>
 

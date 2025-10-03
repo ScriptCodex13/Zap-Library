@@ -176,12 +176,23 @@ namespace zap
 		i_use_text_offset = true;
 	}
 
+	void Button::SetTextColor(zap::TextColors color)
+	{
+		i_button_text->SetColor(color);
+	}
+
+	void Button::SetTextColor(float RED, float GREEN, float BLUE) 
+	{
+		// Vars not clamped because the text class does it
+		
+		i_button_text->SetColor(RED, GREEN, BLUE);
+	};
+
+
 	void Button::Update()
 	{
 		//auto position = i_text_offset;
 		std::array n_bounds = { i_bounds[0], i_bounds[1] }; // using auto here because the util function returns a template dependent array
-
-		// Something is wrong here
 
 		if (i_use_text_offset)
 		{
@@ -196,7 +207,6 @@ namespace zap
 		{
 			i_button_text->SetPosition(n_bounds[0], n_bounds[1]);
 		}
-		//
 	}
 
 	void Button::Draw()

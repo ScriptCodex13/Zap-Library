@@ -48,6 +48,8 @@ window_camera_invoker  cbi([](zap::Window& window, zap::SceneCamera& camera) {
 
 int main()
 {
+	//ZAP_DISABLE_OUTPUTS(true);
+
 	zap::Init(4, 6);
 
 	zap::Window window(1920, 1080, "Hello Window");
@@ -125,11 +127,7 @@ int main()
 	//button.SetGlHeight(0.28);
 	button.SetTextOffset(0.31f, 0.075f);
 	//button.UseText(false);
-
-	//button.SetTextOffset()
-
-
-	//button.SetTextOffset()
+	button.SetTextColor(zap::TextColors::PURPLE);
 
 	auto coord_2 = zap::util::gl_coords_to_pixel(window.GetSize(), 0.9f, 0.0f);
 
@@ -192,8 +190,10 @@ int main()
 		text.Draw();
 
 		if (button.Pressed(zap::Key::LEFT_MOUSE))
-		{
+		{	
 			std::cerr << "Pressed" << std::endl;
+
+			//window.Close();
 		}
 		glEnable(GL_DEPTH_TEST);
 
