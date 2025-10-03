@@ -40,6 +40,7 @@ namespace zap
 		void SetGlPosition(float xmin, float ymin, float xmax, float ymax); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
 		void SetGlPosition(std::array<float, 2>& gl_xy_min, std::array<float, 2>& gl_xy_max); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
 		void SetGlPosition(std::array<float, 4>& gl_xy_min_xy_max); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
+		void SetColor(float RED, float GREEN, float BLUE, float ALPHA);
 		
 		void UseText(bool state);
 		void SetButtonText(const std::string text);
@@ -61,8 +62,11 @@ namespace zap
 
 		std::array<float, 2> i_text_offset = { 0.0f, 0.0f };
 
-	private:
+		glm::vec4 i_button_color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+	protected:
 		unsigned int i_moveto_uniform_location;
+		unsigned int i_button_color_location;
 
 		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max
 
@@ -80,14 +84,29 @@ namespace zap
 		const char* i_fragment_shader_source = 
 			R"glsl(#version 330 core
 					out vec4 fragColor;
-
+					
+					uniform vec4 button_color;
+					
 					void main()
 					{
-						fragColor = vec4(1.0);
+						fragColor = button_color;
 					}
 			)glsl";
 
 		zap::Window* e_window;
+	};
+
+	class TextureButton : public Button
+	{
+	public:
+		TextureButton(zap::Window& window, const std::string button_text = "", const std::string button_text_font_path = "");
+		TextureButton(zap::Window& window, const std::array<float, 4>& bounds, const std::string button_text = "", const std::string button_text_font_path = "");
+		~TextureButton();
+
+		void Finish();
+
+	private:
+
 	};
 }
 

@@ -37,6 +37,7 @@ namespace zap
 		Finish();
 
 		i_moveto_uniform_location = glGetUniformLocation(GetProgram(), "moveto");
+		i_button_color_location = glGetUniformLocation(GetProgram(), "button_color");
 
 		UpdatePosition();
 
@@ -155,6 +156,16 @@ namespace zap
 		UpdatePosition();
 	}
 
+	void Button::SetColor(float RED, float GREEN, float BLUE, float ALPHA)
+	{
+		RED = std::clamp(RED, 0.0f, 1.0f);
+		GREEN = std::clamp(GREEN, 0.0f, 1.0f);
+		BLUE = std::clamp(BLUE, 0.0f, 1.0f);
+		ALPHA = std::clamp(ALPHA, 0.0f, 1.0f);
+
+		i_button_color = glm::vec4(RED, GREEN, BLUE, ALPHA);
+	}
+
 	void Button::UseText(bool state)
 	{
 		if (i_font_missing_flag)
@@ -215,6 +226,13 @@ namespace zap
 		Update();
 
 		UseProgram();
+
+		// Update uniforms
+
+		glUniform4fv(i_button_color_location, 1 , glm::value_ptr(i_button_color));
+
+		//
+
 		Bind();
 		zap::Mesh::Draw();
 	

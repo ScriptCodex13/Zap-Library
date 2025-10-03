@@ -58,7 +58,8 @@ int main()
 	//button.SetGlSize(std::array<float, 2> {0.1f, 0.1f});
 	//button.SetGlWidth(0.7);
 	//button.SetGlHeight(0.28);
-	button.SetGlHeight(0.10);
+	//button.SetGlHeight(0.10);
+	button.SetColor(1.0f, 0.7f, 0.0f, 1.0f);
 
 	glDisable(GL_DEPTH_TEST);
 	while (window.Open())
@@ -71,7 +72,7 @@ int main()
 
 		button.Draw();
 		if (button.Pressed(zap::Key::LEFT_MOUSE))
-			std::cerr << "Pressed "<< std::to_string(std::round(window.GetFPS())) << std::endl;
+			std::cerr << "Pressed " << std::endl;
 
 		window.Update();
 		window.Draw();
