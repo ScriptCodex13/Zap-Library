@@ -1,6 +1,8 @@
+#include "enabler.h"
+#ifdef ZAP_LIBRARY_MAIN_CPP
+
 // Just a example
 // PR = Prototyping -> only for testing 
-
 #include <Zap.h>
 #include <iostream>
 #include <vector>
@@ -216,8 +218,4 @@ int main()
 }
 
 
-
-
-
-
-
+#endif
