@@ -38,7 +38,10 @@ project "Application"
     location "Project/Application"
     kind "ConsoleApp"
     language "C++"
+    files {"../../application/enabler.h"}
     files {"../../application/main.cpp"}
+    files {"../../application/main_gl_text.cpp"}
+    files {"../../application/main_ui_button.cpp"}
     files {"../../application/Cube.*"}
     files {"../../application/LightCube.*"}
     files {"../../extern/glad.c"}

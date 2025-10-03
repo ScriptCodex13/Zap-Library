@@ -1,0 +1,96 @@
+#include "enabler.h"
+#ifdef ZAP_LIBRARY_MAIN_GL_TEXT_CPP
+
+// Just a example
+// PR = Prototyping -> only for testing 
+#include <Zap.h>
+#include <iostream>
+#include <array>
+#include <GUI/TextRenderer.h>
+
+template <typename T> class window_invoker : public zap::util::callback_invoker<T>
+{
+public:
+	inline window_invoker(T _callback) : callback_invoker(_callback) {}
+	template<typename A1> void operator () (A1& a1) { callback(a1); }
+};
+window_invoker  cbi([](zap::Window& window) {
+	if (window.isKeyPressed(zap::Key::ESC))
+	{
+		window.Close();
+	}
+});
+
+int main()
+{
+	//ZAP_DISABLE_OUTPUTS(true);
+
+	zap::Init(4, 6);
+
+	zap::Window window(1920, 1080, "Hello Window");
+	zap::util::scope_guard zapDeleter (zap::Delete);
+
+	zap::InitGlad();
+
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	// Window settings
+
+	window.UpdateViewport(true);
+	window.SetVSync(true);
+	//window.Maximize();
+
+	zap::Enable(zap::Instructions::DEPTH);
+	zap::Enable(zap::Instructions::ANTIALIASING);
+
+	//window.SetCursorinCameraMode(false);
+
+	zap::Text text("C:/Windows/Fonts/arial.ttf", "Text", window.GetSize()); // It's better to use GetSize here
+
+	text.SetCharacterSize(48);
+	text.SetColor(0.0f, 1.0f, 0.0f);
+	text.SetPosition(500.0f, 500.0f); // ToDo: Maybe use gl_coords here
+
+	text.SetTextureFilter(zap::TextureFilters::LINEAR);
+	text.SetMipmapSettings(zap::MipmapSettings::LINEAR_MIPMAP_LINEAR);
+	text.GenerateCharacters();
+
+	text.SetScale(2.0f, 2.0f);
+
+
+	glm::vec3 lightPos(1.0f, 0.0f, 2.0f);
+
+	float rotation = 0.0f, sensitivity = 0.1f;
+
+	std::array<double, 2> oldPos = window.GetMousePosition();
+
+	glDisable(GL_DEPTH_TEST);
+	while (window.Open())
+	{
+		//Input
+		//All the window/camera magic happens here
+		cbi(window);
+
+		//
+
+		zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
+
+
+
+
+		text.SetContent(std::to_string(std::round(window.GetFPS())));
+		text.Draw();
+
+		window.Update();
+		window.Draw();
+
+	}
+
+	return 0;
+
+}
+
+
+#endif
