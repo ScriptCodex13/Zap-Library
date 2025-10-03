@@ -10,7 +10,15 @@ Zap is an OpenGL abstraction/ graphics library for one of my game engine project
 <img width="961" height="561" alt="Result" src="https://github.com/user-attachments/assets/4da45106-46f1-4dd9-bc71-27dedd4ffa13" />
 
 
-Zap can handle Conntroller and Keyboard input, Mouse input and events, handle windows and modify them and it can also render Meshes. And with a little bit more time you get also lighting done quickly.
+Zap can handle:
+
+- Conntroller and Keyboard input, 
+- Mouse input and events 
+- handle windows and modify them 
+- render Meshes.
+- Draw Text and Buttons
+ 
+And with a little bit more time you get also lighting done quickly.
 
 # So why Zap ?
 

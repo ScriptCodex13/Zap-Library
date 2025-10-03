@@ -49,7 +49,7 @@ int main()
 
 	zap::Button button(window, std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, "Button", "C:/Windows/Fonts/arial.ttf");
 	button.SetTextOffset(0.31f, 0.075f);
-	button.SetTextColor(zap::TextColors::PURPLE);
+	button.SetTextColor(zap::TextColors::RED);
 	//button.GetTextObject()->SetTextOffset(0.31f, 0.075f);
 	//button.GetTextObject()->SetTextColor(zap::TextColors::PURPLE);
 	//button.GetTextObject()->GenerateCharacters();
@@ -59,7 +59,7 @@ int main()
 	//button.SetGlWidth(0.7);
 	//button.SetGlHeight(0.28);
 	//button.SetGlHeight(0.10);
-	button.SetColor(1.0f, 0.7f, 0.0f, 1.0f);
+	button.SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	glDisable(GL_DEPTH_TEST);
 	while (window.Open())
@@ -71,8 +71,18 @@ int main()
 		zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
 
 		button.Draw();
+
+		if (button.Hovered())
+			button.SetColor(1.0f, 1.0f, 1.0f, 0.8f);
+		else
+			button.SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+
 		if (button.Pressed(zap::Key::LEFT_MOUSE))
-			std::cerr << "Pressed " << std::endl;
+		{
+			button.SetColor(1.0f, 1.0f, 1.0f, 0.6f);
+			//std::cerr << "Pressed " << std::endl;
+		}
+			
 
 		window.Update();
 		window.Draw();
