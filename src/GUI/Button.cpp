@@ -23,9 +23,9 @@ namespace zap
 
 		e_window = &window;
 
-		i_use_text = false;
 		if (button_text_font_path.empty())
 		{
+			i_use_text = false;
 			i_font_missing_flag = true;
 		}
 
@@ -41,7 +41,7 @@ namespace zap
 
 		UpdatePosition();
 
-		//if(i_use_text) i_button_text = std::make_unique<zap::Text>(button_text_font_path, button_text, e_window->GetSize());
+		if(i_use_text) i_button_text = std::make_unique<zap::Text>(button_text_font_path, button_text, e_window->GetSize());
 	}
 
 	Button::~Button()
@@ -63,13 +63,15 @@ namespace zap
 	bool Button::Hovered()
 	{
 		auto mouse_pos = zap::util::pixel_to_gl_coords(e_window->GetSize(), e_window->GetMousePosition());
+
 		return zap::util::between(mouse_pos, i_bounds);
 	}
 
 	bool Button::Pressed(zap::Key key)
 	{
-		if (!e_window->GetInput(key, zap::State::PRESSED)) return false;
 		if (!Hovered()) return false;
+
+		return e_window->GetInput(key, zap::State::PRESSED);
 	}
 
 	bool Button::Released(zap::Key key)
@@ -165,7 +167,7 @@ namespace zap
 
 	void Button::SetButtonText(const std::string text)
 	{
-		//i_button_text->SetContent(text);
+		i_button_text->SetContent(text);
 	}
 
 	void Button::SetTextOffset(float x_offset, float y_offset)
@@ -176,14 +178,14 @@ namespace zap
 
 	void Button::SetTextColor(zap::TextColors color)
 	{
-		//i_button_text->SetColor(color);
+		i_button_text->SetColor(color);
 	}
 
 	void Button::SetTextColor(float RED, float GREEN, float BLUE) 
 	{
 		// Vars not clamped because the text class does it
 		
-		//i_button_text->SetColor(RED, GREEN, BLUE);
+		i_button_text->SetColor(RED, GREEN, BLUE);
 	};
 
 
@@ -199,11 +201,11 @@ namespace zap
 
 			auto new_pos = zap::util::gl_coords_to_pixel(e_window->GetOriginalWindowResolution(), i_text_offset[0] + n_bounds[0], i_text_offset[1] + n_bounds[1]);
 
-			//i_button_text->SetPosition(new_pos[0], new_pos[1]);
+			i_button_text->SetPosition(new_pos[0], new_pos[1]);
 		}
 		else 
 		{
-			//i_button_text->SetPosition(n_bounds[0], n_bounds[1]);
+			i_button_text->SetPosition(n_bounds[0], n_bounds[1]);
 		}
 	}
 
@@ -214,7 +216,7 @@ namespace zap
 		UseProgram();
 		Bind();
 		zap::Mesh::Draw();
-
-		//if(i_use_text) i_button_text->Draw();
+	
+		if(i_use_text) i_button_text->Draw();
 	}
 }
