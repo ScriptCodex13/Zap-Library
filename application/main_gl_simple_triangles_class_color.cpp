@@ -1,5 +1,5 @@
 #include "enabler.h"
-#ifdef ZAP_LIBRARY_MAIN_SIMPLE_TRIANGLES_CPP
+#ifdef ZAP_LIBRARY_MAIN_SIMPLE_TRIANGLES_CLASS_COLOR_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -53,39 +53,72 @@ window_camera_invoker  cbi([](zap::Window& window, zap::SceneCamera& camera)
 	}
 	});
 
-const char* vertexCameraShaderSource = R"glsl(#version 330 core
-layout(location = 0) in vec3 aPos;
-layout(location = 1) in vec3 aColor;
-layout(location = 2) in vec2 aTexCoord;
-
-uniform mat4 model;      //takes local coordinates for thing and moves it into world coordinates
-uniform mat4 view;       //moves world space objects around based on camera
-uniform mat4 projection; //converts values to normalised device coordinates (use sweet math for perspective)
-
-out vec3 ourColor;
-out vec2 TexCoord;
-
-void main()
+class TriangleColor : public zap::Mesh
 {
-	gl_Position = projection * view * model * vec4(aPos, 1.0);
-	//gl_Position = vec4(aPos, 1.0);
-    TexCoord = aTexCoord;
-	//ourColor = aColor;
-})glsl";
 
-const char* fragmentCameraShaderSource = R"glsl(#version 330
-out vec4 FragColor;
+	const char* vertexCameraShaderSource = R"glsl(#version 330 core
+		layout(location = 0) in vec3 aPos;
+		layout(location = 1) in vec3 aColor;
+
+		uniform mat4 model;      //takes local coordinates for thing and moves it into world coordinates
+		uniform mat4 view;       //moves world space objects around based on camera
+		uniform mat4 projection; //converts values to normalised device coordinates (use sweet math for perspective)
+
+		out vec3 ourColor;
+
+		void main()
+		{
+			gl_Position = projection * view * model * vec4(aPos, 1.0);
+			ourColor = aColor;
+		})glsl";
+
+	const char* fragmentCameraShaderSource = R"glsl(#version 330
+		out vec4 FragColor;
   
-in vec3 ourColor;
-in vec2 TexCoord;
+		in vec3 ourColor;
 
-uniform sampler2D ourTexture;
+		void main()
+		{
+			FragColor = vec4(ourColor, 1);
+		})glsl";
 
-void main()
-{
-    FragColor = texture(ourTexture, TexCoord);
-    //FragColor = vec4(ourColor, 0);
-})glsl";
+
+	std::vector<float> vertices =
+	{
+		// positions          // colors
+		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   // top right 
+		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   // bottom right  This causes the bug
+		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   // bottom left
+		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   // top left		And also this
+
+	};
+
+	std::vector<unsigned int> indices =
+	{
+		0, 1, 3,
+		1, 2, 3
+	};
+
+	//unsigned int texture0Id;
+public:
+	TriangleColor() //:zap::Mesh(vertices, indices)
+	{
+		PreSetIndices(indices);
+		PreSetVertices(vertices);
+		SetVertexShaderSource(vertexCameraShaderSource);
+		SetFragmentShaderSource(fragmentCameraShaderSource);
+
+		SetAttribPointer(0, 3, 6, 0);
+		SetAttribPointer(1, 3, 6, 3);
+		//texture0Id = AddTexture(0, "textures/texture.png", zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
+		Finish();
+		//glUniformMatrix4fv(modelLocationId, 1, GL_FALSE, glm::value_ptr(model));
+	}
+	//void UseTexture()
+	//{
+	//	Mesh::UseTexture(texture0Id);
+	//}
+};
 
 int main()
 {
@@ -96,29 +129,8 @@ int main()
 	zap::InitGlad();
 
 	//Mesh
-	//TriangleTexture mesh;
-	std::vector<float> vertices =
-	{
-		// positions          // colors           // texture coords
-		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right 
-		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right  This causes the bug
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left		And also this
+	TriangleColor mesh;
 
-	};
-	std::vector<unsigned int> indices =
-	{
-		0, 1, 3,
-		1, 2, 3
-	};
-
-	zap::Mesh mesh (vertices, indices);
-	mesh.SetVertexShaderSource(vertexCameraShaderSource);
-	mesh.SetFragmentShaderSource(fragmentCameraShaderSource);
-	mesh.SetAttribPointer(0, 3, 8, 0);
-	mesh.SetAttribPointer(1, 3, 8, 3);
-	mesh.SetAttribPointer(2, 2, 8, 6);
-	unsigned int texture0Id = mesh.AddTexture(0, "textures/texture.png", zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
 	mesh.Finish();
 
 	window.UpdateViewport(); //This is a set callback. Once set == forever set
@@ -165,8 +177,8 @@ int main()
 		mesh.SetView(camera.GetView());
 		mesh.SetProjection(camera.GetProjection());
 
-		mesh.UseTexture(texture0Id);
-
+		//mesh.UseTexture(); //return false if texture not found
+	
 		mesh.Draw();
 		//here draw ends
 

@@ -1,5 +1,5 @@
 #include "enabler.h"
-#ifdef ZAP_LIBRARY_MAIN_SIMPLE_TRIANGLES_CLASS_CPP
+#ifdef ZAP_LIBRARY_MAIN_SIMPLE_TRIANGLES_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -20,7 +20,7 @@ public:
 	inline window_invoker(T _callback) : callback_invoker(_callback) {}
 	template<typename A1> void operator () (A1& a1) { callback(a1); }
 };
-window_invoker  cbi([](zap::Window& window)
+window_invoker cbi([](zap::Window& window)
 	{
 		if (window.isKeyPressed(zap::Key::ESC))
 		{
@@ -28,61 +28,25 @@ window_invoker  cbi([](zap::Window& window)
 		}
 	});
 
-class TriangleColor : public zap::Mesh
+const char* vertexCameraShaderSource = R"glsl(#version 330 core
+layout(location = 0) in vec3 aPos;
+layout(location = 1) in vec3 aColor;
+out vec3 ourColor;
+
+void main()
 {
+	gl_Position = vec4(aPos, 1.0);
+	ourColor = aColor;
+})glsl";
 
-	const char* vertexCameraShaderSource = R"glsl(#version 330 core
-		layout(location = 0) in vec3 aPos;
-		layout(location = 1) in vec3 aColor;
+const char* fragmentCameraShaderSource = R"glsl(#version 330
+out vec4 FragColor;
+in vec3 ourColor;
 
-		out vec3 ourColor;
-
-		void main()
-		{
-			gl_Position = vec4(aPos, 1.0);
-			ourColor = aColor;
-		})glsl";
-
-	const char* fragmentCameraShaderSource = R"glsl(#version 330
-		out vec4 FragColor;
-		in vec3 ourColor;
-
-		void main()
-		{
-			FragColor = vec4(ourColor, 1);
-		})glsl";
-
-
-	std::vector<float> vertices =
-	{
-		// positions          // colors
-		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   // top right 
-		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   // bottom right  This causes the bug
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   // top left		And also this
-
-	};
-
-	std::vector<unsigned int> indices =
-	{
-		0, 1, 3,
-		1, 2, 3
-	};
-
-public:
-	TriangleColor()
-	{
-		PreSetIndices(indices);
-		PreSetVertices(vertices);
-		SetVertexShaderSource(vertexCameraShaderSource);
-		SetFragmentShaderSource(fragmentCameraShaderSource);
-
-		SetAttribPointer(0, 3, 6, 0);
-		SetAttribPointer(1, 3, 6, 3);
-		Finish();
-
-	}
-};
+void main()
+{
+    FragColor = vec4(ourColor, 0);
+})glsl";
 
 int main()
 {
@@ -94,12 +58,29 @@ int main()
 
 	//Mesh
 	//TriangleTexture mesh;
+	std::vector<float> vertices =
+	{
+		// positions            // texture coords
+		 0.5f,  0.5f, 0.0f,     1.0f, 1.0f,   // top right 
+		 0.5f, -0.5f, 0.0f,     1.0f, 0.0f,   // bottom right  This causes the bug
+		-0.5f, -0.5f, 0.0f,     0.0f, 0.0f,   // bottom left
+		-0.5f,  0.5f, 0.0f,     0.0f, 1.0f    // top left		And also this
 
-	TriangleColor mesh;
+	};
+	std::vector<unsigned int> indices =
+	{
+		0, 1, 3,
+		1, 2, 3
+	};
 
+	zap::Mesh mesh (vertices, indices);
+	mesh.SetVertexShaderSource(vertexCameraShaderSource);
+	mesh.SetFragmentShaderSource(fragmentCameraShaderSource);
+	mesh.SetAttribPointer(0, 3, 5, 0);
+	mesh.SetAttribPointer(1, 2, 5, 3);
+	mesh.Finish();
 
 	window.UpdateViewport(); //This is a set callback. Once set == forever set
-	std::array<int, 2> size = window.GetSize(); // Not a Ref to the window size !
 
 	while (window.Open())
 	{
@@ -111,6 +92,7 @@ int main()
 		glClear(GL_DEPTH_BUFFER_BIT); // PR
 		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
 		zap::ClearBackground(zap::BackgroundColors::BLACK);
+
 
 		//here starts current VAO for current program draw
 		mesh.Bind(); //set current context before any draw routines, it prevents mess in more complex programs
