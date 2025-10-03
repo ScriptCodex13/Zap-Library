@@ -138,6 +138,7 @@ You can visit the wiki [here](https://github.com/ScriptCodex13/Zap-Library/wiki)
 [Premake](https://github.com/premake/premake-core) to build the project,
 [glm](https://github.com/g-truc/glm) for the math
 [freetype](https://freetype.org/) for font loading
+[provided fonts](https://fonts.google.com/) come from google fonts
 
 # Questions ?
 
