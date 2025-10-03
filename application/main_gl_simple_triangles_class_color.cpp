@@ -110,14 +110,9 @@ public:
 
 		SetAttribPointer(0, 3, 6, 0);
 		SetAttribPointer(1, 3, 6, 3);
-		//texture0Id = AddTexture(0, "textures/texture.png", zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
 		Finish();
-		//glUniformMatrix4fv(modelLocationId, 1, GL_FALSE, glm::value_ptr(model));
+
 	}
-	//void UseTexture()
-	//{
-	//	Mesh::UseTexture(texture0Id);
-	//}
 };
 
 int main()
@@ -177,8 +172,6 @@ int main()
 		mesh.SetView(camera.GetView());
 		mesh.SetProjection(camera.GetProjection());
 
-		//mesh.UseTexture(); //return false if texture not found
-	
 		mesh.Draw();
 		//here draw ends
 

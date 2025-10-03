@@ -114,8 +114,9 @@ int main()
 	std::array<double, 2> oldPos = window.GetMousePosition();
 
 	auto coord = zap::util::pixel_to_gl_coords(window.GetSize(), 1.0f, 1.0f);
-
 	//std::cout << "x: " << coord[0] << ",y: " << coord[1] << std::endl;
+	auto coord_2 = zap::util::gl_coords_to_pixel(window.GetSize(), 0.9f, 0.0f);
+	//std::cout << "x: " << coord_2[0] << ",y: " << coord[1] << std::endl;
 
 	//////Mesh
 	Cube cube;
@@ -131,9 +132,6 @@ int main()
 	//button.UseText(false);
 	button.SetTextColor(zap::TextColors::PURPLE);
 
-	auto coord_2 = zap::util::gl_coords_to_pixel(window.GetSize(), 0.9f, 0.0f);
-
-	//std::cout << "x: " << coord_2[0] << ",y: " << coord[1] << std::endl;
 
 	while (window.Open())
 	{

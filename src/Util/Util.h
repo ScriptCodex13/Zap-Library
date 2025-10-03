@@ -63,7 +63,6 @@ namespace zap
 		{
 			// Converts pixel coordinates to the OpenGL coordinate system
 			std::array<float, 2> n_dimensions = { (float)dimensions[0], (float)dimensions[1] };
-
 			return { (x / ((T)n_dimensions[0] / 2)) - T(1) , T(1) - (y / ((T)n_dimensions[1] / 2))};
 		}
 		template<typename T>

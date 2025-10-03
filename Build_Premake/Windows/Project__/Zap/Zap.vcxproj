@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B03E880B-1C48-887C-A5C3-9E7C11CC937C}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Zap</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(ProjectDir)bin\Debug\</OutDir>
+    <IntDir>$(ProjectDir)obj\Debug\</IntDir>
+    <TargetName>Zap</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(ProjectDir)bin\Release\</OutDir>
+    <IntDir>$(ProjectDir)obj\Release\</IntDir>
+    <TargetName>Zap</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>..\..\..\..\extern;..\..\..\..\extern\glad\include;..\..\..\..\extern\GLFW\include;..\..\..\..\extern\freetype\include\Windows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>..\..\..\..\extern;..\..\..\..\extern\glad\include;..\..\..\..\extern\GLFW\include;..\..\..\..\extern\freetype\include\Windows;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\src\GUI\Button.h" />
+    <ClInclude Include="..\..\..\..\src\GUI\GUI.h" />
+    <ClInclude Include="..\..\..\..\src\GUI\TextRenderer.h" />
+    <ClInclude Include="..\..\..\..\src\Graphics\AttributeConfig.h" />
+    <ClInclude Include="..\..\..\..\src\Graphics\GlfwUtil.h" />
+    <ClInclude Include="..\..\..\..\src\Graphics\Graphics.h" />
+    <ClInclude Include="..\..\..\..\src\Graphics\Mesh.h" />
+    <ClInclude Include="..\..\..\..\src\Graphics\RenderCalls.h" />
+    <ClInclude Include="..\..\..\..\src\Graphics\SceneCamera.h" />
+    <ClInclude Include="..\..\..\..\src\Graphics\StandardVertices.h" />
+    <ClInclude Include="..\..\..\..\src\Graphics\Texture.h" />
+    <ClInclude Include="..\..\..\..\src\Util\Loader.h" />
+    <ClInclude Include="..\..\..\..\src\Util\Message.h" />
+    <ClInclude Include="..\..\..\..\src\Util\Resources.h" />
+    <ClInclude Include="..\..\..\..\src\Util\Util.h" />
+    <ClInclude Include="..\..\..\..\src\Window\Input.h" />
+    <ClInclude Include="..\..\..\..\src\Window\Window.h" />
+    <ClInclude Include="..\..\..\..\src\Zap.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\src\GUI\Button.cpp" />
+    <ClCompile Include="..\..\..\..\src\GUI\TextRenderer.cpp" />
+    <ClCompile Include="..\..\..\..\src\Graphics\AttributeConfig.cpp" />
+    <ClCompile Include="..\..\..\..\src\Graphics\ExternalImport.cpp" />
+    <ClCompile Include="..\..\..\..\src\Graphics\GlfwUtil.cpp" />
+    <ClCompile Include="..\..\..\..\src\Graphics\Mesh.cpp" />
+    <ClCompile Include="..\..\..\..\src\Graphics\RenderCalls.cpp" />
+    <ClCompile Include="..\..\..\..\src\Graphics\SceneCamera.cpp" />
+    <ClCompile Include="..\..\..\..\src\Graphics\Texture.cpp" />
+    <ClCompile Include="..\..\..\..\src\Util\Loader.cpp" />
+    <ClCompile Include="..\..\..\..\src\Util\Message.cpp" />
+    <ClCompile Include="..\..\..\..\src\Util\Resources.cpp" />
+    <ClCompile Include="..\..\..\..\src\Util\Util.cpp" />
+    <ClCompile Include="..\..\..\..\src\Window\Input.cpp" />
+    <ClCompile Include="..\..\..\..\src\Window\Window.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
