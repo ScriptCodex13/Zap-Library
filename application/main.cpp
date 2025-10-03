@@ -124,7 +124,7 @@ int main()
 	//button.SetGlWidth(0.7);
 	//button.SetGlHeight(0.28);
 	button.SetTextOffset(0.31f, 0.075f);
-	button.UseText(false);
+	//button.UseText(false);
 
 	//button.SetTextOffset()
 
@@ -202,11 +202,11 @@ int main()
 
 		zap::ClearBuffers();
 
-		float width, height;
+		/*float width, height;
 
 		glfwGetWindowContentScale(window.GetNativeWindow(), &width, &height);
 
-		std::cout << "width: " << width << "height: " << height << std::endl;
+		std::cout << "width: " << width << "height: " << height << std::endl;*/
 
 		rotation += 1.0f;
 	}
