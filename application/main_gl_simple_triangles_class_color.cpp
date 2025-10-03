@@ -1,5 +1,5 @@
 #include "enabler.h"
-#ifdef ZAP_LIBRARY_MAIN_SIMPLE_TRIANGLES_CLASS_COLOR_CPP
+#ifdef SAMPLE_MAIN_SIMPLE_TRIANGLES_CLASS_COLOR_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
