@@ -10,10 +10,10 @@ namespace zap
 	Button::Button(zap::Window& window, const std::array<float, 4>& _bounds, const std::string button_text, const std::string button_text_font_path):
 		i_bounds(_bounds), zap::Mesh (
 			{
-				  1.0f,  1.0f, 0.1f,  // 0, 1, 2
-				  1.0f,  0.0f, 0.1f,  // 3, 4, 5
-				  0.0f,  0.0f, 0.1f,  // 6, 7, 8
-				  0.0f,  1.0f, 0.1f   // 9, 10, 11
+				  1.0f,  1.0f, 0.1f, 1.0f, 1.0f,  // 0, 1, 2
+				  1.0f,  0.0f, 0.1f, 1.0f, 0.0f, // 3, 4, 5
+				  0.0f,  0.0f, 0.1f, 0.0f, 0.0f,	 // 6, 7, 8
+				  0.0f,  1.0f, 0.1f, 0.0f, 1.0f		 // 9, 10, 11
 			},
 			{
 				2, 1, 0,
@@ -32,18 +32,58 @@ namespace zap
 		SetVertexShaderSource(i_vertex_shader_source);
 		SetFragmentShaderSource(i_fragment_shader_source);
 
-		SetAttribPointer(0, 3, 3, 0);
+		SetAttribPointer(0, 3, 5, 0);
 
+		/*Finish();
+
+		i_moveto_uniform_location = glGetUniformLocation(GetProgram(), "moveto");
+		i_button_color_location = glGetUniformLocation(GetProgram(), "button_color");
+
+		UpdatePosition();*/
+
+		if(i_use_text) i_button_text = std::make_unique<zap::Text>(button_text_font_path, button_text, e_window->GetSize());
+	}
+
+	int Button::LoadTexture(unsigned int id, const std::string path_to_texture, zap::TextureFilters filter, int shader_location)
+	{
+		if (!texture_attribute_ptr_set)
+		{
+			Mesh::SetAttribPointer(shader_location, 2, 5, 3);
+			texture_attribute_ptr_set = true;
+		}
+
+		return Mesh::AddTexture(id, path_to_texture, filter).getID();
+	}
+
+	void Button::UseTextureShaders(bool state)
+	{
+		if(state)
+		{
+			SetVertexShaderSource(i_vertex_shader_source_t);
+			SetFragmentShaderSource(i_fragment_shader_source_t);
+		}
+		else
+		{
+			SetVertexShaderSource(i_vertex_shader_source);
+			SetFragmentShaderSource(i_fragment_shader_source);
+		}
+	}
+
+	void Button::UseTextureShaders(const char* vertex_shader_source, const char* fragment_shader_source)
+	{
+		SetVertexShaderSource(vertex_shader_source);
+		SetFragmentShaderSource(fragment_shader_source);
+	}
+
+	void Button::FinishMesh()
+	{
 		Finish();
 
 		i_moveto_uniform_location = glGetUniformLocation(GetProgram(), "moveto");
 		i_button_color_location = glGetUniformLocation(GetProgram(), "button_color");
 
 		UpdatePosition();
-
-		if(i_use_text) i_button_text = std::make_unique<zap::Text>(button_text_font_path, button_text, e_window->GetSize());
 	}
-
 
 	Button::~Button()
 	{
@@ -166,6 +206,11 @@ namespace zap
 		i_button_color = glm::vec4(RED, GREEN, BLUE, ALPHA);
 	}
 
+	void Button::ActivateTexture(bool state)
+	{
+		i_use_texture = state;
+	}
+
 	void Button::UseText(bool state)
 	{
 		if (i_font_missing_flag)
@@ -200,7 +245,6 @@ namespace zap
 		i_button_text->SetColor(RED, GREEN, BLUE);
 	};
 
-
 	void Button::Update()
 	{
 		//auto position = i_text_offset;
@@ -221,13 +265,15 @@ namespace zap
 		}
 	}
 
-	void Button::Draw()
+	void Button::Draw(int texture_id)
 	{
 		Update();
 
 		UseProgram();
 
 		// Update uniforms
+
+		if(i_use_texture) zap::Mesh::UseTexture(texture_id);
 
 		glUniform4fv(i_button_color_location, 1 , glm::value_ptr(i_button_color));
 

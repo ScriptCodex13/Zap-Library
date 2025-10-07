@@ -48,8 +48,15 @@ int main()
 	//auto coord_2 = zap::util::gl_coords_to_pixel(window.GetSize(), 0.9f, 0.0f);
 
 	zap::Button button(window, std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, "Button", "C:/Windows/Fonts/arial.ttf");
+
 	button.SetTextOffset(0.31f, 0.075f);
 	button.SetTextColor(zap::TextColors::RED);
+
+	button.LoadTexture(0, "./textures/texture.png", zap::TextureFilters::LINEAR, 1);
+	button.UseTextureShaders(true);
+	button.ActivateTexture(true);
+
+	button.FinishMesh();
 	//button.GetTextObject()->SetTextOffset(0.31f, 0.075f);
 	//button.GetTextObject()->SetTextColor(zap::TextColors::PURPLE);
 	//button.GetTextObject()->GenerateCharacters();

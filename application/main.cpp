@@ -128,6 +128,8 @@ int main()
 	//button.SetGlSize(std::array<float, 2> {0.1f, 0.1f});
 	//button.SetGlWidth(0.7);
 	//button.SetGlHeight(0.28);
+	button.FinishMesh();
+
 	button.SetTextOffset(0.31f, 0.075f);
 	//button.UseText(false);
 	button.SetTextColor(zap::TextColors::PURPLE);

@@ -22,7 +22,13 @@ namespace zap
 	public:
 		Button(zap::Window& window, const std::string button_text = "", const std::string button_text_font_path = "");
 		Button(zap::Window& window, const std::array<float, 4>& bounds, const std::string button_text = "", const std::string button_text_font_path = "");
+		
 		~Button();
+		
+		int LoadTexture(unsigned int id, const std::string path_to_texture, zap::TextureFilters filter, int shader_location = 1);
+		void FinishMesh();
+		void UseTextureShaders(bool state);
+		void UseTextureShaders(const char* vertex_shader_source, const char* fragment_shader_source);
 
 		zap::Text* GetTextObject();
 		void UpdatePosition();
@@ -42,6 +48,7 @@ namespace zap
 		void SetGlPosition(std::array<float, 4>& gl_xy_min_xy_max); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
 		void SetColor(float RED, float GREEN, float BLUE, float ALPHA);
 		
+		void ActivateTexture(bool state);
 		void UseText(bool state);
 		void SetButtonText(const std::string text);
 		void SetTextOffset(float x_offset, float y_offset);
@@ -50,9 +57,15 @@ namespace zap
 		void SetZCoordinate(); // Don't know if you need it
 
 		void Update();
-		void Draw();
+		void Draw(int texture_id = 0);
+
+	private: // Private functions 
+		//void SetVertexShaderSource(const char* source);
+		//void SetFragmentShaderSource(const char* source);
 
 	private:
+		bool i_use_texture = false;
+		bool texture_attribute_ptr_set = false;
 		bool i_use_text = true;
 		bool i_font_missing_flag = false;
 
@@ -71,7 +84,9 @@ namespace zap
 		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max
 
 		const char* i_vertex_shader_source = 
-			R"glsl(#version 330 core 
+			R"glsl(
+					#version 330 core
+ 
 					layout(location = 0) in vec3 aPos;
 					uniform mat4 moveto;
 					
@@ -82,7 +97,9 @@ namespace zap
 			)glsl";
 
 		const char* i_fragment_shader_source = 
-			R"glsl(#version 330 core
+			R"glsl( 
+					#version 330 core
+
 					out vec4 fragColor;
 					
 					uniform vec4 button_color;
@@ -93,20 +110,42 @@ namespace zap
 					}
 			)glsl";
 
+		const char* i_vertex_shader_source_t = 
+			R"glsl(
+					#version 330 core
+ 
+					layout(location = 0) in vec3 aPos;
+					layout(location = 1) in vec2 aTexCoord;
+
+					uniform mat4 moveto;
+
+					out vec2 TexCoord;
+
+					void main()
+					{
+						gl_Position = moveto * vec4(aPos, 1.0);
+						TexCoord = aTexCoord;
+					}
+			)glsl";
+
+		const char* i_fragment_shader_source_t =
+			R"glsl(
+					#version 330 core
+					out vec4 FragColor;
+
+					in vec2 TexCoord;
+
+					uniform vec4 button_color;
+
+					uniform sampler2D texture1;
+
+					void main()
+					{
+						FragColor = button_color * texture(texture1, TexCoord);
+					}
+			)glsl";
+
 		zap::Window* e_window;
-	};
-
-	class TextureButton : public Button
-	{
-	public:
-		TextureButton(zap::Window& window, const std::string button_text = "", const std::string button_text_font_path = "");
-		TextureButton(zap::Window& window, const std::array<float, 4>& bounds, const std::string button_text = "", const std::string button_text_font_path = "");
-		~TextureButton();
-
-		void Finish();
-
-	private:
-
 	};
 }
 

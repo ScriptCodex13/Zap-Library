@@ -82,14 +82,14 @@ namespace zap
 	void Mesh::SetVertexShaderSource(const std::string& source)
 	{
 		// Just assert nothing fatal here. Nothing truly bad happens if the source is set multiple times, but it indicates bad redundant code.
-		ZAP_ASSERT_TRUE(vertexShaderSource.empty() && "Vertex Shader Source was already set, redundant code should be identified and removed");
+		//ZAP_ASSERT_TRUE(vertexShaderSource.empty() && "Vertex Shader Source was already set, redundant code should be identified and removed");
 		vertexShaderSource = source;
 	}
 
 	void Mesh::SetFragmentShaderSource(const std::string& source)
 	{
 		// Just assert nothing fatal here. Nothing truly bad happens if the source is set multiple times, but it indicates bad redundant code.
-		ZAP_ASSERT_TRUE(fragmentShaderSource.empty() && "Fragment Shader Source was already set, redundant code should be identified and removed");
+		//ZAP_ASSERT_TRUE(fragmentShaderSource.empty() && "Fragment Shader Source was already set, redundant code should be identified and removed");
 		fragmentShaderSource = source;
 	}
 
