@@ -86,8 +86,7 @@ int main()
 
 	window.UpdateViewport(true); //This is a set callback. Once set == forever set
 
-	unsigned int i_transformation_location_1 = glGetUniformLocation(mesh.GetProgram(), "transformations[0]");
-	unsigned int i_transformation_location_2 = glGetUniformLocation(mesh.GetProgram(), "transformations[1]");
+	unsigned int i_transformation_location = glGetUniformLocation(mesh.GetProgram(), "transformations");
 
 	while (window.Open())
 	{
@@ -104,11 +103,13 @@ int main()
 		//here starts current VAO for current program draw
 		mesh.UseProgram();
 
-		glm::mat4 tran_1 = glm::translate(glm::mat4(1.0f), glm::vec3(-0.7f, -0.7f, 0.0f));
-		glm::mat4 tran_2 = glm::translate(glm::mat4(1.0f), glm::vec3(0.7f, 0.7f, 0.0f));
 
-		glUniformMatrix4fv(i_transformation_location_1, 1, GL_FALSE, glm::value_ptr(tran_1));
-		glUniformMatrix4fv(i_transformation_location_2, 1, GL_FALSE, glm::value_ptr(tran_2));
+		glm::mat4 trans[2] =
+			{
+				glm::translate(glm::mat4(1.0f), glm::vec3(-0.7f, -0.7f, 0.0f)),
+				glm::translate(glm::mat4(1.0f), glm::vec3(0.7f, 0.7f, 0.0f))
+			};
+		glUniformMatrix4fv(i_transformation_location, 2, GL_FALSE, &trans[0][0].x);
 
 
 		mesh.Bind(); //set current context before any draw routines, it prevents mess in more complex programs
