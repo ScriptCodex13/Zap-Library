@@ -77,8 +77,8 @@ int main()
 	};
 
 	zap::Mesh mesh (vertices, indices);
-	mesh.SetVertexShaderSource(vertexCameraShaderSource);
-	mesh.SetFragmentShaderSource(fragmentCameraShaderSource);
+	mesh.SetVertexShaderSource   (vertexCameraShaderSource);
+	mesh.SetFragmentShaderSource (fragmentCameraShaderSource);
 	mesh.SetAttribPointer(0, 3, 5, 0);
 	mesh.SetAttribPointer(1, 2, 5, 3);
 
@@ -99,17 +99,15 @@ int main()
 		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
 		zap::ClearBackground(zap::BackgroundColors::BLACK);
 
-
 		//here starts current VAO for current program draw
 		mesh.UseProgram();
-
 
 		glm::mat4 trans[2] =
 			{
 				glm::translate(glm::mat4(1.0f), glm::vec3(-0.7f, -0.7f, 0.0f)),
 				glm::translate(glm::mat4(1.0f), glm::vec3(0.7f, 0.7f, 0.0f))
 			};
-		glUniformMatrix4fv(i_transformation_location, 2, GL_FALSE, &trans[0][0].x);
+		glUniformMatrix4fv(i_transformation_location, std::size(trans), GL_FALSE, &trans[0][0].x);
 
 
 		mesh.Bind(); //set current context before any draw routines, it prevents mess in more complex programs
