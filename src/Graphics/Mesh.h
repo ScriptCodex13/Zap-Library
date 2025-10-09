@@ -74,15 +74,15 @@ namespace zap
 
 		void PreSetVertices(const std::vector<float>& extern_vertices);
 		void PreSetIndices(const std::vector<unsigned int>& extern_indices);
-		AttributeConfig& SetAttribPointer(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos);
+		AttributeConfig& SetAttribPointer(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos, bool instanced = false);
 		//
 		void ClearAllTextures();
 		Texture& AddTexture(unsigned int id, const std::string path, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
 		Texture& AddTexture(unsigned int id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER); // Add texture but with manual loaded texture_data
 
 		//Separate vertex buffer data functions for more complex logic
-		void vertexBufferData();
-		void vertexBufferData(const std::vector<float>& newBufferData);
+		void VertexBufferData();
+		void VertexBufferData(const std::vector<float>& newBufferData);
 
 		void GenObject();
 		void Finish(); // ToDo: Check if one of the functions which require Finish is called before and throw errors 
@@ -114,6 +114,7 @@ namespace zap
 		unsigned int GetProgram ();
 		void Bind       ();
 		void Draw       (int vertices_count = 0);
+		void DrawInstanced(unsigned int draw_amount, int vertices_count = 0);
 		// Transform func
 
 	    // private functions for intern use 

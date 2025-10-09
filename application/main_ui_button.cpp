@@ -52,7 +52,7 @@ int main()
 	button.SetTextOffset(0.31f, 0.075f);
 	button.SetTextColor(zap::TextColors::RED);
 
-	button.LoadTexture(0, "./textures/texture.png", zap::TextureFilters::LINEAR, 1);
+	button.LoadTexture(0, "./textures/Button_Texture.png", zap::TextureFilters::LINEAR, 1);
 	button.UseTextureShaders(true);
 	button.ActivateTexture(true);
 

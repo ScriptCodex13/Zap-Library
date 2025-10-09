@@ -12,7 +12,7 @@ namespace zap
 {
 	struct AttributeConfig // Config for the vertex attributes and also executes it
 	{
-		AttributeConfig(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos);
+		AttributeConfig(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos, bool instanced = false);
 
 		void* getPos() { return  reinterpret_cast<void*>( i_start_pos * sizeof(float)); }
 		void  vertexAttribPointer();
@@ -23,6 +23,7 @@ namespace zap
 		GLboolean       i_normalized = GL_FALSE;
 		unsigned int    i_data_stride;
 		unsigned int    i_start_pos;
+		bool i_instanced = false;
 	};
 };
 

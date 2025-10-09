@@ -13,7 +13,6 @@ namespace zap
 	// Avoid copy by value for large data structures
 	Mesh::Mesh(const std::vector<float>& extern_vertices, const std::vector<unsigned int>& extern_indices) : Mesh (extern_vertices)
 	{
-		
 		PreSetIndices (extern_indices);
 	}
 	Mesh::Mesh(const std::vector<float>& extern_vertices) : Mesh()
@@ -49,9 +48,9 @@ namespace zap
 		EBO_ACCESS_MODE = mode;
 	}
 
-	AttributeConfig& Mesh::SetAttribPointer (int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos)
+	AttributeConfig& Mesh::SetAttribPointer (int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos, bool instanced)
 	{
-		return attribcfg.emplace_back(AttributeConfig { shader_location, value_ct, data_stride, start_pos });
+		return attribcfg.emplace_back(AttributeConfig { shader_location, value_ct, data_stride, start_pos, instanced });
 	}
 
 	void Mesh::ClearAllTextures()
@@ -194,17 +193,18 @@ namespace zap
 	// END TODO:
 
 	//
-	void Mesh::vertexBufferData()
+	void Mesh::VertexBufferData()
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), (GLenum)VBO_ACCESS_MODE);
 	}
-	void Mesh::vertexBufferData (const std::vector<float>& newBufferData)
+	void Mesh::VertexBufferData (const std::vector<float>& newBufferData)
 	{
 		ZAP_REQUIRE(newBufferData.size() == vertices.size() && "New buffer data must be of the same size as the existing vertex buffer data");
 		vertices = newBufferData;
-		vertexBufferData();
+		VertexBufferData();
 	}
+
 	void Mesh::GenObject()
 	{
 		/*****************************************************************************************/
@@ -216,7 +216,7 @@ namespace zap
 		// VBO
 		// F
 		glGenBuffers(1, &VBO);
-		vertexBufferData();
+		VertexBufferData();
 
 		for (auto& cfg : attribcfg)
 		{
@@ -381,6 +381,22 @@ namespace zap
 			glUseProgram(shaderProgram);
 			glBindVertexArray(VAO);
 			glDrawArrays(GL_TRIANGLES, 0, vertices_count);
+		}
+	}
+
+	void Mesh::DrawInstanced(unsigned int draw_amount, int vertices_count)
+	{
+		if(!indices.empty())
+		{
+			glUseProgram(shaderProgram);
+			glBindVertexArray(VAO);
+			glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, draw_amount);
+		}
+		else 
+		{
+			glUseProgram(shaderProgram);
+			glBindVertexArray(VAO);
+			glDrawElementsInstanced(GL_TRIANGLES, vertices_count, GL_UNSIGNED_INT, 0, draw_amount);
 		}
 	}
 

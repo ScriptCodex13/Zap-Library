@@ -125,6 +125,7 @@ int main()
 		//Draw cubes here
 		//Cube
 
+		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
 
 
 		cube.Bind();
