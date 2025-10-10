@@ -16,7 +16,11 @@ export
 /Build_Premake/Windows/Project
 /Build_Premake/Windows/Project_
 /Build_Premake/Windows/Project__
-/xxx
+/xxx*
 /application/shader
 /application/textures
 /application/application.vcxproj*
+/ZapPakTest
+/Zap3DDemo/Zap3DTrianglesBasic/Zap3DTrianglesBasic.vcxproj.*
+/Zap3D/Zap3D.vcxproj.*
+/Zap3D/Zap3D.sln

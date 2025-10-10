@@ -1,5 +1,5 @@
 #include "enabler.h"
-#ifdef SAMPLE_MAIN_SIMPLE_TRIANGLES_CPP
+#ifdef SAMPLE_MAIN_SIMPLE_TRIANGLES_TRANSFORM_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -33,9 +33,12 @@ layout(location = 0) in vec3 aPos;
 layout(location = 1) in vec3 aColor;
 out vec3 ourColor;
 
+uniform mat4 transformations[2];
+
+
 void main()
 {
-	gl_Position = vec4(aPos, 1.0);
+	gl_Position = transformations[gl_InstanceID] * vec4(aPos, 1.0);
 	ourColor = aColor;
 })glsl";
 
@@ -69,18 +72,21 @@ int main()
 	};
 	std::vector<unsigned int> indices =
 	{
-		0, 1, 3,
-		1, 2, 3
+		2, 1, 0,
+		3, 2, 0
 	};
 
 	zap::Mesh mesh (vertices, indices);
-	mesh.SetVertexShaderSource(vertexCameraShaderSource);
-	mesh.SetFragmentShaderSource(fragmentCameraShaderSource);
+	mesh.SetVertexShaderSource   (vertexCameraShaderSource);
+	mesh.SetFragmentShaderSource (fragmentCameraShaderSource);
 	mesh.SetAttribPointer(0, 3, 5, 0);
 	mesh.SetAttribPointer(1, 2, 5, 3);
+
 	mesh.Finish();
 
-	window.UpdateViewport(); //This is a set callback. Once set == forever set
+	window.UpdateViewport(true); //This is a set callback. Once set == forever set
+
+	unsigned int i_transformation_location = glGetUniformLocation(mesh.GetProgram(), "transformations");
 
 	while (window.Open())
 	{
@@ -93,13 +99,22 @@ int main()
 		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
 		zap::ClearBackground(zap::BackgroundColors::BLACK);
 
-
 		//here starts current VAO for current program draw
+		mesh.UseProgram();
+
+		glm::mat4 trans[2] =
+			{
+				glm::translate(glm::mat4(1.0f), glm::vec3(-0.7f, -0.7f, 0.0f)),
+				glm::translate(glm::mat4(1.0f), glm::vec3(0.7f, 0.7f, 0.0f))
+			};
+		glUniformMatrix4fv(i_transformation_location, std::size(trans), GL_FALSE, &trans[0][0].x);
+
+
 		mesh.Bind(); //set current context before any draw routines, it prevents mess in more complex programs
-		mesh.Draw();
+		mesh.DrawInstanced(2);
 		//here draw ends
 
-		window.SetTitle(std::to_string(window.GetDelta()));
+		//window.SetTitle(std::to_string(window.GetDelta()));
 
 		window.Update();
 		window.Draw();
