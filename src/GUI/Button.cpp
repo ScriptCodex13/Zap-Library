@@ -273,7 +273,7 @@ namespace zap
 
 		// Update uniforms
 
-		if(i_use_texture) zap::Mesh::UseTexture(texture_id);
+		if(i_use_texture) zap::Mesh::BindTexture(texture_id);
 
 		glUniform4fv(i_button_color_location, 1 , glm::value_ptr(i_button_color));
 

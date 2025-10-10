@@ -9,7 +9,6 @@
 
 namespace zap
 {
-
 	// Avoid copy by value for large data structures
 	Mesh::Mesh(const std::vector<float>& extern_vertices, const std::vector<unsigned int>& extern_indices) : Mesh (extern_vertices)
 	{
@@ -190,9 +189,7 @@ namespace zap
 		glDeleteShader(fragmentShader);
 
 	}
-	// END TODO:
 
-	//
 	void Mesh::VertexBufferData()
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -214,7 +211,6 @@ namespace zap
 		glBindVertexArray(VAO);
 
 		// VBO
-		// F
 		glGenBuffers(1, &VBO);
 		VertexBufferData();
 
@@ -250,7 +246,7 @@ namespace zap
 
 		GenObject();
 		UpdateMvpLocations();
-		//f
+
 		//Textures
 		for (auto& texcfg : texturecfg)
 		{
@@ -259,11 +255,8 @@ namespace zap
 		/*****************************************************************************************/
 	}
 
-	bool Mesh::UseTexture(unsigned int id)
+	bool Mesh::BindTexture(unsigned int id)
 	{
-		//auto cfg = std::find_if(texturecfg.begin(), texturecfg.end(), [id] (const auto& x) {return x.i_id == id; });
-		
-		//why did you replace the STL find?
 		for (auto cfg : texturecfg)
 		{
 			if (cfg.getHash() == id)
@@ -304,9 +297,6 @@ namespace zap
 		glUniformMatrix4fv(mvp.model_location, 1, GL_FALSE, glm::value_ptr(mdl));
 	}
 
-	//TODO: Never return reference in a getter
-	//      There are explicit coding conventions for getters and setters
-	//      Getters return by value, setters set the value
 	glm::mat4 Mesh::GetModel() const
 	{
 		return model;
@@ -377,7 +367,6 @@ namespace zap
 		}
 		else
 		{
-			//vertices_count = vertices.size() / attribcfg[0].i_value_ct;
 			glUseProgram(shaderProgram);
 			glBindVertexArray(VAO);
 			glDrawArrays(GL_TRIANGLES, 0, vertices_count);

@@ -87,7 +87,7 @@ namespace zap
 		void GenObject();
 		void Finish(); // ToDo: Check if one of the functions which require Finish is called before and throw errors 
 		void UpdateMvpLocations();
-		bool UseTexture (unsigned int id); //TODO: This is Bind, not Set, should be renamed | Done - ScriptCodex13
+		bool BindTexture (unsigned int id);
 
 		std::vector<float>& GetVertices();
 		std::vector<unsigned int>& GetIndices();
