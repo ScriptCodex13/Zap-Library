@@ -1,7 +1,7 @@
 workspace "Zap-Project"
     architecture "x64"
 
-    location "Project.Inline"
+    location "Project_mpf" -- mpf = multiple folders
 
     configurations
     {
@@ -11,7 +11,7 @@ workspace "Zap-Project"
 	startproject "application"
 
 project "Zap"
-    location "Project.Inline/Zap"
+    location "Project_mpf/Zap"
     kind "StaticLib"
     language "C++"
     files { "../../src/**.cpp"}
@@ -52,7 +52,6 @@ project "application"
     includedirs {"../../extern/"}
     libdirs {"../../extern/GLFW/lib/Windows"}
     libdirs {"../../extern/freetype/lib/Windows"}
-    libdirs {"../../Project/Zap2/bin/"}
     links {"Zap"}
 
     cppdialect "C++17"

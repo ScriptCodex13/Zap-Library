@@ -6,7 +6,7 @@ setlocal ENABLEDELAYEDEXPANSION
 @set projects_dir=..\..
 @set application_dir=%projects_dir%\application\
 mkdir %projects_dir%
-premake5.exe vs2022  --file=premake5.inline.lua
+premake5.exe vs2022  --file=premake5_multiple_folders.lua
 xcopy /S /I %resource_dir%shader   %application_dir%shader
 xcopy /S /I %resource_dir%textures %application_dir%textures
 endlocal
