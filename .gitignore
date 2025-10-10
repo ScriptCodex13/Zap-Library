@@ -10,3 +10,13 @@ export
 /3rdparty/stb
 /Build_Premake/ProjectAnder
 /Build_Premake/Project
+/application/bin
+/application/obj
+/Build_Premake/Windows/Project.Inline
+/Build_Premake/Windows/Project
+/Build_Premake/Windows/Project_
+/Build_Premake/Windows/Project__
+/xxx
+/application/shader
+/application/textures
+/application/application.vcxproj*
