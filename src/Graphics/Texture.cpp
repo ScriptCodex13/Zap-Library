@@ -63,14 +63,22 @@ namespace zap
 
 		unsigned char* pTextureData;
 
-		bool usePng = std::filesystem::path(i_path).extension() == ".png";
-
+		//TODO: be aware, this is not the correct way to guess the format
+		//bool usePng = std::filesystem::path(i_path).extension() == ".png";
 
 		stbi_set_flip_vertically_on_load(true);
 
 		pTextureData = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Maybe move this process to Loader.h
 		//Use scope_guard to free texture data whenever going out of scope
 		util::scope_guard freeTextureData([pTextureData]() { if (pTextureData) stbi_image_free(pTextureData); });
+		GLenum format = GL_RGB; //preguessed, nothing to do
+		switch (i_nrChannels)
+		{
+		case 1: format = GL_RED;  break;
+		case 3: format = GL_RGB;  break;
+		case 4: format = GL_RGBA; break;
+		}
+
 
 		if (!pTextureData)
 		{
@@ -79,8 +87,8 @@ namespace zap
 			return;
 		}
 
-		//TODO: be aware of internal format and format difference
-		glTexImage2D(GL_TEXTURE_2D, 0, usePng ? GL_RGBA : GL_RGB, i_width, i_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pTextureData);
+		//TODO: be aware of internal format and format difference, it can cause shader performance downfall
+		glTexImage2D(GL_TEXTURE_2D, 0, format, i_width, i_height, 0, format, GL_UNSIGNED_BYTE, pTextureData);
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}

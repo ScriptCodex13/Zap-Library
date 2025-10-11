@@ -184,6 +184,30 @@ namespace zap
 		};
 		extern std::string GetTextFileContent(const char* shaderSourceFilePath);
 	}
+
+
+	//buffer projections
+	template <typename T> class buffer_view
+	{
+	public:
+		T* buffer;
+		buffer_view() :buffer_view1D(nullptr) {}
+		buffer_view(T* t) :buffer(t) {}
+		void set(T* t) { buffer = t; }
+		T& operator [](size_t i) { return buffer[i]; }
+		T* operator + (size_t i) { return buffer + i; }
+	};
+	template <typename T> class buffer_view2D
+	{
+	public:
+		size_t width;
+		T* buffer;
+		buffer_view2D(T* ptr, size_t w) :buffer(ptr), width(w) {}
+		buffer_view<T> operator [] (size_t i) {
+			return buffer_view(buffer + width * i);
+		}
+	};
+
 }
 
 
