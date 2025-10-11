@@ -101,12 +101,7 @@ namespace zap
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLint)i_settings);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLint)i_filter);
 
-		unsigned char* pTextureData;
-
-		bool usePng = std::filesystem::path(i_path).extension() == ".png";
-
-		pTextureData = i_TextureData;
-		glTexImage2D(GL_TEXTURE_2D, 0, i_Type, i_width, i_height, 0, i_Type, GL_UNSIGNED_BYTE, pTextureData);
+		glTexImage2D(GL_TEXTURE_2D, 0, i_Type, i_width, i_height, 0, i_Type, GL_UNSIGNED_BYTE, i_TextureData);
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
