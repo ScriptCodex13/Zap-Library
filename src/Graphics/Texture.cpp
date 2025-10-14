@@ -87,9 +87,28 @@ namespace zap
 			return;
 		}
 
+		assert(i_TextureData == nullptr && "load from file is one time set");
 		//TODO: be aware of internal format and format difference, it can cause shader performance downfall
 		glTexImage2D(GL_TEXTURE_2D, 0, format, i_width, i_height, 0, format, GL_UNSIGNED_BYTE, pTextureData);
 
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	void Texture::setData(unsigned char* textureData)
+	{
+		i_TextureData = textureData;
+	}
+	void Texture::setSize(int width, int height)
+	{
+		i_width = width; i_height = height;
+	}
+	std::array<int, 2> Texture::getSize()
+	{
+		return std::array<int, 2>  { i_width, i_height };
+	}
+	void Texture::flushData()
+	{
+		bind();
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, i_width, i_height, 0, i_Type, GL_UNSIGNED_BYTE, i_TextureData);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	void Texture::genTextureFromData()

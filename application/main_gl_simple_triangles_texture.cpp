@@ -52,7 +52,7 @@ window_camera_invoker  cbi([](zap::Window& window, zap::SceneCamera& camera)
 		}
 	});
 
-class TriangleTexture : public zap::Mesh
+class TextPainter : public zap::Mesh
 {
 
 	const char* vertexCameraShaderSource = R"glsl(#version 330 core
@@ -103,9 +103,9 @@ class TriangleTexture : public zap::Mesh
 		1, 2, 3
 	};
 
-	unsigned int texture0Id;
+	unsigned int texture0Hash;
 public:
-	TriangleTexture() //:zap::Mesh(vertices, indices)
+	TextPainter() //:zap::Mesh(vertices, indices)
 	{
 		PreSetIndices(indices);
 		PreSetVertices(vertices);
@@ -115,13 +115,13 @@ public:
 		SetAttribPointer(0, 3, 5, 0);
 		SetAttribPointer(1, 2, 5, 3);
 		//SetAttribPointer(2, 2, 5, 6);
-		texture0Id = AddTexture(0, "textures/texture.png", zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
+		texture0Hash = AddTexture(0, "textures/texture.png", zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
 		Finish();
 		//glUniformMatrix4fv(modelLocationId, 1, GL_FALSE, glm::value_ptr(model));
 	}
 	void UseTexture()
 	{
-		Mesh::UseTexture(texture0Id);
+		Mesh::UseTexture(texture0Hash);
 	}
 };
 
@@ -134,7 +134,7 @@ int main()
 	zap::InitGlad();
 
 	//Mesh
-	TriangleTexture mesh;
+	TextPainter mesh;
 
 	mesh.Finish();
 

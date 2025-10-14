@@ -47,7 +47,7 @@ namespace zap
 	struct Character 
 	{
 		unsigned int TextureID;
-		glm::ivec2   Size;      
+		glm::ivec2   Size;
 		glm::ivec2   Bearing;   
 		unsigned int Advance;   
 	};
@@ -137,6 +137,66 @@ namespace zap
 					TexCoords = vertex.zw;
 				}
 			)glsl";
+	};
+	//This is a RAII
+	class FreeType
+	{
+		FT_Library ft_instance = nullptr;
+		FT_Face i_font = nullptr;
+	public:
+		FreeType() {}
+		~FreeType() { free(); }
+		void free() //to call outside destructor if needed
+		{
+			if (i_font) FT_Done_Face(i_font);
+			if (ft_instance) FT_Done_FreeType(ft_instance);
+			ft_instance = nullptr;
+			i_font = nullptr;
+		}
+
+		FT_Library getLibrary() { return ft_instance; }
+		FT_Face getFace() { return i_font; }
+		void LoadFont(const std::string font_path) {
+			FT_Init_FreeType(&ft_instance);
+			FT_New_Face(ft_instance, font_path.c_str(), 0, &i_font);
+		}
+		FT_Error loadChar (FT_Face face, wchar_t c)
+		{
+			return FT_Load_Char(face, c, FT_LOAD_RENDER);
+			//FT_New_Face(ft_instance, "C:/Windows/Fonts/arial.ttf", 0, &i_font);
+			//pface = std::make_unique<FT_Face, FT_Done_Face>(i_font);
+			//uptr = std::make_unique < FT_Face, std::function<FT_Done_Face> > (i_font);
+		}
+	};
+
+	//texture bitmap buffer generator for texture text
+	//TODO: redesign, it is too tied to Mesh and Texture
+	class TextureText
+	{
+		FreeType freetype;
+		unsigned int fontSize = 48; //default font size
+
+		std::vector<unsigned char> texture_data_target;
+		std::vector<unsigned char> texture_data_source;
+
+
+		std::vector<wchar_t> wprintf_buffer;
+
+		void drawString3TIntoBitman(FT_Face ftface, util::buffer_view2D<unsigned char> buf, const wchar_t* str, int& outer_width, int& pen_y, size_t bufsize);
+		void drawGlythBitmap(FT_Face ftface, util::buffer_view2D<unsigned char> target_view, int& pen_x, int& pen_y, wchar_t c, size_t bufsize);
+		void drawString3TIntoBitmap(const wchar_t* str, unsigned int fontSizeFT, int& outer_width, int& pen_y);
+
+	public:
+		TextureText();
+		TextureText(const std::string font_path);
+		void SetFontSize(unsigned int _fontSize) { fontSize = _fontSize; } //set only once
+		void LoadFont(const std::string font_path);
+		Texture& print(zap::Mesh* pMesh, unsigned int hash, const std::wstring content);
+		void printf(zap::Mesh* pMesh, unsigned int hash, const std::wstring content, ...);
+		int TextureText::printf_t(zap::Mesh* pMesh, unsigned int hash, wchar_t* const _Buffer, size_t const _BufferCount, wchar_t const* const _Format, va_list _ArgList);
+
+		Texture& ApplyTextureTo(zap::Mesh* pMesh, const std::wstring content);
+
 	};
 }
 

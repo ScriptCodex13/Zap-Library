@@ -3,17 +3,17 @@
 namespace zap
 {
 	Button::Button(zap::Window& window, const std::string button_text, const std::string button_text_font_path) :
-		Button(window, { -0.5, -0.5, 0.5, 0.5}, button_text, button_text_font_path)
+		Button(window, { -0.5, -0.5, 0.5, 0.5 }, button_text, button_text_font_path)
 	{
 
 	}
-	Button::Button(zap::Window& window, const std::array<float, 4>& _bounds, const std::string button_text, const std::string button_text_font_path):
-		i_bounds(_bounds), zap::Mesh (
+	Button::Button(zap::Window& window, const std::array<float, 4>& _bounds, const std::string button_text, const std::string button_text_font_path) :
+		i_bounds(_bounds), zap::Mesh(
 			{
-				  1.0f,  1.0f, 0.1f, 1.0f, 1.0f,  // 0, 1, 2
-				  1.0f,  0.0f, 0.1f, 1.0f, 0.0f, // 3, 4, 5
-				  0.0f,  0.0f, 0.1f, 0.0f, 0.0f,	 // 6, 7, 8
-				  0.0f,  1.0f, 0.1f, 0.0f, 1.0f		 // 9, 10, 11
+				  1.0f,  1.0f, 0.1f,    1.0f, 1.0f,   // 0, 1, 2
+				  1.0f,  0.0f, 0.1f,    1.0f, 0.0f,   // 3, 4, 5
+				  0.0f,  0.0f, 0.1f,    0.0f, 0.0f,	  // 6, 7, 8
+				  0.0f,  1.0f, 0.1f,    0.0f, 1.0f    // 9, 10, 11
 			},
 			{
 				2, 1, 0,
@@ -41,7 +41,7 @@ namespace zap
 
 		UpdatePosition();*/
 
-		if(i_use_text) i_button_text = std::make_unique<zap::Text>(button_text_font_path, button_text, e_window->GetSize());
+		if (i_use_text) i_button_text = std::make_unique<zap::Text>(button_text_font_path, button_text, e_window->GetSize());
 	}
 
 	int Button::LoadTexture(unsigned int id, const std::string path_to_texture, zap::TextureFilters filter, int shader_location)
@@ -57,7 +57,7 @@ namespace zap
 
 	void Button::UseTextureShaders(bool state)
 	{
-		if(state)
+		if (state)
 		{
 			SetVertexShaderSource(i_vertex_shader_source_t);
 			SetFragmentShaderSource(i_fragment_shader_source_t);
@@ -124,7 +124,7 @@ namespace zap
 		return e_window->GetInput(key, zap::State::RELEASED);
 	}
 
-	void Button::SetGlSize(float dx, float dy) 
+	void Button::SetGlSize(float dx, float dy)
 	{
 		SetGlSize(std::array<float, 2> {dx, dy});
 	}
@@ -239,7 +239,7 @@ namespace zap
 		i_button_text->SetColor(color);
 	}
 
-	void Button::SetTextColor(float RED, float GREEN, float BLUE) 
+	void Button::SetTextColor(float RED, float GREEN, float BLUE)
 	{
 		// Vars not clamped because the text class does it
 		i_button_text->SetColor(RED, GREEN, BLUE);
@@ -259,7 +259,7 @@ namespace zap
 
 			i_button_text->SetPosition(new_pos[0], new_pos[1]);
 		}
-		else 
+		else
 		{
 			i_button_text->SetPosition(n_bounds[0], n_bounds[1]);
 		}
@@ -273,15 +273,244 @@ namespace zap
 
 		// Update uniforms
 
-		if(i_use_texture) zap::Mesh::BindTexture(texture_id);
+		if (i_use_texture) zap::Mesh::BindTextureByHash (texture_id);
 
-		glUniform4fv(i_button_color_location, 1 , glm::value_ptr(i_button_color));
+		glUniform4fv(i_button_color_location, 1, glm::value_ptr(i_button_color));
 
 		//
 
 		Bind();
 		zap::Mesh::Draw();
-	
-		if(i_use_text) i_button_text->Draw();
+
+		if (i_use_text) i_button_text->Draw();
+	}
+
+
+	ButtonText::ButtonText(zap::Window& window, const std::string button_text, const std::string button_text_font_path) :
+		ButtonText(window, { -0.5, -0.5, 0.5, 0.5 }, button_text, button_text_font_path)
+	{
+
+	}
+	ButtonText::ButtonText(zap::Window& window, const std::array<float, 4>& _bounds, const std::string button_text, const std::string button_text_font_path) :
+		i_bounds(_bounds), zap::Mesh(
+			{
+				  1.0f,  1.0f, 0.1f, 1.0f, 1.0f,     // 0, 1, 2
+				  1.0f,  0.0f, 0.1f, 1.0f, 0.0f,     // 3, 4, 5
+				  0.0f,  0.0f, 0.1f, 0.0f, 0.0f,	 // 6, 7, 8
+				  0.0f,  1.0f, 0.1f, 0.0f, 1.0f		 // 9, 10, 11
+			},
+			{
+				2, 1, 0,
+				0, 3, 2
+			})
+	{
+
+		e_window = &window;
+
+		SetVertexShaderSource(i_vertex_shader_source);
+		SetFragmentShaderSource(i_fragment_shader_source);
+
+		SetAttribPointer(0, 3, 5, 0);
+
+		/*Finish();
+
+		i_moveto_uniform_location = glGetUniformLocation(GetProgram(), "moveto");
+		i_button_color_location = glGetUniformLocation(GetProgram(), "button_color");
+
+		UpdatePosition();*/
+
+	}
+
+	int ButtonText::LoadTexture(unsigned int id, const std::string path_to_texture, zap::TextureFilters filter, int shader_location)
+	{
+		return Mesh::AddTexture(id, path_to_texture, filter).getID();
+	}
+
+	void ButtonText::UseTextureShaders(const char* vertex_shader_source, const char* fragment_shader_source)
+	{
+		SetVertexShaderSource(vertex_shader_source);
+		SetFragmentShaderSource(fragment_shader_source);
+	}
+
+	void ButtonText::FinishMesh()
+	{
+		Finish();
+
+		i_moveto_uniform_location = glGetUniformLocation(GetProgram(), "moveto");
+		i_button_color_location = glGetUniformLocation(GetProgram(), "button_color");
+
+		UpdatePosition();
+	}
+
+
+
+	ButtonText::~ButtonText()
+	{
+
+	}
+	zap::Text* ButtonText::GetTextObject()
+	{
+		return nullptr;
+	}
+	void ButtonText::UpdatePosition()
+	{
+		float x0 = i_bounds[0], dx = i_bounds[2] - i_bounds[0];
+		float y0 = i_bounds[1], dy = i_bounds[3] - i_bounds[1];
+		glm::mat4 resize = glm::scale(glm::mat4(1.0f), glm::vec3(dx, dy, 1.0f));
+		glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(x0, y0, 0.0f));
+
+
+		Bind();
+		// Premultiply in C++ and combine two matrices. Multiply order here is inverse than in shader
+		glUniformMatrix4fv(i_moveto_uniform_location, 1, GL_FALSE, glm::value_ptr(translate * resize));
+
+	}
+	bool ButtonText::Hovered()
+	{
+		auto mouse_pos = zap::util::pixel_to_gl_coords(e_window->GetSize(), e_window->GetMousePosition());
+		return zap::util::between(mouse_pos, i_bounds);
+	}
+
+	bool ButtonText::Pressed(zap::Key key)
+	{
+		if (!Hovered()) return false;
+		return e_window->GetInput(key, zap::State::PRESSED);
+	}
+
+	bool ButtonText::Released(zap::Key key)
+	{
+		if (!Hovered()) return false;
+		return e_window->GetInput(key, zap::State::RELEASED);
+	}
+
+	void ButtonText::SetGlSize(float dx, float dy)
+	{
+		SetGlSize(std::array<float, 2> {dx, dy});
+	}
+	void ButtonText::SetGlSize(std::array<float, 2>& dx_dy)
+	{
+		SetGlPosition(std::array<float, 4>{
+			i_bounds[0],            // x_min
+				i_bounds[1],            // y_min
+				i_bounds[0] + dx_dy[0], // x_min + delta_x
+				i_bounds[1] + dx_dy[1]  // y_min + delta_y
+		});
+	}
+	void ButtonText::SetGlWidth(float dx)
+	{
+		SetGlPosition(std::array<float, 4>{
+			i_bounds[0],            // x_min
+				i_bounds[1],            // y_min
+				i_bounds[0] + dx,       // x_min + delta_x
+				i_bounds[3]             // y_max
+		});
+	}
+	void ButtonText::SetGlHeight(float dy)
+	{
+		SetGlPosition(std::array<float, 4>{
+			i_bounds[0],            // x_min
+				i_bounds[1],            // y_min
+				i_bounds[2],            // x_max
+				i_bounds[1] + dy        // y_min + delta_y
+		});
+	}
+	void ButtonText::SetGlPosition(float xmin, float ymin)
+	{
+		SetGlPosition(std::array<float, 2> {xmin, ymin});
+	}
+	void ButtonText::SetGlPosition(std::array<float, 2>& gl_xy_min)
+	{
+		SetGlPosition(std::array<float, 4>{
+			gl_xy_min[0],                             // x_min
+				gl_xy_min[1],                             // y_min
+				gl_xy_min[0] + i_bounds[2] - i_bounds[0], // x_min + delta_x
+				gl_xy_min[1] + i_bounds[3] - i_bounds[1]  // y_min + delta_y
+		});
+	}
+	void ButtonText::SetGlPosition(float xmin, float ymin, float xmax, float ymax)
+	{// Sets the xmin/ymin = bottom/left and xmax/ymax = top/right point to the given coordinates
+		SetGlPosition(std::array<float, 4>{
+			xmin, // x_min
+				ymin, // y_min
+				xmax, // x_max
+				ymax  // y_max
+		});
+
+	}
+	void ButtonText::SetGlPosition(std::array<float, 2>& gl_xy_min, std::array<float, 2>& gl_xy_max)
+	{// Sets the xmin/ymin = bottom/left and xmax/ymax = top/right point to the given coordinates
+		SetGlPosition(std::array<float, 4>{
+			gl_xy_min[0], // x_min
+				gl_xy_min[1], // y_min
+				gl_xy_max[0], // x_max
+				gl_xy_max[1]  // y_max
+		});
+	}
+	void ButtonText::SetGlPosition(std::array<float, 4>& gl_xy_min_xy_max)
+	{
+		ZAP_REQUIRE(gl_xy_min_xy_max[0] < 1.f && gl_xy_min_xy_max[1] < 1.f && "ZY min must not go outside upper right GL corner");
+		ZAP_REQUIRE(gl_xy_min_xy_max[2] > -1.f && gl_xy_min_xy_max[3] > -1.f && "ZY max must not go outside lower left GL corner");
+
+		i_bounds = gl_xy_min_xy_max;
+		UpdatePosition();
+	}
+
+	void ButtonText::SetColor(float RED, float GREEN, float BLUE, float ALPHA)
+	{
+		RED = std::clamp(RED, 0.0f, 1.0f);
+		GREEN = std::clamp(GREEN, 0.0f, 1.0f);
+		BLUE = std::clamp(BLUE, 0.0f, 1.0f);
+		ALPHA = std::clamp(ALPHA, 0.0f, 1.0f);
+
+		i_button_color = glm::vec4(RED, GREEN, BLUE, ALPHA);
+	}
+
+
+	void ButtonText::UseText(bool state)
+	{
+
+	}
+
+	void ButtonText::SetButtonText(const std::string text)
+	{
+
+	}
+
+	void ButtonText::SetTextOffset(float x_offset, float y_offset)
+	{
+
+	}
+
+	void ButtonText::SetTextColor(zap::TextColors color)
+	{
+
+	}
+
+	void ButtonText::SetTextColor(float RED, float GREEN, float BLUE)
+	{
+
+	};
+
+	void ButtonText::Update()
+	{
+
+	}
+
+	void ButtonText::Draw(int texture_id)
+	{
+		Update();
+
+		UseProgram();
+
+		// Update uniforms
+
+
+		glUniform4fv(i_button_color_location, 1, glm::value_ptr(i_button_color));
+
+		//
+
+		Bind();
+		zap::Mesh::Draw();
+
 	}
 }

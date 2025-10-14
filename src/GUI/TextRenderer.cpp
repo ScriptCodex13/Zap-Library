@@ -1,4 +1,10 @@
 #include "TextRenderer.h"
+#include <fstream>
+
+#include <cstdio>
+#include <cstring>
+#include <cstdarg>
+#include <vector>
 
 namespace zap
 {
@@ -85,8 +91,8 @@ namespace zap
 			Character character =
 			{
 				tex.getID(),
-				glm::ivec2(i_font->glyph->bitmap.width, i_font->glyph->bitmap.rows),
-				glm::ivec2(i_font->glyph->bitmap_left, i_font->glyph->bitmap_top),
+				glm::ivec2(i_font->glyph->bitmap.width, i_font->glyph->bitmap.rows), //Size
+				glm::ivec2(i_font->glyph->bitmap_left,  i_font->glyph->bitmap_top),  //Bearing //ypos = y - (ch.Size.y - ch.Bearing.y)
 				(unsigned int)i_font->glyph->advance.x
             };
 
@@ -234,4 +240,151 @@ namespace zap
 		glBindVertexArray(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
+
+	void TextureText::drawGlythBitmap(FT_Face ftface, util::buffer_view2D<unsigned char> target_view, int& pen_x, int& pen_y, wchar_t c, size_t bufsize)
+	{
+		FT_Load_Char(ftface, c, FT_LOAD_RENDER);
+		//assert (FT_HAS_VERTICAL(ftface)); //otherwise need to guess (letter g) //handle it later
+
+		FT_GlyphSlot& glyph = ftface->glyph;
+		FT_Bitmap& btm = ftface->glyph->bitmap;
+		FT_Bitmap& pbtm = glyph->bitmap;
+		int heigthAdvance = -glyph->bitmap_top + ftface->size->metrics.y_ppem;
+		int bearingy = glyph->bitmap_top, heigh = glyph->bitmap.rows;
+		int ytop = pen_y + (glyph->metrics.vertBearingY >> 6); //the best so far (but unreliable)
+
+		//FT_BBox  bbox, bbox2; 
+		//FT_Glyph  glyphf;
+		//FT_Get_Glyph(ftface->glyph, &glyphf);
+		//FT_Glyph_Get_CBox(glyphf, FT_GLYPH_BBOX_SUBPIXELS, &bbox);
+		//FT_Glyph_Get_CBox(glyphf, FT_GLYPH_BBOX_PIXELS, &bbox2);
+
+		util::buffer_view2D<unsigned char> char_buf_view (pbtm.buffer, pbtm.width);
+		for (int i = 0, xi = pen_x; i < pbtm.width; i++, xi++)
+		{
+			for (int j = 0; j < pbtm.rows; j++)
+			{
+				char pixel_val = char_buf_view[j][i]; // pbtm.buffer[j * pbtm.width + i];
+				//size_t pos = (ytop + j) * (ftface->size->metrics.y_ppem * 2) + i;
+				//assert(pos < bufsize);
+				target_view[ytop + j][pen_x + i] = pixel_val;
+			}
+		}
+
+		pen_x += glyph->advance.x >> 6;
+	}
+	void TextureText::drawString3TIntoBitman(FT_Face ftface, util::buffer_view2D<unsigned char> buf, const wchar_t* str, int& outer_width, int& pen_y, size_t bufsize)
+	{
+		for (int i = 0; i < wcslen(str); i++) //wcslen(str) / 40
+			drawGlythBitmap(ftface, buf, outer_width, pen_y, str[i], bufsize);
+	}
+
+
+	void TextureText::drawString3TIntoBitmap (const wchar_t* str, unsigned int fontSizeFT, int& outer_width, int& pen_y)
+	{
+		size_t src_width = util::align<4>(fontSizeFT * wcslen(str) * 2); //make it twice as wide as widest possible two chars sequence
+		size_t src_size = fontSizeFT * src_width; //2D array, fontSizeFT rows, tg_width columns
+
+		//never schrink
+		util::vector_realloc<unsigned char>(texture_data_source, src_size, 0x00);
+
+		int tg_width = 0, tg_height = 0;
+		FT_Set_Pixel_Sizes(freetype.getFace (), 0, fontSizeFT);
+		drawString3TIntoBitman(freetype.getFace(), util::buffer_view2D(texture_data_source.data(), src_width), str, tg_width, tg_height, src_size);
+
+		tg_width = util::align<4>(tg_width); //realign to 32bit
+		size_t tg_size = tg_width * fontSizeFT; //2D array, fontSizeFT rows, tg_width columns
+		util::vector_realloc<unsigned char> (texture_data_target, tg_size, 0x00);
+
+		unsigned char* psrc = texture_data_source.data(), * tsrc = texture_data_target.data();
+		util::buffer_view2D src_view = util::buffer_view2D(texture_data_source.data(), src_width), 
+			tg_view = util::buffer_view2D(texture_data_target.data(), tg_width);
+		tg_view.reverse_rows_read (src_view, fontSizeFT); //target reads fontSizeFT lines from source
+
+		outer_width += tg_width;
+	}
+
+	TextureText::TextureText()
+	{
+	}
+	TextureText::TextureText(const std::string font_path)
+	{
+		LoadFont(font_path);
+	}
+	void TextureText::LoadFont(const std::string font_path) {
+		freetype.LoadFont(font_path);
+	}
+
+	////each line[] has cols length
+	//void dumpTextureBuffer(const unsigned char* buf, size_t cols, size_t lines) //cols ie:x/width/    lines ie:y/heigth
+	//{
+	//	////dump texture to file;
+	//	std::ofstream dump_content;
+	//	dump_content.open("dump_texture.txt");
+	//	util::buffer_view2D dumper_view(buf, cols);
+	//	for (int j = 0; j < lines; j++)
+	//	{
+	//		for (size_t i = 0; i < dumper_view.get_width(); i++)
+	//			dump_content << util::decode<unsigned char>(dumper_view[j][i], 0, ' ', 'W');
+	//		dump_content << std::endl;
+	//	}
+	//	dump_content << std::flush;
+	//	dump_content.close();
+	//}
+
+	Texture& TextureText::ApplyTextureTo(zap::Mesh* pMesh, const std::wstring content)
+	{
+		int width = 0, height = 0;
+		drawString3TIntoBitmap(content.c_str(), fontSize, width, height);
+		//dumpTextureBuffer(texture_data_target.data(), width, fontSize);
+
+		assert(pMesh);
+		Texture& texture =  pMesh->AddTexture(0, texture_data_target.data(), width, fontSize,
+				GL_RED, TextureFilters::LINEAR,
+				MipmapSettings::LINEAR_MIPMAP_LINEAR,
+				zap::TextureWrapping::CLAMP_TO_EDGE);
+		return texture;
+
+	}
+
+	Texture& TextureText::print(zap::Mesh* pMesh, unsigned int hash, const std::wstring content)
+	{
+		int width = 0, height = 0;
+		drawString3TIntoBitmap(content.c_str(), fontSize, width, height);
+		//dumpTextureBuffer(texture_data_target.data(), width, fontSize);
+	
+		assert(pMesh);
+
+		Texture& texture = pMesh->GetTextureByHash(hash);
+		texture.setData(texture_data_target.data());
+		texture.setSize(width, fontSize);
+		texture.flushData();
+		return texture;
+	
+	}
+	void TextureText::printf(zap::Mesh* pMesh, unsigned int hash, const std::wstring content, ...)
+	{
+		//evaluate size first
+		va_list arglist;
+		va_start(arglist, content);
+		int result = _vsnwprintf(nullptr, 0, content.c_str(), arglist);
+		va_end(arglist);
+
+		//Assure that buffer never schrinks, so reduce the number of allocations
+		if (wprintf_buffer.capacity() < result + 1) wprintf_buffer.reserve((result + 1) * 2);
+		wprintf_buffer.resize(result + 1);
+
+
+		va_start(arglist, content);
+		int _Result = printf_t(pMesh, hash, wprintf_buffer.data(), wprintf_buffer.size() + 1, content.c_str(), arglist);
+		va_end(arglist);
+	}
+
+	int TextureText::printf_t(zap::Mesh* pMesh, unsigned int hash, wchar_t* const buffer_out, size_t const buffer_size, wchar_t const* const _Format, va_list _ArgList)
+	{
+		int retval = _vswprintf_s_l(buffer_out, buffer_size, _Format, NULL, _ArgList);
+		print(pMesh, hash, buffer_out);
+		return retval;
+	}
+
 }

@@ -255,18 +255,35 @@ namespace zap
 		/*****************************************************************************************/
 	}
 
-	bool Mesh::BindTexture(unsigned int id)
+	bool Mesh::BindTextureByHash(unsigned int hash)
 	{
-		for (auto cfg : texturecfg)
-		{
-			if (cfg.getHash() == id)
+		auto t = std::find_if(texturecfg.begin(), texturecfg.end(),
+			[hash](const auto& texture)
 			{
-				cfg.bind();
-				return true;
+				if (texture.getHash() == hash)
+					return true;
+				return false;
 			}
-		}
+		);
+		//TODO: this is not a real throw yet, an error must be thrown
+		assert(t != texturecfg.end() && "using missing hash is utterly nonsense, find the bug and fix it");
+		t->bind();
 		
-		return false;
+		return true;
+	}
+	Texture& Mesh::GetTextureByHash(unsigned int hash)
+	{
+		auto t = std::find_if( texturecfg.begin(), texturecfg.end(),
+						[hash](const auto& texture) 
+						{
+							if (texture.getHash() == hash)
+								return true;
+							return false;
+						}
+					);
+		//TODO: this is not a real throw yet, an error must be thrown
+		assert(t != texturecfg.end() && "using missing hash is utterly nonsense, find the bug and fix it");
+		return *t;
 	}
 
 	std::vector<float>& Mesh::GetVertices()

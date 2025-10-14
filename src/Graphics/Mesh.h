@@ -87,7 +87,8 @@ namespace zap
 		void GenObject();
 		void Finish(); // ToDo: Check if one of the functions which require Finish is called before and throw errors 
 		void UpdateMvpLocations();
-		bool BindTexture (unsigned int id);
+		bool BindTextureByHash (unsigned int hash);
+		Texture& GetTextureByHash(unsigned int hash);
 
 		std::vector<float>& GetVertices();
 		std::vector<unsigned int>& GetIndices();

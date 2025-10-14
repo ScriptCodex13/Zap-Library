@@ -9,7 +9,8 @@
 
 #include <cstdlib>
 #include <stdbool.h>
-
+#include <cassert>
+#include <vector>
 /**********************************************************************************/
 
 //vars
@@ -58,6 +59,42 @@ namespace zap
 {
 	namespace util 
 	{
+		//SQL like in function
+		//SQL like in: "... val in (arg1, arg2...)" in C++ to be "... in (val, arg1, arg2...)"
+		template<typename T>
+		inline bool in(T val, T arg)
+		{
+			return val == arg;
+		}
+		template <typename T, typename ... Ts>
+		inline bool in(T val, T arg, Ts ... args)
+		{
+			if (val == arg) return true;
+			return in(val, args...);
+		}
+		//SQL like in, required for compile time expression and static asserts
+		template<typename T> constexpr
+			inline bool const_in(const T val, const T arg)
+		{
+			return val == arg;
+		}
+		template <typename T, typename ... Ts> constexpr
+			inline bool const_in(const T val, const T arg, const Ts ... args)
+		{
+			if (val == arg) return true;
+			return const_in(val, args...);
+		}
+		//Oracle SQL like decode:   decode (initial, from1, to1, from2, to2, from3 to3, default) //with default provided
+		//Oracle SQL like decode:   decode (initial, from1, to1, from2, to2, from3 to3)          //with no default provided
+		template<typename T> T decode(T initial) { return initial; } //default value not provided
+		template<typename T> T decode(T initial, T b) { return b; }  //if default value provided
+		template<typename T, typename ... Ts> T decode(T initial, T decode_from, T decode_to, Ts... args)
+		{
+			if (initial == decode_from) return decode_to;
+			return decode<T>(initial, args ...);
+		}
+
+		//Pixed trabsform routines
 		template<typename T>
 		inline std::array<T, 2> pixel_to_gl_coords(const std::array<int, 2>& dimensions, T x, T y)
 		{
@@ -82,18 +119,6 @@ namespace zap
 			return { gl_coords_to_pixel(dimensions, point[0], point[1])};
 		}
 
-
-		template<typename T>
-		inline bool in(T val, T arg)
-		{
-			return val == arg;
-		}
-		template <typename T, typename ... Ts>
-		inline bool in(T val, T arg, Ts ... args)
-		{
-			if (val == arg) return true;
-			return in(val, args...);
-		}
 		//Inclusive 1D between
 		template<typename T, typename BT>
 		inline bool between(T value, BT min, BT max)
@@ -183,30 +208,100 @@ namespace zap
 			void operator () () { callback(); }
 		};
 		extern std::string GetTextFileContent(const char* shaderSourceFilePath);
+
+
+		template<int alignment = 1>size_t align(size_t w)
+		{
+			static_assert (const_in(alignment, 1, 2, 4, 8, 16), "Alignment template value can take only values 1, 2, 4, 8, 16");
+			if ((alignment == 1) || !(w % alignment))
+				return w;
+			return w - (w % alignment) + alignment;
+		}
+		//buffer views
+		//Unlike std::array_view, the size is not required to be known at compile time
+		//Are attached to external buffer to Provide 1D, 2D indexed access to contiguous buffers
+		//These views to not manage the internal buffer, these are projections only
+		//Buffer lifetime is managed externally only.
+		template <typename T> class buffer_view //1D
+		{
+			T* buffer; //buffer length is managed externally, buffer_view doesn't care about it
+		public:
+			buffer_view(): buffer_view(nullptr) {}
+			buffer_view(T* t): buffer(t) {}
+			void reset(T* t) {buffer = t;}    //for instance reuse purpose
+			T* const get() { return buffer; } //for debugging purposes, generally useless
+			T& operator [](size_t i) { return buffer[i]; }
+			T* operator + (size_t i) { return buffer + i; }
+			void read(buffer_view& src_view, size_t lenght)
+			{
+				for (int i = 0; i < lenght; i++)
+					buffer[i] = src_view[i];
+			}
+			//void reverse_read(buffer_view& src_view, size_t lenght)
+			//{
+			//	for (int i = 0, j = lenght - 1; i < lenght; i++, j--)
+			//		buffer[i] = src_view[j];
+			//}
+		};
+		template <typename T, int alignment = 1> class buffer_view2D
+		{
+			static_assert (const_in(alignment, 1, 2, 4, 8, 16), "Alignment template value can take only values 1, 2, 4, 8, 16");
+			size_t width; //length of lines, can't change and must be kept internally
+			T* buffer;
+			size_t align(size_t w)
+			{
+				if ((w == 1) || !(w % alignment))
+					return w;
+				return w - (w % alignment) + alignment;
+			}
+		public:
+			using type = T;
+			buffer_view2D(): buffer(nullptr), width(0) {}
+			buffer_view2D(T* ptr, size_t w) { reset(ptr, w); }
+			void reset(T* ptr, size_t w) { buffer = ptr; width = align(w); } //for instance reuse purpose
+			inline size_t get_width() const { return width; }
+			T* get() const { return buffer; } //for debugging purposes, generally useless
+			//line number
+			inline buffer_view<T> operator [] (size_t i)
+			{
+				return buffer_view(buffer + width * i);
+			}
+
+			inline void read(buffer_view2D& src_view, size_t rows)
+			{
+				assert(src_view.width >= this->width && "buffer overflow");
+				for (int j = 0; j < rows; j++)
+					this->operator[](j).read(src_view[j], this->get_width());
+			}
+
+			//inverts the lines order
+			//useful only in context of generating textures
+			//any other reverses are easily implemented outside
+			inline void reverse_rows_read(buffer_view2D& src_view, size_t rows)
+			{
+				assert(src_view.width >= this->width && "buffer overflow");
+				for (int j = 0, i = rows - 1; j < rows; j++, i--)
+					this->operator[](j).read(src_view[i], this->get_width());
+			}
+		};
+
+		//realloc vector in a way the memory allocated never schrinks
+		//this is intended to reduce number of memory allocations
+		template<class T> void vector_realloc(std::vector<T>& vt, size_t len)
+		{
+			if (vt.capacity() < len)
+				vt.reserve(len * 2);
+			vt.resize(len);
+		}
+		//realloc vector and reset content 
+		template<class T> void vector_realloc(std::vector<T>& vt, size_t len, T resetValue)
+		{
+			vector_realloc(vt, len);
+			std::fill(vt.begin(), vt.end(), 0x00);
+		}
+
 	}
 
-
-	//buffer projections
-	template <typename T> class buffer_view
-	{
-	public:
-		T* buffer;
-		buffer_view() :buffer_view1D(nullptr) {}
-		buffer_view(T* t) :buffer(t) {}
-		void set(T* t) { buffer = t; }
-		T& operator [](size_t i) { return buffer[i]; }
-		T* operator + (size_t i) { return buffer + i; }
-	};
-	template <typename T> class buffer_view2D
-	{
-	public:
-		size_t width;
-		T* buffer;
-		buffer_view2D(T* ptr, size_t w) :buffer(ptr), width(w) {}
-		buffer_view<T> operator [] (size_t i) {
-			return buffer_view(buffer + width * i);
-		}
-	};
 
 }
 

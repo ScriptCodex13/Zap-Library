@@ -6,6 +6,7 @@
 #include "../Util/Message.h"
 #include <glad/glad.h>
 
+#include <array>
 namespace zap
 {
 
@@ -42,6 +43,10 @@ namespace zap
 		void bind();
 		inline unsigned int getID() const { return i_TextureId; }
 		inline unsigned int getHash() const { return i_ExternalId; }
+		void setData(unsigned char* textureData);
+		void setSize(int width, int height);
+		std::array<int, 2> getSize();
+		void flushData();
 	private:
 		void genTextureFromFile();
 		void genTextureFromData();
