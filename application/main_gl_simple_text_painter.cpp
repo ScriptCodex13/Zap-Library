@@ -1,4 +1,4 @@
-#include "enabler.h"
+﻿#include "enabler.h"
 #ifdef SAMPLE_TEXT_PAINTER_CPP
 
 // Just a example
@@ -82,7 +82,8 @@ public:
 		SetAttribPointer(0, 3, 5, 0);
 		SetAttribPointer(1, 2, 5, 3);
 
-		text.LoadFont("C:/Windows/Fonts/arial.ttf");
+		//text.LoadFont("C:/Windows/Fonts/arial.ttf");
+		text.LoadFont("C:/Windows/Fonts/msgothic.ttc");
 		texture0Hash = text.ApplyTextureTo(this,   L"").getHash();
 
 		Mesh::Finish();
@@ -146,7 +147,7 @@ int main()
 
 		//here starts current VAO for current program draw
 		//mesh.Bind(); //set current context before any draw routines, it prevents mess in more complex programs
-		mesh.printf(L"Hello texture %f give five!", glfwGetTime() * glfwGetTime() * glfwGetTime() * glfwGetTime());
+		mesh.printf(L"Hello texture %f give five! 你好", glfwGetTime() * glfwGetTime() * glfwGetTime() * glfwGetTime());
 		mesh.Draw();
 
 		window.SetTitle(std::to_string(window.GetDelta()));

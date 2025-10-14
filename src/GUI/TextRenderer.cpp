@@ -244,29 +244,25 @@ namespace zap
 	void TextureText::drawGlythBitmap(FT_Face ftface, util::buffer_view2D<unsigned char> target_view, int& pen_x, int& pen_y, wchar_t c, size_t bufsize, unsigned int fontSizeFT)
 	{
 		FT_Load_Char(ftface, c, FT_LOAD_RENDER);
-		//assert (FT_HAS_VERTICAL(ftface)); //otherwise need to guess (letter g) //handle it later
 
 		FT_GlyphSlot& glyph = ftface->glyph;
 		FT_Bitmap& btm = ftface->glyph->bitmap;
 		FT_Bitmap& pbtm = glyph->bitmap;
-		int heigthAdvance = -glyph->bitmap_top + ftface->size->metrics.y_ppem;
-		int bearingy = glyph->bitmap_top, heigh = glyph->bitmap.rows;
-		int ytop = pen_y + (glyph->metrics.vertBearingY >> 6); //the best so far (but unreliable)
-		//alternative to above ytop, where vertBearingY do not work
+		int ytop = pen_y + (glyph->metrics.vertBearingY >> 6); //Works for MSGothic, doesn't work for Arial
+
+		//Works for Arial, doesn't work for MSGothic
 		if (!FT_HAS_VERTICAL(freetype.getFace()))
 		{
 			int descent = fontSizeFT - glyph->bitmap_top + (ftface->bbox.yMin >> 6);
 			ytop = pen_y + descent;
 		}
 
-
 		util::buffer_view2D<unsigned char> char_buf_view (pbtm.buffer, pbtm.width);
 		for (int i = 0, xi = pen_x; i < pbtm.width; i++, xi++)
 		{
 			for (int j = 0; j < pbtm.rows; j++)
 			{
-				char pixel_val = char_buf_view[j][i]; // pbtm.buffer[j * pbtm.width + i];
-				//size_t pos = (ytop + j) * (ftface->size->metrics.y_ppem * 2) + i;
+				char pixel_val = char_buf_view[j][i];
 				//assert(pos < bufsize);
 				target_view[ytop + j][pen_x + i] = pixel_val;
 			}
