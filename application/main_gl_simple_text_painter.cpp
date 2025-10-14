@@ -85,7 +85,7 @@ public:
 		text.LoadFont("C:/Windows/Fonts/arial.ttf");
 		texture0Hash = text.ApplyTextureTo(this,   L"").getHash();
 
-		Finish();
+		Mesh::Finish();
 	}
 
 	std::vector<wchar_t> wprintf_buffer;
@@ -126,8 +126,6 @@ int main()
 
 	//Mesh
 	TextPainter mesh;
-
-	mesh.Finish();
 
 	window.UpdateViewport(); //This is a set callback. Once set == forever set
 
