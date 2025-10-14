@@ -103,7 +103,7 @@ namespace zap
 		ZAP_REQUIRE_ALL(std::filesystem::exists(fragmentShaderFilepath.c_str()) && "Vertex Shader File Path can not be found: " && fragmentShaderFilepath.c_str());
 		SetFragmentShaderSource (zap::util::GetTextFileContent(fragmentShaderFilepath.c_str())); // Reuse code, avoid redundancy
 	}
-	void Mesh::SetVertexShader(const std::string& source)
+	void Mesh::SetVertexShaderPath(const std::string& source)
 	{
 		// If source is an existing path, load from path, else use as source code
 		if (std::filesystem::exists(source.c_str()))
@@ -115,7 +115,7 @@ namespace zap
 			SetVertexShaderSource(source);
 		}
 	}
-	void Mesh::SetFragmentShader(const std::string& source)
+	void Mesh::SetFragmentShaderPath(const std::string& source)
 	{
 		// If source is an existing path, load from path, else use as source code
 		if (std::filesystem::exists(source.c_str()))

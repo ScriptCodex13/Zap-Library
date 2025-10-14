@@ -64,8 +64,8 @@ namespace zap
 		void SetFragmentShaderSource   (const std::string& source);
 		void SetVertexShaderFilePath   (const std::string& source);
 		void SetFragmentShaderFilePath (const std::string& source);
-		void SetVertexShader           (const std::string& source); // Automatic: If source is an existing path, load from path, else use as source code
-		void SetFragmentShader         (const std::string& source); // Automatic: If source is an existing path, load from path, else use as source code
+		void SetVertexShaderPath       (const std::string& source); // Automatic: If source is an existing path, load from path, else use as source code
+		void SetFragmentShaderPath     (const std::string& source); // Automatic: If source is an existing path, load from path, else use as source code
 		void BuildProgram();
 		// END TODO:
 

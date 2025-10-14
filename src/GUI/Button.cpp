@@ -465,37 +465,6 @@ namespace zap
 		i_button_color = glm::vec4(RED, GREEN, BLUE, ALPHA);
 	}
 
-
-	void ButtonText::UseText(bool state)
-	{
-
-	}
-
-	void ButtonText::SetButtonText(const std::string text)
-	{
-
-	}
-
-	void ButtonText::SetTextOffset(float x_offset, float y_offset)
-	{
-
-	}
-
-	void ButtonText::SetTextColor(zap::TextColors color)
-	{
-
-	}
-
-	void ButtonText::SetTextColor(float RED, float GREEN, float BLUE)
-	{
-
-	};
-
-	void ButtonText::Update()
-	{
-
-	}
-
 	void ButtonText::Draw(int texture_id)
 	{
 		Update();

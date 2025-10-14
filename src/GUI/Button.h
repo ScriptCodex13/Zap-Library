@@ -59,10 +59,6 @@ namespace zap
 		void Update();
 		void Draw(int texture_id = 0);
 
-	private: // Private functions
-		//void SetVertexShaderSource(const char* source);
-		//void SetFragmentShaderSource(const char* source);
-
 	private:
 		bool i_use_texture = false;
 		bool texture_attribute_ptr_set = false;
