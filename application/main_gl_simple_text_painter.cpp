@@ -106,9 +106,13 @@ public:
 		return retval;
 	}
 
-	void UseTexture()
+	void Draw()
 	{
-		Mesh::BindTextureByHash(texture0Hash);
+		//here starts current VAO for current program draw
+		Bind(); //set current context before any draw routines, it prevents mess in more complex programs
+		BindTextureByHash(texture0Hash);
+		Mesh::Draw();
+
 	}
 };
 
@@ -143,9 +147,8 @@ int main()
 
 
 		//here starts current VAO for current program draw
-		mesh.Bind(); //set current context before any draw routines, it prevents mess in more complex programs
+		//mesh.Bind(); //set current context before any draw routines, it prevents mess in more complex programs
 		mesh.printf(L"Hello texture %f texture hellO", glfwGetTime() * glfwGetTime() * glfwGetTime() * glfwGetTime());
-		mesh.UseTexture();
 		mesh.Draw();
 
 		window.SetTitle(std::to_string(window.GetDelta()));
