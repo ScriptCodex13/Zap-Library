@@ -1,5 +1,5 @@
 #include "enabler.h"
-#ifdef SIMPLE_TEXT_PAINTER_CPP
+#ifdef SAMPLE_TEXT_PAINTER_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
