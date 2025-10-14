@@ -237,11 +237,6 @@ namespace zap
 				for (int i = 0; i < lenght; i++)
 					buffer[i] = src_view[i];
 			}
-			//void reverse_read(buffer_view& src_view, size_t lenght)
-			//{
-			//	for (int i = 0, j = lenght - 1; i < lenght; i++, j--)
-			//		buffer[i] = src_view[j];
-			//}
 		};
 		template <typename T, int alignment = 1> class buffer_view2D
 		{

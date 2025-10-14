@@ -182,8 +182,8 @@ namespace zap
 
 		std::vector<wchar_t> wprintf_buffer;
 
-		void drawString3TIntoBitman(FT_Face ftface, util::buffer_view2D<unsigned char> buf, const wchar_t* str, int& outer_width, int& pen_y, size_t bufsize);
-		void drawGlythBitmap(FT_Face ftface, util::buffer_view2D<unsigned char> target_view, int& pen_x, int& pen_y, wchar_t c, size_t bufsize);
+		void drawString3TIntoBitman(FT_Face ftface, util::buffer_view2D<unsigned char> buf, const wchar_t* str, int& outer_width, int& pen_y, size_t bufsize, unsigned int fontSizeFT);
+		void drawGlythBitmap(FT_Face ftface, util::buffer_view2D<unsigned char> target_view, int& pen_x, int& pen_y, wchar_t c, size_t bufsize, unsigned int fontSizeFT);
 		void drawString3TIntoBitmap(const wchar_t* str, unsigned int fontSizeFT, int& outer_width, int& pen_y);
 
 	public:

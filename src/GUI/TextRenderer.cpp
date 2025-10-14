@@ -241,7 +241,7 @@ namespace zap
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	void TextureText::drawGlythBitmap(FT_Face ftface, util::buffer_view2D<unsigned char> target_view, int& pen_x, int& pen_y, wchar_t c, size_t bufsize)
+	void TextureText::drawGlythBitmap(FT_Face ftface, util::buffer_view2D<unsigned char> target_view, int& pen_x, int& pen_y, wchar_t c, size_t bufsize, unsigned int fontSizeFT)
 	{
 		FT_Load_Char(ftface, c, FT_LOAD_RENDER);
 		//assert (FT_HAS_VERTICAL(ftface)); //otherwise need to guess (letter g) //handle it later
@@ -252,12 +252,13 @@ namespace zap
 		int heigthAdvance = -glyph->bitmap_top + ftface->size->metrics.y_ppem;
 		int bearingy = glyph->bitmap_top, heigh = glyph->bitmap.rows;
 		int ytop = pen_y + (glyph->metrics.vertBearingY >> 6); //the best so far (but unreliable)
+		//alternative to above ytop, where vertBearingY do not work
+		if (!FT_HAS_VERTICAL(freetype.getFace()))
+		{
+			int descent = fontSizeFT - glyph->bitmap_top + (ftface->bbox.yMin >> 6);
+			ytop = pen_y + descent;
+		}
 
-		//FT_BBox  bbox, bbox2; 
-		//FT_Glyph  glyphf;
-		//FT_Get_Glyph(ftface->glyph, &glyphf);
-		//FT_Glyph_Get_CBox(glyphf, FT_GLYPH_BBOX_SUBPIXELS, &bbox);
-		//FT_Glyph_Get_CBox(glyphf, FT_GLYPH_BBOX_PIXELS, &bbox2);
 
 		util::buffer_view2D<unsigned char> char_buf_view (pbtm.buffer, pbtm.width);
 		for (int i = 0, xi = pen_x; i < pbtm.width; i++, xi++)
@@ -273,10 +274,10 @@ namespace zap
 
 		pen_x += glyph->advance.x >> 6;
 	}
-	void TextureText::drawString3TIntoBitman(FT_Face ftface, util::buffer_view2D<unsigned char> buf, const wchar_t* str, int& outer_width, int& pen_y, size_t bufsize)
+	void TextureText::drawString3TIntoBitman(FT_Face ftface, util::buffer_view2D<unsigned char> buf, const wchar_t* str, int& outer_width, int& pen_y, size_t bufsize, unsigned int fontSizeFT)
 	{
 		for (int i = 0; i < wcslen(str); i++) //wcslen(str) / 40
-			drawGlythBitmap(ftface, buf, outer_width, pen_y, str[i], bufsize);
+			drawGlythBitmap(ftface, buf, outer_width, pen_y, str[i], bufsize, fontSizeFT);
 	}
 
 
@@ -290,7 +291,7 @@ namespace zap
 
 		int tg_width = 0, tg_height = 0;
 		FT_Set_Pixel_Sizes(freetype.getFace (), 0, fontSizeFT);
-		drawString3TIntoBitman(freetype.getFace(), util::buffer_view2D(texture_data_source.data(), src_width), str, tg_width, tg_height, src_size);
+		drawString3TIntoBitman(freetype.getFace(), util::buffer_view2D(texture_data_source.data(), src_width), str, tg_width, tg_height, src_size, fontSizeFT);
 
 		tg_width = util::align<4>(tg_width); //realign to 32bit
 		size_t tg_size = tg_width * fontSizeFT; //2D array, fontSizeFT rows, tg_width columns
