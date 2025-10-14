@@ -146,7 +146,7 @@ int main()
 
 		//here starts current VAO for current program draw
 		//mesh.Bind(); //set current context before any draw routines, it prevents mess in more complex programs
-		mesh.printf(L"Hello texture %f texture hellO", glfwGetTime() * glfwGetTime() * glfwGetTime() * glfwGetTime());
+		mesh.printf(L"Hello texture %f give five!", glfwGetTime() * glfwGetTime() * glfwGetTime() * glfwGetTime());
 		mesh.Draw();
 
 		window.SetTitle(std::to_string(window.GetDelta()));
