@@ -97,9 +97,7 @@ public:
 		int result = _vsnwprintf (nullptr, 0, content.c_str(), arglist);
 		va_end(arglist);
 
-		//Assure that buffer never schrinks, so reduce the number of allocations
-		if (wprintf_buffer.capacity() < result + 1) wprintf_buffer.reserve((result + 1) * 2);
-		wprintf_buffer.resize(result + 1);
+		zap::util::vector_realloc <wchar_t>(wprintf_buffer, result + 1);
 
 		//print text
 		va_start(arglist, content);
