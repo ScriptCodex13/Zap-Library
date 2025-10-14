@@ -126,16 +126,6 @@ int main()
 	mesh.Finish();
 
 	window.UpdateViewport(); //This is a set callback. Once set == forever set
-	std::array<int, 2> size = window.GetSize(); // Not a Ref to the window size !
-
-	zap::SceneCamera camera(size[0], size[1]);
-	camera.SetRotationLimit(361.0f, 89.0f, 0.0f);
-	camera.ActivateRotationLimit(true);
-
-
-	float rotation = 0.0f, sensitivity = 0.1f;
-	std::array<double, 2> oldPos = window.GetMousePosition();
-	float lastFrame = 0.f, deltaTime = 0.f;
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -144,7 +134,6 @@ int main()
 	{
 
 		cbi(window);
-		camera.UpdateRotation();
 
 		//from here draw starts
 		//there starts general draw
