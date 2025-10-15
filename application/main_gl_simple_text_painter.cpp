@@ -83,7 +83,8 @@ public:
 		SetAttribPointer(1, 2, 5, 3);
 
 		//text.LoadFont("C:/Windows/Fonts/arial.ttf");
-		text.LoadFont("C:/Windows/Fonts/msgothic.ttc");
+		//text.LoadFont("C:/Windows/Fonts/msgothic.ttc");
+		text.LoadFont("C:/Windows/Fonts/OLDENGL.TTF");
 		texture0Hash = text.ApplyTextureTo(this,   L"").getHash();
 
 		Mesh::Finish();

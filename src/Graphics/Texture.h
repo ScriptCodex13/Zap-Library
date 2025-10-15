@@ -10,13 +10,13 @@
 namespace zap
 {
 
-	enum class TextureFilters : GLint
+	enum class TextureFilter : GLint
 	{
 		NEAREST = GL_NEAREST,
 		LINEAR  = GL_LINEAR
 	};
 
-	enum class MipmapSettings : GLint
+	enum class MipmapSetting : GLint
 	{
 		NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST,
 		LINEAR_MIPMAP_LINEAR   = GL_LINEAR_MIPMAP_LINEAR,
@@ -32,41 +32,58 @@ namespace zap
 		CLAMP_TO_BORDER = GL_CLAMP_TO_BORDER
 	};
 
+	struct TextureDescriptor
+	{
+		TextureFilter filter = TextureFilter::LINEAR;
+		MipmapSetting setting = MipmapSetting::LINEAR_MIPMAP_LINEAR;
+		TextureWrapping wrapping_s = TextureWrapping::CLAMP_TO_BORDER;
+		TextureWrapping wrapping_t = TextureWrapping::CLAMP_TO_BORDER;
+
+		GLenum type; //GL_RED GL_RGB GL_RGBA...
+		int width;
+		int height;
+		//int nrChannels;
+
+		bool fromFile = false;
+	};
+	const TextureDescriptor DefaultForFilepath = {
+		TextureFilter::LINEAR,               // filter
+		MipmapSetting::LINEAR_MIPMAP_LINEAR, // settings = 
+		TextureWrapping::CLAMP_TO_BORDER,    // wrapping =
+		TextureWrapping::CLAMP_TO_BORDER,    // wrapping =
+		0, 0, 0, true
+	};
+
+	//This class doesn't keep any internal data or paths
+	//No more transitive dependencies
 	class Texture
 	{
 	public:
-		Texture(unsigned int external_id, const std::string path, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
-		Texture(unsigned int external_id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
+		Texture() {}
+		Texture(unsigned int external_id, const std::string path, TextureDescriptor = DefaultForFilepath);
+		Texture(unsigned int external_id, const std::string path, TextureFilter filter = TextureFilter::LINEAR, MipmapSetting settings = MipmapSetting::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
+		Texture(unsigned int external_id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilter filter = TextureFilter::LINEAR, MipmapSetting settings = MipmapSetting::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
 
 		void deleteTexture();
-		void genTexture();
 		void bind();
 		inline unsigned int getID() const { return i_TextureId; }
-		inline unsigned int getHash() const { return i_ExternalId; }
-		void setData(unsigned char* textureData);
+		inline unsigned int getHash() const { return i_Hash; }
 		void setSize(int width, int height);
 		std::array<int, 2> getSize();
-		void flushData();
+		void flushData(unsigned char* data); //assume doesn't change texture sizes
+		void flushData(int width, int heigth, unsigned char* data);
 	private:
-		void genTextureFromFile();
-		void genTextureFromData();
-		unsigned int i_TextureId;
-		unsigned int i_ExternalId;
+		void genTextureFromFile(const std::string path);
+		void genTextureFromData(unsigned char* data);
+		unsigned int i_TextureId = -1;
+		unsigned int i_Hash = -1;
 	private:
-
-		TextureFilters i_filter    = TextureFilters::LINEAR;
-		MipmapSettings i_settings  = MipmapSettings::LINEAR_MIPMAP_LINEAR;
-		TextureWrapping i_wrapping = TextureWrapping::CLAMP_TO_BORDER;
-
-		std::string i_path;
-
-		int i_width;
-		int i_height;
-		int i_nrChannels;
-
-		unsigned char* i_TextureData = nullptr;
-
-		GLenum i_Type;
+		TextureDescriptor i_descriptor = {
+			TextureFilter::LINEAR,               // filter
+			MipmapSetting::LINEAR_MIPMAP_LINEAR, // settings = 
+			TextureWrapping::CLAMP_TO_BORDER,    // wrapping_s =
+			TextureWrapping::CLAMP_TO_BORDER,    // wrapping_t =
+		};
 
 	};
 

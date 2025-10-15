@@ -12,54 +12,47 @@
 
 namespace zap
 {
-
-	Texture::Texture(unsigned int external_id, const std::string path,
-						TextureFilters   filter,
-						MipmapSettings   settings,
+	Texture::Texture(unsigned int external_id, const std::string path, TextureDescriptor descriptor)
+	{
+	}
+	Texture::Texture(unsigned int hash, const std::string path,
+						TextureFilter   filter,
+						MipmapSetting   setting,
 						TextureWrapping  wrapping) :
-							i_ExternalId(external_id),
-							i_path           (path),
-							i_filter         (filter),
-							i_settings       (settings),
-							i_wrapping       (wrapping),
-							i_width          (-1),
-							i_height         (-1)
+							i_Hash       (hash),
+							i_descriptor { filter , setting, wrapping, wrapping, 0, -1, -1, true}
 
 	{
 		glGenTextures(1, &i_TextureId);
+		genTextureFromFile(path);
+
 	}
 
-	Texture::Texture // For Developers
-					(
-						unsigned int external_id,
+	Texture::Texture(
+						unsigned int hash,
 						unsigned char* texture_data,
 						int texture_width,
 						int texture_height,
-						GLenum Type,
-						TextureFilters filter,
-						MipmapSettings settings,
+						GLenum type,
+						TextureFilter filter,
+						MipmapSetting setting,
 						TextureWrapping wrapping
 					) :
-						i_ExternalId(external_id),
-						i_TextureData(texture_data),
-						i_width(texture_width),
-						i_height(texture_height),
-						i_Type(Type),
-						i_filter(filter),
-						i_settings(settings),
-						i_wrapping(wrapping)
+						i_Hash(hash),
+						i_descriptor{ filter , setting, wrapping, wrapping, type, texture_width, texture_height, false }
 	{
 		glGenTextures(1, &i_TextureId);
+		genTextureFromData(texture_data);
 	}
 
-	void Texture::genTextureFromFile()
+	void Texture::genTextureFromFile(const std::string path)
 	{
 		bind();
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)i_wrapping);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLint)i_wrapping);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLint)i_settings);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLint)i_filter);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)i_descriptor.wrapping_s);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLint)i_descriptor.wrapping_t);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLint)i_descriptor.setting);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLint)i_descriptor.filter);
 
 		unsigned char* pTextureData;
 
@@ -68,59 +61,63 @@ namespace zap
 
 		stbi_set_flip_vertically_on_load(true);
 
-		pTextureData = stbi_load(i_path.c_str(), &i_width, &i_height, &i_nrChannels, 0); // Maybe move this process to Loader.h
+		int nrChannels;
+		pTextureData = stbi_load(path.c_str(), &i_descriptor.width, &i_descriptor.height, &nrChannels, 0); // Maybe move this process to Loader.h
 		//Use scope_guard to free texture data whenever going out of scope
 		util::scope_guard freeTextureData([pTextureData]() { if (pTextureData) stbi_image_free(pTextureData); });
-		GLenum format = GL_RGB; //preguessed, nothing to do
-		switch (i_nrChannels)
+
+		switch (nrChannels)
 		{
-		case 1: format = GL_RED;  break;
-		case 3: format = GL_RGB;  break;
-		case 4: format = GL_RGBA; break;
+		case 1: i_descriptor.type = GL_RED;  break;
+		case 3: i_descriptor.type = GL_RGB;  break;
+		case 4: i_descriptor.type = GL_RGBA; break;
 		}
 
 
 		if (!pTextureData)
 		{
-			messages::PrintMessage("Failed to load Texture at path: " + i_path, "Mesh.cpp/zap::Texture::Texture(...)", MessageTypes::error)
+			messages::PrintMessage("Failed to load Texture at path: " + path, "Mesh.cpp/zap::Texture::Texture(...)", MessageTypes::error)
 				<< "current working directory: " << std::filesystem::current_path() << std::endl;
 			return;
 		}
 
-		assert(i_TextureData == nullptr && "load from file is one time set");
 		//TODO: be aware of internal format and format difference, it can cause shader performance downfall
-		glTexImage2D(GL_TEXTURE_2D, 0, format, i_width, i_height, 0, format, GL_UNSIGNED_BYTE, pTextureData);
+		glTexImage2D(GL_TEXTURE_2D, 0, i_descriptor.type, i_descriptor.width, i_descriptor.height, 0, i_descriptor.type, GL_UNSIGNED_BYTE, pTextureData);
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	void Texture::setData(unsigned char* textureData)
-	{
-		i_TextureData = textureData;
-	}
+
 	void Texture::setSize(int width, int height)
 	{
-		i_width = width; i_height = height;
+		i_descriptor.width = width; i_descriptor.height = height;
 	}
 	std::array<int, 2> Texture::getSize()
 	{
-		return std::array<int, 2>  { i_width, i_height };
+		return std::array<int, 2>  { i_descriptor.width, i_descriptor.height };
 	}
-	void Texture::flushData()
+	void Texture::flushData(unsigned char* data)
 	{
 		bind();
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, i_width, i_height, 0, i_Type, GL_UNSIGNED_BYTE, i_TextureData);
+		glTexImage2D(GL_TEXTURE_2D, 0, i_descriptor.type, i_descriptor.width, i_descriptor.height, 0, i_descriptor.type, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	void Texture::genTextureFromData()
+	void Texture::flushData(int width, int heigth, unsigned char* data)
+	{
+		bind();
+		i_descriptor.width = width, i_descriptor.height = heigth;
+		glTexImage2D(GL_TEXTURE_2D, 0, i_descriptor.type, i_descriptor.width, i_descriptor.height, 0, i_descriptor.type, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	void Texture::genTextureFromData(unsigned char* data)
 	{
 		bind();
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)i_wrapping);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLint)i_wrapping);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLint)i_settings);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLint)i_filter);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)i_descriptor.wrapping_s);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLint)i_descriptor.wrapping_t);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLint)i_descriptor.setting);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLint)i_descriptor.filter);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, i_Type, i_width, i_height, 0, i_Type, GL_UNSIGNED_BYTE, i_TextureData);
+		glTexImage2D (GL_TEXTURE_2D, 0, i_descriptor.type, i_descriptor.width, i_descriptor.height, 0, i_descriptor.type, GL_UNSIGNED_BYTE, data);
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
@@ -128,17 +125,7 @@ namespace zap
 	{
 		glDeleteTextures(1, &i_TextureId);
 	}
-	void Texture::genTexture()
-	{
-		if (!i_path.empty())
-		{
-			genTextureFromFile();
-		} 
-		else
-		{
-			genTextureFromData();
-		}
-	}
+
 	void Texture::bind() 
 	{ 
 		glBindTexture(GL_TEXTURE_2D, i_TextureId);

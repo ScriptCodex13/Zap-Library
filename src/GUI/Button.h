@@ -25,7 +25,7 @@ namespace zap
 		
 		~Button();
 		
-		int LoadTexture(unsigned int id, const std::string path_to_texture, zap::TextureFilters filter, int shader_location = 1);
+		int LoadTexture(unsigned int id, const std::string path_to_texture, zap::TextureFilter filter, int shader_location = 1);
 		void FinishMesh();
 		void UseTextureShaders(bool state);
 		void UseTextureShaders(const char* vertex_shader_source, const char* fragment_shader_source);
@@ -143,7 +143,7 @@ namespace zap
 
 		zap::Window* e_window;
 	};
-	
+
 }
 
 #endif

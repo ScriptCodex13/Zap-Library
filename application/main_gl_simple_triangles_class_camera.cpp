@@ -1,6 +1,6 @@
 #include "enabler.h"
-#ifdef SAMPLE_MAIN_SIMPLE_TRIANGLES_CLASS_COLOR_CPP
-//TODO: this file to be deleted
+#ifdef SAMPLE_MAIN_SIMPLE_TRIANGLES_CLASS_CAMERA_CPP
+
 // Just a example
 // PR = Prototyping -> only for testing 
 #include <Zap.h>

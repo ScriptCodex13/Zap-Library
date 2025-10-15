@@ -96,13 +96,13 @@ int main()
 
 	zap::Text text("C:/Windows/Fonts/arial.ttf", "Text", window.GetSize()); // It's better to use GetSize here
 
-	text.SetCharacterSize(48);
+	//text.SetCharacterSize(48);
 	text.SetColor(0.0f, 1.0f, 0.0f);
 	text.SetPosition(500.0f, 500.0f); // ToDo: Maybe use gl_coords here
 
-	text.SetTextureFilter(zap::TextureFilters::LINEAR);
-	text.SetMipmapSettings(zap::MipmapSettings::LINEAR_MIPMAP_LINEAR);
-	text.GenerateCharacters();
+	//text.SetTextureFilter(zap::TextureFilter::LINEAR);
+	//text.SetMipmapSettings(zap::MipmapSetting::LINEAR_MIPMAP_LINEAR);
+	//text.GenerateCharacters();
 
 	text.SetScale(2.0f, 2.0f);
 

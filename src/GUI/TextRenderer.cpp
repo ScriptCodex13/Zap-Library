@@ -58,8 +58,10 @@ namespace zap
 		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
-
-		//
+		
+		//presets
+		SetColor(0.0f, 1.0f, 0.0f);
+		SetPosition(500.0f, 500.0f);
 	}
 
 	Text::~Text()
@@ -74,9 +76,14 @@ namespace zap
 
         FT_Set_Pixel_Sizes(i_font, 0, i_character_size); // Or i carracter size
 
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		GLint currentAlignment;
+		glGetIntegerv(GL_UNPACK_ALIGNMENT, &currentAlignment);
 
-		texturecfg.reserve(128);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		//restore alignment, so it remains local and doesn't affect global state:
+		util::scope_guard restoreAlignment([currentAlignment]() {glPixelStorei(GL_UNPACK_ALIGNMENT, currentAlignment); });
+
+		//texturecfg.reserve(128);
         for (unsigned char c = 0; c < 128; c++)
         {
             if (FT_Load_Char(i_font, c, FT_LOAD_RENDER))
@@ -84,9 +91,11 @@ namespace zap
 				messages::PrintMessage("Failed to load glyph", "TextRenderer.cpp/ void zap::Text::GenerateCharacters(...)", MessageTypes::error);
 			}
 
-			Texture& tex = AddTexture((unsigned int)c, i_font->glyph->bitmap.buffer, i_font->glyph->bitmap.width, i_font->glyph->bitmap.rows, GL_RED, i_texture_filter, i_mipmap_setting, zap::TextureWrapping::CLAMP_TO_EDGE);
-
-			tex.genTexture();
+			Texture& tex = AddTextureFromData((unsigned int)c,
+				i_font->glyph->bitmap.buffer,
+				i_font->glyph->bitmap.width, i_font->glyph->bitmap.rows,  GL_RED, 
+				i_texture_filter, i_mipmap_setting,
+				zap::TextureWrapping::CLAMP_TO_EDGE);
 
 			Character character =
 			{
@@ -100,7 +109,6 @@ namespace zap
         }
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-
 		
 	}
 
@@ -177,12 +185,12 @@ namespace zap
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
-	void Text::SetTextureFilter(zap::TextureFilters filter)
+	void Text::SetTextureFilter(zap::TextureFilter filter)
 	{
 		i_texture_filter = filter;
 	}
 
-	void Text::SetMipmapSettings(zap::MipmapSettings setting)
+	void Text::SetMipmapSettings(zap::MipmapSetting setting)
 	{
 		i_mipmap_setting = setting;
 	}
@@ -304,11 +312,11 @@ namespace zap
 	TextureText::TextureText()
 	{
 	}
-	TextureText::TextureText(const std::string font_path)
+	TextureText::TextureText(std::string font_path)
 	{
 		LoadFont(font_path);
 	}
-	void TextureText::LoadFont(const std::string font_path) {
+	void TextureText::LoadFont(std::string font_path) {
 		freetype.LoadFont(font_path);
 	}
 
@@ -336,9 +344,9 @@ namespace zap
 		//dumpTextureBuffer(texture_data_target.data(), width, fontSize);
 
 		assert(pMesh);
-		Texture& texture =  pMesh->AddTexture(0, texture_data_target.data(), width, fontSize,
-				GL_RED, TextureFilters::LINEAR,
-				MipmapSettings::LINEAR_MIPMAP_LINEAR,
+		Texture& texture =  pMesh->AddTextureFromData(0, texture_data_target.data(), width, fontSize,
+				GL_RED, TextureFilter::LINEAR,
+				MipmapSetting::LINEAR_MIPMAP_LINEAR,
 				zap::TextureWrapping::CLAMP_TO_EDGE);
 		return texture;
 
@@ -353,9 +361,9 @@ namespace zap
 		assert(pMesh);
 
 		Texture& texture = pMesh->GetTextureByHash(hash);
-		texture.setData(texture_data_target.data());
-		texture.setSize(width, fontSize);
-		texture.flushData();
+		//texture.setData(texture_data_target.data());
+		//texture.setSize(width, fontSize);
+		texture.flushData(width, fontSize, texture_data_target.data());
 		return texture;
 	
 	}

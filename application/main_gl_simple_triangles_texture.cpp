@@ -1,5 +1,5 @@
 #include "enabler.h"
-#ifdef ZAP_LIBRARY_MAIN_SIMPLE_TRIANGLES_CLASS_TEXTURE_CPP
+#ifdef SAMPLE_MAIN_SIMPLE_TRIANGLES_TEXTURE_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -115,13 +115,21 @@ public:
 		SetAttribPointer(0, 3, 5, 0);
 		SetAttribPointer(1, 2, 5, 3);
 		//SetAttribPointer(2, 2, 5, 6);
-		texture0Hash = AddTexture(0, "textures/texture.png", zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
+		//texture0Hash = AddTexture(0, "textures/texture.png", zap::TextureFilter::NEAREST, zap::MipmapSetting::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
+		texture0Hash = AddTextureFromPath(0, "textures/learnopengl/airplane.png", zap::TextureFilter::NEAREST, zap::MipmapSetting::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
 		Finish();
-		//glUniformMatrix4fv(modelLocationId, 1, GL_FALSE, glm::value_ptr(model));
 	}
-	void UseTexture()
+
+	void Draw(glm::mat4  model, glm::mat4  view, glm::mat4 projection)
 	{
-		Mesh::UseTexture(texture0Hash);
+		Bind();
+		UpdateModel(model);
+		SetView(view);
+		SetProjection(projection);
+
+		BindTextureByHash(texture0Hash);
+
+		Mesh::Draw();
 	}
 };
 
@@ -182,9 +190,12 @@ int main()
 		mesh.SetView(camera.GetView());
 		mesh.SetProjection(camera.GetProjection());
 
-		mesh.UseTexture(); //return false if texture not found
+		//mesh.UseTexture(); //return false if texture not found
 
-		mesh.Draw();
+		mesh.Draw(glm::rotate(glm::mat4(1.0), (float)0, glm::vec3(0.0f, 1.0f, 0.0f)),
+			camera.GetView(),
+			camera.GetProjection()
+			);
 		//here draw ends
 
 		window.SetTitle(std::to_string(window.GetDelta()));

@@ -32,9 +32,6 @@ int main()
 
 	zap::InitGlad();
 
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Window settings
 
@@ -46,20 +43,18 @@ int main()
 
 	zap::Text text("C:/Windows/Fonts/arial.ttf", "Text", window.GetSize()); // It's better to use GetSize here
 
-	//text.SetCharacterSize(48);
-	text.SetColor(0.0f, 1.0f, 0.0f);
-	text.SetPosition(500.0f, 500.0f); // ToDo: Maybe use gl_coords here
+	////text.SetCharacterSize(48);
+	//text.SetColor(0.0f, 1.0f, 0.0f);
+	//text.SetPosition(500.0f, 500.0f); // ToDo: Maybe use gl_coords here
+	//
+	//text.SetTextureFilter(zap::TextureFilter::LINEAR);
+	//text.SetMipmapSettings(zap::MipmapSetting::LINEAR_MIPMAP_LINEAR);
+	//
+	//text.SetScale(2.0f, 2.0f);
 
-	text.SetTextureFilter(zap::TextureFilters::LINEAR);
-	text.SetMipmapSettings(zap::MipmapSettings::LINEAR_MIPMAP_LINEAR);
-	text.GenerateCharacters();
-
-	text.SetScale(2.0f, 2.0f);
-
-
-	glm::vec3 lightPos(1.0f, 0.0f, 2.0f);
-
-	std::array<double, 2> oldPos = window.GetMousePosition();
+	//glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glDisable(GL_DEPTH_TEST);
 	while (window.Open())
@@ -67,11 +62,11 @@ int main()
 		//Input
 		//All the window/camera magic happens here
 		cbi(window);
-
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//
 		zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
 
-		text.SetContent(std::to_string(std::round(window.GetFPS())));
+		//text.SetContent(std::to_string(std::round(window.GetFPS())));
 		//text.SetContent("Button");
 		text.Draw();
 

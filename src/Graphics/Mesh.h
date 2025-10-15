@@ -17,6 +17,7 @@
 
 
 #include <vector>
+#include <map>
 #include <string>
 #include <bitset>
 
@@ -77,8 +78,10 @@ namespace zap
 		AttributeConfig& SetAttribPointer(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos, bool instanced = false);
 		//
 		void ClearAllTextures();
-		Texture& AddTexture(unsigned int id, const std::string path, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
-		Texture& AddTexture(unsigned int id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilters filter = TextureFilters::LINEAR, MipmapSettings settings = MipmapSettings::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER); // Add texture but with manual loaded texture_data
+		Texture& AddTextureFromPath(unsigned int hash, const std::string path, TextureFilter filter = TextureFilter::LINEAR, MipmapSetting settings = MipmapSetting::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
+		Texture& AddTextureFromData(unsigned int hash, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilter filter = TextureFilter::LINEAR, MipmapSetting settings = MipmapSetting::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER); // Add texture but with manual loaded texture_data
+		Texture& AddTextureFromPath(const std::string path, TextureFilter filter = TextureFilter::LINEAR, MipmapSetting settings = MipmapSetting::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
+		Texture& AddTextureFromData(unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilter filter = TextureFilter::LINEAR, MipmapSetting settings = MipmapSetting::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER); // Add texture but with manual loaded texture_data
 
 		//Separate vertex buffer data functions for more complex logic
 		void VertexBufferData();
@@ -160,7 +163,8 @@ namespace zap
 
 	protected:
 		//Textures
-		std::vector<Texture> texturecfg; // Needed to use shared_ptr because otherwise the Program crashes. Please do not change. If that here is very problematic we can find out a solution together.
+		//std::vector<Texture> texturecfg; // Needed to use shared_ptr because otherwise the Program crashes. Please do not change. If that here is very problematic we can find out a solution together.
+		std::map<unsigned int, Texture> texturecfg; // Needed to use shared_ptr because otherwise the Program crashes. Please do not change. If that here is very problematic we can find out a solution together.
 
 	};
 

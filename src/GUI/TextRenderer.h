@@ -67,15 +67,16 @@ namespace zap
 
 		void EnableRequriedOpenGLSettings();
 
-		void SetTextureFilter(zap::TextureFilters filter);
-		void SetMipmapSettings(zap::MipmapSettings setting);
+		void SetTextureFilter(zap::TextureFilter filter);
+		void SetMipmapSettings(zap::MipmapSetting setting);
 
 		void Draw();
+	private:
 		void GenerateCharacters();
 
 	private:
-		zap::TextureFilters i_texture_filter = zap::TextureFilters::LINEAR;
-		zap::MipmapSettings i_mipmap_setting = zap::MipmapSettings::LINEAR_MIPMAP_NEAREST;
+		zap::TextureFilter i_texture_filter = zap::TextureFilter::LINEAR;
+		zap::MipmapSetting i_mipmap_setting = zap::MipmapSetting::LINEAR_MIPMAP_NEAREST;
 
 		std::string i_content;
 		std::string i_font_path;
@@ -160,13 +161,6 @@ namespace zap
 			FT_Init_FreeType(&ft_instance);
 			FT_New_Face(ft_instance, font_path.c_str(), 0, &i_font);
 		}
-		FT_Error loadChar (FT_Face face, wchar_t c)
-		{
-			return FT_Load_Char(face, c, FT_LOAD_RENDER);
-			//FT_New_Face(ft_instance, "C:/Windows/Fonts/arial.ttf", 0, &i_font);
-			//pface = std::make_unique<FT_Face, FT_Done_Face>(i_font);
-			//uptr = std::make_unique < FT_Face, std::function<FT_Done_Face> > (i_font);
-		}
 	};
 
 	//texture bitmap buffer generator for texture text
@@ -188,9 +182,9 @@ namespace zap
 
 	public:
 		TextureText();
-		TextureText(const std::string font_path);
+		TextureText(std::string font_path);
 		void SetFontSize(unsigned int _fontSize) { fontSize = _fontSize; } //set only once
-		void LoadFont(const std::string font_path);
+		void LoadFont(std::string font_path);
 		Texture& print(zap::Mesh* pMesh, unsigned int hash, const std::wstring content);
 		void printf(zap::Mesh* pMesh, unsigned int hash, const std::wstring content, ...);
 		int TextureText::printf_t(zap::Mesh* pMesh, unsigned int hash, wchar_t* const _Buffer, size_t const _BufferCount, wchar_t const* const _Format, va_list _ArgList);

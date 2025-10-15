@@ -56,24 +56,39 @@ namespace zap
 	{
 		for (auto& cfg : texturecfg)
 		{
-			cfg.deleteTexture();
+			cfg.second.deleteTexture();
 		}
 		texturecfg.clear();
 	}
-	Texture& Mesh::AddTexture (unsigned int id, const std::string path, TextureFilters filter, MipmapSettings settings, TextureWrapping wrapping)
+	Texture& Mesh::AddTextureFromPath (unsigned int hash, const std::string path, TextureFilter filter, MipmapSetting settings, TextureWrapping wrapping)
 	{
-		return texturecfg.emplace_back(Texture{ id, path, filter, settings, wrapping });
+		assert(texturecfg.find(hash) == texturecfg.end() && "This ID is already used, please fix nonsense");
+		texturecfg.emplace(hash, Texture{ hash, path, filter, settings, wrapping });
+		return texturecfg[hash];
 	}
 
-	Texture& Mesh::AddTexture(unsigned int id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilters filter, MipmapSettings settings, TextureWrapping wrapping)
+	Texture& Mesh::AddTextureFromData(unsigned int hash, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilter filter, MipmapSetting settings, TextureWrapping wrapping)
 	{
+		assert(texturecfg.find(hash) == texturecfg.end() && "This ID is already used, please fix nonsense");
 		if (texture_width < 0 || texture_height < 0)
 		{
 			messages::PrintMessage("Given texture dimensions are not valid", "Texture& zap::Mesh::AddTexture(...)", MessageTypes::fatal_error);
 			ZAP_INTERRUPT_FATAL_ERROR;
 		}
+		texturecfg.emplace(hash, Texture{ hash, texture_data, texture_width, texture_height, Type, filter, settings, wrapping });
+		return texturecfg[hash];
+	}
 
-		return texturecfg.emplace_back(Texture{ id, texture_data, texture_width, texture_height, Type, filter, settings, wrapping });
+	Texture& Mesh::AddTextureFromPath(const std::string path, TextureFilter filter, MipmapSetting settings, TextureWrapping wrapping)
+	{
+		int hash = texturecfg.rbegin()->first + 1;//autogenerate hash, not tested
+		return AddTextureFromPath(hash, path, filter, settings, wrapping);
+	}
+
+	Texture& Mesh::AddTextureFromData(unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilter filter, MipmapSetting settings, TextureWrapping wrapping)
+	{
+		int hash = texturecfg.rbegin()->first + 1;//autogenerate hash, not tested
+		return AddTextureFromData(hash, texture_data, texture_width, texture_height, Type, filter, settings, wrapping);
 	}
 
 	// TODO: Move the shader functionality to a separate class, totally five functions to be moved
@@ -247,43 +262,28 @@ namespace zap
 		GenObject();
 		UpdateMvpLocations();
 
+		//TODO: Remove this nonsense
+		//      The genTexture will be done in the Textures constructor
+		//      Texture generation is not program dependent, it is OpenGL Global
 		//Textures
-		for (auto& texcfg : texturecfg)
-		{
-			texcfg.genTexture();
-		}
+		//for (auto& texcfg : texturecfg)
+		//{
+		//	texcfg.genTexture();
+		//}
 		/*****************************************************************************************/
 	}
 
 	bool Mesh::BindTextureByHash(unsigned int hash)
 	{
-		auto t = std::find_if(texturecfg.begin(), texturecfg.end(),
-			[hash](const auto& texture)
-			{
-				if (texture.getHash() == hash)
-					return true;
-				return false;
-			}
-		);
-		//TODO: this is not a real throw yet, an error must be thrown
-		assert(t != texturecfg.end() && "using missing hash is utterly nonsense, find the bug and fix it");
-		t->bind();
-		
+		assert(texturecfg.find(hash) != texturecfg.end() && "Missing hash is utterly nonsense, find the bug and fix it");
+		texturecfg[hash].bind();
 		return true;
 	}
+	//Texture texture;
 	Texture& Mesh::GetTextureByHash(unsigned int hash)
 	{
-		auto t = std::find_if( texturecfg.begin(), texturecfg.end(),
-						[hash](const auto& texture) 
-						{
-							if (texture.getHash() == hash)
-								return true;
-							return false;
-						}
-					);
-		//TODO: this is not a real throw yet, an error must be thrown
-		assert(t != texturecfg.end() && "using missing hash is utterly nonsense, find the bug and fix it");
-		return *t;
+		assert(texturecfg.find(hash) != texturecfg.end() && "Missing hash is utterly nonsense, find the bug and fix it");
+		return texturecfg[hash];
 	}
 
 	std::vector<float>& Mesh::GetVertices()

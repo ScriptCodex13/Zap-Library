@@ -44,7 +44,7 @@ namespace zap
 		if (i_use_text) i_button_text = std::make_unique<zap::Text>(button_text_font_path, button_text, e_window->GetSize());
 	}
 
-	int Button::LoadTexture(unsigned int id, const std::string path_to_texture, zap::TextureFilters filter, int shader_location)
+	int Button::LoadTexture(unsigned int id, const std::string path_to_texture, zap::TextureFilter filter, int shader_location)
 	{
 		if (!texture_attribute_ptr_set)
 		{
@@ -52,7 +52,7 @@ namespace zap
 			texture_attribute_ptr_set = true;
 		}
 
-		return Mesh::AddTexture(id, path_to_texture, filter).getID();
+		return Mesh::AddTextureFromPath(id, path_to_texture, filter).getID();
 	}
 
 	void Button::UseTextureShaders(bool state)
@@ -286,5 +286,5 @@ namespace zap
 	}
 
 
-	
+
 }
