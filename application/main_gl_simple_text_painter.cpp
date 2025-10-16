@@ -69,7 +69,7 @@ class TextPainter : public zap::Mesh
 		1, 2, 3
 	};
 
-	unsigned int texture0Hash;
+	unsigned int textureHash;
 public:
 	zap::TextureText text;
 	TextPainter() //:zap::Mesh(vertices, indices)
@@ -83,9 +83,13 @@ public:
 		SetAttribPointer(1, 2, 5, 3);
 
 		//text.LoadFont("C:/Windows/Fonts/arial.ttf");
-		//text.LoadFont("C:/Windows/Fonts/msgothic.ttc");
-		text.LoadFont("C:/Windows/Fonts/OLDENGL.TTF");
-		texture0Hash = text.ApplyTextureTo(this,   L"").getHash();
+		text.LoadFont("C:/Windows/Fonts/msgothic.ttc");
+		//text.LoadFont("C:/Windows/Fonts/OLDENGL.TTF");
+
+		textureHash = AddTextureFromData(0, 0, 0,
+			GL_RED, zap::TextureFilter::LINEAR,
+			zap::MipmapSetting::LINEAR_MIPMAP_LINEAR,
+			zap::TextureWrapping::CLAMP_TO_EDGE).getHash();
 
 		Mesh::Finish();
 	}
@@ -103,7 +107,7 @@ public:
 
 		//print text
 		va_start(arglist, content);
-		int retval = text.printf_t(this, texture0Hash, wprintf_buffer.data(), result + 1, content.c_str(), arglist);
+		int retval = text.printf_t(this->GetTextureByHash (textureHash), wprintf_buffer.data(), result + 1, content.c_str(), arglist);
 		va_end(arglist);
 		return retval;
 	}
@@ -112,7 +116,7 @@ public:
 	{
 		//here starts current VAO for current program draw
 		Bind(); //set current context before any draw routines, it prevents mess in more complex programs
-		BindTextureByHash(texture0Hash);
+		BindTextureByHash(textureHash);
 		Mesh::Draw();
 
 	}

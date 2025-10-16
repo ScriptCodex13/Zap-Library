@@ -17,38 +17,13 @@ template <typename T> class window_camera_invoker : public zap::util::callback_i
 {
 public:
 	inline window_camera_invoker(T _callback) : callback_invoker(_callback) {}
-	template<typename A1, typename A2> void operator () (A1& a1, A2& a2) { callback(a1, a2); }
+	template<typename A1> void operator () (A1& a1) { callback(a1); }
 };
-window_camera_invoker  cbi([](zap::Window& window, zap::SceneCamera& camera)
+window_camera_invoker  cbi([](zap::Window& window)
 	{
 		if (window.isKeyPressed(zap::Key::ESC))
 		{
 			window.Close();
-		}
-
-		if (window.GetInput(zap::Key::left_arrow, zap::State::PRESSED))
-		{
-			camera.Rotate(0.0f, 0.0f, -5.0f * window.GetDelta() * 20.0f);
-		}
-		if (window.GetInput(zap::Key::right_arrow, zap::State::PRESSED))
-		{
-			camera.Rotate(0.0f, 0.0f, 5.0f * window.GetDelta() * 20.0f);
-		}
-		if (window.GetInput(zap::Key::W, zap::State::PRESSED))
-		{
-			camera.MoveForward(0.5f * window.GetDelta() * 20.0f);
-		}
-		if (window.GetInput(zap::Key::S, zap::State::PRESSED))
-		{
-			camera.MoveBackward(0.5f * window.GetDelta() * 20.0f);
-		}
-		if (window.GetInput(zap::Key::A, zap::State::PRESSED))
-		{
-			camera.MoveLeft(0.5f * window.GetDelta() * 20.0f);
-		}
-		if (window.GetInput(zap::Key::D, zap::State::PRESSED))
-		{
-			camera.MoveRight(0.5f * window.GetDelta() * 20.0f);
 		}
 	});
 
@@ -57,30 +32,20 @@ class TextPainter : public zap::Mesh
 
 	const char* vertexCameraShaderSource = R"glsl(#version 330 core
 		layout(location = 0) in vec3 aPos;
-		//layout(location = 1) in vec3 aColor;
 		layout(location = 1) in vec2 aTexCoord;
-
-		uniform mat4 model;      //takes local coordinates for thing and moves it into world coordinates
-		uniform mat4 view;       //moves world space objects around based on camera
-		uniform mat4 projection; //converts values to normalised device coordinates (use sweet math for perspective)
-
-		//out vec3 ourColor;
 		out vec2 TexCoord;
 
 		void main()
 		{
-			gl_Position = projection * view * model * vec4(aPos, 1.0);
+			gl_Position =  vec4(aPos, 1.0);
 			TexCoord = aTexCoord;
 		})glsl";
 
 	const char* fragmentCameraShaderSource = R"glsl(#version 330
 		out vec4 FragColor;
-  
-		//in vec3 ourColor;
 		in vec2 TexCoord;
 
 		uniform sampler2D ourTexture;
-
 		void main()
 		{
 			FragColor = texture(ourTexture, TexCoord);
@@ -103,7 +68,7 @@ class TextPainter : public zap::Mesh
 		1, 2, 3
 	};
 
-	unsigned int texture0Hash;
+	unsigned int textureHash;
 public:
 	TextPainter() //:zap::Mesh(vertices, indices)
 	{
@@ -115,20 +80,14 @@ public:
 		SetAttribPointer(0, 3, 5, 0);
 		SetAttribPointer(1, 2, 5, 3);
 		//SetAttribPointer(2, 2, 5, 6);
-		//texture0Hash = AddTexture(0, "textures/texture.png", zap::TextureFilter::NEAREST, zap::MipmapSetting::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
-		texture0Hash = AddTextureFromPath(0, "textures/learnopengl/airplane.png", zap::TextureFilter::NEAREST, zap::MipmapSetting::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
+		//textureHash = AddTexture(0, "textures/texture.png", zap::TextureFilter::NEAREST, zap::MipmapSetting::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
+		textureHash = AddTextureFromPath(0, "textures/learnopengl/airplane.png", zap::TextureFilter::NEAREST, zap::MipmapSetting::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
 		Finish();
 	}
 
-	void Draw(glm::mat4  model, glm::mat4  view, glm::mat4 projection)
+	void Draw()
 	{
-		Bind();
-		UpdateModel(model);
-		SetView(view);
-		SetProjection(projection);
-
-		BindTextureByHash(texture0Hash);
-
+		BindTextureByHash(textureHash);
 		Mesh::Draw();
 	}
 };
@@ -143,37 +102,13 @@ int main()
 
 	//Mesh
 	TextPainter mesh;
-
 	mesh.Finish();
 
 	window.UpdateViewport(); //This is a set callback. Once set == forever set
-	std::array<int, 2> size = window.GetSize(); // Not a Ref to the window size !
-
-	zap::SceneCamera camera(size[0], size[1]);
-	camera.SetRotationLimit(361.0f, 89.0f, 0.0f);
-	camera.ActivateRotationLimit(true);
-
-
-	float rotation = 0.0f, sensitivity = 0.1f;
-	std::array<double, 2> oldPos = window.GetMousePosition();
-	float lastFrame = 0.f, deltaTime = 0.f;
 
 	while (window.Open())
 	{
-		std::array<double, 2> newpos = window.GetMousePosition();
-
-		float xoffset = (newpos[0] - oldPos[0]) * sensitivity;
-		float yoffset = (oldPos[1] - newpos[1]) * sensitivity;
-
-		oldPos = newpos;
-
-		camera.Rotate(xoffset, yoffset, 0.0f);
-
-		deltaTime = (float)glfwGetTime() - lastFrame;
-
-		lastFrame += deltaTime;
-		cbi(window, camera);
-		camera.UpdateRotation();
+		cbi(window);
 
 		//from here draw starts
 		//there starts general draw
@@ -181,21 +116,9 @@ int main()
 		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
 		zap::ClearBackground(zap::BackgroundColors::BLACK);
 
-
 		//here starts current VAO for current program draw
 		mesh.Bind(); //set current context before any draw routines, it prevents mess in more complex programs
-		//update uniforms
-
-		mesh.UpdateModel(glm::rotate(glm::mat4(1.0), (float)0, glm::vec3(0.0f, 1.0f, 0.0f)));
-		mesh.SetView(camera.GetView());
-		mesh.SetProjection(camera.GetProjection());
-
-		//mesh.UseTexture(); //return false if texture not found
-
-		mesh.Draw(glm::rotate(glm::mat4(1.0), (float)0, glm::vec3(0.0f, 1.0f, 0.0f)),
-			camera.GetView(),
-			camera.GetProjection()
-			);
+		mesh.Draw();
 		//here draw ends
 
 		window.SetTitle(std::to_string(window.GetDelta()));

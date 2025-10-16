@@ -185,11 +185,9 @@ namespace zap
 		TextureText(std::string font_path);
 		void SetFontSize(unsigned int _fontSize) { fontSize = _fontSize; } //set only once
 		void LoadFont(std::string font_path);
-		Texture& print(zap::Mesh* pMesh, unsigned int hash, const std::wstring content);
-		void printf(zap::Mesh* pMesh, unsigned int hash, const std::wstring content, ...);
-		int TextureText::printf_t(zap::Mesh* pMesh, unsigned int hash, wchar_t* const _Buffer, size_t const _BufferCount, wchar_t const* const _Format, va_list _ArgList);
-
-		Texture& ApplyTextureTo(zap::Mesh* pMesh, const std::wstring content);
+		Texture& print (Texture& texture, wchar_t* const content);
+		int printf     (Texture& texture, wchar_t const* const  format, ...);
+		int printf_t   (Texture& texture, wchar_t* const _Buffer, size_t const _BufferCount, wchar_t const* const  format, va_list arglist);
 
 	};
 }

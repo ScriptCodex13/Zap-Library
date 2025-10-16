@@ -240,20 +240,19 @@ namespace zap
 		};
 		template <typename T, int alignment = 1> class buffer_view2D
 		{
-			static_assert (const_in(alignment, 1, 2, 4, 8, 16), "Alignment template value can take only values 1, 2, 4, 8, 16");
+			static_assert (const_in(alignment, 1, 2, 4, 8), "Alignment template value can take only values 1, 2, 4, 8");
 			size_t width; //length of lines, can't change and must be kept internally
 			T* buffer;
-			size_t align(size_t w)
+			bool aligned (size_t w)
 			{
-				if ((w == 1) || !(w % alignment))
-					return w;
-				return w - (w % alignment) + alignment;
+				if (alignment == 1) return true;
+				return !(w % alignment);
 			}
 		public:
 			using type = T;
 			buffer_view2D(): buffer(nullptr), width(0) {}
 			buffer_view2D(T* ptr, size_t w) { reset(ptr, w); }
-			void reset(T* ptr, size_t w) { buffer = ptr; width = align(w); } //for instance reuse purpose
+			void reset(T* ptr, size_t w) { buffer = ptr; assert(aligned(w) && "alignment mismatch"); width = w; } //for instance reuse purpose
 			inline size_t get_width() const { return width; }
 			T* get() const { return buffer; } //for debugging purposes, generally useless
 			//line number

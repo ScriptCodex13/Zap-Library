@@ -81,13 +81,15 @@ namespace zap
 
 	Texture& Mesh::AddTextureFromPath(const std::string path, TextureFilter filter, MipmapSetting settings, TextureWrapping wrapping)
 	{
-		int hash = texturecfg.rbegin()->first + 1;//autogenerate hash, not tested
+		int hash = 0;
+		if (texturecfg.size() > 0) hash = texturecfg.rbegin()->first + 1;//autogenerate hash, not tested
 		return AddTextureFromPath(hash, path, filter, settings, wrapping);
 	}
 
 	Texture& Mesh::AddTextureFromData(unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilter filter, MipmapSetting settings, TextureWrapping wrapping)
 	{
-		int hash = texturecfg.rbegin()->first + 1;//autogenerate hash, not tested
+		int hash = 0;
+		if (texturecfg.size() > 0) hash = texturecfg.rbegin()->first + 1;//autogenerate hash, not tested
 		return AddTextureFromData(hash, texture_data, texture_width, texture_height, Type, filter, settings, wrapping);
 	}
 

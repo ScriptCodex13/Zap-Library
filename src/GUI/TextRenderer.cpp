@@ -249,6 +249,7 @@ namespace zap
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
+	//TODO: To implement some dynamic approach. The implemented way is fast enough but is too direct.
 	void TextureText::drawGlythBitmap(FT_Face ftface, util::buffer_view2D<unsigned char> target_view, int& pen_x, int& pen_y, wchar_t c, size_t bufsize, unsigned int fontSizeFT)
 	{
 		FT_Load_Char(ftface, c, FT_LOAD_RENDER);
@@ -278,6 +279,7 @@ namespace zap
 
 		pen_x += glyph->advance.x >> 6;
 	}
+
 	void TextureText::drawString3TIntoBitman(FT_Face ftface, util::buffer_view2D<unsigned char> buf, const wchar_t* str, int& outer_width, int& pen_y, size_t bufsize, unsigned int fontSizeFT)
 	{
 		for (int i = 0; i < wcslen(str); i++) //wcslen(str) / 40
@@ -337,58 +339,49 @@ namespace zap
 	//	dump_content.close();
 	//}
 
-	Texture& TextureText::ApplyTextureTo(zap::Mesh* pMesh, const std::wstring content)
+	//this is central
+	//Texture& TextureText::print(Texture& texture, const std::wstring content)
+	Texture& TextureText::print(Texture& texture, wchar_t* const content)
 	{
 		int width = 0, height = 0;
-		drawString3TIntoBitmap(content.c_str(), fontSize, width, height);
+		//drawString3TIntoBitmap(content.c_str(), fontSize, width, height);
+		drawString3TIntoBitmap(content, fontSize, width, height);
 		//dumpTextureBuffer(texture_data_target.data(), width, fontSize);
 
-		assert(pMesh);
-		Texture& texture =  pMesh->AddTextureFromData(0, texture_data_target.data(), width, fontSize,
-				GL_RED, TextureFilter::LINEAR,
-				MipmapSetting::LINEAR_MIPMAP_LINEAR,
-				zap::TextureWrapping::CLAMP_TO_EDGE);
-		return texture;
+		GLint currentAlignment;
+		glGetIntegerv(GL_UNPACK_ALIGNMENT, &currentAlignment);
+		//4 is the default for GL_UNPACK_ALIGNMENT, probably for a good reason
+		//Make sure it is not changed somewhere, so different parts of program do not interfere here
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+		//restore to what it was on scope exit:
+		util::scope_guard restoreAlignment([currentAlignment]() {glPixelStorei(GL_UNPACK_ALIGNMENT, currentAlignment); });
 
-	}
-
-	Texture& TextureText::print(zap::Mesh* pMesh, unsigned int hash, const std::wstring content)
-	{
-		int width = 0, height = 0;
-		drawString3TIntoBitmap(content.c_str(), fontSize, width, height);
-		//dumpTextureBuffer(texture_data_target.data(), width, fontSize);
-	
-		assert(pMesh);
-
-		Texture& texture = pMesh->GetTextureByHash(hash);
-		//texture.setData(texture_data_target.data());
-		//texture.setSize(width, fontSize);
 		texture.flushData(width, fontSize, texture_data_target.data());
 		return texture;
 	
 	}
-	void TextureText::printf(zap::Mesh* pMesh, unsigned int hash, const std::wstring content, ...)
+	//uses printf_t, printf_t calls print
+	int TextureText::printf(Texture& texture, wchar_t const* const  format, ...)
 	{
 		//evaluate size first
 		va_list arglist;
-		va_start(arglist, content);
-		int result = _vsnwprintf(nullptr, 0, content.c_str(), arglist);
+		va_start(arglist, format);
+		int result = _vsnwprintf(nullptr, 0, format, arglist);
 		va_end(arglist);
 
 		//Assure that buffer never schrinks, so reduce the number of allocations
-		if (wprintf_buffer.capacity() < result + 1) wprintf_buffer.reserve((result + 1) * 2);
-		wprintf_buffer.resize(result + 1);
+		util::vector_realloc<wchar_t>(wprintf_buffer, result + 1);
 
-
-		va_start(arglist, content);
-		int _Result = printf_t(pMesh, hash, wprintf_buffer.data(), wprintf_buffer.size() + 1, content.c_str(), arglist);
+		va_start(arglist, format);
+		result = printf_t(texture, wprintf_buffer.data(), wprintf_buffer.size() + 1, format, arglist);
 		va_end(arglist);
+		return result;
 	}
 
-	int TextureText::printf_t(zap::Mesh* pMesh, unsigned int hash, wchar_t* const buffer_out, size_t const buffer_size, wchar_t const* const _Format, va_list _ArgList)
+	int TextureText::printf_t(Texture& texture, wchar_t* const buffer_out, size_t const buffer_size, wchar_t const* const format, va_list arglist)
 	{
-		int retval = _vswprintf_s_l(buffer_out, buffer_size, _Format, NULL, _ArgList);
-		print(pMesh, hash, buffer_out);
+		int retval = _vswprintf_s_l(buffer_out, buffer_size, format, NULL, arglist);
+		print(texture, buffer_out);
 		return retval;
 	}
 
