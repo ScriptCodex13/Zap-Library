@@ -153,11 +153,6 @@ namespace zap
 
 		~ButtonText();
 
-		int LoadTexture(unsigned int id, const std::string path_to_texture, zap::TextureFilter filter, int shader_location = 1);
-		void FinishMesh();
-		void UseTextureShaders(bool state);
-		void UseTextureShaders(const char* vertex_shader_source, const char* fragment_shader_source);
-
 		zap::Text* GetTextObject();
 		void UpdatePosition();
 		bool Hovered();
@@ -176,8 +171,6 @@ namespace zap
 		void SetGlPosition(std::array<float, 4>& gl_xy_min_xy_max); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
 		void SetColor(float RED, float GREEN, float BLUE, float ALPHA);
 
-		void ActivateTexture(bool state);
-		void UseText(bool state);
 		void SetButtonText(const std::string text);
 		void SetTextOffset(float x_offset, float y_offset);
 		void SetTextColor(zap::TextColors color);
@@ -190,22 +183,7 @@ namespace zap
 
 
 		std::vector<wchar_t> wprintf_buffer;
-		int printf(const std::wstring content, ...)
-		{
-			//evaluate size first
-			va_list arglist;
-			va_start(arglist, content);
-			int result = _vsnwprintf(nullptr, 0, content.c_str(), arglist);
-			va_end(arglist);
-
-			zap::util::vector_realloc <wchar_t>(wprintf_buffer, result + 1);
-
-			//print text
-			va_start(arglist, content);
-			int retval = text.printf_t(this->GetTextureByHash(textureHash), wprintf_buffer.data(), result + 1, content.c_str(), arglist);
-			va_end(arglist);
-			return retval;
-		}
+		int printf(const std::wstring content, ...);
 
 	private: // Private functions
 

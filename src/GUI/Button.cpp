@@ -286,6 +286,8 @@ namespace zap
 	}
 
 
+
+
 	ButtonText::ButtonText(zap::Window& window, const std::string button_text, const std::string button_text_font_path) :
 		ButtonText(window, { -0.5, -0.5, 0.5, 0.5 }, button_text, button_text_font_path)
 	{
@@ -329,17 +331,6 @@ namespace zap
 
 		UpdatePosition(); //*/
 
-	}
-
-	int ButtonText::LoadTexture(unsigned int id, const std::string path_to_texture, zap::TextureFilter filter, int shader_location)
-	{
-		return Mesh::AddTextureFromPath(id, path_to_texture, filter).getID();
-	}
-
-	void ButtonText::UseTextureShaders(const char* vertex_shader_source, const char* fragment_shader_source)
-	{
-		SetVertexShaderSource(vertex_shader_source);
-		SetFragmentShaderSource(fragment_shader_source);
 	}
 
 	ButtonText::~ButtonText()
@@ -388,27 +379,27 @@ namespace zap
 	{
 		SetGlPosition(std::array<float, 4>{
 			i_bounds[0],            // x_min
-				i_bounds[1],            // y_min
-				i_bounds[0] + dx_dy[0], // x_min + delta_x
-				i_bounds[1] + dx_dy[1]  // y_min + delta_y
+			i_bounds[1],            // y_min
+			i_bounds[0] + dx_dy[0], // x_min + delta_x
+			i_bounds[1] + dx_dy[1]  // y_min + delta_y
 		});
 	}
 	void ButtonText::SetGlWidth(float dx)
 	{
 		SetGlPosition(std::array<float, 4>{
 			i_bounds[0],            // x_min
-				i_bounds[1],            // y_min
-				i_bounds[0] + dx,       // x_min + delta_x
-				i_bounds[3]             // y_max
+			i_bounds[1],            // y_min
+			i_bounds[0] + dx,       // x_min + delta_x
+			i_bounds[3]             // y_max
 		});
 	}
 	void ButtonText::SetGlHeight(float dy)
 	{
 		SetGlPosition(std::array<float, 4>{
 			i_bounds[0],            // x_min
-				i_bounds[1],            // y_min
-				i_bounds[2],            // x_max
-				i_bounds[1] + dy        // y_min + delta_y
+			i_bounds[1],            // y_min
+			i_bounds[2],            // x_max
+			i_bounds[1] + dy        // y_min + delta_y
 		});
 	}
 	void ButtonText::SetGlPosition(float xmin, float ymin)
@@ -419,18 +410,18 @@ namespace zap
 	{
 		SetGlPosition(std::array<float, 4>{
 			gl_xy_min[0],                             // x_min
-				gl_xy_min[1],                             // y_min
-				gl_xy_min[0] + i_bounds[2] - i_bounds[0], // x_min + delta_x
-				gl_xy_min[1] + i_bounds[3] - i_bounds[1]  // y_min + delta_y
+			gl_xy_min[1],                             // y_min
+			gl_xy_min[0] + i_bounds[2] - i_bounds[0], // x_min + delta_x
+			gl_xy_min[1] + i_bounds[3] - i_bounds[1]  // y_min + delta_y
 		});
 	}
 	void ButtonText::SetGlPosition(float xmin, float ymin, float xmax, float ymax)
 	{// Sets the xmin/ymin = bottom/left and xmax/ymax = top/right point to the given coordinates
 		SetGlPosition(std::array<float, 4>{
 			xmin, // x_min
-				ymin, // y_min
-				xmax, // x_max
-				ymax  // y_max
+			ymin, // y_min
+			xmax, // x_max
+			ymax  // y_max
 		});
 
 	}
@@ -438,9 +429,9 @@ namespace zap
 	{// Sets the xmin/ymin = bottom/left and xmax/ymax = top/right point to the given coordinates
 		SetGlPosition(std::array<float, 4>{
 			gl_xy_min[0], // x_min
-				gl_xy_min[1], // y_min
-				gl_xy_max[0], // x_max
-				gl_xy_max[1]  // y_max
+			gl_xy_min[1], // y_min
+			gl_xy_max[0], // x_max
+			gl_xy_max[1]  // y_max
 		});
 	}
 	void ButtonText::SetGlPosition(std::array<float, 4>& gl_xy_min_xy_max)
@@ -460,12 +451,6 @@ namespace zap
 		ALPHA = std::clamp(ALPHA, 0.0f, 1.0f);
 
 		i_button_color = glm::vec4(RED, GREEN, BLUE, ALPHA);
-	}
-
-
-	void ButtonText::UseText(bool state)
-	{
-
 	}
 
 	void ButtonText::SetButtonText(const std::string text)
@@ -491,6 +476,22 @@ namespace zap
 	void ButtonText::Update()
 	{
 
+	}
+	int ButtonText::printf(const std::wstring content, ...)
+	{
+		//evaluate size first
+		va_list arglist;
+		va_start(arglist, content);
+		int result = _vsnwprintf(nullptr, 0, content.c_str(), arglist);
+		va_end(arglist);
+
+		zap::util::vector_realloc <wchar_t>(wprintf_buffer, result + 1);
+
+		//print text
+		va_start(arglist, content);
+		int retval = text.printf_t(this->GetTextureByHash(textureHash), wprintf_buffer.data(), result + 1, content.c_str(), arglist);
+		va_end(arglist);
+		return retval;
 	}
 
 	void ButtonText::Draw(int texture_id)
