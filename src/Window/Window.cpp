@@ -293,6 +293,12 @@ namespace zap
 			
 		return { pos };
 	}
+	std::array<double, 2> Window::GetMouseGlPosition()
+	{
+		std::array<double, 2> pos = GetMousePosition();
+		return zap::util::pixel_to_gl_coords(GetSize(), pos);
+
+	}
 
 	void Window::HideCursor(bool state)
 	{

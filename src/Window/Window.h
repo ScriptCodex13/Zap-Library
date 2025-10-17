@@ -56,6 +56,7 @@ namespace zap
 		bool isMouseReleased(int key);
 		void SetIcon(const std::string path);                               // Loads the new window icon at the specified path
 		std::array<double, 2> GetMousePosition();                           // Returns the cursor position in pixels relative to the top left corner of the window 
+		std::array<double, 2> GetMouseGlPosition();                           // Returns the cursor position in pixels relative to the top left corner of the window 
 		void HideCursor(bool state);                                        // Hide or unhide the cursor if the window is entered
 		void SetVSync(bool state);
 		void SetCursorinCameraMode(bool state);

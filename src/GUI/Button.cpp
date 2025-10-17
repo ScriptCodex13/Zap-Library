@@ -288,26 +288,26 @@ namespace zap
 
 
 
-	ButtonText::ButtonText(zap::Window& window, const std::string button_text, const std::string button_text_font_path) :
-		ButtonText(window, { -0.5, -0.5, 0.5, 0.5 }, button_text, button_text_font_path)
+	ButtonText::ButtonText(const std::string button_text, const std::string button_text_font_path) :
+		ButtonText({ -0.5, -0.5, 0.5, 0.5 }, button_text, button_text_font_path)
 	{
 
 	}
-	ButtonText::ButtonText(zap::Window& window, const std::array<float, 4>& _bounds, const std::string button_text, const std::string button_text_font_path) :
-		i_bounds(_bounds), zap::Mesh(
-			{
-				  1.0f,  1.0f, 0.1f,     1.0f, 1.0f,     // 0,  1,  2
-				  1.0f,  0.0f, 0.1f,     1.0f, 0.0f,     // 3,  4,  5
-				  0.0f,  0.0f, 0.1f,     0.0f, 0.0f,     // 6,  7,  8
-				  0.0f,  1.0f, 0.1f,     0.0f, 1.0f      // 9, 10, 11
-			},
-			{
-				2, 1, 0,
-				0, 3, 2
-			})
+	ButtonText::ButtonText(const std::array<float, 4>& _bounds, const std::string button_text, const std::string button_text_font_path) :
+			listener(this),
+			i_bounds(_bounds),
+			zap::Mesh(
+				{
+					  1.0f,  1.0f, 0.1f,     1.0f, 1.0f,     // 0,  1,  2
+					  1.0f,  0.0f, 0.1f,     1.0f, 0.0f,     // 3,  4,  5
+					  0.0f,  0.0f, 0.1f,     0.0f, 0.0f,     // 6,  7,  8
+					  0.0f,  1.0f, 0.1f,     0.0f, 1.0f      // 9, 10, 11
+				},
+				{
+					2, 1, 0,
+					0, 3, 2
+				})
 	{
-
-		e_window = &window;
 
 		SetVertexShaderSource(i_vertex_shader_source);
 		SetFragmentShaderSource(i_fragment_shader_source);
@@ -317,7 +317,10 @@ namespace zap
 		Finish();
 		///*
 
-		text.LoadFont("C:/Windows/Fonts/msgothic.ttc");
+		if (button_text_font_path.empty())
+			text.LoadFont("C:/Windows/Fonts/msgothic.ttc");
+		else
+			text.LoadFont(button_text_font_path);
 		//text.LoadFont("C:/Windows/Fonts/OLDENGL.TTF");
 
 		textureHash = AddTextureFromData(0, 0, 0,
@@ -353,24 +356,6 @@ namespace zap
 		glUniformMatrix4fv(i_moveto_uniform_location, 1, GL_FALSE, glm::value_ptr(translate * resize));
 
 	}
-	bool ButtonText::Hovered()
-	{
-		auto mouse_pos = zap::util::pixel_to_gl_coords(e_window->GetSize(), e_window->GetMousePosition());
-		return zap::util::between(mouse_pos, i_bounds);
-	}
-
-	bool ButtonText::Pressed(zap::Key key)
-	{
-		if (!Hovered()) return false;
-		return e_window->GetInput(key, zap::State::PRESSED);
-	}
-
-	bool ButtonText::Released(zap::Key key)
-	{
-		if (!Hovered()) return false;
-		return e_window->GetInput(key, zap::State::RELEASED);
-	}
-
 	void ButtonText::SetGlSize(float dx, float dy)
 	{
 		SetGlSize(std::array<float, 2> {dx, dy});

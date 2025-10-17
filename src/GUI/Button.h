@@ -143,13 +143,65 @@ namespace zap
 
 		zap::Window* e_window;
 	};
-
-	class ButtonText : public zap::Mesh
+	
+	class IUIEventListener
 	{
+	public:
+		virtual bool HitTest(double x, double y) = 0;
+		virtual bool OnMouseMove(double x, double y) = 0;
+		virtual bool OnLMouseButtonDown(double x, double y) = 0;
+		virtual bool OnMouseEnter(double x, double y) = 0;
+		virtual bool OnMouseLeave(double x, double y) = 0;
+		virtual bool OnPress(double x, double y, zap::Key key) = 0;
+		virtual bool OnRelease(double x, double y, zap::Key key) = 0;
+		
+	};
+	class IUIComponent
+	{
+	public:
+		virtual IUIEventListener* GetUIListener() = 0;
+	};
+
+	class ButtonText : public zap::Mesh, public IUIComponent
+	{
+	protected:
+		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max
+		class EventListener: public IUIEventListener
+		{
+			ButtonText* buttonText = nullptr;
+		public:
+			EventListener(ButtonText* btptr) : buttonText(btptr) {}
+			virtual bool HitTest(double x, double y) {
+				return zap::util::between(
+					std::array<double, 2> {x, y},
+					buttonText->i_bounds);
+			}
+			virtual bool OnMouseMove(double x, double y) { return false; }
+			virtual bool OnLMouseButtonDown(double x, double y) { 
+				buttonText->i_button_color = buttonText->i_button_pressed_color;
+				return false; 
+			}
+			virtual bool OnMouseEnter(double x, double y)
+			{
+				buttonText->i_button_color = buttonText->i_button_hover_color;
+				return true;
+			}
+			virtual bool OnMouseLeave(double x, double y) {
+				buttonText->i_button_color = buttonText->i_button_default_color;
+				return true;
+			}
+			virtual bool OnPress(double x, double y, zap::Key key) { return false; }
+			virtual bool OnRelease(double x, double y, zap::Key key) { return false; }
+
+			std::array<float, 4> getArray() { return buttonText->i_bounds; }
+		} ;
+		EventListener listener;
 
 	public:
-		ButtonText(zap::Window& window, const std::string button_text = "", const std::string button_text_font_path = "");
-		ButtonText(zap::Window& window, const std::array<float, 4>& bounds, const std::string button_text = "", const std::string button_text_font_path = "");
+		IUIEventListener* GetUIListener() { return &listener; }
+
+		ButtonText(const std::string button_text = "", const std::string button_text_font_path = "");
+		ButtonText(const std::array<float, 4>& bounds, const std::string button_text = "", const std::string button_text_font_path = "");
 
 		~ButtonText();
 
@@ -182,22 +234,24 @@ namespace zap
 
 
 
-		std::vector<wchar_t> wprintf_buffer;
 		int printf(const std::wstring content, ...);
 
 	private: // Private functions
+		std::vector<wchar_t> wprintf_buffer;
 
 	private:
 		zap::TextureText text;
 
-		glm::vec4 i_button_color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		glm::vec4 i_button_default_color = glm::vec4(0.0f, 1.0f, 0.0f, 0.8f);
+		glm::vec4 i_button_hover_color = glm::vec4(0.0f, 0.9f, 0.0f, 0.8f);
+		glm::vec4 i_button_pressed_color = glm::vec4(0.0f, 0.7f, 0.0f, 0.8f);
+		glm::vec4 i_button_color = i_button_default_color;
 		unsigned int textureHash;
 	protected:
 		unsigned int i_moveto_uniform_location;
 		unsigned int i_button_color_location;
 
-		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max
-
+	protected:
 
 		const char* i_vertex_shader_source =
 			R"glsl(
@@ -232,8 +286,6 @@ namespace zap
 					}
 			)glsl";
 
-
-		zap::Window* e_window;
 	};
 
 }
