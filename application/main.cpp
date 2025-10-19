@@ -61,9 +61,7 @@ int main()
 	zap::InitGlad();
 
 	//Controller
-
 	// zap::Device controller = zap::AssignController(); For later prototyping with the controller
-
 	//
 
 
@@ -86,8 +84,8 @@ int main()
 	window.SetVSync(true);
 	//window.Maximize();
 
-	zap::Enable(zap::Instructions::DEPTH);
-	zap::Enable(zap::Instructions::ANTIALIASING);
+	zap::Enable(zap::Instruction::DEPTH);
+	zap::Enable(zap::Instruction::ANTIALIASING);
 
 	//window.SetCursorinCameraMode(false);
 
