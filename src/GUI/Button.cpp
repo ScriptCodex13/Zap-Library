@@ -2,13 +2,13 @@
 
 namespace zap
 {
-	Button::Button(zap::Window& window, const std::string button_text, const std::string button_text_font_path) :
+	Button::Button(Window* window, const std::string button_text, const std::string button_text_font_path) :
 		Button(window, { -0.5, -0.5, 0.5, 0.5 }, button_text, button_text_font_path)
 	{
 
 	}
-	Button::Button(zap::Window& window, const std::array<float, 4>& _bounds, const std::string button_text, const std::string button_text_font_path) :
-		i_bounds(_bounds), zap::Mesh(
+	Button::Button(Window* window, const std::array<float, 4>& _bounds, const std::string button_text, const std::string button_text_font_path) :
+		e_window(window), i_bounds(_bounds), listener(this), zap::Mesh(
 			{
 				  1.0f,  1.0f, 0.1f,    1.0f, 1.0f,   // 0, 1, 2
 				  1.0f,  0.0f, 0.1f,    1.0f, 0.0f,   // 3, 4, 5
@@ -21,8 +21,6 @@ namespace zap
 			})
 	{
 
-		e_window = &window;
-
 		if (button_text_font_path.empty())
 		{
 			i_use_text = false;
@@ -34,17 +32,11 @@ namespace zap
 
 		SetAttribPointer(0, 3, 5, 0);
 
-		/*Finish();
-
-		i_moveto_uniform_location = glGetUniformLocation(GetProgram(), "moveto");
-		i_button_color_location = glGetUniformLocation(GetProgram(), "button_color");
-
-		UpdatePosition();*/
-
 		if (i_use_text) i_button_text = std::make_unique<zap::Text>(button_text_font_path, button_text, e_window->GetSize());
 	}
 
-	int Button::LoadTexture(unsigned int id, const std::string path_to_texture, zap::TextureFilter filter, int shader_location)
+	//int Button::LoadTexture(unsigned int id, const std::string path_to_texture, zap::TextureFilter filter, int shader_location)
+	int Button::LoadTexture(unsigned int id, const char* const path_to_texture, zap::TextureFilter filter, int shader_location)
 	{
 		if (!texture_attribute_ptr_set)
 		{
@@ -105,23 +97,6 @@ namespace zap
 		// Premultiply in C++ and combine two matrices. Multiply order here is inverse than in shader
 		glUniformMatrix4fv(i_moveto_uniform_location, 1, GL_FALSE, glm::value_ptr(translate * resize));
 
-	}
-	bool Button::Hovered()
-	{
-		auto mouse_pos = zap::util::pixel_to_gl_coords(e_window->GetSize(), e_window->GetMousePosition());
-		return zap::util::between(mouse_pos, i_bounds);
-	}
-
-	bool Button::Pressed(zap::Key key)
-	{
-		if (!Hovered()) return false;
-		return e_window->GetInput(key, zap::State::PRESSED);
-	}
-
-	bool Button::Released(zap::Key key)
-	{
-		if (!Hovered()) return false;
-		return e_window->GetInput(key, zap::State::RELEASED);
 	}
 
 	void Button::SetGlSize(float dx, float dy)
@@ -245,7 +220,7 @@ namespace zap
 		i_button_text->SetColor(RED, GREEN, BLUE);
 	};
 
-	void Button::Update()
+	void Button::Update(std::array<int, 2> windowGlResolution)
 	{
 		//auto position = i_text_offset;
 		std::array n_bounds = { i_bounds[0], i_bounds[1] }; // using auto here because the util function returns a template dependent array
@@ -255,7 +230,11 @@ namespace zap
 			//n_bounds[0] += position[0];
 			//n_bounds[1] += position[1];
 
-			auto new_pos = zap::util::gl_coords_to_pixel(e_window->GetOriginalWindowResolution(), i_text_offset[0] + n_bounds[0], i_text_offset[1] + n_bounds[1]);
+			std::array<float, 2> new_pos = zap::util::gl_coords_to_pixel(windowGlResolution, // , //zap::util::gl_coords_to_pixel(e_window->GetOriginalWindowResolution(),
+				i_text_offset[0] + n_bounds[0],
+				i_text_offset[1] + n_bounds[1]);
+			new_pos[0] += n_bounds[0];
+			new_pos[1] += n_bounds[1];
 
 			i_button_text->SetPosition(new_pos[0], new_pos[1]);
 		}
@@ -267,7 +246,7 @@ namespace zap
 
 	void Button::Draw(int texture_id)
 	{
-		Update();
+		Update(e_window->GetOriginalWindowResolution());
 
 		UseProgram();
 

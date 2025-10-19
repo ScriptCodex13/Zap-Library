@@ -63,13 +63,12 @@ namespace zap
 		bool isMouseReleased(int key);
 		void SetIcon(const std::string path);                               // Loads the new window icon at the specified path
 		std::array<double, 2> GetMousePosition();                           // Returns the cursor position in pixels relative to the top left corner of the window 
-		std::array<double, 2> GetMouseGlPosition();                           // Returns the cursor position in pixels relative to the top left corner of the window 
+		std::array<double, 2> GetMouseGlPosition();                         // Returns the cursor position in pixels relative to the top left corner of the window 
 		void HideCursor(bool state);                                        // Hide or unhide the cursor if the window is entered
 		void SetVSync(bool state);
 		void SetCursorinCameraMode(bool state);
 		std::array<float, 2> GetWindowScaleDifference();					// 
 		std::array<int, 2> GetOriginalWindowResolution();					// Get the original window resolution so you can scale elements properly even after resizing or upscaling
-
 		void Update();
 		void Draw();
 
@@ -125,7 +124,8 @@ namespace zap
 					if (windowPtr->GetInput(zap::Key::LEFT_MOUSE, zap::State::PRESSED))
 					{
 						handler->OnLMouseButtonDown(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
-					}
+					} else
+						handler->OnLMouseButtonUp(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
 				}
 				else
 				{

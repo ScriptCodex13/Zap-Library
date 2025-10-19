@@ -19,6 +19,7 @@ namespace zap
 		virtual bool HitTest(double x, double y) = 0;
 		virtual bool OnMouseMove(double x, double y) = 0;
 		virtual bool OnLMouseButtonDown(double x, double y) = 0;
+		virtual bool OnLMouseButtonUp(double x, double y) = 0;
 		virtual bool OnMouseEnter(double x, double y) = 0;
 		virtual bool OnMouseLeave(double x, double y) = 0;
 		virtual bool OnPress(double x, double y, zap::Key key) = 0;

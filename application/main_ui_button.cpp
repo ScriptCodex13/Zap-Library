@@ -44,10 +44,8 @@ int main()
 	zap::Enable(zap::Instructions::DEPTH);
 	zap::Enable(zap::Instructions::ANTIALIASING);
 
-	//auto coord = zap::util::pixel_to_gl_coords(window.GetSize(), 1.0f, 1.0f);
-	//auto coord_2 = zap::util::gl_coords_to_pixel(window.GetSize(), 0.9f, 0.0f);
 
-	zap::Button button(window, std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, "Button", "C:/Windows/Fonts/arial.ttf");
+	zap::Button button(&window, std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, "Button", "C:/Windows/Fonts/arial.ttf");
 
 	button.SetTextOffset(0.31f, 0.075f);
 	button.SetTextColor(zap::TextColors::RED);
@@ -69,6 +67,9 @@ int main()
 	button.SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	glDisable(GL_DEPTH_TEST);
+
+	//subscribe to button event provider
+	window.AddButtonEventHandler(button.GetUIListener());
 	while (window.Open())
 	{
 		//
@@ -76,19 +77,19 @@ int main()
 		zap::ClearBuffers();
 		glClear(GL_COLOR_BUFFER_BIT);
 		zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
-
+		window.InvokeHandlers();
+		
 		button.Draw();
 
-		if (button.Hovered())
-			button.SetColor(1.0f, 1.0f, 1.0f, 0.8f);
-		else
-			button.SetColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-		if (button.Pressed(zap::Key::LEFT_MOUSE))
-		{
-			button.SetColor(1.0f, 1.0f, 1.0f, 0.6f);
-			//std::cerr << "Pressed " << std::endl;
-		}
+		//if (button.Hovered())
+		//	button.SetColor(1.0f, 1.0f, 1.0f, 0.8f);
+		//else
+		//	button.SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+		//
+		//if (button.Pressed(zap::Key::LEFT_MOUSE))
+		//{
+		//	button.SetColor(1.0f, 1.0f, 1.0f, 0.6f);
+		//}
 
 
 		window.Update();
