@@ -9,6 +9,7 @@
 #include <array>
 #include "Cube.h"
 #include "LightCube.h"
+#include <Window/Window.h>
 
 template <typename T> class window_camera_invoker : public zap::util::callback_invoker<T>
 {

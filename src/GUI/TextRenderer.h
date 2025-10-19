@@ -10,7 +10,6 @@
 #include "../Graphics/Mesh.h"
 #include "../Util/Message.h"
 #include "../Util/Util.h"
-#include "../Window/Window.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H  

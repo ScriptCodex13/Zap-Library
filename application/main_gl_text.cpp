@@ -7,6 +7,7 @@
 #include <iostream>
 #include <array>
 #include <GUI/TextRenderer.h>
+#include <Window/Window.h>
 
 template <typename T> class window_invoker : public zap::util::callback_invoker<T>
 {

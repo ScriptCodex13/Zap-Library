@@ -6,7 +6,7 @@
 #include <Zap.h>
 #include <iostream>
 #include <array>
-
+#include <Window/Window.h>
 
 template <typename T> class window_invoker : public zap::util::callback_invoker<T>
 {
@@ -45,7 +45,7 @@ int main()
 	zap::Enable(zap::Instructions::ANTIALIASING);
 
 
-	zap::Button button(std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, window.GetSize(), window.GetWindowOriginalSize(),
+	zap::Button button(std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, window.GetSize(), window.GetOriginalSize(),
 		"Button", "C:/Windows/Fonts/arial.ttf");
 
 	button.SetTextOffset(0.31f, 0.075f);

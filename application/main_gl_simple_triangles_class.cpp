@@ -12,7 +12,7 @@
 #include <glm/glm.hpp>                  //basic glm math functions
 #include <glm/gtc/matrix_transform.hpp> //matrix functions
 #include <glm/gtc/type_ptr.hpp>         //convert glm types to opengl types
-
+#include <Window/Window.h>
 
 template <typename T> class window_invoker : public zap::util::callback_invoker<T>
 {

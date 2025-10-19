@@ -398,12 +398,12 @@ namespace zap
 
 	//
 
-	std::array<float, 2> Window::GetWindowScaleDifference()
+	std::array<float, 2> Window::GetScaleDifference()
 	{
 		return { (float)i_original_size[0] / GetSize()[0], (float)i_original_size[1] / GetSize()[1] };
 	}
 
-	std::array<int, 2> Window::GetWindowOriginalSize()
+	std::array<int, 2> Window::GetOriginalSize()
 	{
 		return  i_original_size ;
 	}

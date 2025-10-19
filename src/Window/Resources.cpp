@@ -1,6 +1,8 @@
 #include "Resources.h"
-#include "Message.h"
-#include "Util.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include "../util/Message.h"
+#include "../util/Util.h"
 
 namespace zap
 {

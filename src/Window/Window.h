@@ -6,6 +6,8 @@
 #define WINDOW_H
 
 #include "Window.h"
+#include "../Window/Resources.h"
+
 #include "../Window/Input.h"
 #include "../Util/Message.h"
 #include "../GUI/GUIInterfaces.h"
@@ -17,8 +19,6 @@
 #include <thread>
 #include <set>
 
-
-#define nonvirtual
 namespace zap
 {
 
@@ -67,8 +67,8 @@ namespace zap
 		void HideCursor(bool state);                                        // Hide or unhide the cursor if the window is entered
 		void SetVSync(bool state);
 		void SetCursorinCameraMode(bool state);
-		std::array<float, 2> GetWindowScaleDifference();					// 
-		std::array<int, 2> GetWindowOriginalSize();					        // Get the original window resolution so you can scale elements properly even after resizing or upscaling
+		std::array<float, 2> GetScaleDifference();					        // 
+		std::array<int, 2> GetOriginalSize();					            // Get the original window resolution so you can scale elements properly even after resizing or upscaling
 		void Update();
 		void Draw();
 

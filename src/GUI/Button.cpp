@@ -2,22 +2,22 @@
 
 namespace zap
 {
-	//Button::Button(Window* window,
-	//	const std::array<int, 2>& _windowSize, const std::array<int, 2>& _windowOriginalSize, 
-	//	const char* button_text, const char* const button_text_font_path) :
-	//	Button(window, { -0.5, -0.5, 0.5, 0.5 },
-	//		_windowSize, _windowOriginalSize,
-	//		button_text, button_text_font_path)
-	//{
-	//
-	//}
+	Button::Button(//Window* window,
+		const std::array<int, 2>& _windowSize, const std::array<int, 2>& _windowOriginalSize, 
+		const char* button_text, const char* const button_text_font_path) :
+		Button({ -0.5, -0.5, 0.5, 0.5 },
+			_windowSize, _windowOriginalSize,
+			button_text, button_text_font_path)
+	{
+	
+	}
 
 	Button::Button(
 					const std::array<float, 4>& _bounds,
 					const std::array<int, 2>& _windowSize, const std::array<int, 2>& _windowOriginalSize,
 					const char* button_text,
-					const char* const button_text_font_path)
-		: i_bounds(_bounds), listener(this),
+					const char* const button_text_font_path) :
+		i_bounds(_bounds), listener(this),
 		i_window_original_size(_windowOriginalSize),
 		zap::Mesh(
 		{
@@ -198,7 +198,6 @@ namespace zap
 		if (i_font_missing_flag)
 		{
 			messages::PrintMessage("Cannot use text because the text has got no font path", "Button.cpp/ void zap::Button::UseText(...)", MessageTypes::error);
-
 			return;
 		}
 
@@ -301,13 +300,12 @@ namespace zap
 		SetAttribPointer(0, 3, 5, 0);
 		SetAttribPointer(1, 2, 5, 3);
 		Finish();
-		///*
 
 		if (button_text_font_path.empty())
 			text.LoadFont("C:/Windows/Fonts/msgothic.ttc");
 		else
 			text.LoadFont(button_text_font_path);
-		//text.LoadFont("C:/Windows/Fonts/OLDENGL.TTF");
+
 
 		textureHash = AddTextureFromData(0, 0, 0,
 			GL_RED, zap::TextureFilter::LINEAR,

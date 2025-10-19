@@ -10,7 +10,6 @@
 #include "../Graphics/Mesh.h"
 #include "../GUI/GUIInterfaces.h"
 
-#include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
 #include "TextRenderer.h"
@@ -55,21 +54,17 @@ namespace zap
 				button->i_button_color = button->i_button_default_color;
 				return true;
 			}
-			virtual bool OnPress(double x, double y, zap::Key key) { return false; }
-			virtual bool OnRelease(double x, double y, zap::Key key) { return false; }
+			virtual bool OnPress(double x, double y, int key) { return false; }
+			virtual bool OnRelease(double x, double y, int key) { return false; }
 
 			std::array<float, 4> getArray() { return button->i_bounds; }
 		};
 		EventListener listener;
 	public:
 	public:
-		//Button(Window* window,
-		//	const std::array<int, 2>& _windowSize, const std::array<int, 2>& _windowOriginalSize,
-		//	const char* button_text = nullptr, const char* const button_text_font_path = nullptr);
-		//Button(Window* window,
-		//	const std::array<float, 4>& bounds,
-		//	const std::array<int, 2>& _windowSize, const std::array<int, 2>& _windowOriginalSize,
-		//	char* button_text = nullptr, const char* const button_text_font_path = nullptr);
+		Button(
+			const std::array<int, 2>& _windowSize, const std::array<int, 2>& _windowOriginalSize,
+			const char* button_text = nullptr, const char* const button_text_font_path = nullptr);
 		Button(
 			const std::array<float, 4>& _bounds,
 			const std::array<int, 2>& _windowSize, const std::array<int, 2>& _windowOriginalSize,
@@ -78,8 +73,9 @@ namespace zap
 		~Button();
 		//implement IUIButtonEventListener interface
 		IUIButtonEventListener* GetUIListener() { return &listener; }
+		//end implement IUIButtonEventListener interface
 
-		//no interface methods
+
 		int LoadTexture(unsigned int id, const char* const  path_to_texture, zap::TextureFilter filter, int shader_location = 1);
 		void FinishMesh();
 		void UseTextureShaders(bool state);
@@ -131,11 +127,10 @@ namespace zap
 		glm::vec4 i_button_pressed_color = glm::vec4(1.0f, 1.0f, 1.0f, 0.6f);
 		//this actually to be used in shader
 		glm::vec4 i_button_color = i_button_default_color;
-	private:
-		Window* e_window = nullptr;
+
 	protected:
-		unsigned int i_moveto_uniform_location;
-		unsigned int i_button_color_location;
+		unsigned int i_moveto_uniform_location = -1;
+		unsigned int i_button_color_location = -1;
 
 		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max
 		std::array<int, 2> i_window_original_size {};
@@ -232,8 +227,8 @@ namespace zap
 				buttonText->i_button_color = buttonText->i_button_default_color;
 				return true;
 			}
-			virtual bool OnPress(double x, double y, zap::Key key) { return false; }
-			virtual bool OnRelease(double x, double y, zap::Key key) { return false; }
+			virtual bool OnPress(double x, double y, int key) { return false; }
+			virtual bool OnRelease(double x, double y,int key) { return false; }
 
 			std::array<float, 4> getArray() { return buttonText->i_bounds; }
 		} ;
