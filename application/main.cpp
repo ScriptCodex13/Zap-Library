@@ -9,6 +9,7 @@
 #include <array>
 #include "Cube.h"
 #include "LightCube.h"
+#include <Window/Window.h>
 
 template <typename T> class window_camera_invoker : public zap::util::callback_invoker<T>
 {
@@ -65,10 +66,6 @@ int main()
 
 	//
 
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 
 	//Camera
 
@@ -122,7 +119,7 @@ int main()
 	Cube cube;
 	LightCube lightCube;
 
-	zap::Button button(window, std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, "Button", "C:/Windows/Fonts/arial.ttf");
+	zap::Button button(std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, window.GetSize(), window.GetOriginalSize(), "Button", "C:/Windows/Fonts/arial.ttf");
 	//button.SetGlPosition(std::array<float, 2> {- 0.9f, 0.7f});
 	//button.SetGlPosition(- 0.9f, 0.7f, 0.2, 0.8 );
 	//button.SetGlSize(std::array<float, 2> {0.1f, 0.1f});
@@ -135,17 +132,22 @@ int main()
 	button.SetTextColor(zap::TextColors::PURPLE);
 
 
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	while (window.Open())
 	{
 		// Mouse Input -> Commented out temporary
-		/*std::array<double, 2> newpos = window.GetMousePosition();
+		/*
+		std::array<double, 2> newpos = window.GetMousePosition();
 
 		float xoffset = (newpos[0] - oldPos[0]) * sensitivity;
 		float yoffset = (oldPos[1] - newpos[1]) * sensitivity;
 
 		oldPos = newpos; 
 
-		camera.Rotate(xoffset, yoffset, 0.0f);*/ 
+		camera.Rotate(xoffset, yoffset, 0.0f); //*/ 
 
 		//
 
@@ -191,12 +193,12 @@ int main()
 		text.SetContent(std::to_string(std::round(window.GetFPS())));
 		text.Draw();
 
-		if (button.Pressed(zap::Key::LEFT_MOUSE))
-		{	
-			std::cerr << "Pressed" << std::endl;
-
-			//window.Close();
-		}
+		//if (button.Pressed(zap::Key::LEFT_MOUSE))
+		//{	
+		//	std::cerr << "Pressed" << std::endl;
+		//
+		//	//window.Close();
+		//}
 		glEnable(GL_DEPTH_TEST);
 
 		window.Update();
