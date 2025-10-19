@@ -170,20 +170,50 @@ namespace zap
 		FreeType freetype;
 		unsigned int fontSize = 48; //default font size
 
-		std::vector<unsigned char> texture_data_target;
-		std::vector<unsigned char> texture_data_source;
+		//info for caching
+		//caching chars greatly reduce font data readings
+		//    number of font data readings rapidly approaches to 0
+		//    and practially in most cases drops instantly to 0
+		class CharInfo
+		{
+		public:
+			size_t width = 0, height = 0, top = 0, advance_x = 0;
+			std::vector <unsigned char> buffer{};
+		public:
+			CharInfo() {}
+			CharInfo(size_t _width, size_t _height, size_t _top, size_t _advance_x, unsigned char* buf):
+				width(_width), height(_height), top(_top), advance_x(_advance_x)
+			{
+				buffer.resize(width * height);
+				memcpy(buffer.data(), buf, width * height);
+			}
+		};
+		//cache
+		std::map<wchar_t, CharInfo> cachedChars;
 
+		//Internal buffers helping to minimize number of allocations/reallocations/relocations
+		//These are grow only buffers
+		//texture buffers
+		std::vector<unsigned char> texture_data_target; //used for draw draw text pixel data
+		std::vector<unsigned char> texture_data_source; //used to collect text pixed data
+		//format storage routines buffer
+		std::vector<wchar_t> wprintf_buffer; //used for whide char wchar_t sprintf routines
 
-		std::vector<wchar_t> wprintf_buffer;
+		//caching chars greatly reduce font data readings
+		//    number of font data readings rapidly approaches to 0
+		//    and practially in most cases drops instantly to 0
+		//    Experimentally proven. It does almost nothing during execution, even in case of intensive text update
+		bool drawGlythBitmapFromCache(util::buffer_view2D<unsigned char> target_view, size_t& pen_x, size_t& pen_y, wchar_t c, size_t bufsize);
 
-		void drawString3TIntoBitman(FT_Face ftface, util::buffer_view2D<unsigned char> buf, const wchar_t* str, size_t& outer_width, size_t& pen_y, size_t bufsize, unsigned int fontSizeFT);
-		void drawGlythBitmap(FT_Face ftface, util::buffer_view2D<unsigned char> target_view, size_t& pen_x, size_t& pen_y, wchar_t c, size_t bufsize, unsigned int fontSizeFT);
-		void drawString3TIntoBitmap(const wchar_t* str, unsigned int fontSizeFT, size_t& outer_width, size_t& pen_y);
+		void drawString3TIntoBitman(util::buffer_view2D<unsigned char> buf, const wchar_t* str, size_t& outer_width, size_t& pen_y, size_t bufsize);
+		void drawGlythBitmap(util::buffer_view2D<unsigned char> target_view, size_t& pen_x, size_t& pen_y, wchar_t c, size_t bufsize);
+		void drawString3TIntoBitmap(const wchar_t* str,  size_t& outer_width, size_t& pen_y);
 
 	public:
 		TextureText();
 		TextureText(std::string font_path);
-		void SetFontSize(unsigned int _fontSize) { fontSize = _fontSize; } //set only once
+		//set only once
+		void SetFontSize(unsigned int _fontSize) { FT_Set_Pixel_Sizes(freetype.getFace(), 0, fontSize); fontSize = _fontSize; }
 		void LoadFont(std::string font_path);
 		Texture& print (Texture& texture, wchar_t* const content);
 		size_t printf     (Texture& texture, wchar_t const* const  format, ...);

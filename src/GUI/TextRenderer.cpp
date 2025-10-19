@@ -5,6 +5,8 @@
 #include <cstring>
 #include <cstdarg>
 #include <vector>
+#include <cassert>
+
 
 namespace zap
 {
@@ -250,63 +252,83 @@ namespace zap
 	}
 
 	//TODO: To implement some dynamic approach. The implemented way is fast enough but is too direct.
-	void TextureText::drawGlythBitmap(FT_Face ftface, util::buffer_view2D<unsigned char> target_view, size_t& pen_x, size_t& pen_y, wchar_t c, size_t bufsize, unsigned int fontSizeFT)
+	bool TextureText::drawGlythBitmapFromCache(util::buffer_view2D<unsigned char> target_view, size_t& pen_x, size_t& pen_y, wchar_t c, size_t bufsize)
 	{
-		FT_Load_Char(ftface, c, FT_LOAD_RENDER);
+		if (cachedChars.count(c) == 0)return false;//this char is not cached
+		CharInfo& cached = cachedChars[c];
+		int ytop = pen_y + cached.top;
 
-		FT_GlyphSlot& glyph = ftface->glyph;
-		FT_Bitmap& btm = ftface->glyph->bitmap;
-		FT_Bitmap& pbtm = glyph->bitmap;
-		int ytop = pen_y + (glyph->metrics.vertBearingY >> 6); //Works for MSGothic, doesn't work for Arial
-
-		//Works for Arial, doesn't work for MSGothic
-		if (!FT_HAS_VERTICAL(freetype.getFace()))
+		util::buffer_view2D<unsigned char> char_buf_view(cached.buffer.data(), cached.width);
+		for (size_t i = 0, xi = pen_x; i < cached.width; i++, xi++)
 		{
-			int descent = fontSizeFT - glyph->bitmap_top + (ftface->bbox.yMin >> 6);
-			ytop = pen_y + descent;
-		}
-
-		util::buffer_view2D<unsigned char> char_buf_view (pbtm.buffer, pbtm.width);
-		for (size_t i = 0, xi = pen_x; i < pbtm.width; i++, xi++)
-		{
-			for (size_t j = 0; j < pbtm.rows; j++)
+			for (size_t j = 0; j < cached.height; j++)
 			{
 				char pixel_val = char_buf_view[j][i];
 				//assert(pos < bufsize);
 				target_view[ytop + j][pen_x + i] = pixel_val;
 			}
 		}
+		pen_x += cached.advance_x;
 
-		pen_x += glyph->advance.x >> 6;
+		return true; //this char is fully loaded from cache
+		
+	}
+	void TextureText::drawGlythBitmap(util::buffer_view2D<unsigned char> target_view, size_t& pen_x, size_t& pen_y, wchar_t c, size_t bufsize)
+	{
+		//if char exists in cache, load char from cache and return.
+		//Otherwise put the char in cache and load it from cache anyway
+		if (drawGlythBitmapFromCache(target_view, pen_x, pen_y, c, bufsize))
+			return;
+		std::wcout << "load char " << c << std::endl;
+
+		FT_Face ftface = freetype.getFace();
+		FT_Load_Char(ftface, c, FT_LOAD_RENDER);
+
+		FT_GlyphSlot& glyph = ftface->glyph;
+		FT_Bitmap& btm = ftface->glyph->bitmap;
+		FT_Bitmap& pbtm = glyph->bitmap;
+		size_t top = (glyph->metrics.vertBearingY >> 6); //Works for MSGothic, doesn't work for Arial
+
+		//Works for Arial, doesn't work for MSGothic
+		if (!FT_HAS_VERTICAL(freetype.getFace()))
+			top = fontSize - glyph->bitmap_top + (ftface->bbox.yMin >> 6);
+
+		int ytop = pen_y + top;
+
+		size_t advance_x = glyph->advance.x >> 6;
+		cachedChars.emplace(c, CharInfo { pbtm.width, pbtm.rows, top, advance_x, (unsigned char*)pbtm.buffer }); //do not update it
+
+		//Read it from cache anyway, avoid redundant routines
+		bool ret = drawGlythBitmapFromCache(target_view, pen_x, pen_y, c, bufsize);
+		assert(ret && "character c must exist in ret");
+
 	}
 
-	void TextureText::drawString3TIntoBitman(FT_Face ftface, util::buffer_view2D<unsigned char> buf, const wchar_t* str, size_t& outer_width, size_t& pen_y, size_t bufsize, unsigned int fontSizeFT)
+	void TextureText::drawString3TIntoBitman(util::buffer_view2D<unsigned char> buf, const wchar_t* str, size_t& outer_width, size_t& pen_y, size_t bufsize)
 	{
 		for (int i = 0; i < wcslen(str); i++) //wcslen(str) / 40
-			drawGlythBitmap(ftface, buf, outer_width, pen_y, str[i], bufsize, fontSizeFT);
+			drawGlythBitmap(buf, outer_width, pen_y, str[i], bufsize);
 	}
 
-
-	void TextureText::drawString3TIntoBitmap (const wchar_t* str, unsigned int fontSizeFT, size_t& outer_width, size_t& pen_y)
+	void TextureText::drawString3TIntoBitmap (const wchar_t* str, size_t& outer_width, size_t& pen_y)
 	{
-		size_t src_width = util::align<4>(fontSizeFT * wcslen(str) * 2); //make it twice as wide as widest possible two chars sequence
-		size_t src_size = fontSizeFT * src_width; //2D array, fontSizeFT rows, tg_width columns
+		size_t src_width = util::align<4>(fontSize * wcslen(str) * 2); //make it twice as wide as widest possible two chars sequence
+		size_t src_size = fontSize * src_width; //2D array, fontSizeFT rows, tg_width columns
 
 		//never schrink
 		util::vector_realloc<unsigned char>(texture_data_source, src_size, 0x00);
 
-		size_t tg_width = 0, tg_height = 0;
-		FT_Set_Pixel_Sizes(freetype.getFace (), 0, fontSizeFT);
-		drawString3TIntoBitman(freetype.getFace(), util::buffer_view2D(texture_data_source.data(), src_width), str, tg_width, tg_height, src_size, fontSizeFT);
+		size_t tg_width = 0, tg_height = 0; //read width in drawString3TIntoBitman while it grows
+		drawString3TIntoBitman(util::buffer_view2D(texture_data_source.data(), src_width), str, tg_width, tg_height, src_size);
 
 		tg_width = util::align<4>(tg_width); //realign to 32bit
-		size_t tg_size = tg_width * fontSizeFT; //2D array, fontSizeFT rows, tg_width columns
+		size_t tg_size = tg_width * fontSize; //2D array, fontSizeFT rows, tg_width columns
 		util::vector_realloc<unsigned char> (texture_data_target, tg_size, 0x00);
 
 		unsigned char* psrc = texture_data_source.data(), * tsrc = texture_data_target.data();
 		util::buffer_view2D src_view = util::buffer_view2D(texture_data_source.data(), src_width), 
 			tg_view = util::buffer_view2D(texture_data_target.data(), tg_width);
-		tg_view.reverse_rows_read (src_view, fontSizeFT); //target reads fontSizeFT lines from source
+		tg_view.reverse_rows_read (src_view, fontSize); //target reads fontSizeFT lines from source
 
 		outer_width += tg_width;
 	}
@@ -320,6 +342,7 @@ namespace zap
 	}
 	void TextureText::LoadFont(std::string font_path) {
 		freetype.LoadFont(font_path);
+		SetFontSize(fontSize);
 	}
 
 	////each line[] has cols length
@@ -345,7 +368,7 @@ namespace zap
 	{
 		size_t width = 0, height = 0;
 		//drawString3TIntoBitmap(content.c_str(), fontSize, width, height);
-		drawString3TIntoBitmap(content, fontSize, width, height);
+		drawString3TIntoBitmap(content, width, height);
 		//dumpTextureBuffer(texture_data_target.data(), width, fontSize);
 
 		GLint currentAlignment;
