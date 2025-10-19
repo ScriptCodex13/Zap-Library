@@ -26,7 +26,7 @@ Please do NOT include your new headers here. Put them in the corresponding segme
 #include "Graphics/Graphics.h"
 #include "Util/UtilBind.h"
 #include "Graphics/GlfwUtil.h"
-#include "GUI/GUI.h"
+#include "GUI/GUIControls.h"
 
 //
 

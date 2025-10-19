@@ -1,20 +1,27 @@
 #pragma once
+//can't understand how ATL gets in the way, but this has a bad interference with code analyzis
+#define __ATLCOMCLI_H__
 
 #ifndef WINDOW_H
 #define WINDOW_H
 
 #include "Window.h"
-#include "Input.h"
+#include "../Window/Input.h"
 #include "../Util/Message.h"
+#include "../GUI/GUIInterfaces.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <array>
 #include <chrono>
 #include <thread>
+#include <set>
 
+
+#define nonvirtual
 namespace zap
 {
+
 	/*****************************************************************************/
 
 	//Window
@@ -36,11 +43,11 @@ namespace zap
 		void SetFullscreen(bool state, GLFWmonitor* monitor);               // Changes the fullscreen mode. If sate = true. The provided GLFWmonitor is going to be used 
 		void Maximize(bool update_viewport = true);                         // Maximizes the window
 		void Minimize();                                                    // Minimizes the window
-		float GetFPS();                                                     // Returns the current FPS of the window as a float. ! Cannot be replaced with manual FPS checking if .Draw() is used !
-		float GetDelta();                                                   // Returns the current Frametime as Delta
+		float GetFPS() const;                                               // Returns the current FPS of the window as a float. ! Cannot be replaced with manual FPS checking if .Draw() is used !
+		float GetDelta() const;                                             // Returns the current Frametime as Delta
 		void SetSize(unsigned int new_width, unsigned int new_height);      // Set the new size of the window 
 		std::array<int, 2>& GetSizeRef();
-		std::array<int, 2> GetSize();
+		std::array<int, 2> GetSize() const;
 		void SetPosition(int x, int y);                                     // Set the Position of the window on the screen
 		// void SetFPSLimit(unsigned int limit);                               // Limit the max amount of frame updates per second
 		void SetTitle(const std::string title);                             // Set the title of the window 
@@ -88,11 +95,64 @@ namespace zap
 		float TargetFrameTime;
 		//float FrametimeBuffer = 0;						// Adds the Frametimes together until the TargetTime is reached. 
 
-		float LastTime;
+		double LastTime;
 
 	private:
 		void InternSwapBuffers(); // Better for managing the FPSLimit
+	public:
 
+		class ButtonEventProvider : public IUIButtonEventProvider
+		{
+			Window* windowPtr = nullptr;
+			std::set<IUIButtonEventListener*> handlers;
+			struct { std::array<double, 2> oldGlPos, newGlPos; } buttonListenerPos{ {1000., 1000.}, {1100., 1100.} };
+		public:
+			ButtonEventProvider(Window* _windowPtr): windowPtr(_windowPtr) {}
+			virtual void AddButtonEventHandler (IUIButtonEventListener* handler)
+			{
+				if (handlers.count(handler)) //this is redundant, but added on purpose
+					return; 
+				handlers.insert(handler);
+			}
+			void InvokeDefaultHandler(IUIButtonEventListener* handler)
+			{
+				if (handler->HitTest(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]))
+				{
+					if (!handler->HitTest(buttonListenerPos.oldGlPos[0], buttonListenerPos.oldGlPos[1]))
+						handler->OnMouseEnter(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
+					if (buttonListenerPos.oldGlPos != buttonListenerPos.newGlPos)
+						handler->OnMouseMove(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
+					if (windowPtr->GetInput(zap::Key::LEFT_MOUSE, zap::State::PRESSED))
+					{
+						handler->OnLMouseButtonDown(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
+					}
+				}
+				else
+				{
+					if (handler->HitTest(buttonListenerPos.oldGlPos[0], buttonListenerPos.oldGlPos[1]))
+						handler->OnMouseLeave(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
+				}
+			}
+			//These must be always called
+			virtual void InvokeDefaultButtonHandlers ()
+			{
+				buttonListenerPos.newGlPos = windowPtr->GetMouseGlPosition();
+
+				//logically can be done in any order
+				//so do it in reverse order, less problems with map reallocation and reorganization
+				for (IUIButtonEventListener*  handler : handlers)
+				{
+					InvokeDefaultHandler(handler);
+				}
+				buttonListenerPos.oldGlPos = buttonListenerPos.newGlPos;
+			}
+		};
+		ButtonEventProvider buttonEventProvider;
+		void InvokeHandlers() { buttonEventProvider.InvokeDefaultButtonHandlers(); }
+		void AddButtonEventHandler(IUIButtonEventListener* handler) 
+		{
+			buttonEventProvider.AddButtonEventHandler(handler);
+		}
 	};
 
 

@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "../Graphics/Mesh.h"
+#include "../GUI/GUIInterfaces.h"
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
@@ -54,7 +55,10 @@ namespace zap
 		void SetTextOffset(float x_offset, float y_offset);
 		void SetTextColor(zap::TextColors color);
 		void SetTextColor(float RED, float GREEN, float BLUE);
-		void SetZCoordinate(); // Don't know if you need it
+		//BUTTON is a billboard
+		//   billboards by very definition do not need a Z coordinate
+		//   billboards are not subject to MVP transformations
+		//void SetZCoordinate(); // Don't know if you need it
 
 		void Update();
 		void Draw(int texture_id = 0);
@@ -144,29 +148,12 @@ namespace zap
 		zap::Window* e_window;
 	};
 	
-	class IUIEventListener
-	{
-	public:
-		virtual bool HitTest(double x, double y) = 0;
-		virtual bool OnMouseMove(double x, double y) = 0;
-		virtual bool OnLMouseButtonDown(double x, double y) = 0;
-		virtual bool OnMouseEnter(double x, double y) = 0;
-		virtual bool OnMouseLeave(double x, double y) = 0;
-		virtual bool OnPress(double x, double y, zap::Key key) = 0;
-		virtual bool OnRelease(double x, double y, zap::Key key) = 0;
-		
-	};
-	class IUIComponent
-	{
-	public:
-		virtual IUIEventListener* GetUIListener() = 0;
-	};
 
-	class ButtonText : public zap::Mesh, public IUIComponent
+	class ButtonText : public Mesh, public IUIComponent
 	{
 	protected:
 		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max
-		class EventListener: public IUIEventListener
+		class EventListener: public IUIButtonEventListener
 		{
 			ButtonText* buttonText = nullptr;
 		public:
@@ -176,7 +163,13 @@ namespace zap
 					std::array<double, 2> {x, y},
 					buttonText->i_bounds);
 			}
-			virtual bool OnMouseMove(double x, double y) { return false; }
+			virtual bool OnMouseMove(double x, double y)
+			{
+				std::wcout << "mouse move {" << x << ":" << y << "}" << std::endl;
+				return false;
+			}
+			//when left mosue button is down.
+			//attention!!! This is not the button click and should not trigger any action
 			virtual bool OnLMouseButtonDown(double x, double y) { 
 				buttonText->i_button_color = buttonText->i_button_pressed_color;
 				return false; 
@@ -184,9 +177,11 @@ namespace zap
 			virtual bool OnMouseEnter(double x, double y)
 			{
 				buttonText->i_button_color = buttonText->i_button_hover_color;
+				std::wcout << "mouse enter {" << x << ":" << y << "}" << std::endl;
 				return true;
 			}
 			virtual bool OnMouseLeave(double x, double y) {
+				std::wcout << "mouse leave {" << x << ":" << y << "}" << std::endl;
 				buttonText->i_button_color = buttonText->i_button_default_color;
 				return true;
 			}
@@ -198,7 +193,7 @@ namespace zap
 		EventListener listener;
 
 	public:
-		IUIEventListener* GetUIListener() { return &listener; }
+		IUIButtonEventListener* GetUIListener() { return &listener; }
 
 		ButtonText(const std::string button_text = "", const std::string button_text_font_path = "");
 		ButtonText(const std::array<float, 4>& bounds, const std::string button_text = "", const std::string button_text_font_path = "");
@@ -227,14 +222,13 @@ namespace zap
 		void SetTextOffset(float x_offset, float y_offset);
 		void SetTextColor(zap::TextColors color);
 		void SetTextColor(float RED, float GREEN, float BLUE);
-		void SetZCoordinate(); // Don't know if you need it
 
 		void Update();
 		void Draw(int texture_id = 0);
 
 
 
-		int printf(const std::wstring content, ...);
+		size_t printf(const std::wstring content, ...);
 
 	private: // Private functions
 		std::vector<wchar_t> wprintf_buffer;

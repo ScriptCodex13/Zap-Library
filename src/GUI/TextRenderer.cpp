@@ -23,7 +23,7 @@ namespace zap
 		SetVertexShaderSource(i_vertex_shader_source);
 		SetFragmentShaderSource(i_fragment_shader_source);
 		//
-		auto config = SetAttribPointer(0, 4, 4, 0);
+		AttributeConfig& config = SetAttribPointer(0, 4, 4, 0);
 		//
 		Finish();
 		UseProgram();
@@ -250,7 +250,7 @@ namespace zap
 	}
 
 	//TODO: To implement some dynamic approach. The implemented way is fast enough but is too direct.
-	void TextureText::drawGlythBitmap(FT_Face ftface, util::buffer_view2D<unsigned char> target_view, int& pen_x, int& pen_y, wchar_t c, size_t bufsize, unsigned int fontSizeFT)
+	void TextureText::drawGlythBitmap(FT_Face ftface, util::buffer_view2D<unsigned char> target_view, size_t& pen_x, size_t& pen_y, wchar_t c, size_t bufsize, unsigned int fontSizeFT)
 	{
 		FT_Load_Char(ftface, c, FT_LOAD_RENDER);
 
@@ -267,9 +267,9 @@ namespace zap
 		}
 
 		util::buffer_view2D<unsigned char> char_buf_view (pbtm.buffer, pbtm.width);
-		for (int i = 0, xi = pen_x; i < pbtm.width; i++, xi++)
+		for (size_t i = 0, xi = pen_x; i < pbtm.width; i++, xi++)
 		{
-			for (int j = 0; j < pbtm.rows; j++)
+			for (size_t j = 0; j < pbtm.rows; j++)
 			{
 				char pixel_val = char_buf_view[j][i];
 				//assert(pos < bufsize);
@@ -280,14 +280,14 @@ namespace zap
 		pen_x += glyph->advance.x >> 6;
 	}
 
-	void TextureText::drawString3TIntoBitman(FT_Face ftface, util::buffer_view2D<unsigned char> buf, const wchar_t* str, int& outer_width, int& pen_y, size_t bufsize, unsigned int fontSizeFT)
+	void TextureText::drawString3TIntoBitman(FT_Face ftface, util::buffer_view2D<unsigned char> buf, const wchar_t* str, size_t& outer_width, size_t& pen_y, size_t bufsize, unsigned int fontSizeFT)
 	{
 		for (int i = 0; i < wcslen(str); i++) //wcslen(str) / 40
 			drawGlythBitmap(ftface, buf, outer_width, pen_y, str[i], bufsize, fontSizeFT);
 	}
 
 
-	void TextureText::drawString3TIntoBitmap (const wchar_t* str, unsigned int fontSizeFT, int& outer_width, int& pen_y)
+	void TextureText::drawString3TIntoBitmap (const wchar_t* str, unsigned int fontSizeFT, size_t& outer_width, size_t& pen_y)
 	{
 		size_t src_width = util::align<4>(fontSizeFT * wcslen(str) * 2); //make it twice as wide as widest possible two chars sequence
 		size_t src_size = fontSizeFT * src_width; //2D array, fontSizeFT rows, tg_width columns
@@ -295,7 +295,7 @@ namespace zap
 		//never schrink
 		util::vector_realloc<unsigned char>(texture_data_source, src_size, 0x00);
 
-		int tg_width = 0, tg_height = 0;
+		size_t tg_width = 0, tg_height = 0;
 		FT_Set_Pixel_Sizes(freetype.getFace (), 0, fontSizeFT);
 		drawString3TIntoBitman(freetype.getFace(), util::buffer_view2D(texture_data_source.data(), src_width), str, tg_width, tg_height, src_size, fontSizeFT);
 
@@ -343,7 +343,7 @@ namespace zap
 	//Texture& TextureText::print(Texture& texture, const std::wstring content)
 	Texture& TextureText::print(Texture& texture, wchar_t* const content)
 	{
-		int width = 0, height = 0;
+		size_t width = 0, height = 0;
 		//drawString3TIntoBitmap(content.c_str(), fontSize, width, height);
 		drawString3TIntoBitmap(content, fontSize, width, height);
 		//dumpTextureBuffer(texture_data_target.data(), width, fontSize);
@@ -361,12 +361,12 @@ namespace zap
 	
 	}
 	//uses printf_t, printf_t calls print
-	int TextureText::printf(Texture& texture, wchar_t const* const  format, ...)
+	size_t TextureText::printf(Texture& texture, wchar_t const* const  format, ...)
 	{
 		//evaluate size first
 		va_list arglist;
 		va_start(arglist, format);
-		int result = _vsnwprintf(nullptr, 0, format, arglist);
+		size_t result = _vsnwprintf(nullptr, 0, format, arglist);
 		va_end(arglist);
 
 		//Assure that buffer never schrinks, so reduce the number of allocations
@@ -378,9 +378,9 @@ namespace zap
 		return result;
 	}
 
-	int TextureText::printf_t(Texture& texture, wchar_t* const buffer_out, size_t const buffer_size, wchar_t const* const format, va_list arglist)
+	size_t TextureText::printf_t(Texture& texture, wchar_t* const buffer_out, size_t const buffer_size, wchar_t const* const format, va_list arglist)
 	{
-		int retval = _vswprintf_s_l(buffer_out, buffer_size, format, NULL, arglist);
+		size_t retval = _vswprintf_s_l(buffer_out, buffer_size, format, NULL, arglist);
 		print(texture, buffer_out);
 		return retval;
 	}

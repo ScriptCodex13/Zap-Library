@@ -99,12 +99,19 @@ namespace zap
 		//TODO: Never return reference in a getter
 		//      There are explicit coding conventions for getters and setters
 		//      Getters return by value, setters set the value
-		void UpdateModel(); // For use with camera
-		void SetProjection(glm::mat4 proj);
-		void SetView(glm::mat4 view);
+		void UpdateModel() const; // For use with camera
 		void UpdateModel(glm::mat4 mdl);
+		void UpdateProjection() const;
+		void UpdateProjection(glm::mat4 proj);
+		void UpdateView() const;
+		void UpdateView(glm::mat4 view);
+
 		glm::mat4 GetModel() const;
 		void SetModel(const glm::mat4 &);
+		glm::mat4 Mesh::GetView() const;
+		void Mesh::SetView(const glm::mat4& vw);
+		glm::mat4 Mesh::GetProjection() const;
+		void Mesh::SetProjection(const glm::mat4& pj);
 
 		unsigned int GetVBO() const;
 		void SetVBO(unsigned int&);
@@ -114,26 +121,28 @@ namespace zap
 		void SetEBO(unsigned int&);
 
 		//separate functions will be very useful in more complex logic
-		unsigned int GetUniformLocation(const GLchar* name);
-		unsigned int GetProgram ();
-		void Bind       ();
+		unsigned int GetUniformLocation(const GLchar* name)  const;
+		unsigned int GetProgram () const;
+		void Bind       () const;
 		void Draw       (int vertices_count = 0);
 		void DrawInstanced(unsigned int draw_amount, int vertices_count = 0);
 		// Transform func
 
 	    // private functions for intern use 
-		void UseProgram();
-		void BindVAO();
+		void UseProgram() const;
+		void BindVAO() const;
 
 	protected:
 		struct
 		{
+			glm::mat4 model; // PR
+			glm::mat4 view; // PR
+			glm::mat4 projection; // PR
+			unsigned int model_location = -1;
 			unsigned int view_location = -1;
 			unsigned int projection_location = -1;
-			unsigned int model_location = -1;
 		} mvp;
 	private:
-		glm::mat4 model; // PR
 
 	private:
 		//Sources

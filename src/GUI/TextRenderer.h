@@ -155,8 +155,8 @@ namespace zap
 			i_font = nullptr;
 		}
 
-		FT_Library getLibrary() { return ft_instance; }
-		FT_Face getFace() { return i_font; }
+		FT_Library getLibrary() const { return ft_instance; }
+		FT_Face getFace() const { return i_font; }
 		void LoadFont(const std::string font_path) {
 			FT_Init_FreeType(&ft_instance);
 			FT_New_Face(ft_instance, font_path.c_str(), 0, &i_font);
@@ -176,9 +176,9 @@ namespace zap
 
 		std::vector<wchar_t> wprintf_buffer;
 
-		void drawString3TIntoBitman(FT_Face ftface, util::buffer_view2D<unsigned char> buf, const wchar_t* str, int& outer_width, int& pen_y, size_t bufsize, unsigned int fontSizeFT);
-		void drawGlythBitmap(FT_Face ftface, util::buffer_view2D<unsigned char> target_view, int& pen_x, int& pen_y, wchar_t c, size_t bufsize, unsigned int fontSizeFT);
-		void drawString3TIntoBitmap(const wchar_t* str, unsigned int fontSizeFT, int& outer_width, int& pen_y);
+		void drawString3TIntoBitman(FT_Face ftface, util::buffer_view2D<unsigned char> buf, const wchar_t* str, size_t& outer_width, size_t& pen_y, size_t bufsize, unsigned int fontSizeFT);
+		void drawGlythBitmap(FT_Face ftface, util::buffer_view2D<unsigned char> target_view, size_t& pen_x, size_t& pen_y, wchar_t c, size_t bufsize, unsigned int fontSizeFT);
+		void drawString3TIntoBitmap(const wchar_t* str, unsigned int fontSizeFT, size_t& outer_width, size_t& pen_y);
 
 	public:
 		TextureText();
@@ -186,8 +186,8 @@ namespace zap
 		void SetFontSize(unsigned int _fontSize) { fontSize = _fontSize; } //set only once
 		void LoadFont(std::string font_path);
 		Texture& print (Texture& texture, wchar_t* const content);
-		int printf     (Texture& texture, wchar_t const* const  format, ...);
-		int printf_t   (Texture& texture, wchar_t* const _Buffer, size_t const _BufferCount, wchar_t const* const  format, va_list arglist);
+		size_t printf     (Texture& texture, wchar_t const* const  format, ...);
+		size_t printf_t   (Texture& texture, wchar_t* const _Buffer, size_t const _BufferCount, wchar_t const* const  format, va_list arglist);
 
 	};
 }

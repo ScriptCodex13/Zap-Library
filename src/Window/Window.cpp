@@ -1,14 +1,18 @@
+//can't understand,
+#define __ATLCOMCLI_H__
+
 #include "Window.h"
 #include "stb_image.h"
-#include "../Util//Util.h"
+#include "../Util/Util.h"
 
 namespace zap
 {
+	
 	/***********************************************************************************/
 
 	//Intern callback functions
 	//A null window can't invoke callbacks
-	void internwindowCloseCallback(GLFWwindow* window)
+	static void internwindowCloseCallback(GLFWwindow* window)
 	{
 		glfwSetWindowShouldClose(window, true);
 	}
@@ -19,18 +23,18 @@ namespace zap
 
 	//Viewport function
 	//A null window can't invoke callbacks
-	void i_FramebuffersizeCallback(GLFWwindow* window ,int size_x, int size_y)
+	static void i_FramebuffersizeCallback(GLFWwindow* window ,int size_x, int size_y)
 	{
 		int width, height;
 		glfwGetWindowSize(window, &width, &height);
 		glViewport(0, 0, width, height);
 	}
-
-	void i_nFramebuffersizeCallback(GLFWwindow* window, int size_x, int size_y) {}
+	static void i_nFramebuffersizeCallback(GLFWwindow* window, int size_x, int size_y) {}
 
 	/***********************************************/
 
 	Window::Window(int scale_x, int scale_y, const std::string Title, GLFWmonitor* monitor, GLFWwindow* other_window)
+		: buttonEventProvider(this)
 	{
 
 		intern_window = glfwCreateWindow(scale_x, scale_y, Title.c_str(), monitor, other_window);
@@ -45,8 +49,6 @@ namespace zap
 
 		else currentMonitor = glfwGetWindowMonitor(intern_window); // The same for the other constructor
 
-		
-
 		glfwMakeContextCurrent(intern_window);
 		glfwGetWindowSize(intern_window, &i_window_dimensions[0], &i_window_dimensions[1]);
 		glfwGetWindowPos(intern_window, &pos_x, &pos_y);
@@ -55,7 +57,7 @@ namespace zap
 
 		i_original_resolution = { scale_x, scale_y };
 	}
-	Window::Window(GLFWwindow* extern_window, int base_resolution_x, int base_resolution)
+	Window::Window(GLFWwindow* extern_window, int base_resolution_x, int base_resolution) : buttonEventProvider(this)
 	{
 		intern_window = extern_window;
 
@@ -66,7 +68,8 @@ namespace zap
 		}
 
 		if (glfwGetWindowMonitor(intern_window) == NULL) currentMonitor = glfwGetPrimaryMonitor();
-		
+
+
 		else currentMonitor = glfwGetWindowMonitor(intern_window);
 
 		glfwMakeContextCurrent(intern_window);
@@ -92,7 +95,8 @@ namespace zap
 		{
 			return true;
 		}
-		
+
+
 		return false;
 	}
 
@@ -107,12 +111,14 @@ namespace zap
 
 			glfwSetFramebufferSizeCallback(intern_window, i_nFramebuffersizeCallback);
 		}
-		
+
+
 	}
 
 	void Window::SetViewport(int x, int y, unsigned int new_width, unsigned int new_height)
 	{
-		glViewport(x, y, new_width, new_height);	
+		glViewport(x, y, new_width, new_height);
+
 	}
 
 	void Window::Close()
@@ -130,12 +136,15 @@ namespace zap
 		{
 			glfwSetWindowMonitor(intern_window, NULL, pos_x, pos_y, i_window_dimensions[0], i_window_dimensions[1], current_refresh_rate);
 		}
-			
-		
+
+
+
+
 	}
 
 	void Window::SetFullscreen(bool state, GLFWmonitor* monitor)
-	{	
+	{
+
 		if (state)
 		{
 			glfwSetWindowMonitor(intern_window, monitor, pos_x, pos_y, i_window_dimensions[0], i_window_dimensions[1], current_refresh_rate);
@@ -146,13 +155,15 @@ namespace zap
 			glfwSetWindowMonitor(intern_window, NULL, pos_x, pos_y, i_window_dimensions[0], i_window_dimensions[1], current_refresh_rate);
 		}
 
-		
+
+
 	}
 
 	void Window::Maximize(bool update_viewport)
 	{
 		glfwMaximizeWindow(intern_window);
-		
+
+
 		//Updating the Viewport
 
 		if (update_viewport)
@@ -164,7 +175,8 @@ namespace zap
 		}
 
 		//
-		
+
+
 	}
 
 	void Window::Minimize()
@@ -175,17 +187,19 @@ namespace zap
 	void Window::SetIcon(const std::string path)
 	{
 		windowIcon[0].pixels = stbi_load(path.c_str(), &windowIcon[0].width, &windowIcon[0].height, &icon_channels, 0);
-		
+
+
 		glfwSetWindowIcon(intern_window, 1, windowIcon);
-		
+
+
 	}
 
-	float Window::GetFPS()
+	float Window::GetFPS() const
 	{
 		return current_FPS;
 	}
 
-	float Window::GetDelta()
+	float Window::GetDelta() const
 	{
 		return current_Frametime;
 	}
@@ -199,7 +213,8 @@ namespace zap
 		{
 			glfwSetWindowMonitor(intern_window, currentMonitor, pos_x, pos_y, i_window_dimensions[0], i_window_dimensions[1], current_refresh_rate);
 		}
-		
+
+
 	}
 
 	std::array<int, 2>& Window::GetSizeRef()
@@ -207,7 +222,7 @@ namespace zap
 		return i_window_dimensions;
 	}
 
-	std::array<int, 2> Window::GetSize()
+	std::array<int, 2> Window::GetSize() const
 	{
 		return i_window_dimensions;
 	}
@@ -221,7 +236,8 @@ namespace zap
 		{
 			glfwSetWindowMonitor(intern_window, currentMonitor, pos_x, pos_y, i_window_dimensions[0], i_window_dimensions[1], current_refresh_rate);
 		}
-		
+
+
 	}
 
 	/*void Window::SetFPSLimit(unsigned int limit)
@@ -233,14 +249,19 @@ namespace zap
 
 	void Window::SetTitle( const std::string title)
 	{
-		
+
+
 		glfwSetWindowTitle(intern_window, title.c_str());
-		
+
+
 	}
 
-	bool Window::GetInput (Key key, State state) 
-	{ 
-		return GetInput(static_cast<int>(key), static_cast<int>(state)); 
+	bool Window::GetInput (Key key, State state)
+
+	{
+
+		return GetInput(static_cast<int>(key), static_cast<int>(state));
+
 	}
 	bool Window::GetInput (int key, int state)
 	{
@@ -251,33 +272,45 @@ namespace zap
 
 		return glfwGetKey(intern_window, key) == state;
 	}
-	bool Window::isKeyPressed (Key key) 
-	{ 
-		return isKeyPressed(static_cast<int>(key)); 
+	bool Window::isKeyPressed (Key key)
+
+	{
+
+		return isKeyPressed(static_cast<int>(key));
+
 	}
 	bool Window::isKeyPressed (int key)
 	{
 		return glfwGetKey(intern_window, key) == GLFW_PRESS;
 	}
-	bool Window::isKeyReleased (Key key) 
-	{ 
-		return isKeyReleased(static_cast<int>(key)); 
+	bool Window::isKeyReleased (Key key)
+
+	{
+
+		return isKeyReleased(static_cast<int>(key));
+
 	}
 	bool Window::isKeyReleased (int key)
 	{
 		return glfwGetKey(intern_window, key) == GLFW_RELEASE;
 	}
-	bool Window::isMousePressed (Key key) 
-	{ 
-		return isMousePressed(static_cast<int>(key)); 
+	bool Window::isMousePressed (Key key)
+
+	{
+
+		return isMousePressed(static_cast<int>(key));
+
 	}
 	bool Window::isMousePressed (int key)
 	{
 		return glfwGetMouseButton (intern_window, key) == GLFW_PRESS;
 	}
-	bool Window::isMouseReleased (Key key) 
-	{ 
-		return isMousePressed(static_cast<int>(key)); 
+	bool Window::isMouseReleased (Key key)
+
+	{
+
+		return isMousePressed(static_cast<int>(key));
+
 	}
 	bool Window::isMouseReleased (int key)
 	{
@@ -286,11 +319,13 @@ namespace zap
 
 	std::array<double, 2> Window::GetMousePosition()
 	{
-		std::array<double, 2> pos;
+		std::array<double, 2> pos{};
 
-		
+
+
 		glfwGetCursorPos(intern_window, &pos[0], &pos[1]);
-			
+
+
 		return { pos };
 	}
 	std::array<double, 2> Window::GetMouseGlPosition()
@@ -310,7 +345,8 @@ namespace zap
 		{
 			glfwSetInputMode(intern_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		}
-		
+
+
 	}
 
 	void Window::SetVSync(bool state)
@@ -318,7 +354,8 @@ namespace zap
 		glfwSwapInterval(state);
 	}
 
-	
+
+
 	void Window::SetCursorinCameraMode(bool state)
 	{
 		if (state)
@@ -334,32 +371,28 @@ namespace zap
 		{
 			glfwSetInputMode(intern_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		}
-		
+
+
 	}
 
 	void Window::InternSwapBuffers()
 	{
-	
+
+
 		glfwSwapBuffers(intern_window);
 
 		float CurrentTime = glfwGetTime();
 
 		float Frametime = CurrentTime - LastTime;
-			// float wait_time = (TargetFrameTime - Frametime) * 1000;
+
 
 		LastTime = glfwGetTime();
 
-			// Now use sleep operation with wait time
-
+		// TODO: Something unfinished goes here on.
 		current_FPS = 1.0f / Frametime;
 		current_Frametime = Frametime;
 
 
-
-		//FrametimeBuffer = 0.0f;
-
-		//std::cout << TargetFrameTime << std::endl;
-		
 
 	}
 
@@ -378,7 +411,8 @@ namespace zap
 	void Window::Update()
 	{
 
-		glfwPollEvents();                   // Should be called everytime 
+		glfwPollEvents();                   // Should be called everytime
+
 
 		glfwGetWindowSize(intern_window, &i_window_dimensions[0], &i_window_dimensions[1]);
 

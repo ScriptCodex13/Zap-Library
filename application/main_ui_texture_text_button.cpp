@@ -45,7 +45,7 @@ int main()
 	zap::Enable(zap::Instructions::ANTIALIASING);
 
 
-	zap::ButtonText buttonText(std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, "Button", "C:/Windows/Fonts/arial.ttf");
+	zap::ButtonText buttonText(std::array<float, 4> {-0.5f, 0.6f, 0.2f, 0.8f }, "Button", "C:/Windows/Fonts/arial.ttf");
 
 	//
 	//buttonText.SetTextOffset(0.31f, 0.075f);
@@ -65,33 +65,20 @@ int main()
 	glDisable(GL_DEPTH_TEST);
 
 	window.GetMouseGlPosition();
-	std::array<double, 2> oldGlPos {1000., 1000.}, newGlPos;
-	zap::IUIEventListener* buttonTextUiListener = buttonText.GetUIListener();
-	bool buttonHitPrev = false;
 
+
+	window.AddButtonEventHandler (buttonText.GetUIListener());
 	while (window.Open())
 	{
-		newGlPos = window.GetMouseGlPosition();
-		bool mousePosChanged = newGlPos == oldGlPos;
+		//bool mousePosChanged = newGlPos == oldGlPos;
 		//
 		cbi(window);
 		zap::ClearBuffers();
 		glClear(GL_COLOR_BUFFER_BIT);
 		zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
 
-		if (buttonTextUiListener->HitTest(newGlPos[0], newGlPos[1]))
-		{
-			std::wcout << "Hit Text: " << newGlPos[0] << ":"<< newGlPos[1] << std::endl;
-			buttonTextUiListener->OnMouseEnter(newGlPos[0], newGlPos[1]);
-			if (window.GetInput(zap::Key::LEFT_MOUSE, zap::State::PRESSED))
-			{
-				buttonTextUiListener->OnLMouseButtonDown(newGlPos[0], newGlPos[1]);
-			}
-		}
-		else
-		{
-			buttonTextUiListener->OnMouseLeave(newGlPos[0], newGlPos[1]);
-		}
+		window.InvokeHandlers();
+
 
 		buttonText.Bind();
 
@@ -99,7 +86,6 @@ int main()
 		buttonText.printf(L"Button g %f", glfwGetTime() * glfwGetTime() * glfwGetTime() * glfwGetTime());
 		buttonText.Draw();
 
-		oldGlPos = newGlPos;
 		window.Update();
 		window.Draw();
 	}

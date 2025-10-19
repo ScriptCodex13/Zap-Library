@@ -462,19 +462,19 @@ namespace zap
 	{
 
 	}
-	int ButtonText::printf(const std::wstring content, ...)
+	size_t ButtonText::printf(const std::wstring content, ...)
 	{
 		//evaluate size first
 		va_list arglist;
 		va_start(arglist, content);
-		int result = _vsnwprintf(nullptr, 0, content.c_str(), arglist);
+		size_t result = _vsnwprintf(nullptr, 0, content.c_str(), arglist);
 		va_end(arglist);
 
-		zap::util::vector_realloc <wchar_t>(wprintf_buffer, result + 1);
+		zap::util::vector_realloc<wchar_t>(wprintf_buffer, result + 1);
 
 		//print text
 		va_start(arglist, content);
-		int retval = text.printf_t(this->GetTextureByHash(textureHash), wprintf_buffer.data(), result + 1, content.c_str(), arglist);
+		size_t retval = text.printf_t(this->GetTextureByHash(textureHash), wprintf_buffer.data(), result + 1, content.c_str(), arglist);
 		va_end(arglist);
 		return retval;
 	}

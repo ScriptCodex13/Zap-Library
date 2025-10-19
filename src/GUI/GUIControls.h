@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef GUI_H
-#define GUI_H
+#ifndef GUI_CONTROLS_H
+#define GUI_CONTROLS_H
 
 /*/ 
 

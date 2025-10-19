@@ -298,32 +298,63 @@ namespace zap
 		return indices;
 	}
 
-	void Mesh::UpdateModel()
+	void Mesh::UpdateModel() const
 	{
-		glUniformMatrix4fv(mvp.model_location, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(mvp.model_location, 1, GL_FALSE, glm::value_ptr(mvp.model));
 	}
-	void Mesh::SetProjection(glm::mat4 proj)
-	{
-		glUniformMatrix4fv(mvp.projection_location, 1, GL_FALSE, glm::value_ptr(proj));
-	}
-	void Mesh::SetView(glm::mat4 view)
-	{
-		glUniformMatrix4fv(mvp.view_location, 1, GL_FALSE, glm::value_ptr(view));
-	}
-
 	void Mesh::UpdateModel(glm::mat4 mdl) 
 	{
-		glUniformMatrix4fv(mvp.model_location, 1, GL_FALSE, glm::value_ptr(mdl));
+		SetModel(mdl);
+		UpdateModel();
 	}
+
+	void Mesh::UpdateProjection() const
+	{
+		glUniformMatrix4fv(mvp.projection_location, 1, GL_FALSE, glm::value_ptr(mvp.projection));
+	}
+
+	void Mesh::UpdateProjection(glm::mat4 proj)
+	{
+		SetProjection (mvp.projection);
+		UpdateProjection();
+	}
+	void Mesh::UpdateView() const
+	{
+		glUniformMatrix4fv(mvp.view_location, 1, GL_FALSE, glm::value_ptr(mvp.view));
+	}
+	void Mesh::UpdateView(glm::mat4 view)
+	{
+		SetView(view);// glUniformMatrix4fv(mvp.view_location, 1, GL_FALSE, glm::value_ptr(view));
+		UpdateView();
+	}
+
 
 	glm::mat4 Mesh::GetModel() const
 	{
-		return model;
+		return mvp.model;
 	}
 	void Mesh::SetModel(const glm::mat4& mdl)
 	{
-		model = mdl;
+		mvp.model = mdl;
 	}
+
+	glm::mat4 Mesh::GetView() const
+	{
+		return mvp.view;
+	}
+	void Mesh::SetView(const glm::mat4& vw)
+	{
+		mvp.view = vw;
+	}
+	glm::mat4 Mesh::GetProjection() const
+	{
+		return mvp.projection;
+	}
+	void Mesh::SetProjection(const glm::mat4& pj)
+	{
+		mvp.view = pj;
+	}
+
 
 	unsigned int Mesh::GetVBO() const
 	{
@@ -352,25 +383,25 @@ namespace zap
 		EBO = EB;
 	}
 
-	unsigned int Mesh::GetUniformLocation(const GLchar* name)
+	unsigned int Mesh::GetUniformLocation(const GLchar* name) const
 	{ 
 		return glGetUniformLocation(shaderProgram, name);
 	}
-	unsigned int Mesh::GetProgram()
+	unsigned int Mesh::GetProgram() const
 	{ 
 		return shaderProgram;
 	}
-	void Mesh::UseProgram()
+	void Mesh::UseProgram() const
 	{ 
 		glUseProgram (shaderProgram); 
 	}
 
-	void Mesh::BindVAO()
+	void Mesh::BindVAO() const
 	{ 
 		glBindVertexArray (VAO); 
 	}
 
-	void Mesh::Bind()
+	void Mesh::Bind() const
 	{
 		UseProgram ();
 		BindVAO ();
