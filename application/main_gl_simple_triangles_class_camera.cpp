@@ -169,8 +169,8 @@ int main()
 		//update uniforms
 
 		mesh.UpdateModel(glm::rotate(glm::mat4(1.0), (float)0, glm::vec3(0.0f, 1.0f, 0.0f)));
-		mesh.SetView(camera.GetView());
-		mesh.SetProjection(camera.GetProjection());
+		mesh.UpdateView(camera.GetView());
+		mesh.UpdateProjection(camera.GetProjection());
 
 		mesh.Draw();
 		//here draw ends

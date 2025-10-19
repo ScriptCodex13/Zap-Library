@@ -12,8 +12,9 @@ LightCube::LightCube() : zap::Mesh(zap::standard_cube::standardcubevertices) {
 }
 void LightCube::MoveUpdate(const zap::SceneCamera& camera, glm::vec3 lightPos, double time)
 {
-	SetProjection(camera.GetProjection());
-	SetView(camera.GetView());
+	UpdateProjection(camera.GetProjection());
+	UpdateView(camera.GetView());
 	glm::mat4 model = glm::translate(glm::mat4(1.0f), lightPos);
 	UpdateModel(glm::scale(model, glm::vec3(0.2f)));
+
 }

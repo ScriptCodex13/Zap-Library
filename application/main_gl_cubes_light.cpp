@@ -75,7 +75,7 @@ int main()
 	camera.ActivateRotationLimit(true);
 
 
-	window.Maximize();
+	//window.Maximize();
 	window.SetCursorinCameraMode(true);
 	//
 
@@ -100,32 +100,30 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	while (window.Open())
 	{
+		glClear(GL_DEPTH_BUFFER_BIT); // PR
+		zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
+		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
+
 		// Mouse Input
 		std::array<double, 2> newpos = window.GetMousePosition();
-
 		float xoffset = (newpos[0] - oldPos[0]) * sensitivity;
 		float yoffset = (oldPos[1] - newpos[1]) * sensitivity;
-
 		oldPos = newpos; 
+		// End mouse input
 
 		camera.Rotate(xoffset, yoffset, 0.0f);
-
-		//
 
 		//Input
 		//All the window/camera magic happens here
 		cbi(window, camera);
 		//
-		camera.UpdateRotation(); //Make camera up to most recent maths
-
-		//Start rendering here
-		glClear(GL_DEPTH_BUFFER_BIT); // PR
-		zap::ClearBackground(0.2f, 0.3f, 0.3f, 1.0f);
 
 		//Draw cubes here
 		//Cube
 
-		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
+		camera.UpdateRotation(); //Make camera up to most recent maths
+
+		//Start rendering here
 
 
 		cube.Bind();

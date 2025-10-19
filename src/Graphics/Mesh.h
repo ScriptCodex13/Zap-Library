@@ -99,27 +99,30 @@ namespace zap
 		//TODO: Never return reference in a getter
 		//      There are explicit coding conventions for getters and setters
 		//      Getters return by value, setters set the value
-		void UpdateModel() const; // For use with camera
-		void UpdateModel(glm::mat4 mdl);
-		void UpdateProjection() const;
-		void UpdateProjection(glm::mat4 proj);
-		void UpdateView() const;
-		void UpdateView(glm::mat4 view);
+		// For use with camera
+		void UpdateModel() const;              //do not set but update in shader
+		void UpdateModel(glm::mat4 mdl);       //set and update in shader
+		void UpdateProjection() const;         //do not set but update in shader
+		void UpdateProjection(glm::mat4 proj); //set and update in shader
+		void UpdateView() const;               //do not set but update in shader
+		void UpdateView(glm::mat4 view);       //set and update in shader
 
 		glm::mat4 GetModel() const;
+		glm::mat4 GetView() const;
+		glm::mat4 GetProjection() const;
+	private: //TODO: may be still useful in child classes
 		void SetModel(const glm::mat4 &);
-		glm::mat4 Mesh::GetView() const;
-		void Mesh::SetView(const glm::mat4& vw);
-		glm::mat4 Mesh::GetProjection() const;
-		void Mesh::SetProjection(const glm::mat4& pj);
-
+		void SetView(const glm::mat4& vw);
+		void SetProjection(const glm::mat4& pj);
+	public:
 		unsigned int GetVBO() const;
-		void SetVBO(unsigned int&);
 		unsigned int GetVAO() const;
-		void SetVAO(unsigned int&);
 		unsigned int GetEBO() const;
+	private: //TODO: may be still useful in child classes 
+		void SetVBO(unsigned int&);
+		void SetVAO(unsigned int&);
 		void SetEBO(unsigned int&);
-
+	public:
 		//separate functions will be very useful in more complex logic
 		unsigned int GetUniformLocation(const GLchar* name)  const;
 		unsigned int GetProgram () const;

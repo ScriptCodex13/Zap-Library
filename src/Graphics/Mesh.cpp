@@ -247,12 +247,7 @@ namespace zap
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
-	void Mesh::UpdateMvpLocations()
-	{
-		mvp.view_location = GetUniformLocation("view");
-		mvp.projection_location = GetUniformLocation("projection");
-		mvp.model_location = GetUniformLocation("model");
-	}
+
 	void Mesh::Finish()
 	{
 		/******************************************************************************************/
@@ -274,6 +269,7 @@ namespace zap
 		//}
 		/*****************************************************************************************/
 	}
+
 
 	bool Mesh::BindTextureByHash(unsigned int hash)
 	{
@@ -308,16 +304,6 @@ namespace zap
 		UpdateModel();
 	}
 
-	void Mesh::UpdateProjection() const
-	{
-		glUniformMatrix4fv(mvp.projection_location, 1, GL_FALSE, glm::value_ptr(mvp.projection));
-	}
-
-	void Mesh::UpdateProjection(glm::mat4 proj)
-	{
-		SetProjection (mvp.projection);
-		UpdateProjection();
-	}
 	void Mesh::UpdateView() const
 	{
 		glUniformMatrix4fv(mvp.view_location, 1, GL_FALSE, glm::value_ptr(mvp.view));
@@ -328,31 +314,34 @@ namespace zap
 		UpdateView();
 	}
 
+	void Mesh::UpdateProjection() const
+	{
+		glUniformMatrix4fv(mvp.projection_location, 1, GL_FALSE, glm::value_ptr(mvp.projection));
+	}
+	void Mesh::UpdateProjection(glm::mat4 proj)
+	{
+		SetProjection (proj);
+		UpdateProjection();
+	}
+	
 
-	glm::mat4 Mesh::GetModel() const
+	//better place here
+	void Mesh::UpdateMvpLocations()
 	{
-		return mvp.model;
+		mvp.model_location      = GetUniformLocation("model");
+		mvp.view_location       = GetUniformLocation("view");
+		mvp.projection_location = GetUniformLocation("projection");
 	}
-	void Mesh::SetModel(const glm::mat4& mdl)
-	{
-		mvp.model = mdl;
-	}
+	glm::mat4 Mesh::GetModel() const { return mvp.model; }
+	void Mesh::SetModel(const glm::mat4& mdl) { mvp.model = mdl; }
 
-	glm::mat4 Mesh::GetView() const
-	{
-		return mvp.view;
-	}
-	void Mesh::SetView(const glm::mat4& vw)
-	{
-		mvp.view = vw;
-	}
-	glm::mat4 Mesh::GetProjection() const
-	{
-		return mvp.projection;
-	}
+	glm::mat4 Mesh::GetView() const { return mvp.view; }
+	void Mesh::SetView(const glm::mat4& vw) { mvp.view = vw; }
+
+	glm::mat4 Mesh::GetProjection() const { return mvp.projection; }
 	void Mesh::SetProjection(const glm::mat4& pj)
 	{
-		mvp.view = pj;
+		mvp.projection = pj;
 	}
 
 

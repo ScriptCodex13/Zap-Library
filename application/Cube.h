@@ -70,10 +70,10 @@ private:
 
 public:
 	Cube();
-	void setColorUniform3f(float r, float g, float b);
-	void setLightColorUniform3f(float r, float g, float b);
-	void setLightPositionUniform3fv(glm::vec3 pos);
-	void setViewPositionUniform3fv(glm::vec3 pos);
+	void setColorUniform3f(float r, float g, float b)  const;
+	void setLightColorUniform3f(float r, float g, float b)  const;
+	void setLightPositionUniform3fv(glm::vec3 pos)  const;
+	void setViewPositionUniform3fv(glm::vec3 pos)  const;
 	void MoveUpdate(const zap::SceneCamera& camera, glm::vec3 lightPos, double time);
 
 };
