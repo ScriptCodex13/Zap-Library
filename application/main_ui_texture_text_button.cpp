@@ -41,8 +41,8 @@ int main()
 
 	window.UpdateViewport(true);
 	window.SetVSync(true);
-	zap::Enable(zap::Instructions::DEPTH);
-	zap::Enable(zap::Instructions::ANTIALIASING);
+	zap::Enable(zap::Instruction::DEPTH);
+	zap::Enable(zap::Instruction::ANTIALIASING);
 
 
 	zap::ButtonText buttonText(std::array<float, 4> {-0.5f, 0.6f, 0.2f, 0.8f }, "Button", "C:/Windows/Fonts/arial.ttf");

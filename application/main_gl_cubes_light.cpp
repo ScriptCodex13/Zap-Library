@@ -96,8 +96,8 @@ int main()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	zap::Enable(zap::Instructions::DEPTH);
-	zap::Enable(zap::Instructions::ANTIALIASING);
+	zap::Enable(zap::Instruction::DEPTH);
+	zap::Enable(zap::Instruction::ANTIALIASING);
 	glEnable(GL_DEPTH_TEST);
 	while (window.Open())
 	{

@@ -41,8 +41,8 @@ int main()
 
 	window.UpdateViewport(true);
 	window.SetVSync(true);
-	zap::Enable(zap::Instructions::DEPTH);
-	zap::Enable(zap::Instructions::ANTIALIASING);
+	zap::Enable(zap::Instruction::DEPTH);
+	zap::Enable(zap::Instruction::ANTIALIASING);
 
 
 	zap::Button button(std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, window.GetSize(), window.GetOriginalSize(),

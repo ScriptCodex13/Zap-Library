@@ -39,8 +39,8 @@ int main()
 	window.UpdateViewport(true);
 	window.SetVSync(true);
 
-	zap::Enable(zap::Instructions::DEPTH);
-	zap::Enable(zap::Instructions::ANTIALIASING);
+	zap::Enable(zap::Instruction::DEPTH);
+	zap::Enable(zap::Instruction::ANTIALIASING);
 
 	zap::Text text("C:/Windows/Fonts/arial.ttf", "Text", window.GetSize()); // It's better to use GetSize here
 

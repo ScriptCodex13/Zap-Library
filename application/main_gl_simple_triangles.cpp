@@ -91,7 +91,7 @@ int main()
 		//there starts general draw
 		glClear(GL_DEPTH_BUFFER_BIT); // PR
 		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
-		zap::ClearBackground(zap::BackgroundColors::BLACK);
+		zap::ClearBackground(zap::BackgroundColor::BLACK);
 
 
 		//here starts current VAO for current program draw
