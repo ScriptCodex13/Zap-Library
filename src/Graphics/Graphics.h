@@ -4,10 +4,8 @@
 #define GRAPHICS_H
 
 /*/
-
 This is the Graphics segment's main header
-
-/*/
+//*/
 
 #include "Mesh.h"
 #include "SceneCamera.h"
