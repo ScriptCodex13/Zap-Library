@@ -11,21 +11,17 @@ Please do NOT include your new headers here. Put them in the corresponding segme
 /*/
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
 // Additional includes
 
 #include "Util/Message.h"
-#include "Window/Input.h"
 
 //
 
 // Library includes
 
-#include "Window/Window.h"
 #include "Graphics/Graphics.h"
 #include "Util/UtilBind.h"
-#include "Graphics/GlfwUtil.h"
 #include "GUI/GUIControls.h"
 
 //
