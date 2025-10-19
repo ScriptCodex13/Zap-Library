@@ -2,43 +2,43 @@
 
 namespace zap
 {
-	void ClearBackground(BackgroundColors color)  // Clears the backround with a predefined color 
+	void ClearBackground(BackgroundColor color)  // Clears the backround with a predefined color 
 	{
 		switch (color)
 		{
-		case BackgroundColors::WHITE:
+		case BackgroundColor::WHITE:
 			glClearColor(1.0f, 1.0f, 1.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
 			return;
-		case BackgroundColors::BLACK:
+		case BackgroundColor::BLACK:
 			glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
 			return;
-		case BackgroundColors::RED:
+		case BackgroundColor::RED:
 			glClearColor(1.0f, 0.0f, 0.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
 			return;
-		case BackgroundColors::GREEN:
+		case BackgroundColor::GREEN:
 			glClearColor(0.0f, 1.0f, 0.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
 			return;
-		case BackgroundColors::BLUE:
+		case BackgroundColor::BLUE:
 			glClearColor(0.0f, 0.0f, 1.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
 			return;
-		case BackgroundColors::YELLOW:
+		case BackgroundColor::YELLOW:
 			glClearColor(1.0f, 0.9f, 0.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
 			return;
-		case BackgroundColors::ORANGE:
+		case BackgroundColor::ORANGE:
 			glClearColor(1.0f, 0.7f, 0.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
 			return;
-		case BackgroundColors::PURPLE:
+		case BackgroundColor::PURPLE:
 			glClearColor(0.8f, 0.0f, 1.0f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
 			return;
-		case BackgroundColors::PINK:
+		case BackgroundColor::PINK:
 			glClearColor(1.0f, 0.0f, 0.5f, 0.5f);
 			glClear(GL_COLOR_BUFFER_BIT);
 			return;
@@ -78,12 +78,12 @@ namespace zap
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void Enable(Instructions instruction)
+	void Enable(Instruction instruction)
 	{
 		glEnable((GLenum)instruction);
 	}
 
-	void Disable(Instructions instruction)
+	void Disable(Instruction instruction)
 	{
 		glDisable((GLenum)instruction);
 	}
