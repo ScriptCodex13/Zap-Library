@@ -45,7 +45,8 @@ int main()
 	zap::Enable(zap::Instructions::ANTIALIASING);
 
 
-	zap::Button button(&window, std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, "Button", "C:/Windows/Fonts/arial.ttf");
+	zap::Button button(std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, window.GetSize(), window.GetWindowOriginalSize(),
+		"Button", "C:/Windows/Fonts/arial.ttf");
 
 	button.SetTextOffset(0.31f, 0.075f);
 	button.SetTextColor(zap::TextColors::RED);
@@ -80,17 +81,6 @@ int main()
 		window.InvokeHandlers();
 		
 		button.Draw();
-
-		//if (button.Hovered())
-		//	button.SetColor(1.0f, 1.0f, 1.0f, 0.8f);
-		//else
-		//	button.SetColor(1.0f, 1.0f, 1.0f, 1.0f);
-		//
-		//if (button.Pressed(zap::Key::LEFT_MOUSE))
-		//{
-		//	button.SetColor(1.0f, 1.0f, 1.0f, 0.6f);
-		//}
-
 
 		window.Update();
 		window.Draw();

@@ -33,11 +33,11 @@ namespace zap
 
 	/***********************************************/
 
-	Window::Window(int scale_x, int scale_y, const std::string Title, GLFWmonitor* monitor, GLFWwindow* other_window)
+	Window::Window(int size_x, int size_y, const std::string Title, GLFWmonitor* monitor, GLFWwindow* other_window)
 		: buttonEventProvider(this)
 	{
 
-		intern_window = glfwCreateWindow(scale_x, scale_y, Title.c_str(), monitor, other_window);
+		intern_window = glfwCreateWindow(size_x, size_y, Title.c_str(), monitor, other_window);
 
 		if (!intern_window)
 		{
@@ -55,9 +55,9 @@ namespace zap
 
 		TargetFrameTime = std::round(1.0f / FPSLimit * 100000) / 100000;
 
-		i_original_resolution = { scale_x, scale_y };
+		i_original_size = { size_x, size_y };
 	}
-	Window::Window(GLFWwindow* extern_window, int base_resolution_x, int base_resolution) : buttonEventProvider(this)
+	Window::Window(GLFWwindow* extern_window, int base_size_x, int base_size_y) : buttonEventProvider(this)
 	{
 		intern_window = extern_window;
 
@@ -76,7 +76,7 @@ namespace zap
 		glfwGetWindowSize(intern_window, &i_window_dimensions[0], &i_window_dimensions[1]);
 		glfwGetWindowPos(intern_window, &pos_x, &pos_y);
 
-		i_original_resolution = { base_resolution_x, base_resolution };
+		i_original_size = { base_size_x, base_size_y };
 	}
 
 	Window::~Window()
@@ -400,12 +400,12 @@ namespace zap
 
 	std::array<float, 2> Window::GetWindowScaleDifference()
 	{
-		return { (float)i_original_resolution[0] / GetSize()[0], (float)i_original_resolution[1] / GetSize()[1] };
+		return { (float)i_original_size[0] / GetSize()[0], (float)i_original_size[1] / GetSize()[1] };
 	}
 
-	std::array<int, 2> Window::GetOriginalWindowResolution()
+	std::array<int, 2> Window::GetWindowOriginalSize()
 	{
-		return { i_original_resolution };
+		return  i_original_size ;
 	}
 
 	void Window::Update()

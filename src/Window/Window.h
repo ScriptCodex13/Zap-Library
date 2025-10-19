@@ -68,7 +68,7 @@ namespace zap
 		void SetVSync(bool state);
 		void SetCursorinCameraMode(bool state);
 		std::array<float, 2> GetWindowScaleDifference();					// 
-		std::array<int, 2> GetOriginalWindowResolution();					// Get the original window resolution so you can scale elements properly even after resizing or upscaling
+		std::array<int, 2> GetWindowOriginalSize();					        // Get the original window resolution so you can scale elements properly even after resizing or upscaling
 		void Update();
 		void Draw();
 
@@ -80,7 +80,7 @@ namespace zap
 		int pos_y  = 0;
 		int current_refresh_rate = 1000000000;
 
-		std::array<int, 2> i_original_resolution;
+		std::array<int, 2> i_original_size;
 
 	private: //Icon
 		GLFWimage windowIcon[1];

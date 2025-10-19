@@ -63,9 +63,18 @@ namespace zap
 		EventListener listener;
 	public:
 	public:
-		Button(Window* window, const std::string button_text = "", const std::string button_text_font_path = "");
-		Button(Window* window, const std::array<float, 4>& bounds, const std::string button_text = "", const std::string button_text_font_path = "");
-		
+		//Button(Window* window,
+		//	const std::array<int, 2>& _windowSize, const std::array<int, 2>& _windowOriginalSize,
+		//	const char* button_text = nullptr, const char* const button_text_font_path = nullptr);
+		//Button(Window* window,
+		//	const std::array<float, 4>& bounds,
+		//	const std::array<int, 2>& _windowSize, const std::array<int, 2>& _windowOriginalSize,
+		//	char* button_text = nullptr, const char* const button_text_font_path = nullptr);
+		Button(
+			const std::array<float, 4>& _bounds,
+			const std::array<int, 2>& _windowSize, const std::array<int, 2>& _windowOriginalSize,
+			const char* button_text = nullptr, 
+			const char* const button_text_font_path = nullptr);
 		~Button();
 		//implement IUIButtonEventListener interface
 		IUIButtonEventListener* GetUIListener() { return &listener; }
@@ -101,7 +110,7 @@ namespace zap
 		//   billboards are not subject to MVP transformations
 		//void SetZCoordinate(); // Don't know if you need it
 
-		void Update(std::array<int, 2> windowResolution);
+		void Update();
 		void Draw(int texture_id = 0);
 
 	private:
@@ -129,6 +138,7 @@ namespace zap
 		unsigned int i_button_color_location;
 
 		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max
+		std::array<int, 2> i_window_original_size {};
 
 		const char* i_vertex_shader_source =
 			R"glsl(
