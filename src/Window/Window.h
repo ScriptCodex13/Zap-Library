@@ -186,6 +186,7 @@ namespace zap
 				return window->GetOriginalSize();
 			}
 		};
+
 		ButtonContainer buttonContainer;
 		ButtonContainer* getButtonContainer() { return &buttonContainer; }
 		void InvokeHandlers() { buttonEventProvider.InvokeDefaultHandlers(); }
