@@ -30,6 +30,8 @@ namespace zap
 		virtual bool OnRelease(double x, double y, int key) { return false; }
 
 		virtual bool OnLMouseClick(double x, double y) { return false; }
+		virtual bool OnRMouseClick(double x, double y) { return false; }
+		virtual bool OnMMouseClick(double x, double y) { return false; }
 	};
 	class Button : zap::Mesh, public IUIComponent
 	{

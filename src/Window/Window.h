@@ -127,13 +127,6 @@ namespace zap
 						handler->OnMouseLeave(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
 				}
 			}
-			void InvokeMouseLClickHandler(IUIButtonEventListener* handler)
-			{
-				if (handler->HitTest(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]))
-				{
-					handler->OnLMouseClick(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
-				}
-			}
 
 			//implement interface methods
 			virtual void AddButtonEventHandler(IUIButtonEventListener* handler)
@@ -155,8 +148,28 @@ namespace zap
 			virtual void InvokeLMouseClickHandlers()
 			{
 				for (IUIButtonEventListener* handler : handlers)
-					InvokeMouseLClickHandler(handler);
+					if (handler->HitTest(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]))
+					{
+						handler->OnLMouseClick(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
+					}
 			}
+			virtual void InvokeRMouseClickHandlers()
+			{
+				for (IUIButtonEventListener* handler : handlers)
+					if (handler->HitTest(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]))
+					{
+						handler->OnRMouseClick(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
+					}
+			}
+			virtual void InvokeMMouseClickHandlers()
+			{
+				for (IUIButtonEventListener* handler : handlers)
+					if (handler->HitTest(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]))
+					{
+						handler->OnMMouseClick(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
+					}
+			}
+
 		};
 		ButtonEventProvider buttonEventProvider;
 		class ButtonContainer: public IUIButtonContainer
@@ -177,6 +190,8 @@ namespace zap
 		ButtonContainer* getButtonContainer() { return &buttonContainer; }
 		void InvokeHandlers() { buttonEventProvider.InvokeDefaultHandlers(); }
 		void InvokeLMouseClickHandlers() { buttonEventProvider.InvokeLMouseClickHandlers(); }
+		void InvokeRMouseClickHandlers() { buttonEventProvider.InvokeRMouseClickHandlers(); }
+		void InvokeMMouseClickHandlers() { buttonEventProvider.InvokeMMouseClickHandlers(); }
 		void AddButtonEventHandler(IUIButtonEventListener* handler) 
 		{
 			buttonEventProvider.AddButtonEventHandler(handler);
@@ -208,9 +223,11 @@ namespace zap
 					//std::cout << "lbutton release" << std::endl;
 					break;
 				case GLFW_MOUSE_BUTTON_RIGHT:
+					buttonEventProvider.InvokeRMouseClickHandlers();
 					std::cout << "rbutton release" << std::endl;
 					break;
 				case GLFW_MOUSE_BUTTON_MIDDLE:
+					buttonEventProvider.InvokeMMouseClickHandlers();
 					std::cout << "mbutton release" << std::endl;
 					break;
 				}

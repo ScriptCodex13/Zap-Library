@@ -32,7 +32,8 @@ namespace zap
 		virtual bool OnRelease(double x, double y, int key) = 0;
 
 		virtual bool OnLMouseClick(double x, double y) = 0;
-
+		virtual bool OnRMouseClick(double x, double y) = 0;
+		virtual bool OnMMouseClick(double x, double y) = 0;
 	};
 
 	//fancy type alias for IUIButtonEventListener
@@ -53,6 +54,8 @@ namespace zap
 		//virtual void RevokeButtonEventHandler(IUIButtonEventListener* handler) = 0;
 		virtual void InvokeDefaultHandlers() = 0;
 		virtual void InvokeLMouseClickHandlers() = 0;
+		virtual void InvokeRMouseClickHandlers() = 0;
+		virtual void InvokeMMouseClickHandlers() = 0;
 
 	};
 }
