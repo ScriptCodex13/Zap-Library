@@ -111,69 +111,17 @@ namespace zap
 			std::set<IUIButtonEventListener*> handlers;
 			struct { std::array<double, 2> oldGlPos, newGlPos; } buttonListenerPos{ {1000., 1000.}, {1100., 1100.} };
 		public:
-			ButtonEventProvider(Window* _windowPtr): windowPtr(_windowPtr) {}
-			void InvokeDefaultHandler(IUIButtonEventListener* handler)
-			{
-				if (handler->HitTest(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]))
-				{
-					if (!handler->HitTest(buttonListenerPos.oldGlPos[0], buttonListenerPos.oldGlPos[1]))
-						handler->OnMouseEnter(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
-					if (buttonListenerPos.oldGlPos != buttonListenerPos.newGlPos)
-						handler->OnMouseMove(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
-					if (windowPtr->GetInput(zap::Key::LEFT_MOUSE, zap::State::PRESSED))
-					{
-						handler->OnLMouseButtonDown(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
-					} else
-						handler->OnLMouseButtonUp(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
-				}
-				else
-				{
-					if (handler->HitTest(buttonListenerPos.oldGlPos[0], buttonListenerPos.oldGlPos[1]))
-						handler->OnMouseLeave(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
-				}
-			}
+			ButtonEventProvider(Window* _windowPtr);
+			void InvokeDefaultHandler(IUIButtonEventListener* handler);
 
 			//implement interface methods
-			virtual void AddButtonEventHandler(IUIButtonEventListener* handler)
-			{
-				if (handlers.count(handler)) //this is redundant, but added on purpose
-					return;
-				handlers.insert(handler);
-			}
+			virtual void AddButtonEventHandler(IUIButtonEventListener* handler);
 			//These must be always called
-			virtual void InvokeDefaultHandlers ()
-			{
-				buttonListenerPos.newGlPos = windowPtr->GetMouseGlPosition();
-				//logically can be done in any order
-				//so do it in reverse order, less problems with map reallocation and reorganization
-				for (IUIButtonEventListener*  handler : handlers)
-					InvokeDefaultHandler(handler);
-				buttonListenerPos.oldGlPos = buttonListenerPos.newGlPos;
-			}
-			virtual void InvokeLMouseClickHandlers()
-			{
-				for (IUIButtonEventListener* handler : handlers)
-					if (handler->HitTest(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]))
-					{
-						handler->OnLMouseClick(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
-					}
-			}
-			virtual void InvokeRMouseClickHandlers()
-			{
-				for (IUIButtonEventListener* handler : handlers)
-					if (handler->HitTest(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]))
-					{
-						handler->OnRMouseClick(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
-					}
-			}
-			virtual void InvokeMMouseClickHandlers()
-			{
-				for (IUIButtonEventListener* handler : handlers)
-					if (handler->HitTest(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]))
-					{
-						handler->OnMMouseClick(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
-					}
-			}
+			virtual void InvokeDefaultHandlers();
+			//These are called on mouse click events
+			virtual void InvokeLMouseClickHandlers();
+			virtual void InvokeRMouseClickHandlers();
+			virtual void InvokeMMouseClickHandlers();
 
 		};
 		ButtonEventProvider buttonEventProvider;
@@ -181,65 +129,19 @@ namespace zap
 		{
 			Window* window;
 		public:
-			ButtonContainer(Window* pwindow) :window(pwindow) {}
-			virtual std::array<int, 2> GetClientSize()
-			{
-				return window->GetSize();
-			}
-			virtual std::array<int, 2> GetClientOriginalSize()
-			{
-				return window->GetOriginalSize();
-			}
+			ButtonContainer(Window* pwindow);
+			virtual std::array<int, 2> GetClientSize();
+			virtual std::array<int, 2> GetClientOriginalSize();
 		};
 
 		ButtonContainer buttonContainer;
-		ButtonContainer* getButtonContainer() { return &buttonContainer; }
-		void InvokeHandlers() { buttonEventProvider.InvokeDefaultHandlers(); }
-		void InvokeLMouseClickHandlers() { buttonEventProvider.InvokeLMouseClickHandlers(); }
-		void InvokeRMouseClickHandlers() { buttonEventProvider.InvokeRMouseClickHandlers(); }
-		void InvokeMMouseClickHandlers() { buttonEventProvider.InvokeMMouseClickHandlers(); }
-		void AddButtonEventHandler(IUIButtonEventListener* handler) 
-		{
-			buttonEventProvider.AddButtonEventHandler(handler);
-			handler->SetContainer(&buttonContainer);
-		}
-		void InvokeClickHandlers(int button, int action, int mods)
-		{
-			switch (action)
-			{
-			case GLFW_PRESS:
-				switch (button)
-				{
-				case GLFW_MOUSE_BUTTON_LEFT:
-					//std::cout << "lbutton click" << std::endl;
-					break;
-				case GLFW_MOUSE_BUTTON_RIGHT:
-					std::cout << "rbutton click" << std::endl;
-					break;
-				case GLFW_MOUSE_BUTTON_MIDDLE:
-					std::cout << "mbutton click" << std::endl;
-					break;
-				}
-				break;
-			case GLFW_RELEASE:
-				switch (button)
-				{
-				case GLFW_MOUSE_BUTTON_LEFT:
-					buttonEventProvider.InvokeLMouseClickHandlers();
-					//std::cout << "lbutton release" << std::endl;
-					break;
-				case GLFW_MOUSE_BUTTON_RIGHT:
-					buttonEventProvider.InvokeRMouseClickHandlers();
-					std::cout << "rbutton release" << std::endl;
-					break;
-				case GLFW_MOUSE_BUTTON_MIDDLE:
-					buttonEventProvider.InvokeMMouseClickHandlers();
-					std::cout << "mbutton release" << std::endl;
-					break;
-				}
-				break;
-			}
-		}
+		IUIButtonContainer* getButtonContainer();
+		void InvokeHandlers();
+		void InvokeLMouseClickHandlers();
+		void InvokeRMouseClickHandlers();
+		void InvokeMMouseClickHandlers();
+		void AddButtonEventHandler(IUIButtonEventListener* handler);
+		void InvokeClickHandlers(int button, int action, int mods);
 	};
 
 

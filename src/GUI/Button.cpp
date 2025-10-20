@@ -7,6 +7,50 @@
 
 namespace zap
 {
+
+
+	void Button::EventListener::SetContainer(IUIButtonContainer* container) { pButtonContainer = container; }
+	IUIButtonContainer* Button::EventListener::GetContainer() { return pButtonContainer; }
+	bool Button::EventListener::HitTest(double x, double y) {
+		return zap::util::between(
+			std::array<double, 2> {x, y},
+			button->i_bounds);
+	}
+	bool Button::EventListener::OnMouseMove(double x, double y)
+	{
+		std::wcout << "mouse move {" << x << ":" << y << "}" << std::endl;
+		return false;
+	}
+	//when left mosue button is down.
+	//attention!!! This is not the button click and should not trigger any action
+	bool Button::EventListener::OnLMouseButtonDown(double x, double y) {
+		button->i_button_color = button->i_button_pressed_color;
+		return false;
+	}
+	bool Button::EventListener::OnLMouseButtonUp(double x, double y) {
+		button->i_button_color = button->i_button_hover_color;
+		return false;
+	}
+	bool Button::EventListener::OnMouseEnter(double x, double y)
+	{
+		button->i_button_color = button->i_button_hover_color;
+		std::wcout << "mouse enter {" << x << ":" << y << "}" << std::endl;
+		return true;
+	}
+	bool Button::EventListener::OnMouseLeave(double x, double y) {
+		std::wcout << "mouse leave {" << x << ":" << y << "}" << std::endl;
+		button->i_button_color = button->i_button_default_color;
+		return true;
+	}
+	bool Button::EventListener::OnPress(double x, double y, int key) { return false; }
+	bool Button::EventListener::OnRelease(double x, double y, int key) { return false; }
+
+	bool Button::EventListener::OnLMouseClick(double x, double y) {
+		std::wcout << "mouse click {" << x << ":" << y << "}" << std::endl;
+		return true;
+	}
+
+
 	Button::Button(
 		IUIButtonContainer* buttonContainer,
 		const char* button_text, const char* const button_text_font_path) :
@@ -274,7 +318,45 @@ namespace zap
 	}
 
 
+	void ButtonText::EventListener::SetContainer(IUIButtonContainer* container) { pButtonContainer = container; }
+	bool ButtonText::EventListener::HitTest(double x, double y) {
+		return zap::util::between(
+			std::array<double, 2> {x, y},
+			buttonText->i_bounds);
+	}
+	bool ButtonText::EventListener::OnMouseMove(double x, double y)
+	{
+		std::wcout << "mouse move {" << x << ":" << y << "}" << std::endl;
+		return false;
+	}
+	//when left mosue button is down.
+	//attention!!! This is not the button click and should not trigger any action
+	bool ButtonText::EventListener::OnLMouseButtonDown(double x, double y) {
+		buttonText->i_button_color = buttonText->i_button_pressed_color;
+		return false;
+	}
+	bool ButtonText::EventListener::OnLMouseButtonUp(double x, double y) {
+		buttonText->i_button_color = buttonText->i_button_hover_color;
+		return false;
+	}
+	bool ButtonText::EventListener::OnMouseEnter(double x, double y)
+	{
+		buttonText->i_button_color = buttonText->i_button_hover_color;
+		std::wcout << "mouse enter {" << x << ":" << y << "}" << std::endl;
+		return true;
+	}
+	bool ButtonText::EventListener::OnMouseLeave(double x, double y) {
+		std::wcout << "mouse leave {" << x << ":" << y << "}" << std::endl;
+		buttonText->i_button_color = buttonText->i_button_default_color;
+		return true;
+	}
+	bool ButtonText::EventListener::OnPress(double x, double y, int key) { return false; }
+	bool ButtonText::EventListener::OnRelease(double x, double y, int key) { return false; }
 
+	bool ButtonText::EventListener::OnLMouseClick(double x, double y) {
+		std::wcout << "mouse click {" << x << ":" << y << "}" << std::endl;
+		return true;
+	}
 
 	ButtonText::ButtonText(const std::string button_text, const std::string button_text_font_path) :
 		ButtonText({ -0.5, -0.5, 0.5, 0.5 }, button_text, button_text_font_path)

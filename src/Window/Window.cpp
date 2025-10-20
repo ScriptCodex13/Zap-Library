@@ -455,6 +455,131 @@ namespace zap
 	}
 
 
+
+	Window::ButtonEventProvider::ButtonEventProvider(Window* _windowPtr) : windowPtr(_windowPtr) {}
+	void Window::ButtonEventProvider::InvokeDefaultHandler(IUIButtonEventListener* handler)
+	{
+		if (handler->HitTest(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]))
+		{
+			if (!handler->HitTest(buttonListenerPos.oldGlPos[0], buttonListenerPos.oldGlPos[1]))
+				handler->OnMouseEnter(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
+			if (buttonListenerPos.oldGlPos != buttonListenerPos.newGlPos)
+				handler->OnMouseMove(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
+			if (windowPtr->GetInput(zap::Key::LEFT_MOUSE, zap::State::PRESSED))
+			{
+				handler->OnLMouseButtonDown(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
+			}
+			else
+				handler->OnLMouseButtonUp(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
+		}
+		else
+		{
+			if (handler->HitTest(buttonListenerPos.oldGlPos[0], buttonListenerPos.oldGlPos[1]))
+				handler->OnMouseLeave(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
+		}
+	}
+
+	//implement interface methods
+	void Window::ButtonEventProvider::AddButtonEventHandler(IUIButtonEventListener* handler)
+	{
+		if (handlers.count(handler)) //this is redundant, but added on purpose
+			return;
+		handlers.insert(handler);
+	}
+	//These must be always called
+	void Window::ButtonEventProvider::InvokeDefaultHandlers()
+	{
+		buttonListenerPos.newGlPos = windowPtr->GetMouseGlPosition();
+		//logically can be done in any order
+		//so do it in reverse order, less problems with map reallocation and reorganization
+		for (IUIButtonEventListener* handler : handlers)
+			InvokeDefaultHandler(handler);
+		buttonListenerPos.oldGlPos = buttonListenerPos.newGlPos;
+	}
+	void Window::ButtonEventProvider::InvokeLMouseClickHandlers()
+	{
+		for (IUIButtonEventListener* handler : handlers)
+			if (handler->HitTest(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]))
+			{
+				handler->OnLMouseClick(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
+			}
+	}
+	void Window::ButtonEventProvider::InvokeRMouseClickHandlers()
+	{
+		for (IUIButtonEventListener* handler : handlers)
+			if (handler->HitTest(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]))
+			{
+				handler->OnRMouseClick(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
+			}
+	}
+	void Window::ButtonEventProvider::InvokeMMouseClickHandlers()
+	{
+		for (IUIButtonEventListener* handler : handlers)
+			if (handler->HitTest(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]))
+			{
+				handler->OnMMouseClick(buttonListenerPos.newGlPos[0], buttonListenerPos.newGlPos[1]);
+			}
+	}
+
+
+	Window::ButtonContainer::ButtonContainer(Window* pwindow) :window(pwindow) {}
+	std::array<int, 2> Window::ButtonContainer::GetClientSize()
+	{
+		return window->GetSize();
+	}
+	std::array<int, 2> Window::ButtonContainer::GetClientOriginalSize()
+	{
+		return window->GetOriginalSize();
+	}
+
+	IUIButtonContainer* Window::getButtonContainer() { return &buttonContainer; }
+	void Window::InvokeHandlers() { buttonEventProvider.InvokeDefaultHandlers(); }
+	void Window::InvokeLMouseClickHandlers() { buttonEventProvider.InvokeLMouseClickHandlers(); }
+	void Window::InvokeRMouseClickHandlers() { buttonEventProvider.InvokeRMouseClickHandlers(); }
+	void Window::InvokeMMouseClickHandlers() { buttonEventProvider.InvokeMMouseClickHandlers(); }
+	void Window::AddButtonEventHandler(IUIButtonEventListener* handler)
+	{
+		buttonEventProvider.AddButtonEventHandler(handler);
+		handler->SetContainer(&buttonContainer);
+	}
+	void Window::InvokeClickHandlers(int button, int action, int mods)
+	{
+		switch (action)
+		{
+		case GLFW_PRESS:
+			switch (button)
+			{
+			case GLFW_MOUSE_BUTTON_LEFT:
+				//std::cout << "lbutton click" << std::endl;
+				break;
+			case GLFW_MOUSE_BUTTON_RIGHT:
+				std::cout << "rbutton click" << std::endl;
+				break;
+			case GLFW_MOUSE_BUTTON_MIDDLE:
+				std::cout << "mbutton click" << std::endl;
+				break;
+			}
+			break;
+		case GLFW_RELEASE:
+			switch (button)
+			{
+			case GLFW_MOUSE_BUTTON_LEFT:
+				buttonEventProvider.InvokeLMouseClickHandlers();
+				//std::cout << "lbutton release" << std::endl;
+				break;
+			case GLFW_MOUSE_BUTTON_RIGHT:
+				buttonEventProvider.InvokeRMouseClickHandlers();
+				std::cout << "rbutton release" << std::endl;
+				break;
+			case GLFW_MOUSE_BUTTON_MIDDLE:
+				buttonEventProvider.InvokeMMouseClickHandlers();
+				std::cout << "mbutton release" << std::endl;
+				break;
+			}
+			break;
+		}
+	}
+
 }
 
 

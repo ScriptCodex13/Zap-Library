@@ -43,48 +43,22 @@ namespace zap
 			IUIButtonContainer* pButtonContainer = nullptr;
 		public:
 			EventListener(Button* btptr) : button(btptr) {}
-			virtual void SetContainer(IUIButtonContainer* container) { pButtonContainer = container; }
-			IUIButtonContainer* GetContainer() { return pButtonContainer; }
-			virtual bool HitTest(double x, double y) {
-				return zap::util::between(
-					std::array<double, 2> {x, y},
-					button->i_bounds);
-			}
-			virtual bool OnMouseMove(double x, double y)
-			{
-				std::wcout << "mouse move {" << x << ":" << y << "}" << std::endl;
-				return false;
-			}
+			virtual void SetContainer(IUIButtonContainer* container);
+			IUIButtonContainer* GetContainer();
+			virtual bool HitTest(double x, double y);
+			virtual bool OnMouseMove(double x, double y);
 			//when left mosue button is down.
 			//attention!!! This is not the button click and should not trigger any action
-			virtual bool OnLMouseButtonDown(double x, double y) {
-				button->i_button_color = button->i_button_pressed_color;
-				return false;
-			}
-			virtual bool OnLMouseButtonUp(double x, double y) {
-				button->i_button_color = button->i_button_hover_color;
-				return false;
-			}
-			virtual bool OnMouseEnter(double x, double y)
-			{
-				button->i_button_color = button->i_button_hover_color;
-				std::wcout << "mouse enter {" << x << ":" << y << "}" << std::endl;
-				return true;
-			}
-			virtual bool OnMouseLeave(double x, double y) {
-				std::wcout << "mouse leave {" << x << ":" << y << "}" << std::endl;
-				button->i_button_color = button->i_button_default_color;
-				return true;
-			}
-			virtual bool OnPress(double x, double y, int key) { return false; }
-			virtual bool OnRelease(double x, double y, int key) { return false; }
+			virtual bool OnLMouseButtonDown(double x, double y);
+			virtual bool OnLMouseButtonUp(double x, double y);
+			virtual bool OnMouseEnter(double x, double y);
+			virtual bool OnMouseLeave(double x, double y);
+			virtual bool OnPress(double x, double y, int key);
+			virtual bool OnRelease(double x, double y, int key);
 
-			virtual bool OnLMouseClick(double x, double y) {
-				std::wcout << "mouse click {" << x << ":" << y << "}" << std::endl;
-				return true;
-			}
+			//This is the right click handler
+			virtual bool OnLMouseClick(double x, double y);
 
-			//std::array<float, 4> getArray() { return button->i_bounds; }
 		};
 		EventListener listener;
 	public:
@@ -224,46 +198,20 @@ namespace zap
 			IUIButtonContainer* pButtonContainer = nullptr;
 		public:
 			EventListener(ButtonText* btptr) : buttonText(btptr) {}
-			virtual void SetContainer(IUIButtonContainer* container) { pButtonContainer = container; }
-			virtual bool HitTest(double x, double y) {
-				return zap::util::between(
-					std::array<double, 2> {x, y},
-					buttonText->i_bounds);
-			}
-			virtual bool OnMouseMove(double x, double y)
-			{
-				std::wcout << "mouse move {" << x << ":" << y << "}" << std::endl;
-				return false;
-			}
+			virtual void SetContainer(IUIButtonContainer* container);
+			virtual bool HitTest(double x, double y);
+			virtual bool OnMouseMove(double x, double y);
 			//when left mosue button is down.
 			//attention!!! This is not the button click and should not trigger any action
-			virtual bool OnLMouseButtonDown(double x, double y) { 
-				buttonText->i_button_color = buttonText->i_button_pressed_color;
-				return false; 
-			}
-			virtual bool OnLMouseButtonUp(double x, double y) {
-				buttonText->i_button_color = buttonText->i_button_hover_color;
-				return false;
-			}
-			virtual bool OnMouseEnter(double x, double y)
-			{
-				buttonText->i_button_color = buttonText->i_button_hover_color;
-				std::wcout << "mouse enter {" << x << ":" << y << "}" << std::endl;
-				return true;
-			}
-			virtual bool OnMouseLeave(double x, double y) {
-				std::wcout << "mouse leave {" << x << ":" << y << "}" << std::endl;
-				buttonText->i_button_color = buttonText->i_button_default_color;
-				return true;
-			}
-			virtual bool OnPress(double x, double y, int key) { return false; }
-			virtual bool OnRelease(double x, double y,int key) { return false; }
+			virtual bool OnLMouseButtonDown(double x, double y);
+			virtual bool OnLMouseButtonUp(double x, double y);
+			virtual bool OnMouseEnter(double x, double y);
+			virtual bool OnMouseLeave(double x, double y);
+			virtual bool OnPress(double x, double y, int key);
+			virtual bool OnRelease(double x, double y, int key);
 
-			virtual bool OnLMouseClick(double x, double y) {
-				std::wcout << "mouse click {" << x << ":" << y << "}" << std::endl;
-				return true;
-			}
-			std::array<float, 4> getArray() { return buttonText->i_bounds; }
+			virtual bool OnLMouseClick(double x, double y);
+			//std::array<float, 4> getArray() { return buttonText->i_bounds; }
 		} ;
 		EventListener listener;
 
