@@ -1,4 +1,8 @@
 #include "TextRenderer.h"
+#ifdef GLFW_PLATFORM_ENABLED
+#error GLFW platform dependency introduced in Render
+#endif
+
 #include <fstream>
 
 #include <cstdio>

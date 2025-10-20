@@ -1,7 +1,7 @@
-//can't understand,
-#define __ATLCOMCLI_H__
-
 #include "Window.h"
+//do not produce code if platform is disabled
+#ifdef GLFW_PLATFORM_ENABLED
+
 #include "stb_image.h"
 #include "../Util/Util.h"
 
@@ -460,3 +460,4 @@ namespace zap
 
 
 
+#endif

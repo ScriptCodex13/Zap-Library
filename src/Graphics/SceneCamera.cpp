@@ -1,7 +1,10 @@
 #include "SceneCamera.h"
 
+#ifdef GLFW_PLATFORM_ENABLED
+#error GLFW platform dependency introduced in Render
+#endif
 //TODO: consider removing iostream header
-#include <iostream>
+//#include <iostream>
 
 namespace zap
 {

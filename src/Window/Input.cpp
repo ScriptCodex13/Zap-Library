@@ -1,4 +1,6 @@
 #include "Input.h"
+//do not produce code if platform is disabled
+#ifdef GLFW_PLATFORM_ENABLED
 #include "../Util/Message.h"
 
 #include <iostream>
@@ -61,3 +63,4 @@ namespace zap
 
 	
 }
+#endif

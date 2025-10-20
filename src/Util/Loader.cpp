@@ -1,5 +1,9 @@
 #include "Loader.h"
 
+#ifdef GLFW_PLATFORM_ENABLED
+#error GLFW platform dependency introduced in Render
+#endif
+
 namespace zap
 {
 	std::string LoadShaderSourcefromFile(const std::string filepath)

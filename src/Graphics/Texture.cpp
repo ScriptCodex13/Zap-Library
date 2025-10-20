@@ -1,4 +1,8 @@
 #include "Texture.h"
+#ifdef GLFW_PLATFORM_ENABLED
+#error GLFW platform dependency introduced in Render
+#endif
+
 #include "../Util/Util.h"
 #include <stb_image.h>
 

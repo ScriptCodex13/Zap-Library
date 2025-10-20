@@ -1,4 +1,9 @@
 #include "Resources.h"
+
+//do not produce code if platform is disabled
+#ifdef GLFW_PLATFORM_ENABLED
+
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "../util/Message.h"
@@ -100,3 +105,4 @@ namespace zap
 }
 
 
+#endif

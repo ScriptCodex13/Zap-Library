@@ -1,5 +1,9 @@
 #include "RenderCalls.h"
 
+#ifdef GLFW_PLATFORM_ENABLED
+#error GLFW platform dependency introduced in Render
+#endif
+
 namespace zap
 {
 	void ClearBackground(BackgroundColor color)  // Clears the backround with a predefined color 

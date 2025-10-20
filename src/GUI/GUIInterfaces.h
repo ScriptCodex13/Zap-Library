@@ -18,7 +18,14 @@ namespace zap
 	};
 
 	//for controls
-	class IUIButtonEventListener
+	class IUIMouseClickListener
+	{
+	public:
+		virtual bool OnLMouseClick(double x, double y) = 0;
+		virtual bool OnRMouseClick(double x, double y) = 0;
+		virtual bool OnMMouseClick(double x, double y) = 0;
+	};
+	class IUIButtonEventListener : public IUIMouseClickListener
 	{
 	public:
 		virtual void SetContainer(IUIButtonContainer* container) = 0;
@@ -30,10 +37,6 @@ namespace zap
 		virtual bool OnMouseLeave(double x, double y) = 0;
 		virtual bool OnPress(double x, double y, int key) = 0;
 		virtual bool OnRelease(double x, double y, int key) = 0;
-
-		virtual bool OnLMouseClick(double x, double y) = 0;
-		virtual bool OnRMouseClick(double x, double y) = 0;
-		virtual bool OnMMouseClick(double x, double y) = 0;
 	};
 
 	//fancy type alias for IUIButtonEventListener

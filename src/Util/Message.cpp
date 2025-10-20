@@ -1,5 +1,11 @@
 #include "Message.h"
 
+
+#ifdef GLFW_PLATFORM_ENABLED
+#error GLFW platform dependency introduced in Render
+#endif
+
+
 namespace messages
 {
 	std::ostream& PrintMessage(const std::string& message_content, const std::string& File /*which File sends the Message ?*/, MessageTypes Type, bool show_file)

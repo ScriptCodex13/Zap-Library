@@ -1,5 +1,10 @@
 #include "Button.h"
 
+#ifdef GLFW_PLATFORM_ENABLED
+#error GLFW platform dependency introduced in Render
+#endif
+
+
 namespace zap
 {
 	Button::Button(

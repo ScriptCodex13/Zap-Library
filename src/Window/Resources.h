@@ -1,5 +1,13 @@
 #pragma once
 
+//gives the way to be platform neutral
+#ifndef GLFW_PLATFORM_DISABLED
+#define GLFW_PLATFORM_ENABLED
+#endif
+
+//check there is GLFW platform added
+#ifdef GLFW_PLATFORM_ENABLED
+
 #ifndef RESOURCES_H
 #define RESOURCES_H
 
@@ -21,3 +29,6 @@ namespace zap
 }
 
 #endif
+
+
+#endif //GLFW_PLATFORM_ENABLED

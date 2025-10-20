@@ -1,11 +1,16 @@
 #pragma once
-//can't understand how ATL gets in the way, but this has a bad interference with code analyzis
-#define __ATLCOMCLI_H__
+
+//gives the way to be platform neutral
+#ifndef GLFW_PLATFORM_DISABLED
+#define GLFW_PLATFORM_ENABLED
+#endif
+
+//check there is GLFW platform added
+#ifdef GLFW_PLATFORM_ENABLED
 
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "Window.h"
 #include "../Window/Resources.h"
 
 #include "../Window/Input.h"
@@ -241,10 +246,10 @@ namespace zap
 }
 
 
-#endif
+#endif //WINDOW_H
 
 
-
+#endif //GLFW_PLATFORM_ENABLED
 
 
 

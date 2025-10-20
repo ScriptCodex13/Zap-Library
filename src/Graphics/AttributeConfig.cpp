@@ -1,5 +1,10 @@
 #include "AttributeConfig.h"
 
+#ifdef GLFW_PLATFORM_ENABLED
+#error GLFW platform dependency introduced in Render
+#endif
+
+
 namespace zap
 {
 	AttributeConfig::AttributeConfig(int shader_location, int value_ct, unsigned int data_stride, unsigned int start_pos, bool instanced) :
