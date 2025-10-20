@@ -16,9 +16,24 @@
 
 namespace zap
 {
+	//this is the stub, to prevent cascade interface changes whenever listener is engineered
+	class IUIButtonEventListenerImpl : public IUIButtonEventListener
+	{
+		virtual void SetContainer(IUIButtonContainer* container) { }
+		virtual bool HitTest(double x, double y) { return false; }
+		virtual bool OnMouseMove(double x, double y) { return false; }
+		virtual bool OnLMouseButtonDown(double x, double y) { return false; }
+		virtual bool OnLMouseButtonUp(double x, double y) { return false; }
+		virtual bool OnMouseEnter(double x, double y) { return false; }
+		virtual bool OnMouseLeave(double x, double y) { return false; }
+		virtual bool OnPress(double x, double y, int key) { return false; }
+		virtual bool OnRelease(double x, double y, int key) { return false; }
+
+		virtual bool OnLMouseClick(double x, double y) { return false; }
+	};
 	class Button : zap::Mesh, public IUIComponent
 	{
-		class EventListener : public IUIButtonEventListener
+		class EventListener : public IUIButtonEventListenerImpl
 		{
 			Button* button = nullptr;
 			IUIButtonContainer* pButtonContainer = nullptr;
@@ -59,6 +74,11 @@ namespace zap
 			}
 			virtual bool OnPress(double x, double y, int key) { return false; }
 			virtual bool OnRelease(double x, double y, int key) { return false; }
+
+			virtual bool OnLMouseClick(double x, double y) {
+				std::wcout << "mouse click {" << x << ":" << y << "}" << std::endl;
+				return true;
+			}
 
 			//std::array<float, 4> getArray() { return button->i_bounds; }
 		};
@@ -194,7 +214,7 @@ namespace zap
 	{
 	protected:
 		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max
-		class EventListener: public IUIButtonEventListener
+		class EventListener: public IUIButtonEventListenerImpl
 		{
 			ButtonText* buttonText = nullptr;
 			IUIButtonContainer* pButtonContainer = nullptr;
@@ -235,6 +255,10 @@ namespace zap
 			virtual bool OnPress(double x, double y, int key) { return false; }
 			virtual bool OnRelease(double x, double y,int key) { return false; }
 
+			virtual bool OnLMouseClick(double x, double y) {
+				std::wcout << "mouse click {" << x << ":" << y << "}" << std::endl;
+				return true;
+			}
 			std::array<float, 4> getArray() { return buttonText->i_bounds; }
 		} ;
 		EventListener listener;

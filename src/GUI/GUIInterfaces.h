@@ -31,7 +31,10 @@ namespace zap
 		virtual bool OnPress(double x, double y, int key) = 0;
 		virtual bool OnRelease(double x, double y, int key) = 0;
 
+		virtual bool OnLMouseClick(double x, double y) = 0;
+
 	};
+
 	//fancy type alias for IUIButtonEventListener
 	using IUIButtonEventHandler = IUIButtonEventListener;
 	class IUIComponent
@@ -48,7 +51,8 @@ namespace zap
 		virtual void AddButtonEventHandler(IUIButtonEventListener* handler) = 0;
 		//TODO: Is revoke really needed?
 		//virtual void RevokeButtonEventHandler(IUIButtonEventListener* handler) = 0;
-		virtual void InvokeDefaultButtonHandlers() = 0;
+		virtual void InvokeDefaultHandlers() = 0;
+		virtual void InvokeLMouseClickHandlers() = 0;
 
 	};
 }

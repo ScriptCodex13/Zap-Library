@@ -31,23 +31,47 @@ namespace zap
 	}
 	static void i_nFramebuffersizeCallback(GLFWwindow* window, int size_x, int size_y) {}
 
+	void MouseClickCallback(GLFWwindow* window, int button, int action, int mods)
+	{
+		Window* pWindow = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+		pWindow->InvokeClickHandlers(button, action, mods);
+		//if (action == GLFW_PRESS)
+		//{
+		//	switch (button)
+		//	{
+		//	case GLFW_MOUSE_BUTTON_LEFT:
+		//		std::cout << "lbutton click" << std::endl;
+		//		break;
+		//	case GLFW_MOUSE_BUTTON_RIGHT:
+		//		std::cout << "rbutton click" << std::endl;
+		//		break;
+		//	case GLFW_MOUSE_BUTTON_MIDDLE:
+		//		std::cout << "mbutton click" << std::endl;
+		//		break;
+		//	}
+		//}
+	}
 	/***********************************************/
 
-	Window::Window(int size_x, int size_y, const std::string Title, GLFWmonitor* monitor, GLFWwindow* other_window)
+	Window::Window(
+		int size_x, int size_y, const std::string Title,
+		GLFWmonitor* monitor, GLFWwindow* other_window)
 		: buttonEventProvider(this), buttonContainer(this)
 	{
 
 		intern_window = glfwCreateWindow(size_x, size_y, Title.c_str(), monitor, other_window);
 
+		glfwSetWindowUserPointer(intern_window, this);
 		if (!intern_window)
 		{
 			messages::PrintMessage("Failed to create window", "Window.cpp/Window::Window(...)", MessageTypes::fatal_error);
 			ZAP_INTERRUPT_FATAL_ERROR;
 		}
 
-		if (monitor == NULL) currentMonitor = glfwGetPrimaryMonitor();
-
-		else currentMonitor = glfwGetWindowMonitor(intern_window); // The same for the other constructor
+		if (monitor == NULL)
+			currentMonitor = glfwGetPrimaryMonitor();
+		else
+			currentMonitor = glfwGetWindowMonitor(intern_window); // The same for the other constructor
 
 		glfwMakeContextCurrent(intern_window);
 		glfwGetWindowSize(intern_window, &i_window_dimensions[0], &i_window_dimensions[1]);
@@ -56,8 +80,11 @@ namespace zap
 		TargetFrameTime = std::round(1.0f / FPSLimit * 100000) / 100000;
 
 		i_original_size = { size_x, size_y };
+		glfwSetMouseButtonCallback(intern_window, MouseClickCallback);
 	}
-	Window::Window(GLFWwindow* extern_window, int base_size_x, int base_size_y) : 
+	Window::Window(
+		GLFWwindow* extern_window, 
+		int base_size_x, int base_size_y) : 
 		buttonEventProvider(this), buttonContainer(this)
 	{
 		intern_window = extern_window;
@@ -67,17 +94,19 @@ namespace zap
 			messages::PrintMessage("Failed to get extern window", "Window.cpp/zap::Window::Window(...)", MessageTypes::fatal_error);
 			ZAP_INTERRUPT_FATAL_ERROR;
 		}
+		glfwSetWindowUserPointer(intern_window, this);
 
-		if (glfwGetWindowMonitor(intern_window) == NULL) currentMonitor = glfwGetPrimaryMonitor();
-
-
-		else currentMonitor = glfwGetWindowMonitor(intern_window);
+		if (glfwGetWindowMonitor(intern_window) == NULL)
+			currentMonitor = glfwGetPrimaryMonitor();
+		else 
+			currentMonitor = glfwGetWindowMonitor(intern_window);
 
 		glfwMakeContextCurrent(intern_window);
 		glfwGetWindowSize(intern_window, &i_window_dimensions[0], &i_window_dimensions[1]);
 		glfwGetWindowPos(intern_window, &pos_x, &pos_y);
 
 		i_original_size = { base_size_x, base_size_y };
+		glfwSetMouseButtonCallback(intern_window, MouseClickCallback);
 	}
 
 	Window::~Window()
