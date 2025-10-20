@@ -6,14 +6,22 @@
 /*
 There goes GUI contract for developers
 //*/
-
+#include<array>
 
 namespace zap
 {
+	class IUIButtonContainer
+	{
+	public:
+		virtual std::array<int, 2> GetClientSize() = 0;
+		virtual std::array<int, 2> GetClientOriginalSize() = 0;
+	};
+
 	//for controls
 	class IUIButtonEventListener
 	{
 	public:
+		virtual void SetContainer(IUIButtonContainer* container) = 0;
 		virtual bool HitTest(double x, double y) = 0;
 		virtual bool OnMouseMove(double x, double y) = 0;
 		virtual bool OnLMouseButtonDown(double x, double y) = 0;

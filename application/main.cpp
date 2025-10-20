@@ -117,7 +117,7 @@ int main()
 	Cube cube;
 	LightCube lightCube;
 
-	zap::Button button(std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, window.GetSize(), window.GetOriginalSize(), "Button", "C:/Windows/Fonts/arial.ttf");
+	zap::Button button(window.getButtonContainer(), std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, "Button", "C:/Windows/Fonts/arial.ttf");
 	//button.SetGlPosition(std::array<float, 2> {- 0.9f, 0.7f});
 	//button.SetGlPosition(- 0.9f, 0.7f, 0.2, 0.8 );
 	//button.SetGlSize(std::array<float, 2> {0.1f, 0.1f});
@@ -128,6 +128,7 @@ int main()
 	button.SetTextOffset(0.31f, 0.075f);
 	//button.UseText(false);
 	button.SetTextColor(zap::TextColors::PURPLE);
+	window.AddButtonEventHandler(button.GetUIListener());
 
 
 	glEnable(GL_CULL_FACE);
@@ -152,6 +153,7 @@ int main()
 		//Input
 		//All the window/camera magic happens here
 		cbi(window, camera);
+		window.InvokeHandlers();
 
 		//
 

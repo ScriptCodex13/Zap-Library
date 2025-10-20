@@ -148,10 +148,27 @@ namespace zap
 			}
 		};
 		ButtonEventProvider buttonEventProvider;
+		class ButtonContainer: public IUIButtonContainer
+		{
+			Window* window;
+		public:
+			ButtonContainer(Window* pwindow) :window(pwindow) {}
+			virtual std::array<int, 2> GetClientSize()
+			{
+				return window->GetSize();
+			}
+			virtual std::array<int, 2> GetClientOriginalSize()
+			{
+				return window->GetOriginalSize();
+			}
+		};
+		ButtonContainer buttonContainer;
+		ButtonContainer* getButtonContainer() { return &buttonContainer; }
 		void InvokeHandlers() { buttonEventProvider.InvokeDefaultButtonHandlers(); }
 		void AddButtonEventHandler(IUIButtonEventListener* handler) 
 		{
 			buttonEventProvider.AddButtonEventHandler(handler);
+			handler->SetContainer(&buttonContainer);
 		}
 	};
 

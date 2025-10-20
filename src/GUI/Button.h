@@ -21,8 +21,11 @@ namespace zap
 		class EventListener : public IUIButtonEventListener
 		{
 			Button* button = nullptr;
+			IUIButtonContainer* pButtonContainer = nullptr;
 		public:
 			EventListener(Button* btptr) : button(btptr) {}
+			virtual void SetContainer(IUIButtonContainer* container) { pButtonContainer = container; }
+			IUIButtonContainer* GetContainer() { return pButtonContainer; }
 			virtual bool HitTest(double x, double y) {
 				return zap::util::between(
 					std::array<double, 2> {x, y},
@@ -57,17 +60,17 @@ namespace zap
 			virtual bool OnPress(double x, double y, int key) { return false; }
 			virtual bool OnRelease(double x, double y, int key) { return false; }
 
-			std::array<float, 4> getArray() { return button->i_bounds; }
+			//std::array<float, 4> getArray() { return button->i_bounds; }
 		};
 		EventListener listener;
 	public:
-	public:
+		//We are supposed to use a portable container interface instead of a platform dependent window
 		Button(
-			const std::array<int, 2>& _windowSize, const std::array<int, 2>& _windowOriginalSize,
+			IUIButtonContainer* buttonContainer,
 			const char* button_text = nullptr, const char* const button_text_font_path = nullptr);
 		Button(
+			IUIButtonContainer* buttonContainer,
 			const std::array<float, 4>& _bounds,
-			const std::array<int, 2>& _windowSize, const std::array<int, 2>& _windowOriginalSize,
 			const char* button_text = nullptr, 
 			const char* const button_text_font_path = nullptr);
 		~Button();
@@ -133,7 +136,7 @@ namespace zap
 		unsigned int i_button_color_location = -1;
 
 		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max
-		std::array<int, 2> i_window_original_size {};
+		//std::array<int, 2> i_window_original_size {};
 
 		const char* i_vertex_shader_source =
 			R"glsl(
@@ -194,8 +197,10 @@ namespace zap
 		class EventListener: public IUIButtonEventListener
 		{
 			ButtonText* buttonText = nullptr;
+			IUIButtonContainer* pButtonContainer = nullptr;
 		public:
 			EventListener(ButtonText* btptr) : buttonText(btptr) {}
+			virtual void SetContainer(IUIButtonContainer* container) { pButtonContainer = container; }
 			virtual bool HitTest(double x, double y) {
 				return zap::util::between(
 					std::array<double, 2> {x, y},

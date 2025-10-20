@@ -34,7 +34,7 @@ namespace zap
 	/***********************************************/
 
 	Window::Window(int size_x, int size_y, const std::string Title, GLFWmonitor* monitor, GLFWwindow* other_window)
-		: buttonEventProvider(this)
+		: buttonEventProvider(this), buttonContainer(this)
 	{
 
 		intern_window = glfwCreateWindow(size_x, size_y, Title.c_str(), monitor, other_window);
@@ -57,7 +57,8 @@ namespace zap
 
 		i_original_size = { size_x, size_y };
 	}
-	Window::Window(GLFWwindow* extern_window, int base_size_x, int base_size_y) : buttonEventProvider(this)
+	Window::Window(GLFWwindow* extern_window, int base_size_x, int base_size_y) : 
+		buttonEventProvider(this), buttonContainer(this)
 	{
 		intern_window = extern_window;
 

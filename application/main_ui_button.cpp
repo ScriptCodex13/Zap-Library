@@ -44,8 +44,9 @@ int main()
 	zap::Enable(zap::Instruction::DEPTH);
 	zap::Enable(zap::Instruction::ANTIALIASING);
 
-
-	zap::Button button(std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, window.GetSize(), window.GetOriginalSize(),
+	//instead of a platform dependent window pass a portable container interface:
+	zap::Button button(
+		window.getButtonContainer(), std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 },
 		"Button", "C:/Windows/Fonts/arial.ttf");
 
 	button.SetTextOffset(0.31f, 0.075f);

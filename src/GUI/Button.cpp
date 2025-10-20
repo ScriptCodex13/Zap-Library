@@ -2,23 +2,21 @@
 
 namespace zap
 {
-	Button::Button(//Window* window,
-		const std::array<int, 2>& _windowSize, const std::array<int, 2>& _windowOriginalSize, 
+	Button::Button(
+		IUIButtonContainer* buttonContainer,
 		const char* button_text, const char* const button_text_font_path) :
-		Button({ -0.5, -0.5, 0.5, 0.5 },
-			_windowSize, _windowOriginalSize,
+		Button(buttonContainer, { -0.5, -0.5, 0.5, 0.5 },
 			button_text, button_text_font_path)
 	{
 	
 	}
 
 	Button::Button(
+					IUIButtonContainer* buttonContainer,
 					const std::array<float, 4>& _bounds,
-					const std::array<int, 2>& _windowSize, const std::array<int, 2>& _windowOriginalSize,
 					const char* button_text,
 					const char* const button_text_font_path) :
 		i_bounds(_bounds), listener(this),
-		i_window_original_size(_windowOriginalSize),
 		zap::Mesh(
 		{
 			  1.0f,  1.0f, 0.1f,    1.0f, 1.0f,   // 0, 1, 2
@@ -42,7 +40,7 @@ namespace zap
 	
 		SetAttribPointer(0, 3, 5, 0);
 	
-		if (i_use_text) i_button_text = std::make_unique<zap::Text>(button_text_font_path, button_text, _windowSize);
+		if (i_use_text) i_button_text = std::make_unique<zap::Text>(button_text_font_path, button_text, buttonContainer->GetClientSize ());
 	}
 	Button::~Button()
 	{
@@ -235,8 +233,8 @@ namespace zap
 		{
 			//n_bounds[0] += position[0];
 			//n_bounds[1] += position[1];
-
-			std::array<float, 2> new_pos = zap::util::gl_coords_to_pixel(i_window_original_size,
+			//i_window_original_size = listener.GetContainer()->GetClientOriginalSize();
+			std::array<float, 2> new_pos = zap::util::gl_coords_to_pixel(listener.GetContainer()->GetClientOriginalSize(),
 				i_text_offset[0] + n_bounds[0],
 				i_text_offset[1] + n_bounds[1]);
 			new_pos[0] += n_bounds[0];
