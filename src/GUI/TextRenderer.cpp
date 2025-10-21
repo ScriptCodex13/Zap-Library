@@ -1,6 +1,7 @@
 #include "TextRenderer.h"
-#ifdef GLFW_PLATFORM_ENABLED
-#error GLFW platform dependency introduced in Render
+
+#if defined(GLFW_PLATFORM_ENABLED) || defined (_glfw3_h_) || defined(_WINDOWS_)
+#error GLFW or WINAPI platform dependency introduced in Render
 #endif
 
 #include <fstream>
@@ -130,8 +131,7 @@ namespace zap
 
 	void Text::SetPosition(float new_x, float new_y)
 	{
-		//ToDo: Flip the y axis so the orign (0,0) is in the top left corner of the window 
-
+		//ToDo: Flip the y axis so the orign (0,0) is in the top left corner of the window
 		pos_x = new_x;
 		pos_y = new_y;
 	}
@@ -222,7 +222,7 @@ namespace zap
 			float w = ch.Size.x * i_scale_x;
 			float h = ch.Size.y * i_scale_y;
 			// update VBO for each character
-			float vertices[6][4] = 
+			float vertices[6][4] =
 			{
 				{ xpos,     ypos + h,   0.0f, 0.0f },
 				{ xpos,     ypos,       0.0f, 1.0f },
@@ -232,7 +232,7 @@ namespace zap
 				{ xpos + w, ypos,       1.0f, 1.0f },
 				{ xpos + w, ypos + h,   1.0f, 0.0f }
 			};
-			
+
 			//Change
 
 
@@ -242,7 +242,7 @@ namespace zap
 			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			
+
 			//glDrawArrays(GL_TRIANGLES, 0, 6);
 
 			Mesh::Draw(6);
@@ -255,7 +255,7 @@ namespace zap
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	//TODO: To implement some dynamic approach. The implemented way is fast enough but is too direct.
+
 	bool TextureText::drawGlythBitmapFromCache(util::buffer_view2D<unsigned char> target_view, size_t& pen_x, size_t& pen_y, wchar_t c, size_t bufsize)
 	{
 		if (cachedChars.count(c) == 0)return false;//this char is not cached
@@ -275,7 +275,7 @@ namespace zap
 		pen_x += cached.advance_x;
 
 		return true; //this char is fully loaded from cache
-		
+
 	}
 	void TextureText::drawGlythBitmap(util::buffer_view2D<unsigned char> target_view, size_t& pen_x, size_t& pen_y, wchar_t c, size_t bufsize)
 	{

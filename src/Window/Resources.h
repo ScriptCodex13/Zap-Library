@@ -1,7 +1,7 @@
 #pragma once
 
 //gives the way to be platform neutral
-#ifndef GLFW_PLATFORM_DISABLED
+#ifndef GLFW_PLATFORM_DISABLE
 #define GLFW_PLATFORM_ENABLED
 #endif
 
@@ -28,7 +28,6 @@ namespace zap
 
 }
 
-#endif
-
-
 #endif //GLFW_PLATFORM_ENABLED
+
+#endif

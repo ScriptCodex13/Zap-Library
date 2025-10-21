@@ -1,7 +1,7 @@
 #include "RenderCalls.h"
 
-#ifdef GLFW_PLATFORM_ENABLED
-#error GLFW platform dependency introduced in Render
+#if defined(GLFW_PLATFORM_ENABLED) || defined (_glfw3_h_) || defined(_WINDOWS_)
+#error GLFW or WINAPI platform dependency introduced in Render
 #endif
 
 namespace zap

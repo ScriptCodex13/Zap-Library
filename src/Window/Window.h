@@ -1,7 +1,7 @@
 #pragma once
 
 //gives the way to be platform neutral
-#ifndef GLFW_PLATFORM_DISABLED
+#ifndef GLFW_PLATFORM_DISABLE
 #define GLFW_PLATFORM_ENABLED
 #endif
 
@@ -10,6 +10,7 @@
 
 #ifndef WINDOW_H
 #define WINDOW_H
+
 
 #include "../Window/Resources.h"
 
@@ -147,13 +148,6 @@ namespace zap
 
 }
 
-
 #endif //WINDOW_H
 
-
 #endif //GLFW_PLATFORM_ENABLED
-
-
-
-
-
