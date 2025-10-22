@@ -16,9 +16,7 @@
 
 namespace zap
 {
-	//this is the stub, to prevent cascade interface changes whenever listener is engineered
-
-
+	//Dummy IUIButtonEventListener stub, to prevent cascade interface changes whenever listener is engineered
 	class IUIButtonEventListenerImpl : public IUIButtonEventListener
 	{
 		virtual void SetContainer(IUIButtonContainer* container) { }
@@ -35,6 +33,8 @@ namespace zap
 		virtual bool OnRMouseClick(double x, double y) { return false; }
 		virtual bool OnMMouseClick(double x, double y) { return false; }
 	};
+
+
 	class Button : zap::Mesh, public IUIComponent
 	{
 		class EventListener : public IUIButtonEventListenerImpl
@@ -191,7 +191,6 @@ namespace zap
 	class ButtonText : public Mesh, public IUIComponent
 	{
 	protected:
-		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max
 		class EventListener: public IUIButtonEventListenerImpl
 		{
 			ButtonText* buttonText = nullptr;
@@ -211,23 +210,25 @@ namespace zap
 			virtual bool OnRelease(double x, double y, int key);
 
 			virtual bool OnLMouseClick(double x, double y);
-			//std::array<float, 4> getArray() { return buttonText->i_bounds; }
+
 		} ;
 		EventListener listener;
 
 	public:
 
-		ButtonText(const std::string button_text = "", const std::string button_text_font_path = "");
-		ButtonText(const std::array<float, 4>& bounds, const std::string button_text = "", const std::string button_text_font_path = "");
+		ButtonText(const std::wstring button_text = L"", const std::string button_text_font_path = "");
+		ButtonText(const std::array<float, 4>& bounds, const std::wstring button_text = L"", const std::string button_text_font_path = "");
 
 		~ButtonText();
 		//implement IUIButtonEventListener interface
 		IUIButtonEventListener* GetUIListener() { return &listener; }
 
 		//no interface methods
-		zap::Text* GetTextObject();
+		//transform positions {0,0}:{1,1} to {bounds x,y}:{bounds x+dx,y+dy}
 		void UpdatePosition();
+		void UpdateTextMovement();
 
+		void MoveTextDelta(float dx, float dy);
 		void SetGlSize(float width, float height);
 		void SetGlSize(std::array<float, 2>& width_height);
 		void SetGlWidth(float width);
@@ -239,8 +240,6 @@ namespace zap
 		void SetGlPosition(std::array<float, 4>& gl_xy_min_xy_max); // Fully sets position xmin/ymin=bottom/left  xmax/ymax=top/right
 		void SetColor(float RED, float GREEN, float BLUE, float ALPHA);
 
-		void SetButtonText(const std::string text);
-		void SetTextOffset(float x_offset, float y_offset);
 		void SetTextColor(zap::TextColors color);
 		void SetTextColor(float RED, float GREEN, float BLUE);
 
@@ -254,17 +253,23 @@ namespace zap
 	private: // Private functions
 		std::vector<wchar_t> wprintf_buffer;
 
-	private:
-		zap::TextureText text;
-
-		glm::vec4 i_button_default_color = glm::vec4(0.0f, 1.0f, 0.0f, 0.8f);
-		glm::vec4 i_button_hover_color = glm::vec4(0.0f, 0.9f, 0.0f, 0.8f);
-		glm::vec4 i_button_pressed_color = glm::vec4(0.0f, 0.7f, 0.0f, 0.8f);
-		glm::vec4 i_button_color = i_button_default_color;
+	protected:
+		zap::TextureText text;         // text shown on button, not bound to shader, but printed in texture
+		std::array<float, 4> i_bounds; // x_min, x_max, y_min, y_max, for i_move_text_location uniform calculation
+		//fancy attributes, add some visible behavior
+		glm::vec4 i_button_default_color = glm::vec4(0.0f, 1.0f, 0.0f, 0.8f); //not bound to shader, only to update i_button_color
+		glm::vec4 i_button_hover_color   = glm::vec4(0.0f, 0.9f, 0.0f, 0.8f); //not bound to shader, only to update i_button_color
+		glm::vec4 i_button_pressed_color = glm::vec4(0.0f, 0.7f, 0.0f, 0.8f); //not bound to shader, only to update i_button_color
+		glm::vec4 i_button_color = i_button_default_color; //bound to i_button_color_location
+		//move text
+		glm::vec2 i_move_text = glm::vec2(0.0f,  0.0f); //not bound to shader, only to update i_button_color
+	protected:
 		unsigned int textureHash;
 	protected:
+		//uniforms
 		unsigned int i_moveto_uniform_location;
 		unsigned int i_button_color_location;
+		unsigned int i_move_text_location;
 
 	protected:
 
@@ -274,14 +279,15 @@ namespace zap
 					layout(location = 0) in vec3 aPos;
 					layout(location = 1) in vec2 aTexCoord;
 
-					uniform mat4 moveto;
+					uniform mat4 moveto;    //resize*translate matrix for button positioning
+					uniform vec2 move_text; //if desired move text
 
 					out vec2 TexCoord;
 
 					void main()
 					{
 						gl_Position = moveto * vec4(aPos, 1.0);
-						TexCoord = aTexCoord;
+						TexCoord = aTexCoord + move_text;
 					}
 			)glsl";
 

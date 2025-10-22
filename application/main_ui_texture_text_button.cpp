@@ -45,7 +45,7 @@ int main()
 	zap::Enable(zap::Instruction::ANTIALIASING);
 
 
-	zap::ButtonText buttonText(std::array<float, 4> {-0.5f, 0.6f, 0.2f, 0.8f }, "Button", "C:/Windows/Fonts/arial.ttf");
+	zap::ButtonText buttonText(std::array<float, 4> {-0.5f, 0.6f, 0.2f, 0.8f }, L"Button", "C:/Windows/Fonts/arial.ttf");
 
 	//
 	//buttonText.SetTextOffset(0.31f, 0.075f);
@@ -68,10 +68,13 @@ int main()
 
 
 	window.AddButtonEventHandler (buttonText.GetUIListener());
+	float startTime = glfwGetTime(), prevTime = startTime;
+
 	while (window.Open())
 	{
-		//bool mousePosChanged = newGlPos == oldGlPos;
-		//
+		float time = glfwGetTime();
+		float deltaTime = time - prevTime;
+		prevTime = time;
 		cbi(window);
 		zap::ClearBuffers();
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -82,8 +85,8 @@ int main()
 
 		buttonText.Bind();
 
-
-		buttonText.printf(L"Button g %f", glfwGetTime() * glfwGetTime() * glfwGetTime() * glfwGetTime());
+		buttonText.MoveTextDelta(deltaTime / 4.f, 0.f);
+		buttonText.printf(L"Button g %f   ", glfwGetTime() * glfwGetTime() * glfwGetTime() * glfwGetTime());
 		buttonText.Draw();
 
 		window.Update();

@@ -358,12 +358,12 @@ namespace zap
 		return true;
 	}
 
-	ButtonText::ButtonText(const std::string button_text, const std::string button_text_font_path) :
+	ButtonText::ButtonText(const std::wstring button_text, const std::string button_text_font_path) :
 		ButtonText({ -0.5, -0.5, 0.5, 0.5 }, button_text, button_text_font_path)
 	{
 
 	}
-	ButtonText::ButtonText(const std::array<float, 4>& _bounds, const std::string button_text, const std::string button_text_font_path) :
+	ButtonText::ButtonText(const std::array<float, 4>& _bounds, const std::wstring button_text, const std::string button_text_font_path) :
 			listener(this),
 			i_bounds(_bounds),
 			zap::Mesh(
@@ -379,8 +379,8 @@ namespace zap
 				})
 	{
 
-		SetVertexShaderSource(i_vertex_shader_source);
-		SetFragmentShaderSource(i_fragment_shader_source);
+		SetVertexShaderSource   (i_vertex_shader_source);
+		SetFragmentShaderSource (i_fragment_shader_source);
 
 		SetAttribPointer(0, 3, 5, 0);
 		SetAttribPointer(1, 2, 5, 3);
@@ -392,14 +392,16 @@ namespace zap
 			text.LoadFont(button_text_font_path);
 
 
-		textureHash = AddTextureFromData(0, 0, 0,
-			GL_RED, zap::TextureFilter::LINEAR,
-			zap::MipmapSetting::LINEAR_MIPMAP_LINEAR,
-			zap::TextureWrapping::CLAMP_TO_EDGE).getHash();
-		text.printf(GetTextureByHash(textureHash), L"button");
+		textureHash = AddTextureFromData(	0, 0, 0,
+											GL_RED, zap::TextureFilter::LINEAR,
+											zap::MipmapSetting::LINEAR_MIPMAP_LINEAR,
+											zap::TextureWrapping::REPEAT).getHash();
+
+		text.printf(GetTextureByHash(textureHash), button_text.c_str()); // L"button");
 
 		i_moveto_uniform_location = glGetUniformLocation(GetProgram(), "moveto");
-		i_button_color_location = glGetUniformLocation(GetProgram(), "button_color");
+		i_button_color_location   = glGetUniformLocation(GetProgram(), "button_color");
+		i_move_text_location      = glGetUniformLocation(GetProgram(), "move_text");
 
 		UpdatePosition(); //*/
 
@@ -409,22 +411,13 @@ namespace zap
 	{
 
 	}
-	zap::Text* ButtonText::GetTextObject()
-	{
-		return nullptr;
-	}
-	void ButtonText::UpdatePosition()
-	{
-		float x0 = i_bounds[0], dx = i_bounds[2] - i_bounds[0];
-		float y0 = i_bounds[1], dy = i_bounds[3] - i_bounds[1];
-		glm::mat4 resize    = glm::scale(glm::mat4(1.0f), glm::vec3(dx, dy, 1.0f));
-		glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(x0, y0, 0.0f));
 
-		Bind();
-		// Premultiply in C++ and combine two matrices. Multiply order here is inverse than in shader
-		glUniformMatrix4fv(i_moveto_uniform_location, 1, GL_FALSE, glm::value_ptr(translate * resize));
-
+	void ButtonText::MoveTextDelta(float dx, float dy)
+	{
+		i_move_text.x = util::rewind(i_move_text.x += dx, 0.f, 1.f);
+		i_move_text.y = util::rewind(i_move_text.y += dy, 0.f, 1.f);
 	}
+
 	void ButtonText::SetGlSize(float dx, float dy)
 	{
 		SetGlSize(std::array<float, 2> {dx, dy});
@@ -490,31 +483,20 @@ namespace zap
 	}
 	void ButtonText::SetGlPosition(std::array<float, 4>& gl_xy_min_xy_max)
 	{
-		ZAP_REQUIRE(gl_xy_min_xy_max[0] < 1.f && gl_xy_min_xy_max[1] < 1.f && "ZY min must not go outside upper right GL corner");
+		ZAP_REQUIRE(gl_xy_min_xy_max[0] <  1.f && gl_xy_min_xy_max[1] <  1.f && "ZY min must not go outside upper right GL corner");
 		ZAP_REQUIRE(gl_xy_min_xy_max[2] > -1.f && gl_xy_min_xy_max[3] > -1.f && "ZY max must not go outside lower left GL corner");
 
 		i_bounds = gl_xy_min_xy_max;
-		UpdatePosition();
 	}
 
 	void ButtonText::SetColor(float RED, float GREEN, float BLUE, float ALPHA)
 	{
-		RED = std::clamp(RED, 0.0f, 1.0f);
+		RED   = std::clamp(RED,   0.0f, 1.0f);
 		GREEN = std::clamp(GREEN, 0.0f, 1.0f);
-		BLUE = std::clamp(BLUE, 0.0f, 1.0f);
+		BLUE  = std::clamp(BLUE,  0.0f, 1.0f);
 		ALPHA = std::clamp(ALPHA, 0.0f, 1.0f);
 
 		i_button_color = glm::vec4(RED, GREEN, BLUE, ALPHA);
-	}
-
-	void ButtonText::SetButtonText(const std::string text)
-	{
-
-	}
-
-	void ButtonText::SetTextOffset(float x_offset, float y_offset)
-	{
-
 	}
 
 	void ButtonText::SetTextColor(zap::TextColors color)
@@ -527,8 +509,32 @@ namespace zap
 
 	};
 
+
+	//Uniform Updates
+	//transform positions {0,0}:{1,1} to {bounds x,y}:{bounds x+dx,y+dy}
+	void ButtonText::UpdatePosition()
+	{
+		float x0 = i_bounds[0], dx = i_bounds[2] - i_bounds[0];
+		float y0 = i_bounds[1], dy = i_bounds[3] - i_bounds[1];
+		glm::mat4 resize = glm::scale(glm::mat4(1.0f), glm::vec3(dx, dy, 1.0f));
+		glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(x0, y0, 0.0f));
+
+		Bind();
+		// Premultiply in C++ and combine two matrices. Multiply order here is inverse than in shader
+		glUniformMatrix4fv(i_moveto_uniform_location, 1, GL_FALSE, glm::value_ptr(translate * resize));
+
+	}
+	void ButtonText::UpdateTextMovement()
+	{
+		Bind();
+		glUniform2fv(i_move_text_location, 1, glm::value_ptr(i_move_text));
+	}
+
 	void ButtonText::Update()
 	{
+		UpdatePosition();
+		UpdateTextMovement();
+		glUniform4fv(i_button_color_location, 1, glm::value_ptr(i_button_color));
 
 	}
 	size_t ButtonText::printf(const std::wstring content, ...)
@@ -550,14 +556,13 @@ namespace zap
 
 	void ButtonText::Draw(int texture_id)
 	{
-		Update();
 
 		UseProgram();
 
 		// Update uniforms
-		BindTextureByHash(textureHash);
-		glUniform4fv(i_button_color_location, 1, glm::value_ptr(i_button_color));
+		Update();
 
+		BindTextureByHash(textureHash);
 		//
 
 		Bind();
