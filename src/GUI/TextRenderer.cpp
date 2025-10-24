@@ -383,7 +383,7 @@ namespace zap
 		//restore to what it was on scope exit:
 		util::scope_guard restoreAlignment([currentAlignment]() {glPixelStorei(GL_UNPACK_ALIGNMENT, currentAlignment); });
 
-		texture.flushData(width, fontSize, texture_data_target.data());
+		texture.FlushData(width, fontSize, texture_data_target.data());
 		return texture;
 	
 	}

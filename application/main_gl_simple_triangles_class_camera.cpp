@@ -140,6 +140,9 @@ int main()
 	std::array<double, 2> oldPos = window.GetMousePosition();
 	float lastFrame = 0.f, deltaTime = 0.f;
 
+	window.SetCursorinCameraMode(true);
+	window.Maximize();
+
 	while (window.Open())
 	{
 		std::array<double, 2> newpos = window.GetMousePosition();

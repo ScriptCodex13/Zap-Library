@@ -29,7 +29,7 @@ namespace zap
 
 	{
 		glGenTextures(1, &i_TextureId);
-		genTextureFromFile(path);
+		GenTextureFromFile(path);
 
 	}
 
@@ -47,12 +47,12 @@ namespace zap
 						i_descriptor{ filter , setting, wrapping, wrapping, type, texture_width, texture_height, false }
 	{
 		glGenTextures(1, &i_TextureId);
-		genTextureFromData(texture_data);
+		GenTextureFromData(texture_data);
 	}
 
-	void Texture::genTextureFromFile(const std::string path)
+	void Texture::GenTextureFromFile(const std::string path)
 	{
-		bind();
+		Bind();
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)i_descriptor.wrapping_s);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLint)i_descriptor.wrapping_t);
@@ -92,7 +92,7 @@ namespace zap
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 
-	void Texture::setSize(int width, int height)
+	void Texture::SetSize(int width, int height)
 	{
 		i_descriptor.width = width; i_descriptor.height = height;
 	}
@@ -100,22 +100,22 @@ namespace zap
 	{
 		return std::array<int, 2>  { i_descriptor.width, i_descriptor.height };
 	}
-	void Texture::flushData(unsigned char* data)
+	void Texture::FlushData(unsigned char* data)
 	{
-		bind();
+		Bind();
 		glTexImage2D(GL_TEXTURE_2D, 0, i_descriptor.type, i_descriptor.width, i_descriptor.height, 0, i_descriptor.type, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	void Texture::flushData(int width, int heigth, unsigned char* data)
+	void Texture::FlushData(int width, int heigth, unsigned char* data)
 	{
-		bind();
+		Bind();
 		i_descriptor.width = width, i_descriptor.height = heigth;
 		glTexImage2D(GL_TEXTURE_2D, 0, i_descriptor.type, i_descriptor.width, i_descriptor.height, 0, i_descriptor.type, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	void Texture::genTextureFromData(unsigned char* data)
+	void Texture::GenTextureFromData(unsigned char* data)
 	{
-		bind();
+		Bind();
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)i_descriptor.wrapping_s);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLint)i_descriptor.wrapping_t);
@@ -126,12 +126,12 @@ namespace zap
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	void Texture::deleteTexture()
+	void Texture::DeleteTexture()
 	{
 		glDeleteTextures(1, &i_TextureId);
 	}
 
-	void Texture::bind() 
+	void Texture::Bind() 
 	{ 
 		glBindTexture(GL_TEXTURE_2D, i_TextureId);
 	}

@@ -64,17 +64,17 @@ namespace zap
 		Texture(unsigned int external_id, const std::string path, TextureFilter filter = TextureFilter::LINEAR, MipmapSetting settings = MipmapSetting::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
 		Texture(unsigned int external_id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilter filter = TextureFilter::LINEAR, MipmapSetting settings = MipmapSetting::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
 
-		void deleteTexture();
-		void bind();
+		void DeleteTexture();
+		void Bind();
 		inline unsigned int getID() const { return i_TextureId; }
 		inline unsigned int getHash() const { return i_Hash; }
-		void setSize(int width, int height);
+		void SetSize(int width, int height);
 		std::array<int, 2> getSize();
-		void flushData(unsigned char* data); //assume doesn't change texture sizes
-		void flushData(int width, int heigth, unsigned char* data);
+		void FlushData(unsigned char* data); //assume doesn't change texture sizes
+		void FlushData(int width, int heigth, unsigned char* data);
 	private:
-		void genTextureFromFile(const std::string path);
-		void genTextureFromData(unsigned char* data);
+		void GenTextureFromFile(const std::string path);
+		void GenTextureFromData(unsigned char* data);
 		unsigned int i_TextureId = -1;
 		unsigned int i_Hash = -1;
 	private:

@@ -61,7 +61,7 @@ namespace zap
 	{
 		for (auto& cfg : texturecfg)
 		{
-			cfg.second.deleteTexture();
+			cfg.second.DeleteTexture();
 		}
 		texturecfg.clear();
 	}
@@ -279,7 +279,7 @@ namespace zap
 	bool Mesh::BindTextureByHash(unsigned int hash)
 	{
 		assert(texturecfg.find(hash) != texturecfg.end() && "Missing hash is utterly nonsense, find the bug and fix it");
-		texturecfg[hash].bind();
+		texturecfg[hash].Bind();
 		return true;
 	}
 	//Texture texture;
