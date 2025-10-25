@@ -61,25 +61,35 @@ namespace zap
 	{
 		//SQL like in function
 		//SQL like in: "... val in (arg1, arg2...)" in C++ to be "... in (val, arg1, arg2...)"
-		template<typename T>
-		inline bool in(T val, T arg)
+		template <typename T>
+		inline bool in(T val)
+		{
+			return false;
+		}
+		template<typename T, typename T2>
+		inline bool in(T val, T2 arg)
 		{
 			return val == arg;
 		}
-		template <typename T, typename ... Ts>
-		inline bool in(T val, T arg, Ts ... args)
+		template <typename T, typename T2, typename ... Ts>
+		inline bool in(T val, T2 arg, Ts ... args)
 		{
 			if (val == arg) return true;
 			return in(val, args...);
 		}
 		//SQL like in, required for compile time expression and static asserts
-		template<typename T> constexpr
-			inline bool const_in(const T val, const T arg)
+		template <typename T>
+		inline bool const_in(T val)
+		{
+			return false;
+		}
+		template<typename T, typename T2> constexpr
+		inline bool const_in(const T val, const T2 arg)
 		{
 			return val == arg;
 		}
-		template <typename T, typename ... Ts> constexpr
-			inline bool const_in(const T val, const T arg, const Ts ... args)
+		template <typename T, typename T2, typename ... Ts> constexpr
+			inline bool const_in(const T val, const T2 arg, const Ts ... args)
 		{
 			if (val == arg) return true;
 			return const_in(val, args...);
