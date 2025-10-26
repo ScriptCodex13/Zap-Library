@@ -61,10 +61,10 @@ namespace zap
 		// TODO: Move the shader functionality to a separate class, totally seven functions to be moved
 		void SetVertexShaderSource     (const std::string& source);
 		void SetFragmentShaderSource   (const std::string& source);
-		void SetVertexShaderFilePath   (const std::string& source);
-		void SetFragmentShaderFilePath (const std::string& source);
-		void SetVertexShaderPath       (const std::string& source); // Automatic: If source is an existing path, load from path, else use as source code
-		void SetFragmentShaderPath     (const std::string& source); // Automatic: If source is an existing path, load from path, else use as source code
+		void SetVertexShaderFilePath   (const std::string& vertexShaderFilepath);
+		void SetFragmentShaderFilePath (const std::string& fragmentShaderFilepath);
+		void SetVertexShaderPath       (const std::string& vertexShaderFilepath); // Automatic: If source is an existing path, load from path, else use as source code
+		void SetFragmentShaderPath     (const std::string& fragmentShaderFilepath); // Automatic: If source is an existing path, load from path, else use as source code
 		void BuildProgram();
 		// END TODO:
 
