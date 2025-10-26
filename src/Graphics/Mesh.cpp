@@ -135,6 +135,7 @@ namespace zap
 		else
 		{
 			SetVertexShaderSource(source);
+			messages::PrintMessage("Cannot load the given vertex shader file: " + source, "Mesh.cpp/ void zap::Mesh::SetVertexShaderPath(...)", MessageTypes::error, true);
 		}
 	}
 	void Mesh::SetFragmentShaderPath(const std::string& source)
@@ -147,6 +148,7 @@ namespace zap
 		else
 		{
 			SetFragmentShaderSource(source);
+			messages::PrintMessage("Cannot load the given fragment shader file: " + source, "Mesh.cpp/ void zap::Mesh::SetFragmentShaderPath(...)", MessageTypes::error, true);
 		}
 	}
 
