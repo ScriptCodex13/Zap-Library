@@ -10,6 +10,7 @@ Please do NOT include your new headers here. Put them in the corresponding segme
 
 /*/
 
+#include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
 // Additional includes
@@ -23,6 +24,9 @@ Please do NOT include your new headers here. Put them in the corresponding segme
 #include "Graphics/Graphics.h"
 #include "Util/UtilBind.h"
 #include "GUI/GUIControls.h"
+#include "Window/Window.h"
+#include "Window/Resources.h"
+#include "Window/Input.h"
 
 //
 

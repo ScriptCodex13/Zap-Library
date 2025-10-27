@@ -11,5 +11,6 @@ This is the GUI segment's main header
 
 #include "TextRenderer.h"
 #include "Button.h" // Experimental
+#include "GUIInterfaces.h"
 
 #endif
