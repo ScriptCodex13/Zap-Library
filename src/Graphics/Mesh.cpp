@@ -284,14 +284,18 @@ namespace zap
 
 	bool Mesh::BindTextureByHash(unsigned int hash)
 	{
-		assert(texturecfg.find(hash) != texturecfg.end() && "Missing hash is utterly nonsense, find the bug and fix it");
+		std::string error_message = "Texture Hash: " + std::to_string(hash) + "not found";
+
+		assert(texturecfg.find(hash) != texturecfg.end() && error_message.c_str());
 		texturecfg[hash].Bind();
 		return true;
 	}
 	//Texture texture;
 	Texture& Mesh::GetTextureByHash(unsigned int hash)
 	{
-		assert(texturecfg.find(hash) != texturecfg.end() && "Missing hash is utterly nonsense, find the bug and fix it");
+		std::string error_message = "Texture Hash: " + std::to_string(hash) + "not found";
+
+		assert(texturecfg.find(hash) != texturecfg.end() && error_message.c_str());
 		return texturecfg[hash];
 	}
 
