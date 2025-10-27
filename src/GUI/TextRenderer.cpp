@@ -283,7 +283,9 @@ namespace zap
 		//Otherwise put the char in cache and load it from cache anyway
 		if (drawGlythBitmapFromCache(target_view, pen_x, pen_y, c, bufsize))
 			return;
-		std::wcout << "load char " << c << std::endl;
+
+		if (!zap_state_vars::disable_outputs)
+			std::wcout << "\033[32m[CORE] " << "load char " << c << "\033[0m" <<  std::endl;
 
 		FT_Face ftface = freetype.getFace();
 		FT_Load_Char(ftface, c, FT_LOAD_RENDER);
