@@ -108,18 +108,12 @@ namespace zap
 		glm::mat4 GetModel() const;
 		glm::mat4 GetView() const;
 		glm::mat4 GetProjection() const;
-	private: //TODO: may be still useful in child classes
-		void SetModel(const glm::mat4 &);
-		void SetView(const glm::mat4& vw);
-		void SetProjection(const glm::mat4& pj);
+
 	public:
 		unsigned int GetVBO() const;
 		unsigned int GetVAO() const;
 		unsigned int GetEBO() const;
-	private: //TODO: may be still useful in child classes 
-		void SetVBO(unsigned int&);
-		void SetVAO(unsigned int&);
-		void SetEBO(unsigned int&);
+	
 	public:
 		//separate functions will be very useful in more complex logic
 		unsigned int GetUniformLocation(const GLchar* name)  const;
@@ -132,6 +126,16 @@ namespace zap
 	    // private functions for intern use 
 		void UseProgram() const;
 		void BindVAO() const;
+
+	private: //TODO: may be still useful in child classes 
+		void SetVBO(unsigned int&);
+		void SetVAO(unsigned int&);
+		void SetEBO(unsigned int&);
+
+	private: //TODO: may be still useful in child classes
+		void SetModel(const glm::mat4&);
+		void SetView(const glm::mat4& vw);
+		void SetProjection(const glm::mat4& pj);
 
 	protected:
 		struct

@@ -67,14 +67,18 @@ namespace zap
 	}
 	Texture& Mesh::AddTextureFromPath (unsigned int hash, const std::string path, TextureFilter filter, MipmapSetting settings, TextureWrapping wrapping)
 	{
-		assert(texturecfg.find(hash) == texturecfg.end() && "This ID is already used, please fix nonsense");
+		std::string texture_error_message = "The ID:" + std::to_string(hash) + "is already used";
+
+		assert(texturecfg.find(hash) == texturecfg.end() && texture_error_message.c_str());
 		texturecfg.emplace(hash, Texture{ hash, path, filter, settings, wrapping });
 		return texturecfg[hash];
 	}
 
 	Texture& Mesh::AddTextureFromData(unsigned int hash, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilter filter, MipmapSetting settings, TextureWrapping wrapping)
 	{
-		assert(texturecfg.find(hash) == texturecfg.end() && "This ID is already used, please fix nonsense");
+		std::string texture_error_message = "The ID:" + std::to_string(hash) + "is already used";
+
+		assert(texturecfg.find(hash) == texturecfg.end() && texture_error_message.c_str());
 		if (texture_width < 0 || texture_height < 0)
 		{
 			messages::PrintMessage("Given texture dimensions are not valid", "Texture& zap::Mesh::AddTexture(...)", MessageTypes::fatal_error);
