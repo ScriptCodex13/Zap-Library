@@ -10,7 +10,6 @@ Please do NOT include your new headers here. Put them in the corresponding segme
 
 /*/
 
-#include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
 // Additional includes
