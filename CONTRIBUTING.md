@@ -23,6 +23,8 @@ It's important to keep the code in a consistent style so we came up with some re
 3. Be always sure to use relative paths when including other headers.
 4. External dependencies like libraries should be included with <>
 5. Use include guards in your headers
+6. Every callable function for users of this software should be in capital letters.
+   ex.: void MyFunction() 
 
 ## Becoming a Contributor
 
