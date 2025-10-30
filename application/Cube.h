@@ -1,6 +1,7 @@
 #pragma once
 // Just a sample
 #include <Zap.h>
+#include <Graphics.h>
 
 
 class Cube : public zap::Mesh

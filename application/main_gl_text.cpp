@@ -4,6 +4,7 @@
 // Just a example
 // PR = Prototyping -> only for testing 
 #include <Zap.h>
+#include <Graphics.h>
 #include <iostream>
 #include <array>
 #include <GUI/TextRenderer.h>

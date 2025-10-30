@@ -1,5 +1,6 @@
 // Just a sample
 #include <Zap.h>
+#include <Graphics.h>
 
 #include "LightCube.h"
 

@@ -5,7 +5,7 @@
 
 /*/
 
-This is the APIs main include header. All segment Headers will be included here.
+This is one of the APIs main include headers. All segment Headers for windowing will be included here.
 Please do NOT include your new headers here. Put them in the corresponding segment header instead.
 
 /*/
@@ -20,9 +20,7 @@ Please do NOT include your new headers here. Put them in the corresponding segme
 
 // Library includes
 
-#include "Graphics/Graphics.h"
 #include "Util/UtilBind.h"
-#include "GUI/GUIControls.h"
 #include "Window/Window.h"
 #include "Window/Resources.h"
 #include "Window/Input.h"
