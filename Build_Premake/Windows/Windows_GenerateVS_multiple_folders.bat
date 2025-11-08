@@ -9,5 +9,6 @@ mkdir %projects_dir%
 premake5.exe vs2022  --file=premake5_multiple_folders.lua
 xcopy /S /I %resource_dir%shader   %application_dir%shader
 xcopy /S /I %resource_dir%textures %application_dir%textures
+xcopy /S /I %resource_dir%sounds   %application_dir%sounds
 endlocal
 PAUSE

@@ -5,7 +5,7 @@
 
 /*/
 This is the Graphics segment's main header
-//*/
+/*/
 
 #include "AttributeConfig.h"
 #include "Mesh.h"

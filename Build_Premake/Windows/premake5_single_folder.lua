@@ -23,6 +23,8 @@ project "Zap"
     files { "../../src/Util/**.h"}
     files { "../../src/Window/**.cpp"}
     files { "../../src/Window/**.h"}
+    files { "../../src/Audio/**.cpp"}
+    files { "../../src/Audio/**.h"}
     includedirs {"../../extern/"}
     includedirs {"../../extern/glad/include/"}
     includedirs {"../../extern/GLFW/include/"}

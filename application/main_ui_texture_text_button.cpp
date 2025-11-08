@@ -19,7 +19,7 @@ window_invoker  cbi([](zap::Window& window) {
 	{
 		window.Close();
 	}
-});
+	});
 
 int main()
 {
@@ -28,7 +28,7 @@ int main()
 	zap::Init(4, 6);
 
 	zap::Window window(1920, 1080, "Hello Window");
-	zap::util::scope_guard zapDeleter (zap::Delete);
+	zap::util::scope_guard zapDeleter(zap::Delete);
 
 	zap::InitGlad();
 
@@ -67,7 +67,7 @@ int main()
 	window.GetMouseGlPosition();
 
 
-	window.AddButtonEventHandler (buttonText.GetUIListener());
+	window.AddButtonEventHandler(buttonText.GetUIListener());
 	float startTime = glfwGetTime(), prevTime = startTime;
 
 	while (window.Open())
