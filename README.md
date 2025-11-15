@@ -138,6 +138,11 @@ These functions are one of the most important. Update() manages all the window e
 # Wiki
 
 You can visit the wiki [here](https://github.com/ScriptCodex13/Zap-Library/wiki)
+
+# Licensing
+
+You can use this library without carrying the license around. But not for our dependencies. Please remember to add the Licenses to your project.
+
 # Used Software
 
 [stb_image](https://github.com/nothings/stb) to load images,
