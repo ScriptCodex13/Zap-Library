@@ -29,8 +29,7 @@ project "Zap"
     includedirs {"../../extern/glad/include/"}
     includedirs {"../../extern/GLFW/include/"}
     includedirs {"../../extern/freetype/include/Windows"}
-    includedirs {"../../extern/miniaudio/**.h"}
-    cppdialect "C++20"
+    cppdialect "C++17"
 
     filter "configurations:Debug"
         staticruntime "off"
@@ -50,7 +49,6 @@ project "Application"
     includedirs {"../../extern/glad/include/"}
     includedirs {"../../extern/GLFW/include/"}
     includedirs {"../../extern/freetype/include/Windows"}
-    includedirs {"../../extern/miniaudio/**.h"}
     includedirs {"../../src/"}
     includedirs {"../../extern/"}
     libdirs {"../../extern/GLFW/lib/Windows"}
@@ -58,7 +56,7 @@ project "Application"
     libdirs {"../../Project/Zap/bin/"}
     links {"Zap"}
 
-    cppdialect "C++20"
+    cppdialect "C++17"
 
     filter "configurations:Debug"
         staticruntime "off"
