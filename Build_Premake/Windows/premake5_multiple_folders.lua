@@ -31,7 +31,7 @@ project "Zap"
     includedirs {"../../extern/GLFW/include/"}
     includedirs {"../../extern/freetype/include/Windows"}
     includedirs {"../../extern/miniaudio/**.h"}
-    cppdialect "C++17"
+    cppdialect "C++20"
 
     filter "configurations:Debug"
         staticruntime "off"
@@ -58,7 +58,7 @@ project "application"
     libdirs {"../../extern/freetype/lib/Windows"}
     links {"Zap"}
 
-    cppdialect "C++17"
+    cppdialect "C++20"
 
     filter "configurations:Debug"
         staticruntime "off"
