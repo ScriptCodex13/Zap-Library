@@ -25,10 +25,11 @@ project "Zap"
     files { "../../src/Window/**.h"}
     files { "../../src/Audio/**.cpp"}
     files { "../../src/Audio/**.h"}
-    includedirs {"../../extern/"}
+    includedirs {"../../extern/miniaudio/"}
     includedirs {"../../extern/glad/include/"}
     includedirs {"../../extern/GLFW/include/"}
     includedirs {"../../extern/freetype/include/Windows"}
+    includedirs {"../../extern/"}
     cppdialect "C++17"
 
     filter "configurations:Debug"
@@ -51,6 +52,7 @@ project "Application"
     includedirs {"../../extern/freetype/include/Windows"}
     includedirs {"../../src/"}
     includedirs {"../../extern/"}
+    includedirs {"../../extern/miniaudio/"}
     libdirs {"../../extern/GLFW/lib/Windows"}
     libdirs {"../../extern/freetype/lib/Windows"}
     libdirs {"../../Project/Zap/bin/"}
