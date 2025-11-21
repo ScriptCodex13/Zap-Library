@@ -5,9 +5,11 @@
 #include <iostream>
 #include <Audio.h>
 
+#include <stdio.h>
+
 int main() 
 {
-	std::cout << "Hello World !" << std::endl;
+    
 }
 
 #endif

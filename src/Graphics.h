@@ -12,7 +12,7 @@ Please do NOT include your new headers here. Put them in the corresponding segme
 
 #include <glad/glad.h>
 
-#include "Graphics/SceneCamera.h" // Warum ? funktioniert das nicht ?
+#include "Graphics/SceneCamera.h"
 #include "Graphics/Graphics.h"
 #include "GUI/GUIControls.h"
 #include "Window/Resources.h"
