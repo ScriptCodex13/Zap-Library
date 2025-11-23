@@ -14,6 +14,8 @@ Before you send us Pull Request be sure that it meets following requriments:
 - Be sure to document your changes and tell what you have changed exactly
 - Your Pull request should only be for a specific segment (Graphics, GUI, Window, Util...)
 
+- Please make sure that you make your pull request for the community branch
+
 ## Coding style
 
 It's important to keep the code in a consistent style so we came up with some requriments here.
