@@ -92,8 +92,7 @@ int main()
 
 	//window.SetCursorinCameraMode(false);
 	char cFontPath[2048] = "arial.ttf";
-	unsigned int ret = -1;
-	ret = zap::os::GetSystemFontPath(cFontPath, 2048);
+	unsigned int ret = zap::os::GetSystemFontPath(cFontPath, 2048);
 	zap::Text text(cFontPath, "Text", window.GetSize()); // It's better to use GetSize here
 
 	//text.SetCharacterSize(48);

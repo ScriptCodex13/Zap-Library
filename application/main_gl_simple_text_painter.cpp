@@ -88,8 +88,7 @@ public:
 		//char cFontPath[2048] = "arial.ttf";
 		//char cFontPath[2048] = "OLDENGL.TTF";
 		char cFontPath[2048] = "msgothic.ttc";
-		unsigned int ret = -1;
-		ret = zap::os::GetSystemFontPath(cFontPath, 2048);
+		unsigned int ret = zap::os::GetSystemFontPath(cFontPath, 2048);
 		text.LoadFont(cFontPath);
 
 		textureHash = AddTextureFromData(0, 0, 0,

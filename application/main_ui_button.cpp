@@ -49,8 +49,7 @@ int main()
 
 	//instead of a platform dependent window pass a portable container interface:
 	char cFontPath[2048] = "arial.ttf";
-	unsigned int ret = -1;
-	ret = zap::os::GetSystemFontPath(cFontPath, 2048);
+	unsigned int ret = zap::os::GetSystemFontPath(cFontPath, 2048);
 
 	zap::Button button(
 		window.getButtonContainer(), std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 },

@@ -32,7 +32,6 @@ int main()
 	using std::cout;
 	using std::wcout;
 	using std::endl;
-	//wchar_t buf[2048] = L"windir";
 	//wchar_t font[2048] = L"arial.ttf";
 	char cFontPath[2048] = "arial.ttf";
 	unsigned int ret = -1;

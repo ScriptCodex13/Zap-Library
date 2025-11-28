@@ -1,5 +1,8 @@
 #include "Button.h"
 
+//TODO: Move dependency to system font to the examples only
+#include "../os/system_font.h"
+
 #if defined(GLFW_PLATFORM_ENABLED) || defined (_glfw3_h_) || defined(_WINDOWS_)
 #error GLFW or WINAPI platform dependency introduced in Render
 #endif
@@ -386,6 +389,8 @@ namespace zap
 		SetAttribPointer(1, 2, 5, 3);
 		Finish();
 
+		char cFontPath[2048] = "msgothic.ttc";
+		unsigned int ret = zap::os::GetSystemFontPath(cFontPath, 2048);
 		if (button_text_font_path.empty())
 			text.LoadFont("C:/Windows/Fonts/msgothic.ttc");
 		else
