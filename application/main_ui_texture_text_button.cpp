@@ -1,9 +1,11 @@
 #include "enabler.h"
-#ifdef SAMPLE_MAIN_UI_TEXTURE_TEXT_BUTTON_CPP
+#ifdef MAIN_UI_TEXTURE_TEXT_BUTTON_CPP
 
 // Just a example
-// PR = Prototyping -> only for testing 
+// PR = Prototyping -> only for testing
 #include <Zap.h>
+#include <os/system_font.h>
+
 #include <Graphics.h>
 #include <iostream>
 #include <array>
@@ -14,15 +16,32 @@ public:
 	inline window_invoker(T _callback) : callback_invoker(_callback) {}
 	template<typename A1> void operator () (A1& a1) { callback(a1); }
 };
-window_invoker  cbi([](zap::Window& window) {
-	if (window.isKeyPressed(zap::Key::ESC))
-	{
-		window.Close();
-	}
-	});
+window_invoker  cbi
+	(
+		[](zap::Window& window) {
+			if (window.isKeyPressed(zap::Key::ESC))
+			{
+				window.Close();
+			}
+		}
+	);
+
 
 int main()
 {
+	using std::cout;
+	using std::wcout;
+	using std::endl;
+	//wchar_t buf[2048] = L"windir";
+	//wchar_t font[2048] = L"arial.ttf";
+	char cFontPath[2048] = "arial.ttf";
+	unsigned int ret = -1;
+	//ret = zap::os::GetSystemFontPath(font, 2048);
+	//wcout << ret << L" font path: " << font << std::endl;
+
+	ret = zap::os::GetSystemFontPath(cFontPath, 2048);
+	wcout << ret << L" cfont path: " << cFontPath << std::endl;
+	//return 0;
 	//ZAP_DISABLE_OUTPUTS(true);
 
 	zap::Init(4, 6);
@@ -45,7 +64,7 @@ int main()
 	zap::Enable(zap::Instruction::ANTIALIASING);
 
 
-	zap::ButtonText buttonText(std::array<float, 4> {-0.5f, 0.6f, 0.2f, 0.8f }, L"Button", "C:/Windows/Fonts/arial.ttf");
+	zap::ButtonText buttonText(std::array<float, 4> {-0.5f, 0.6f, 0.2f, 0.8f }, L"Buttonx", cFontPath);
 
 	//
 	//buttonText.SetTextOffset(0.31f, 0.075f);

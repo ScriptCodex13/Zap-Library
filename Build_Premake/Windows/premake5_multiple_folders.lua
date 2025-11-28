@@ -18,12 +18,16 @@ project "zap_lib"
     files { "../../zap_lib/**.h"}
     files { "../../zap_lib/Graphics/**.cpp"}
     files { "../../zap_lib/Graphics/**.h"}
-    files { "../../zap_lib/GUI**.cpp"}
+    files { "../../zap_lib/GUI/**.cpp"}
     files { "../../zap_lib/GUI/**.h"}
     files { "../../zap_lib/Util/**.cpp"}
     files { "../../zap_lib/Util/**.h"}
     files { "../../zap_lib/Window/**.cpp"}
     files { "../../zap_lib/Window/**.h"}
+    files { "../../zap_lib/OS/**.cpp"}
+    files { "../../zap_lib/OS/**.h"}
+    files { "../../zap_lib/OS/winapi/**.cpp"}
+    files { "../../zap_lib/OS/winapi/**.h"}
     files { "../../zap_lib/Audio/**.cpp"}
     files { "../../zap_lib/Audio/**.h"}
     includedirs {"../../extern/"}

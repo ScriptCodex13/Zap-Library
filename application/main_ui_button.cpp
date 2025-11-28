@@ -1,5 +1,5 @@
 #include "enabler.h"
-#ifdef SAMPLE_MAIN_UI_BUTTON_CPP
+#ifdef MAIN_UI_BUTTON_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -8,6 +8,8 @@
 #include <iostream>
 #include <array>
 #include <Window/Window.h>
+#include <os/system_font.h>
+
 
 template <typename T> class window_invoker : public zap::util::callback_invoker<T>
 {
@@ -46,9 +48,13 @@ int main()
 	zap::Enable(zap::Instruction::ANTIALIASING);
 
 	//instead of a platform dependent window pass a portable container interface:
+	char cFontPath[2048] = "arial.ttf";
+	unsigned int ret = -1;
+	ret = zap::os::GetSystemFontPath(cFontPath, 2048);
+
 	zap::Button button(
 		window.getButtonContainer(), std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 },
-		"Button", "C:/Windows/Fonts/arial.ttf");
+		"Button", cFontPath);
 
 	button.SetTextOffset(0.31f, 0.075f);
 	button.SetTextColor(zap::TextColors::RED);

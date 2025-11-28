@@ -1,5 +1,5 @@
 #include "enabler.h"
-#ifdef SAMPLE_MAIN_CPP
+#ifdef MAIN_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -11,6 +11,8 @@
 #include "Cube.h"
 #include "LightCube.h"
 #include <Window/Window.h>
+#include <os/system_font.h>
+
 
 template <typename T> class window_camera_invoker : public zap::util::callback_invoker<T>
 {
@@ -89,8 +91,10 @@ int main()
 	zap::Enable(zap::Instruction::ANTIALIASING);
 
 	//window.SetCursorinCameraMode(false);
-
-	zap::Text text("C:/Windows/Fonts/arial.ttf", "Text", window.GetSize()); // It's better to use GetSize here
+	char cFontPath[2048] = "arial.ttf";
+	unsigned int ret = -1;
+	ret = zap::os::GetSystemFontPath(cFontPath, 2048);
+	zap::Text text(cFontPath, "Text", window.GetSize()); // It's better to use GetSize here
 
 	//text.SetCharacterSize(48);
 	text.SetColor(0.0f, 1.0f, 0.0f);
@@ -118,7 +122,7 @@ int main()
 	Cube cube;
 	LightCube lightCube;
 
-	zap::Button button(window.getButtonContainer(), std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, "Button", "C:/Windows/Fonts/arial.ttf");
+	zap::Button button(window.getButtonContainer(), std::array<float, 4> {-0.5, 0.6, 0.2, 0.8 }, "Button", cFontPath);
 	//button.SetGlPosition(std::array<float, 2> {- 0.9f, 0.7f});
 	//button.SetGlPosition(- 0.9f, 0.7f, 0.2, 0.8 );
 	//button.SetGlSize(std::array<float, 2> {0.1f, 0.1f});

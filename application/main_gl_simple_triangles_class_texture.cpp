@@ -1,5 +1,5 @@
 #include "enabler.h"
-#ifdef SAMPLE_MAIN_SIMPLE_TRIANGLES_CLASS_TEXTURE_CPP
+#ifdef MAIN_GL_SIMPLE_TRIANGLES_CLASS_TEXTURE_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -118,7 +118,10 @@ int main()
 	mesh.SetFragmentShaderSource(fragmentCameraShaderSource);
 	mesh.SetAttribPointer(0, 3, 5, 0);
 	mesh.SetAttribPointer(1, 2, 5, 3);
-	unsigned int texture0Id = mesh.AddTexture(0, "textures/texture.png", zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
+	//unsigned int texture0Id = mesh.AddTexture(0, "textures/texture.png", zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
+	//unsigned int texture0Id = mesh.AddTexture(0, "textures/texture.png", zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
+	unsigned int texture0Id = mesh.AddTextureFromPath(0, "textures/texture.png", zap::TextureFilter::NEAREST, zap::MipmapSetting::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
+
 	mesh.Finish();
 
 	window.UpdateViewport(); //This is a set callback. Once set == forever set
@@ -154,7 +157,7 @@ int main()
 		//there starts general draw
 		glClear(GL_DEPTH_BUFFER_BIT); // PR
 		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
-		zap::ClearBackground(zap::BackgroundColors::BLACK);
+		zap::ClearBackground(zap::BackgroundColor::BLACK);
 
 
 		//here starts current VAO for current program draw
@@ -162,10 +165,10 @@ int main()
 		//update uniforms
 
 		mesh.UpdateModel(glm::rotate(glm::mat4(1.0), (float)0, glm::vec3(0.0f, 1.0f, 0.0f)));
-		mesh.SetView(camera.GetView());
-		mesh.SetProjection(camera.GetProjection());
+		mesh.UpdateView(camera.GetView());
+		mesh.UpdateProjection(camera.GetProjection());
 
-		mesh.UseTexture(texture0Id);
+		mesh.BindTextureByHash(texture0Id);
 
 		mesh.Draw();
 		//here draw ends

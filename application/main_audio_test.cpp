@@ -1,6 +1,6 @@
 #include "enabler.h"
 
-#ifdef SAMPLE_MAIN_AUDIO_TEST
+#ifdef MAIN_AUDIO_TEST_CPP
 
 #include <iostream>
 #include <Audio.h>

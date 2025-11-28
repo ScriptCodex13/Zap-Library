@@ -138,6 +138,7 @@ namespace zap
 				}
 			)glsl";
 	};
+
 	//This is a RAII
 	class FreeType
 	{

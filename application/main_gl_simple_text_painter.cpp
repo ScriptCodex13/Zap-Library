@@ -1,5 +1,5 @@
 ﻿#include "enabler.h"
-#ifdef SAMPLE_TEXT_PAINTER_CPP
+#ifdef MAIN_GL_SIMPLE_TEXT_PAINTER_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -14,6 +14,8 @@
 #include <glm/gtc/matrix_transform.hpp> //matrix functions
 #include <glm/gtc/type_ptr.hpp>         //convert glm types to opengl types
 #include <Window/Window.h>
+#include <os/system_font.h>
+
 
 template <typename T> class window_invoker : public zap::util::callback_invoker<T>
 {
@@ -83,9 +85,12 @@ public:
 		SetAttribPointer(0, 3, 5, 0);
 		SetAttribPointer(1, 2, 5, 3);
 
-		//text.LoadFont("C:/Windows/Fonts/arial.ttf");
-		text.LoadFont("C:/Windows/Fonts/msgothic.ttc");
-		//text.LoadFont("C:/Windows/Fonts/OLDENGL.TTF");
+		//char cFontPath[2048] = "arial.ttf";
+		//char cFontPath[2048] = "OLDENGL.TTF";
+		char cFontPath[2048] = "msgothic.ttc";
+		unsigned int ret = -1;
+		ret = zap::os::GetSystemFontPath(cFontPath, 2048);
+		text.LoadFont(cFontPath);
 
 		textureHash = AddTextureFromData(0, 0, 0,
 			GL_RED, zap::TextureFilter::LINEAR,

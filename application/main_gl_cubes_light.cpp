@@ -1,5 +1,5 @@
 #include "enabler.h"
-#ifdef SAMPLE_MAIN_GL_CUBES_LIGHT_CPP
+#ifdef MAIN_GL_CUBES_LIGHT_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 

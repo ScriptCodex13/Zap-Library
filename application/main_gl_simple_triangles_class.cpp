@@ -1,5 +1,5 @@
 #include "enabler.h"
-#ifdef SAMPLE_MAIN_SIMPLE_TRIANGLES_CLASS_CPP
+#ifdef MAIN_GL_SIMPLE_TRIANGLES_CLASS_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 

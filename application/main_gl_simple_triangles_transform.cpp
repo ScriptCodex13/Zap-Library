@@ -1,5 +1,5 @@
 #include "enabler.h"
-#ifdef SAMPLE_MAIN_SIMPLE_TRIANGLES_TRANSFORM_CPP
+#ifdef MAIN_GL_SIMPLE_TRIANGLES_TRANSFORM_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -14,6 +14,7 @@
 #include <glm/gtc/matrix_transform.hpp> //matrix functions
 #include <glm/gtc/type_ptr.hpp>         //convert glm types to opengl types
 #include <Window/Window.h>
+#include <os/system_font.h>
 
 template <typename T> class window_invoker : public zap::util::callback_invoker<T>
 {
