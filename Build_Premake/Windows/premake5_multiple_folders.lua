@@ -51,12 +51,12 @@ project "application"
     includedirs {"../../extern/glad/include/"}
     includedirs {"../../extern/GLFW/include/"}
     includedirs {"../../extern/freetype/include/Windows"}
-    includedirs {"../../src/"}
+    includedirs {"../../zap_lib/"}
     includedirs {"../../extern/"}
     includedirs {"../../extern/miniaudio/"}
     libdirs {"../../extern/GLFW/lib/Windows"}
     libdirs {"../../extern/freetype/lib/Windows"}
-    links {"Zap"}
+    links {"zap_lib"}
 
     cppdialect "C++17"
 
