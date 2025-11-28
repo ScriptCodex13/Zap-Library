@@ -10,22 +10,22 @@ workspace "Zap-Project"
     }
 	startproject "application"
 
-project "Zap"
-    location "Project_mpf/Zap"
+project "zap_lib"
+    location "../../zap_lib"
     kind "StaticLib"
     language "C++"
-    files { "../../src/**.cpp"}
-    files { "../../src/**.h"}
-    files { "../../src/Graphics/**.cpp"}
-    files { "../../src/Graphics/**.h"}
-    files { "../../src/GUI**.cpp"}
-    files { "../../src/GUI/**.h"}
-    files { "../../src/Util/**.cpp"}
-    files { "../../src/Util/**.h"}
-    files { "../../src/Window/**.cpp"}
-    files { "../../src/Window/**.h"}
-    files { "../../src/Audio/**.cpp"}
-    files { "../../src/Audio/**.h"}
+    files { "../../zap_lib/**.cpp"}
+    files { "../../zap_lib/**.h"}
+    files { "../../zap_lib/Graphics/**.cpp"}
+    files { "../../zap_lib/Graphics/**.h"}
+    files { "../../zap_lib/GUI**.cpp"}
+    files { "../../zap_lib/GUI/**.h"}
+    files { "../../zap_lib/Util/**.cpp"}
+    files { "../../zap_lib/Util/**.h"}
+    files { "../../zap_lib/Window/**.cpp"}
+    files { "../../zap_lib/Window/**.h"}
+    files { "../../zap_lib/Audio/**.cpp"}
+    files { "../../zap_lib/Audio/**.h"}
     includedirs {"../../extern/"}
     includedirs {"../../extern/glad/include/"}
     includedirs {"../../extern/GLFW/include/"}
