@@ -4,6 +4,7 @@
 #define DEVICE_H
 
 #include <miniaudio.h>
+#include <functional>
 
 namespace zap
 {
@@ -35,6 +36,11 @@ namespace zap
 
 	};
 
+	static void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount)
+	{
+
+	}
+
 	class AudioDevice
 	{
 	public:
@@ -45,14 +51,11 @@ namespace zap
 		void SetFormat(PlaybackFormat playbackformat);
 		void SetChannels(unsigned int channels);
 		void SetSampleRate(unsigned int samplerate);
-		void SetCallback(); // Dont know if it works
+		std::function<void(ma_device*, void*, const void*, ma_uint32)> Callback(); // Dont know if it works
 
 		void Finish();
 
-		void i_datacallback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount) 
-		{
-
-		};
+		std::function<void(ma_device*, void*, const void*, ma_uint32)> i_callback = data_callback;
 
 	private:
 		ma_device_config i_device_config;

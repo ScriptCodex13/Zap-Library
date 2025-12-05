@@ -1,4 +1,5 @@
 #ifdef _MSC_VER
+
 #include "winapi_font.h"
 #include <windows.h>
 //#include <cstring>

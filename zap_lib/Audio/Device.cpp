@@ -33,9 +33,9 @@ namespace zap
 		data.i_sample_rate = samplerate;
 	}
 
-	void AudioDevice::SetCallback() 
+	std::function<void(ma_device*, void*, const void*, ma_uint32)> AudioDevice::Callback()
 	{
-
+		return i_callback;
 	} 
 	
 	// Dont know if it works
@@ -46,7 +46,8 @@ namespace zap
 		i_device_config.playback.format = (ma_format)data.i_playback_format;
 		i_device_config.playback.channels = data.i_channels;
 		i_device_config.sampleRate = data.i_sample_rate;
-		i_device_config.dataCallback = i_datacallback;
+		i_device_config.dataCallback = i_callback.target<void(ma_device*, void*, const void*, ma_uint32)>();
+		//i_device_config.pUserData = 
 	}
 
 }
