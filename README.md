@@ -59,7 +59,7 @@ int main()
 {
 	zap::Init();
 
-	zap::Window window(1290, 720, "Hello Window");
+	zap::Window window(1280, 720, "Hello Window");
 
 	zap::InitGlad();
 
@@ -92,7 +92,7 @@ zap::Delete();
 You use these functions to manage the APIs OpenGL resources. Every call from Zap must be called between these two functions.
 
 ```c++
-zap::Window window(1290, 720, "Hello Window");
+zap::Window window(1280, 720, "Hello Window");
 ```
 We create a new Window class here. We specify the width and height and the Title of the window.
 
