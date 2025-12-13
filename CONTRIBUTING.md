@@ -10,7 +10,7 @@ Before you send us Pull Request be sure that it meets following requriments:
 - Does the Project build properly ?
 - Is your Pull request able on run on different platforms and devices ?
 - Does it change the coding style of the API or function names call orders etc. ? -> If so tell us about it and we will change it in the wiki
-- You should also tell us, if you change something like dependencies ore core structures
+- You should also tell us, if you change something like dependencies or core structures
 - Be sure to document your changes and tell what you have changed exactly
 - Your Pull request should only be for a specific segment (Graphics, GUI, Window, Util...)
 
