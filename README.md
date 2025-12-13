@@ -37,7 +37,7 @@ Features:
 
 # How to use 
 
-## Build the projec
+## Build the project
 
 ### Build for Visual Studio using [Premake](https://github.com/premake/premake-core)
 
