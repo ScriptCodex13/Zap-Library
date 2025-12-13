@@ -26,18 +26,18 @@ And with a little bit more time you get also lighting done quickly.
 # So why Zap ?
 
 Features:
-- Library gives the user control over OpenGL calls
-- Easy extendable and modifyable
+- library gives the user control over OpenGL calls
+- easy extendable and modifyable
 - high performance
 - you can mix OpenGL and Zap
 - additions like Audio, GUI...
-- good for learning OpenGL (Replace parts of your code with OpenGL...)
+- good for learning OpenGL (replace parts of your code with OpenGL...)
 - higher developing speed than with raw OpenGL
 
 
 # How to use 
 
-## Build the project
+## Build the projec
 
 ### Build for Visual Studio using [Premake](https://github.com/premake/premake-core)
 
