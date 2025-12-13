@@ -25,8 +25,14 @@ And with a little bit more time you get also lighting done quickly.
 
 # So why Zap ?
 
-We are focused to build a very flexable library solution. The API isn't just a simple library abstraction. With the tools it provides you can shape it in the form you want. You can go more low level and use more OpenGL code with the core or go the high level route and abstract the core library more. So you could for example create a sprite class which let's you create a sprite with texture in under 5 lines of code for example. The core abstraction layer is not very big so you won't run in serious performance drawbacks. We also provide more abstracted classes build on the own core which helps piecing together a quick game. So if the abstraction isn't for you you can change it to match your coding style.
-You can also contact us on Discord if you run into issues with the API.
+Features:
+- Library gives the user control over OpenGL calls
+- Easy extendable and modifyable
+- high performance
+- you can mix OpenGL and Zap
+- additions like Audio, GUI...
+- good for learning OpenGL (Replace parts of your code with OpenGL...)
+- higher developing speed than with raw OpenGL
 
 
 # How to use 
