@@ -3,7 +3,7 @@
 
 # What is Zap?
 
-Zap is an API which is designed for creating graphics applications like games with easy calls and still control over the OpenGL processes behind the scenes. 
+Zap is an API which is designed for creating graphics applications like games with easy calls and still nearly no limitations in comparison to raw OpenGL. 
 
 
 The API can be used by anyone who is familiar with C++ and has expierience with GLSL and some basics of OpenGL. But for everyone who know more OpenGL can also use more OpenGL code in combination with Zap. If you want to know more about GLSL take a look at the awesome Website [LearnOpenGL](https://learnopengl.com/Getting-started/Shaders).
