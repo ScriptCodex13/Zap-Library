@@ -106,6 +106,13 @@ zap::InitGlad();
 GLAD is a loader that retrieves OpenGL function pointers. It must be initialized after creating a window.
 
 ```c++
+
+```c++
+window.UpdateViewport(true);
+```
+
+If the window is resized, call UpdateViewport to update the viewport to the new window size.
+
 while (window.Open())
 {
 	zap::ClearBackground(zap::BackgroundColors::ORANGE);
@@ -115,7 +122,6 @@ while (window.Open())
 		window.Close();
 	}
 
-	window.UpdateViewport();
 	window.Update();
 	window.Draw();
 
@@ -123,12 +129,6 @@ while (window.Open())
 ```
 
 This while loop runs while the window is open. Inside the loop, ClearBackground fills the window with an orange color.
-
-```c++
-window.UpdateViewport();
-```
-
-If the window is resized, call UpdateViewport to update the viewport to the new window size.
 
 ```c++
 window.Update();

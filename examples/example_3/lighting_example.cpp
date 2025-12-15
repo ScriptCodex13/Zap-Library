@@ -1,4 +1,5 @@
-#include <Zap.h> //TODO: This is not the correct way to use libraries
+#include <Zap.h> 
+#include <Graphics.h>
 #include <iostream>
 #include <vector>
 #include <array>
@@ -136,12 +137,12 @@ int main()
 
 	std::vector<unsigned int> indices = // Add indizes if you want. 
 	{
-	
+
 	};
 
 	//Camera
 
-	std::array<unsigned int, 2> size = window.GetSize(); // Not a Ref to the window size !
+	std::array<int, 2> size = window.GetSize(); // Not a Ref to the window size !
 
 	zap::SceneCamera camera(size[0], size[1]);
 
@@ -169,7 +170,7 @@ int main()
 	light.SetAttribPointer(0, 3, 6, 0);
 
 	light.Finish();
-	
+
 	//
 
 	// Window settings
@@ -177,48 +178,50 @@ int main()
 	window.UpdateViewport(true);
 	window.SetVSync(true);
 
-	
-	zap::Enable(zap::Instructions::DEPTH); 
 
-	zap::Enable(zap::Instructions::ANTIALIASING);
+	zap::Enable(zap::Instruction::DEPTH);
+
+	zap::Enable(zap::Instruction::ANTIALIASING);
 
 	window.Maximize();
 	window.SetCursorinCameraMode(true);
 
 
-	
 
 
-	glm::vec3 lightPos(1.0f, 0.0f, 2.0f);
+
+	glm::vec3 lightPos(-1.0f, 0.0f, 2.0f);
 
 	float rotation = 0.0f;
-	
+
 	float sensitivity = 0.1f;
 
 
 	std::array<double, 2> oldPos = window.GetMousePosition();
 
 	// Getting uniform locations
-	
+
 	//cube
 	unsigned int view_location_cube = glGetUniformLocation(cube.GetProgram(), "view");
 	unsigned int projection_location_cube = glGetUniformLocation(cube.GetProgram(), "projection");
+	unsigned int model_location_cube = glGetUniformLocation(cube.GetProgram(), "model");
 
 	//light
 
 	unsigned int view_location_light = glGetUniformLocation(light.GetProgram(), "view");
 	unsigned int projection_location_light = glGetUniformLocation(light.GetProgram(), "projection");
+	unsigned int model_location_light = glGetUniformLocation(light.GetProgram(), "model");
 
 	//
-	
+
 	while (window.Open())
 	{
 		// Mouse Input
 		std::array<double, 2> newpos = window.GetMousePosition();
-	
+
 		float xoffset = (newpos[0] - oldPos[0]) * sensitivity;
 		float yoffset = (oldPos[1] - newpos[1]) * sensitivity;
-		
+
 		oldPos = newpos;
 
 		camera.Rotate(xoffset, yoffset, 0.0f);
@@ -275,13 +278,14 @@ int main()
 		glUniform3fv(glGetUniformLocation(cube.GetProgram(), "lightPos"), 1, &lightPos[0]);
 		glUniform3fv(glGetUniformLocation(cube.GetProgram(), "viewPos"), 1, &camera.GetPosition()[0]);
 
-		
+
 		glUniformMatrix4fv(projection_location_cube, 1, GL_FALSE, glm::value_ptr(camera.GetProjection()));
 		glUniformMatrix4fv(view_location_cube, 1, GL_FALSE, glm::value_ptr(camera.GetView()));
 
-		cube.GetModel() = glm::translate(glm::mat4(1.0), glm::vec3(1.4f, -0.1f, -2.0f));
-		cube.GetModel() = glm::rotate(glm::mat4(1.0), (float)glfwGetTime(), glm::vec3(0.0f, rotation, 0.0f));
-		cube.UpdateModel("model");
+		glm::mat4 cube_model = glm::mat4(1.0f);
+		cube_model = glm::translate(cube_model, glm::vec3(1.4f, -0.1f, -2.0f));
+		cube_model = glm::rotate(cube_model, (float)glfwGetTime(), glm::vec3(0.0f, rotation, 0.0f));
+		glUniformMatrix4fv(model_location_cube, 1, GL_FALSE, glm::value_ptr(cube_model));
 
 		cube.Bind();
 		cube.Draw(36);
@@ -298,10 +302,10 @@ int main()
 		glUniformMatrix4fv(projection_location_light, 1, GL_FALSE, glm::value_ptr(camera.GetProjection()));
 		glUniformMatrix4fv(view_location_light, 1, GL_FALSE, glm::value_ptr(camera.GetView()));
 
-		light.GetModel() = glm::mat4(1.0f);
-		light.GetModel() = glm::translate(light.GetModel(), lightPos); // Does work without problems
-		light.GetModel() = glm::scale(light.GetModel(), glm::vec3(0.2f));
-		light.UpdateModel("model");
+		glm::mat4 light_model = glm::mat4(1.0f);
+		light_model = glm::translate(light_model, lightPos);
+		light_model = glm::scale(light_model, glm::vec3(0.2f));
+		glUniformMatrix4fv(model_location_light, 1, GL_FALSE, glm::value_ptr(light_model));
 
 		light.Bind(); //set current context before any draw routines, it prevents mess in more complex workflow
 		light.Draw(36);
@@ -309,19 +313,17 @@ int main()
 		//
 
 		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
-		
-		
+
+
 		window.Update();
 		window.Draw();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // PR
-		
+
 		rotation += 1.0f;
-		
+
 	}
 
 	zap::Delete();
 
 }
-
-
