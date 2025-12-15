@@ -75,6 +75,7 @@ namespace zap
 		void SetCursorinCameraMode(bool state);
 		std::array<float, 2> GetScaleDifference();					        // 
 		std::array<int, 2> GetOriginalSize();					            // Get the original window resolution so you can scale elements properly even after resizing or upscaling
+		bool IsClosing();
 		void Update();
 		void Draw();
 

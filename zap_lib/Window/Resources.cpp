@@ -63,8 +63,6 @@ namespace zap
 
 		/******************************************************************************/
 
-		
-
 		messages::PrintMessage("Using OpenGL Version " + std::to_string(version_major) + "." + std::to_string(version_minor), "", MessageTypes::api_core_info, false);
 
 	}

@@ -438,6 +438,11 @@ namespace zap
 		return  i_original_size ;
 	}
 
+	bool Window::IsClosing()
+	{
+		return glfwWindowShouldClose(intern_window);
+	}
+
 	void Window::Update()
 	{
 
