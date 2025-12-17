@@ -31,8 +31,8 @@ namespace zap
 	void SceneCamera::Rotate(float yaw, float pitch, float roll)
 	{
 		i_yaw = std::clamp(yaw + i_yaw, -360.f, i_yaw_clamp);
-		i_pitch = std::clamp(yaw + i_pitch, -360.f, i_pitch_clamp);
-		i_roll = std::clamp(yaw + i_roll, -360.f, i_roll_clamp);
+		i_pitch = std::clamp(pitch + i_pitch, -360.f, i_pitch_clamp);
+		i_roll = std::clamp(roll + i_roll, -360.f, i_roll_clamp);
 	}
 
 	void SceneCamera::SetRotation(float yaw, float pitch, float roll)
