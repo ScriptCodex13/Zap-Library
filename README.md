@@ -154,6 +154,7 @@ You can use this library without including the license file in your binary distr
 - [glm](https://github.com/g-truc/glm) for math
 - [FreeType](https://freetype.org/) (under the FTL license) for font loading
 - [miniaudio](https://github.com/mackron/miniaudio) for audio
+- [assimp](https://github.com/assimp/assimp) for model loading
 - Provided fonts come from Google Fonts: https://fonts.google.com/
 
 # Questions?
