@@ -35,6 +35,7 @@ project "zap_lib"
     includedirs {"../../extern/GLFW/include/"}
     includedirs {"../../extern/freetype/include/Windows"}
     includedirs {"../../extern/miniaudio/"}
+    includedirs {"../../extern/assimp/include"}
     cppdialect "C++17"
 
     filter "configurations:Debug"
@@ -58,8 +59,10 @@ project "application"
     includedirs {"../../zap_lib/"}
     includedirs {"../../extern/"}
     includedirs {"../../extern/miniaudio/"}
+    includedirs {"../../extern/assimp/include"}
     libdirs {"../../extern/GLFW/lib/Windows"}
     libdirs {"../../extern/freetype/lib/Windows"}
+    libdirs {"../../extern/assimp/lib/Windows"}
     links {"zap_lib"}
 
     cppdialect "C++17"
@@ -69,7 +72,7 @@ project "application"
         runtime "Debug"
     
     filter "system:windows"
-        links {"glfw3","opengl32","user32", "gdi32","shell32", "freetype"} -- Add other platforms support with freetype later
+        links {"glfw3","opengl32","user32", "gdi32","shell32", "freetype", "assimp-vc143-mt"} -- Add other platforms support with freetype later
     
     filter "system:linux"
         links { "glfw", "GL", "dl", "pthread", "X11", "Xrandr", "Xi", "Xxf86vm", "m" }
