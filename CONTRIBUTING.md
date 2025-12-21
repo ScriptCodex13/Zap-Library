@@ -26,7 +26,11 @@ It's important to keep the code in a consistent style so we came up with some re
 4. External dependencies like libraries should be included with <>
 5. Use include guards in your headers
 6. Every callable function for users of this software should be in capital letters.
-   ex.: void MyFunction() 
+   ex.: void MyFunction()
+
+## Additional requirements
+
+1. This library focuses on controllability, customizability and performance. Please consider these goals when you design your classes.. etc.
 
 ## Becoming a Contributor
 
@@ -47,3 +51,4 @@ Step 1 - Contact us on our [discord server](https://discord.gg/hr2vjemJSV) and t
 Step 2 - We will then assign you a new role name applicant. So you can enter the applicant chat. There we'll just look at your example project. (Don't worry it won't be like a job interview :) )
 
 Step 3 - We will tell you if you're a contributor then. If you're not you can stay applicant and try again later on.
+
