@@ -59,9 +59,9 @@ class TextPainter : public zap::Mesh
 	{
 		// positions           // texture coords
 		 0.5f,  0.5f, 0.0f,    1.0f, 1.0f,   // top right 
-		 0.5f, -0.5f, 0.0f,    1.0f, 0.0f,   // bottom right  This causes the bug
+		 0.5f, -0.5f, 0.0f,    1.0f, 0.0f,   // bottom right  
 		-0.5f, -0.5f, 0.0f,    0.0f, 0.0f,   // bottom left
-		-0.5f,  0.5f, 0.0f,    0.0f, 1.0f    // top left		And also this
+		-0.5f,  0.5f, 0.0f,    0.0f, 1.0f    // top left
 
 	};
 
@@ -84,7 +84,7 @@ public:
 		SetAttribPointer(1, 2, 5, 3);
 		//SetAttribPointer(2, 2, 5, 6);
 		//textureHash = AddTexture(0, "textures/texture.png", zap::TextureFilter::NEAREST, zap::MipmapSetting::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
-		textureHash = AddTextureFromPath(0, "textures/learnopengl/airplane.png", zap::TextureFilter::NEAREST, zap::MipmapSetting::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
+		textureHash = AddTextureFromPath(0, "textures/learnopengl/airplane.png", zap::TextureFilter::NEAREST, zap::MipmapSetting::NEAREST_MIPMAP_NEAREST, zap::TextureWrapping::CLAMP_TO_EDGE).getHash();
 		Finish();
 	}
 

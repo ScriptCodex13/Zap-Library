@@ -442,7 +442,4 @@ namespace zap
 			glDrawElementsInstanced(GL_TRIANGLES, vertices_count, GL_UNSIGNED_INT, 0, draw_amount);
 		}
 	}
-
 }
-
-

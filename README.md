@@ -156,6 +156,7 @@ You can use this library without including the license file in your binary distr
 - [miniaudio](https://github.com/mackron/miniaudio) for audio
 - [assimp](https://github.com/assimp/assimp) for model loading
 - Provided fonts come from Google Fonts: https://fonts.google.com/
+- [zlib](https://github.com/madler/zlib) in combination with assimp
 
 # Questions?
 

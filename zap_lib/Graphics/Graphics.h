@@ -13,6 +13,6 @@ This is the Graphics segment's main header
 #include "RenderCalls.h"
 #include "StandardVertices.h"
 #include "Texture.h"
-
+#include "ModelLoader.h"
 
 #endif

@@ -31,6 +31,7 @@ project "Zap"
     includedirs {"../../extern/freetype/include/Windows"}
     includedirs {"../../extern/"}
     includedirs {"../../extern/assimp/include"}
+    includedirs {"../../extern/zlib/include"}
     cppdialect "C++17"
 
     filter "configurations:Debug"
@@ -55,20 +56,27 @@ project "Application"
     includedirs {"../../extern/"}
     includedirs {"../../extern/miniaudio/"}
     includedirs {"../../extern/assimp/include"}
+    includedirs {"../../extern/zlib/include"}
     libdirs {"../../extern/GLFW/lib/Windows"}
     libdirs {"../../extern/freetype/lib/Windows"}
     libdirs {"../../Project/Zap/bin/"}
-    libdirs {"../../extern/assimp/lib/Windows"}
     links {"Zap"}
 
     cppdialect "C++17"
 
     filter "configurations:Debug"
+        libdirs {"../../extern/assimp/lib/Windows/Debug"}
+        libdirs {"../../extern/zlib/lib/Windows/Debug"}
         staticruntime "off"
         runtime "Debug"
+
+    filter "configurations:Release"
+        libdirs {"../../extern/assimp/lib/Windows/Release"}
+        libdirs {"../../extern/zlib/lib/Windows/Release"}
+        runtime "Release"
     
     filter "system:windows"
-        links {"glfw3","opengl32","user32", "gdi32","shell32", "freetype", "assimp-vc143-mt"} -- Add other platforms support with freetype later
+        links {"glfw3","opengl32","user32", "gdi32","shell32", "freetype", "assimp", "zlibstaticd"} -- Add other platforms support with freetype later
     
     filter "system:linux"
         links { "glfw", "GL", "dl", "pthread", "X11", "Xrandr", "Xi", "Xxf86vm", "m" }
