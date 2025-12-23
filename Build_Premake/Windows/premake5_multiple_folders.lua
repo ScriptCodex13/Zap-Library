@@ -72,16 +72,18 @@ project "application"
     filter "configurations:Debug"
         libdirs {"../../extern/assimp/lib/Windows/Debug"}
         libdirs {"../../extern/zlib/lib/Windows/Debug"}
+        links {"zlibstaticd"}
         staticruntime "off"
         runtime "Debug"
     
      filter "configurations:Release"
         libdirs {"../../extern/assimp/lib/Windows/Release"}
         libdirs {"../../extern/zlib/lib/Windows/Release"}
+        links {"zlibstatic"}
         runtime "Release"
 
     filter "system:windows"
-        links {"glfw3","opengl32","user32", "gdi32","shell32", "freetype", "assimp", "zlibstaticd"} -- Add other platforms support with freetype later
+        links {"glfw3","opengl32","user32", "gdi32","shell32", "freetype", "assimp"} -- Add other platforms support with freetype later
     
     filter "system:linux"
         links { "glfw", "GL", "dl", "pthread", "X11", "Xrandr", "Xi", "Xxf86vm", "m" }

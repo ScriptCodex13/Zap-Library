@@ -13,7 +13,7 @@ int main()
 
 	zap::InitGlad();
 
-	zap::ModelData modeldata = zap::LoadModel("TestCube.obj");
+	zap::ModelData modeldata = zap::LoadModel("Untitled.obj");
 
 	window.Maximize();
 	window.UpdateViewport(true);

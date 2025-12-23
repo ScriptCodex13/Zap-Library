@@ -62,20 +62,29 @@ namespace zap
 				resultdata.has_normals = false;
 			}
 
-			if(mesh->mTextureCoords[0])
+			if(mesh->mTextureCoords[0] != nullptr)
 			{
 				resultdata.has_texture_coords = true;
 
 				resultdata.texture_coords.push_back(mesh->mTextureCoords[0][i].x);
 				resultdata.texture_coords.push_back(mesh->mTextureCoords[0][i].y);
+				
+				if (mesh->mTangents != nullptr)
+				{
+					resultdata.has_texture_tangents = true;
 
-				resultdata.texture_tangents.push_back(mesh->mTangents[i].x);
-				resultdata.texture_tangents.push_back(mesh->mTangents[i].y);
-				resultdata.texture_tangents.push_back(mesh->mTangents[i].z);
+					resultdata.texture_tangents.push_back(mesh->mTangents[i].x);
+					resultdata.texture_tangents.push_back(mesh->mTangents[i].y);
+					resultdata.texture_tangents.push_back(mesh->mTangents[i].z);
+				}
+				if (mesh->mBitangents != nullptr)
+				{
+					resultdata.has_texture_bitangents = true;
 
-				resultdata.texture_bitangents.push_back(mesh->mBitangents[i].x);
-				resultdata.texture_bitangents.push_back(mesh->mBitangents[i].y);
-				resultdata.texture_bitangents.push_back(mesh->mBitangents[i].z);
+					resultdata.texture_bitangents.push_back(mesh->mBitangents[i].x);
+					resultdata.texture_bitangents.push_back(mesh->mBitangents[i].y);
+					resultdata.texture_bitangents.push_back(mesh->mBitangents[i].z);
+				}
 			}
 			else 
 			{
@@ -152,7 +161,7 @@ namespace zap
 			messages::PrintMessage("Failed to load model at path " + path + ": " + importer.GetErrorString(), "ModelData& zap::Mesh::LoadModel /Mesh.cpp", MessageTypes::error);
 		}
 
-		std::string directory = directory = path.substr(0, path.find_last_of('/'));
+		//std::string directory = directory = path.substr(0, path.find_last_of('/'));
 
 		//
 

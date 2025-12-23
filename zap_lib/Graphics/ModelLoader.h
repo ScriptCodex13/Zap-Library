@@ -34,6 +34,8 @@ namespace zap
 		bool has_normals = true;
 
 		bool has_texture_coords = true;
+		bool has_texture_tangents = true;
+		bool has_texture_bitangents = true;
 
 		std::vector<float> texture_coords;
 		std::vector<float> texture_tangents;
