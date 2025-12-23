@@ -125,7 +125,7 @@ namespace zap
 
 	void ProcessNode(aiNode* node, const aiScene* scene, ModelData& resultdata)
 	{
-		for (unsigned int i = 0; i < node->mNumMeshes; i)
+		for (unsigned int i = 0; i < node->mNumMeshes; i++)
 		{
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 			resultdata.meshes.push_back(ProcessMeshData(mesh, scene));
