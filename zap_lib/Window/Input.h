@@ -16,6 +16,8 @@
 #include <GLFW/glfw3.h>
 #include <unordered_map>
 
+#include <string>
+
 namespace zap
 {   
 
@@ -138,7 +140,9 @@ namespace zap
 		CONTROLLER_16
 	};
 
-	enum class ControllerButtonsPS  // Playstation Layout | ToDo: Add XBox 
+	// Playstation Layout
+
+	enum class ControllerButtonsPS 
 	{
 		RECTANGLE = 0,
 		CROSS,
@@ -173,6 +177,39 @@ namespace zap
 
     //
 
+	//XBox layout
+
+	enum class ControllerButtonsXB
+	{
+		A = 0, 
+		B,
+		X,
+		Y,
+		LB,
+		RB,
+		VIEW_BUTTON,
+		MENU_BUTTON,
+		LEFT_STICK_PRESSED,
+		RIGHT_STICK_PRESSED,
+		D_PAD_UP,
+		D_PAD_RIGHT,
+		D_PAD_DOWN,
+		D_PAD_LEFT
+	};
+
+	enum class ControllerTriggersXB
+	{
+		LEFT_STICK_X,
+		LEFT_STICK_Y,
+		RIGHT_STICK_X,
+		RIGHT_STICK_Y,
+		LT,
+		RT
+	};
+
+	//
+
+
 	inline unsigned int highest_device_id = (unsigned int)ControllerID::CONTROLLER_1; //keeps track of the highest, not used Glfw_Joystick 
 
 	class Device // manages a assigned GLFW_Joystick
@@ -180,7 +217,12 @@ namespace zap
 	public:
 		bool IsConnected();
 		bool GetButton(ControllerButtonsPS button, State state);
+		bool GetButton(ControllerButtonsXB button, State state);
+
 		const float GetTrigger(ControllerTriggersPS trigger);
+		const float GetTrigger(ControllerTriggersXB trigger);
+
+		std::string GetName();
 
 	public:
 		int present = 0;

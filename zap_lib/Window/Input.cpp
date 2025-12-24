@@ -33,19 +33,56 @@ namespace zap
 		return false;
 	}
 
-	const float Device::GetTrigger(ControllerTriggersPS trigger)
+	bool Device::GetButton(ControllerButtonsXB button, State state)
 	{
-		if (Controller_assigned)
-		{
-			int count;
-			const float* axis = glfwGetJoystickAxes((int)ID, &count);
+		int count;
 
-			return axis[(int)trigger];
+		const unsigned char* buttons = glfwGetJoystickButtons((int)ID, &count);
+
+		if (!Controller_assigned)
+		{
+			messages::PrintMessage("Controller is not connected", "Input.cpp/ const float Device::GetTrigger(...)", MessageTypes::warning);
+			return false;
 		}
 
-		messages::PrintMessage("Controller is not connected" , "Input.cpp/ const float Device::GetTrigger(...)", MessageTypes::warning);
-        
-		return 0.0f;
+		if (buttons[(int)button] == (GLenum)state) return true;
+
+		return false;
+	}
+
+	const float Device::GetTrigger(ControllerTriggersPS trigger)
+	{
+		if (!Controller_assigned)
+		{
+			messages::PrintMessage("Controller is not connected", "Input.cpp/ const float Device::GetTrigger(...)", MessageTypes::warning);
+
+			return 0.0f;
+		}
+
+		int count;
+		const float* axis = glfwGetJoystickAxes((int)ID, &count);
+
+		return axis[(int)trigger];
+	}
+
+	const float Device::GetTrigger(ControllerTriggersXB trigger)
+	{
+		if (!Controller_assigned)
+		{
+			messages::PrintMessage("Controller is not connected", "Input.cpp/ const float Device::GetTrigger(...)", MessageTypes::warning);
+
+			return 0.0f;
+		}
+
+		int count;
+		const float* axis = glfwGetJoystickAxes((int)ID, &count);
+
+		return axis[(int)trigger];
+	}
+
+	std::string Device::GetName()
+	{
+		return glfwGetJoystickName((int)ID);
 	}
 
 

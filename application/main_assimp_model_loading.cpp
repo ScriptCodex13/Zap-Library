@@ -29,16 +29,10 @@ int main()
 
 	zap::ModelData modeldata = zap::LoadModel("models/TestCube.obj");
 
-	window.Maximize();
+	//window.Maximize();
+	window.Minimize();
 	window.UpdateViewport(true);
 
-	for(auto i : modeldata.meshes)
-	{
-		for(auto s : i.vertices)
-		{
-			std::cout << s << std::endl;
-		}
-	}
 
 	zap::Mesh mesh(modeldata.meshes[0].vertices, modeldata.meshes[0].indices);
 
@@ -46,10 +40,10 @@ int main()
 
 	mesh.Finish();
 
-
-
 	while(window.Open())
 	{
+		if (window.isKeyPressed(zap::Key::ESC)) window.Close();
+
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
