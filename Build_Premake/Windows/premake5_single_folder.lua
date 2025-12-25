@@ -34,6 +34,9 @@ project "Zap"
     includedirs {"../../extern/zlib/include"}
     cppdialect "C++17"
 
+    filter "action:vs*"
+        flags { "MultiProcessorCompile" }
+
     filter "configurations:Debug"
         staticruntime "off"
         runtime "Debug"
@@ -63,6 +66,9 @@ project "Application"
     links {"Zap"}
 
     cppdialect "C++17"
+
+    filter "action:vs*"
+        flags { "MultiProcessorCompile" }
 
     filter "configurations:Debug"
         libdirs {"../../extern/assimp/lib/Windows/Debug"}
