@@ -14,6 +14,8 @@
 
 #include "TextRenderer.h"
 
+#include "../Util/Util.h"
+
 namespace zap
 {
 	//Dummy IUIButtonEventListener stub, to prevent cascade interface changes whenever listener is engineered

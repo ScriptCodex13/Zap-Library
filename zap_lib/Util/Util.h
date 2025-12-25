@@ -58,7 +58,7 @@ namespace zap_state_vars
 
 namespace zap
 {
-	namespace util 
+	namespace util
 	{
 		//SQL like in function
 		//SQL like in: "... val in (arg1, arg2...)" in C++ to be "... in (val, arg1, arg2...)"
@@ -85,7 +85,7 @@ namespace zap
 			return false;
 		}
 		template<typename T, typename T2> constexpr
-		inline bool const_in(const T val, const T2 arg)
+			inline bool const_in(const T val, const T2 arg)
 		{
 			return val == arg;
 		}
@@ -111,7 +111,7 @@ namespace zap
 		{
 			// Converts pixel coordinates to the OpenGL coordinate system
 			std::array<float, 2> n_dimensions = { (float)dimensions[0], (float)dimensions[1] };
-			return { (x / ((T)n_dimensions[0] / 2)) - T(1) , T(1) - (y / ((T)n_dimensions[1] / 2))};
+			return { (x / ((T)n_dimensions[0] / 2)) - T(1) , T(1) - (y / ((T)n_dimensions[1] / 2)) };
 		}
 		template<typename T>
 		inline std::array<T, 2> pixel_to_gl_coords(const std::array<int, 2>& dimensions, const std::array<T, 2>& point)
@@ -127,7 +127,7 @@ namespace zap
 		template<typename T>
 		inline std::array<T, 2> gl_coords_to_pixel(const std::array<int, 2>& dimensions, std::array<T, 2> point)
 		{
-			return { gl_coords_to_pixel(dimensions, point[0], point[1])};
+			return { gl_coords_to_pixel(dimensions, point[0], point[1]) };
 		}
 
 		//Inclusive 1D between
@@ -204,16 +204,18 @@ namespace zap
 		template<typename Deleter> class scope_guard
 		{
 			Deleter t;
+
 		public:
 			scope_guard(Deleter _t) :t(_t) {}
 			~scope_guard() { t(); }
 		};
 		//Callback invoker, for wrapping event handlers.
-        //  It will be handful for building better responsibility separation
+		//  It will be handful for building better responsibility separation
 		template <typename T> class callback_invoker
 		{
 		protected:
 			T callback;
+
 		public:
 			inline callback_invoker(T _callback) : callback(_callback) {}
 			void operator () () { callback(); }
@@ -224,8 +226,10 @@ namespace zap
 		template<int alignment = 1>size_t align(size_t w)
 		{
 			static_assert (const_in(alignment, 1, 2, 4, 8, 16), "Alignment template value can take only values 1, 2, 4, 8, 16");
+
 			if ((alignment == 1) || !(w % alignment))
 				return w;
+
 			return w - (w % alignment) + alignment;
 		}
 		//buffer views
@@ -237,12 +241,13 @@ namespace zap
 		{
 			T* buffer; //buffer length is managed externally, buffer_view doesn't care about it
 		public:
-			buffer_view(): buffer_view(nullptr) {}
-			buffer_view(T* t): buffer(t) {}
-			void reset(T* t) {buffer = t;}    //for instance reuse purpose
+			buffer_view() : buffer_view(nullptr) {}
+			buffer_view(T* t) : buffer(t) {}
+			void reset(T* t) { buffer = t; }    //for instance reuse purpose
 			T* const get() { return buffer; } //for debugging purposes, generally useless
 			T& operator [](size_t i) { return buffer[i]; }
 			T* operator + (size_t i) { return buffer + i; }
+
 			void read(buffer_view& src_view, size_t lenght)
 			{
 				for (int i = 0; i < lenght; i++)
@@ -254,18 +259,29 @@ namespace zap
 			static_assert (const_in(alignment, 1, 2, 4, 8), "Alignment template value can take only values 1, 2, 4, 8");
 			size_t width; //length of lines, can't change and must be kept internally
 			T* buffer;
-			bool aligned (size_t w)
+
+			bool aligned(size_t w)
 			{
 				if (alignment == 1) return true;
 				return !(w % alignment);
 			}
+
 		public:
+
 			using type = T;
-			buffer_view2D(): buffer(nullptr), width(0) {}
+			buffer_view2D() : buffer(nullptr), width(0) {}
 			buffer_view2D(T* ptr, size_t w) { reset(ptr, w); }
-			void reset(T* ptr, size_t w) { buffer = ptr; assert(aligned(w) && "alignment mismatch"); width = w; } //for instance reuse purpose
+
+			void reset(T* ptr, size_t w)
+			{
+				buffer = ptr;
+				assert(aligned(w) && "alignment mismatch");
+				width = w;
+			} //for instance reuse purpose
+
 			inline size_t get_width() const { return width; }
 			T* get() const { return buffer; } //for debugging purposes, generally useless
+
 			//line number
 			inline buffer_view<T> operator [] (size_t i)
 			{
@@ -285,8 +301,11 @@ namespace zap
 			inline void reverse_rows_read(buffer_view2D& src_view, size_t rows)
 			{
 				assert(src_view.width >= this->width && "buffer overflow");
+
 				for (int j = 0, i = rows - 1; j < rows; j++, i--)
+				{
 					this->operator[](j).read(src_view[i], this->get_width());
+				}
 			}
 		};
 
@@ -304,11 +323,7 @@ namespace zap
 			vector_realloc(vt, len);
 			std::fill(vt.begin(), vt.end(), 0x00);
 		}
-
 	}
-
-
 }
-
 
 #endif

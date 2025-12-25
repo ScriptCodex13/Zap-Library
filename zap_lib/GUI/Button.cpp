@@ -1,7 +1,7 @@
 #include "Button.h"
 
 //TODO: Move dependency to system font to the examples only
-#include "../os/system_font.h"
+//#include "../os/system_font.h"
 
 #if defined(GLFW_PLATFORM_ENABLED) || defined (_glfw3_h_) || defined(_WINDOWS_)
 #error GLFW or WINAPI platform dependency introduced in Render
@@ -14,42 +14,54 @@ namespace zap
 
 	void Button::EventListener::SetContainer(IUIButtonContainer* container) { pButtonContainer = container; }
 	IUIButtonContainer* Button::EventListener::GetContainer() { return pButtonContainer; }
-	bool Button::EventListener::HitTest(double x, double y) {
+	bool Button::EventListener::HitTest(double x, double y) 
+	{
 		return zap::util::between(
 			std::array<double, 2> {x, y},
 			button->i_bounds);
 	}
 	bool Button::EventListener::OnMouseMove(double x, double y)
 	{
-		std::wcout << "mouse move {" << x << ":" << y << "}" << std::endl;
+		if (zap_state_vars::disable_outputs == true)
+			std::wcout << "mouse move {" << x << ":" << y << "}" << std::endl;
+		
 		return false;
 	}
 	//when left mosue button is down.
 	//attention!!! This is not the button click and should not trigger any action
-	bool Button::EventListener::OnLMouseButtonDown(double x, double y) {
+	bool Button::EventListener::OnLMouseButtonDown(double x, double y) 
+	{
 		button->i_button_color = button->i_button_pressed_color;
 		return false;
 	}
-	bool Button::EventListener::OnLMouseButtonUp(double x, double y) {
+	bool Button::EventListener::OnLMouseButtonUp(double x, double y) 
+	{
 		button->i_button_color = button->i_button_hover_color;
 		return false;
 	}
 	bool Button::EventListener::OnMouseEnter(double x, double y)
 	{
 		button->i_button_color = button->i_button_hover_color;
-		std::wcout << "mouse enter {" << x << ":" << y << "}" << std::endl;
+		
+		if (zap_state_vars::disable_outputs == true)
+			std::wcout << "mouse enter {" << x << ":" << y << "}" << std::endl;
+		
 		return true;
 	}
-	bool Button::EventListener::OnMouseLeave(double x, double y) {
-		std::wcout << "mouse leave {" << x << ":" << y << "}" << std::endl;
+	bool Button::EventListener::OnMouseLeave(double x, double y) 
+	{
+		if (zap_state_vars::disable_outputs == true)
+			std::wcout << "mouse leave {" << x << ":" << y << "}" << std::endl;
+		
 		button->i_button_color = button->i_button_default_color;
 		return true;
 	}
 	bool Button::EventListener::OnPress(double x, double y, int key) { return false; }
 	bool Button::EventListener::OnRelease(double x, double y, int key) { return false; }
 
-	bool Button::EventListener::OnLMouseClick(double x, double y) {
-		std::wcout << "mouse click {" << x << ":" << y << "}" << std::endl;
+	bool Button::EventListener::OnLMouseClick(double x, double y) 
+	{
+		//std::wcout << "mouse click {" << x << ":" << y << "}" << std::endl;
 		return true;
 	}
 
@@ -286,9 +298,13 @@ namespace zap
 			//n_bounds[0] += position[0];
 			//n_bounds[1] += position[1];
 			//i_window_original_size = listener.GetContainer()->GetClientOriginalSize();
-			std::array<float, 2> new_pos = zap::util::gl_coords_to_pixel(listener.GetContainer()->GetClientOriginalSize(),
+			std::array<float, 2> new_pos = zap::util::gl_coords_to_pixel
+			(
+				listener.GetContainer()->GetClientOriginalSize(),
 				i_text_offset[0] + n_bounds[0],
-				i_text_offset[1] + n_bounds[1]);
+				i_text_offset[1] + n_bounds[1]
+			);
+
 			new_pos[0] += n_bounds[0];
 			new_pos[1] += n_bounds[1];
 
@@ -322,42 +338,58 @@ namespace zap
 
 
 	void ButtonText::EventListener::SetContainer(IUIButtonContainer* container) { pButtonContainer = container; }
-	bool ButtonText::EventListener::HitTest(double x, double y) {
-		return zap::util::between(
+	bool ButtonText::EventListener::HitTest(double x, double y) 
+	{
+		return zap::util::between
+		(
 			std::array<double, 2> {x, y},
-			buttonText->i_bounds);
+			buttonText->i_bounds
+		);
 	}
 	bool ButtonText::EventListener::OnMouseMove(double x, double y)
 	{
-		std::wcout << "mouse move {" << x << ":" << y << "}" << std::endl;
+		if (zap_state_vars::disable_outputs == true)
+			std::wcout << "mouse move {" << x << ":" << y << "}" << std::endl;
+		
 		return false;
 	}
 	//when left mosue button is down.
 	//attention!!! This is not the button click and should not trigger any action
-	bool ButtonText::EventListener::OnLMouseButtonDown(double x, double y) {
+	bool ButtonText::EventListener::OnLMouseButtonDown(double x, double y) 
+	{
 		buttonText->i_button_color = buttonText->i_button_pressed_color;
 		return false;
 	}
-	bool ButtonText::EventListener::OnLMouseButtonUp(double x, double y) {
+	bool ButtonText::EventListener::OnLMouseButtonUp(double x, double y) 
+	{
 		buttonText->i_button_color = buttonText->i_button_hover_color;
 		return false;
 	}
 	bool ButtonText::EventListener::OnMouseEnter(double x, double y)
 	{
 		buttonText->i_button_color = buttonText->i_button_hover_color;
-		std::wcout << "mouse enter {" << x << ":" << y << "}" << std::endl;
+		
+		if (zap_state_vars::disable_outputs == true)
+			std::wcout << "mouse enter {" << x << ":" << y << "}" << std::endl;
+		
 		return true;
 	}
-	bool ButtonText::EventListener::OnMouseLeave(double x, double y) {
-		std::wcout << "mouse leave {" << x << ":" << y << "}" << std::endl;
+	bool ButtonText::EventListener::OnMouseLeave(double x, double y) 
+	{
+		if (zap_state_vars::disable_outputs == true)
+			std::wcout << "mouse leave {" << x << ":" << y << "}" << std::endl;
+
 		buttonText->i_button_color = buttonText->i_button_default_color;
 		return true;
 	}
 	bool ButtonText::EventListener::OnPress(double x, double y, int key) { return false; }
 	bool ButtonText::EventListener::OnRelease(double x, double y, int key) { return false; }
 
-	bool ButtonText::EventListener::OnLMouseClick(double x, double y) {
-		std::wcout << "mouse click {" << x << ":" << y << "}" << std::endl;
+	bool ButtonText::EventListener::OnLMouseClick(double x, double y) 
+	{
+		if(zap_state_vars::disable_outputs == true)
+			std::wcout << "mouse click {" << x << ":" << y << "}" << std::endl;
+
 		return true;
 	}
 
@@ -391,10 +423,15 @@ namespace zap
 
 		char cFontPath[2048] = "msgothic.ttc";
 		unsigned int ret = zap::os::GetSystemFontPath(cFontPath, 2048);
+
 		if (button_text_font_path.empty())
+		{
 			text.LoadFont("C:/Windows/Fonts/msgothic.ttc");
+		}
 		else
+		{
 			text.LoadFont(button_text_font_path);
+		}
 
 
 		textureHash = AddTextureFromData(	0, 0, 0,
