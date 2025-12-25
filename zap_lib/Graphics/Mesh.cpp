@@ -121,13 +121,13 @@ namespace zap
 	{
 		//Require path to exist. Missing path is a fatal error, no go from this point.
 		ZAP_REQUIRE_ALL(std::filesystem::exists(vertexShaderFilepath.c_str()) && "Vertex Shader File Path can not be found: " && vertexShaderFilepath.c_str());
-		SetVertexShaderSource(zap::util::GetTextFileContent(vertexShaderFilepath.c_str())); // Reuse code, avoid redundancy
+		SetVertexShaderSource(zap::util::GetFileContent(vertexShaderFilepath.c_str())); // Reuse code, avoid redundancy
 	}
 	void Mesh::SetFragmentShaderFilePath(const std::string& fragmentShaderFilepath)
 	{
 		//Require path to exist. Missing path is a fatal error, no go from this point.
 		ZAP_REQUIRE_ALL(std::filesystem::exists(fragmentShaderFilepath.c_str()) && "Vertex Shader File Path can not be found: " && fragmentShaderFilepath.c_str());
-		SetFragmentShaderSource (zap::util::GetTextFileContent(fragmentShaderFilepath.c_str())); // Reuse code, avoid redundancy
+		SetFragmentShaderSource (zap::util::GetFileContent(fragmentShaderFilepath.c_str())); // Reuse code, avoid redundancy
 	}
 	void Mesh::SetVertexShaderPath(const std::string& source)
 	{

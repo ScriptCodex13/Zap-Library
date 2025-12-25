@@ -12,9 +12,9 @@ namespace zap
 {
 	namespace util
 	{
-		std::string GetTextFileContent(const char* shaderSourceFilePath)
+		std::string GetFileContent(const char* path)
 		{
-			ZAP_REQUIRE_ALL(std::filesystem::exists(shaderSourceFilePath) && "File path can not be found: " && shaderSourceFilePath);
+			ZAP_REQUIRE_ALL(std::filesystem::exists(path) && "File path can not be found: " && path);
 			using std::cout;
 			using std::endl;
 			using std::string;
@@ -25,7 +25,7 @@ namespace zap
 			shaderFile.exceptions(ifstream::failbit | ifstream::badbit);
 			try
 			{
-				shaderFile.open(shaderSourceFilePath);
+				shaderFile.open(path);
 				stringstream shaderStream;
 				shaderStream << shaderFile.rdbuf();
 				shaderFile.close();
@@ -34,7 +34,7 @@ namespace zap
 			}
 			catch (ifstream::failure e)
 			{
-				cout << "Shader file not successfully read: " << e.what() << endl << "path: " << shaderSourceFilePath << endl;
+				cout << "Shader file not successfully read: " << e.what() << endl << "path: " << path << endl;
 				throw e;
 			}
 

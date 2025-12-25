@@ -1,7 +1,7 @@
 #include "Button.h"
 
 //TODO: Move dependency to system font to the examples only
-//#include "../os/system_font.h"
+#include "../os/system_font.h"
 
 #if defined(GLFW_PLATFORM_ENABLED) || defined (_glfw3_h_) || defined(_WINDOWS_)
 #error GLFW or WINAPI platform dependency introduced in Render

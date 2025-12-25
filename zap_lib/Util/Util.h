@@ -220,7 +220,7 @@ namespace zap
 			inline callback_invoker(T _callback) : callback(_callback) {}
 			void operator () () { callback(); }
 		};
-		extern std::string GetTextFileContent(const char* shaderSourceFilePath);
+		extern std::string GetFileContent(const char* shaderSourceFilePath);
 
 
 		template<int alignment = 1>size_t align(size_t w)
