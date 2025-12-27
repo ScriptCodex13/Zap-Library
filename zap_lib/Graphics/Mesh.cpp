@@ -176,7 +176,7 @@ namespace zap
 		if (!ok)
 		{
 			glGetShaderInfoLog(vertexShader, 512, NULL, info);
-			messages::PrintMessage("Failed to compile Vertex Shader:", "Mesh.cpp/void zap::Mesh2D::Finish()", MessageTypes::error);
+			messages::PrintMessage("Failed to compile Vertex Shader:", "Mesh.cpp/void zap::Mesh::Finish()", MessageTypes::error);
 			std::cerr << info << std::endl;
 		}
 
@@ -191,7 +191,7 @@ namespace zap
 		if (!ok)
 		{
 			glGetShaderInfoLog(fragmentShader, 512, NULL, info);
-			messages::PrintMessage("Failed to compile Fragment Shader:", "Mesh.cpp/void zap::Mesh2D::Finish()", MessageTypes::error);
+			messages::PrintMessage("Failed to compile Fragment Shader:", "Mesh.cpp/void zap::Mesh::Finish()", MessageTypes::error);
 			std::cerr << info << std::endl;
 		}
 
@@ -210,9 +210,10 @@ namespace zap
 		if (!ok)
 		{
 			glGetProgramInfoLog(shaderProgram, 512, NULL, info);
-			messages::PrintMessage("Failed to link Shader Program:", "Mesh.cpp/void zap::Mesh2D::Finish()", MessageTypes::error);
+			messages::PrintMessage("Failed to link Shader Program:", "Mesh.cpp/void zap::Mesh::Finish()", MessageTypes::error);
 			std::cerr << info << std::endl;
 		}
+
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
 
@@ -261,7 +262,6 @@ namespace zap
 
 	void Mesh::Finish()
 	{
-		/******************************************************************************************/
 		if (shaderProgram == -1)
 		{
 			BuildProgram();
@@ -269,16 +269,6 @@ namespace zap
 
 		GenObject();
 		UpdateMvpLocations();
-
-		//TODO: Remove this nonsense
-		//      The genTexture will be done in the Textures constructor
-		//      Texture generation is not program dependent, it is OpenGL Global
-		//Textures
-		//for (auto& texcfg : texturecfg)
-		//{
-		//	texcfg.genTexture();
-		//}
-		/*****************************************************************************************/
 	}
 
 
