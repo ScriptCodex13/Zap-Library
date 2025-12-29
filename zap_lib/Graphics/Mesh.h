@@ -55,7 +55,7 @@ namespace zap
 		// Avoid copy by value for large data structures
 		Mesh(const std::vector<float>& extern_vertices, const std::vector<unsigned int>& extern_indices);
 		Mesh(const std::vector<float>& extern_vertices);
-		~Mesh();
+		virtual ~Mesh();
 
 		//Config Process
 		// TODO: Move the shader functionality to a separate class, totally seven functions to be moved

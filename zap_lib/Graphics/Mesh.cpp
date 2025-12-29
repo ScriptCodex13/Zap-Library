@@ -32,6 +32,7 @@ namespace zap
 		glDeleteBuffers(1, &VBO);
 		glDeleteBuffers(1, &EBO);
 		glDeleteProgram(shaderProgram);
+		ClearAllTextures();
 	}
 
 	void Mesh::PreSetVertices(const std::vector<float>& extern_vertices)
