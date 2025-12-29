@@ -2,3 +2,13 @@
 /3rdparty/glad.gl4.6
 /3rdparty/glm-0.9.9.7
 /3rdparty/stb
+/application/bin
+/application/obj
+/Build_Premake/Windows/Project_mpf
+/zap_lib/obj
+/zap_lib/bin
+/application/application.vcxproj.user
+/application/application.vcxproj
+/application/application.vcxproj.filters
+/zap_lib/zap_lib.vcxproj
+/zap_lib/zap_lib.vcxproj.filters
