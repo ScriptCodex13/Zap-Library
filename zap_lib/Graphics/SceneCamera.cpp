@@ -6,15 +6,33 @@
 
 namespace zap
 {
-	SceneCamera::SceneCamera(int& window_width, int& window_height, const std::array<float, 3> position, std::array<float, 3> world_up)
-		: i_screen_width(window_width), i_screen_height(window_height)
+	SceneCamera::SceneCamera
+	(
+		int& window_width, 
+		int& window_height, 
+		CameraTypes camera_type,
+		OrthographicalDimensions ortho_dimensions,
+		const std::array<float, 3> position, 
+		float z_near, 
+		float z_far, 
+		std::array<float, 3> world_up
+	)
+		: i_screen_width(window_width), i_screen_height(window_height), i_ortho_dimensions(ortho_dimensions)
 	{
+		i_camera_type = camera_type;
 		i_camera_position = glm::vec3(position[0], position[1], position[2]);
+		i_z_near = z_near;
+		i_z_far = z_far;
 		i_world_up = glm::vec3(world_up[0], world_up[1], world_up[2]);
 
 		//i_camera_up = i_world_up;
 
-		projection = glm::perspective(glm::radians(i_fov), (float)i_screen_width / (float)i_screen_height, 0.1f, 100.0f);
+		if (i_camera_type == CameraTypes::PERSPECTIVE)
+			projection = glm::perspective(glm::radians(i_fov), (float)i_screen_width / (float)i_screen_height, i_z_near, i_z_far);
+		else if (i_camera_type == CameraTypes::ORTHOGRAPHIC)
+			projection = glm::ortho(i_ortho_dimensions.i_left, i_ortho_dimensions.i_right, i_ortho_dimensions.i_bottom, i_ortho_dimensions.i_top, i_z_near, i_z_far);
+
+		
 		view = glm::lookAt(i_camera_position, i_camera_position + i_camera_front, i_camera_up);
 	}
 
@@ -58,6 +76,23 @@ namespace zap
 	{
 		i_limit_rotation = state;
 	}
+
+	void SceneCamera::SetZNear(float z_near)
+	{
+		i_z_near = z_near;
+	}
+
+	void SceneCamera::SetZFar(float z_far)
+	{
+		i_z_far = z_far;
+	}
+
+	void SceneCamera::SetOrthographicalDimensions(OrthographicalDimensions ortho_dimensions)
+	{
+		i_ortho_dimensions = ortho_dimensions;
+	}
+
+	void SetOrthographicalDimensions(float dimensions){}
 
 	void SceneCamera::MoveForward(float speed_factor)
 	{
@@ -125,7 +160,11 @@ namespace zap
 
 		i_camera_up = glm::normalize(glm::cross(i_camera_right, i_camera_front));
 
-		projection = glm::perspective(glm::radians(i_fov), (float)i_screen_width / (float)i_screen_height, 0.1f, 100.0f);
+		if (i_camera_type == CameraTypes::PERSPECTIVE)
+			projection = glm::perspective(glm::radians(i_fov), (float)i_screen_width / (float)i_screen_height, i_z_near, i_z_far);
+		else if (i_camera_type == CameraTypes::ORTHOGRAPHIC)
+			projection = glm::ortho(i_ortho_dimensions.i_left, i_ortho_dimensions.i_right, i_ortho_dimensions.i_bottom, i_ortho_dimensions.i_top, i_z_near, i_z_far);
+
 		view = glm::lookAt(i_camera_position, i_camera_position + i_camera_front, i_camera_up);
 
 	}

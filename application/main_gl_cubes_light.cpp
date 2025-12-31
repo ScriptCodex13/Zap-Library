@@ -72,7 +72,7 @@ int main()
 	std::array<int, 2> size = window.GetSize();
 
 	//Camera
-	zap::SceneCamera camera(size[0], size[1]);
+	zap::SceneCamera camera(size[0], size[1], zap::CameraTypes::PERSPECTIVE);
 	camera.SetRotationLimit(361.0f, 89.0f, 0.0f);
 	camera.ActivateRotationLimit(true);
 
