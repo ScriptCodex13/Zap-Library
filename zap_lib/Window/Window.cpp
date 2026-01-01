@@ -303,11 +303,8 @@ namespace zap
 		return glfwGetKey(intern_window, key) == state;
 	}
 	bool Window::isKeyPressed (Key key)
-
 	{
-
 		return isKeyPressed(static_cast<int>(key));
-
 	}
 	bool Window::isKeyPressed (int key)
 	{
