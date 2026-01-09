@@ -17,6 +17,8 @@ This is what Zap is currently able to do:
 - Create and manage windows
 - Render meshes
 - Draw text and buttons
+- Load models
+- Play audio
 
 With a little more effort, you can also add lighting quickly.
 
@@ -165,3 +167,4 @@ Join our [Discord server](https://discord.gg/hr2vjemJSV) to ask questions and ch
 # Contributing
 
 We need more help to grow and improve this project. If you'd like to contribute or have questions, feel free to open a pull request or an issue. Any help is greatly appreciated.
+
