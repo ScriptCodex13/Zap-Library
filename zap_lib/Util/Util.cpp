@@ -21,20 +21,20 @@ namespace zap
 			using std::ifstream;
 			using std::stringstream;
 
-			ifstream shaderFile;
-			shaderFile.exceptions(ifstream::failbit | ifstream::badbit);
+			ifstream file;
+			file.exceptions(ifstream::failbit | ifstream::badbit);
 			try
 			{
-				shaderFile.open(path);
+				file.open(path);
 				stringstream shaderStream;
-				shaderStream << shaderFile.rdbuf();
-				shaderFile.close();
+				shaderStream << file.rdbuf();
+				file.close();
 				std::string shaderCode = shaderStream.str();
 				return shaderCode;
 			}
 			catch (ifstream::failure e)
 			{
-				cout << "Shader file not successfully read: " << e.what() << endl << "path: " << path << endl;
+				cout << "File not successfully read: " << e.what() << endl << "path: " << path << endl;
 				throw e;
 			}
 

@@ -14,5 +14,6 @@ This is the Graphics segment's main header
 #include "StandardVertices.h"
 #include "Texture.h"
 #include "ModelLoader.h"
+#include "ComputeShader.h"
 
 #endif

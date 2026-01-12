@@ -3,11 +3,19 @@
 //do not produce code if platform is disabled
 #ifdef GLFW_PLATFORM_ENABLED
 
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "../util/Message.h"
 #include "../util/Util.h"
+
+
+/*****************************************************************************/
+
+// var
+
+static inline bool compute_shader_usable = false;
+
+/*****************************************************************************/
 
 namespace zap
 {
@@ -33,10 +41,28 @@ namespace zap
 			version_minor = 3;
 		}
 
+		messages::PrintMessage("Using OpenGL Version " + std::to_string(version_major) + "." + std::to_string(version_minor), "", MessageTypes::api_core_info, false);
+
+		// Checks if compute shaders are usable
+
+		if(version_major == 4 && version_minor >= 3)
+		{
+			compute_shader_usable = true;
+			messages::PrintMessage("compute shaders supported", "", MessageTypes::api_core_info);
+		}
+		else
+		{
+			compute_shader_usable = false;
+			messages::PrintMessage("compute shaders are not available (at least OpenGL 4.3 required)", "", MessageTypes::warning, false);
+		}
+
+		//
+
 		/******************************************************************************/
+
 		if (!glfwInit())
 		{
-			messages::PrintMessage("Failed to initialize GLFW", "EasyGL.cpp/void Init()", MessageTypes::fatal_error);
+			messages::PrintMessage("Failed to initialize GLFW", "Resources.cpp/void Init()", MessageTypes::fatal_error);
 			ZAP_INTERRUPT_FATAL_ERROR;
 		}
 
@@ -63,15 +89,18 @@ namespace zap
 
 		/******************************************************************************/
 
-		messages::PrintMessage("Using OpenGL Version " + std::to_string(version_major) + "." + std::to_string(version_minor), "", MessageTypes::api_core_info, false);
+	}
 
+	bool IsComputeShaderUsable()
+	{
+		return compute_shader_usable;
 	}
 
 	void InitGlad()
 	{
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
-			messages::PrintMessage("Failed to initialize GLAD", "EasyGL.cpp/void InitGlad()", MessageTypes::fatal_error);
+			messages::PrintMessage("Failed to initialize GLAD", "Resources.cpp/void InitGlad()", MessageTypes::fatal_error);
 			ZAP_INTERRUPT_FATAL_ERROR;
 		}
 		else 

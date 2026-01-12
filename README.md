@@ -168,3 +168,4 @@ Join our [Discord server](https://discord.gg/hr2vjemJSV) to ask questions and ch
 
 We need more help to grow and improve this project. If you'd like to contribute or have questions, feel free to open a pull request or an issue. Any help is greatly appreciated.
 
+

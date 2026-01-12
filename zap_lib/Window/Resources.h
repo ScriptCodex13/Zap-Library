@@ -11,8 +11,6 @@
 #ifndef RESOURCES_H
 #define RESOURCES_H
 
-
-
 namespace zap
 {
 	/*****************************************************************************/
@@ -21,6 +19,7 @@ namespace zap
 
 	void Init();       // Initialize GLFW 
 	void Init(unsigned int version_major, unsigned int version_minor);
+	bool IsComputeShaderUsable(); // Only works after Init func
 	void InitGlad();   // Initialize glad
 	void Delete();     // Delete GLFW resources
 

@@ -33,7 +33,7 @@ void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uin
 int main()
 {
     zap::Init(4, 6);
-    
+
     zap::Window window(1280, 720, "Play a sound !");
 
     zap::InitGlad();
@@ -52,9 +52,9 @@ int main()
 
     bool was_just_pressed = false;
 
-    while(window.Open())
+    while (window.Open())
     {
-        if(window.isKeyPressed(zap::Key::SPACE) && was_just_pressed == false)
+        if (window.isKeyPressed(zap::Key::SPACE) && was_just_pressed == false)
         {
             device.RewindToFrame(0);
             device.Start();
@@ -65,7 +65,7 @@ int main()
         {
             window.Close();
         }
-        if(window.isKeyReleased(zap::Key::SPACE))
+        if (window.isKeyReleased(zap::Key::SPACE))
         {
             was_just_pressed = false;
         }
