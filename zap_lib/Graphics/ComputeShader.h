@@ -34,7 +34,7 @@ namespace zap
 	private:
 		bool i_usable = IsComputeShaderUsable();
 
-		const char* i_source;
+		std::string i_source;
 		bool i_source_set = false;
 
 		unsigned int i_compute_shader;

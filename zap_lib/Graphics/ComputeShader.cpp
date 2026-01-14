@@ -43,7 +43,7 @@ namespace zap
 			std::stringstream stream;
 			stream << file.rdbuf();
 			file.close();
-			i_source = stream.str().c_str();
+			i_source = stream.str();
 
 			i_source_set = true;
 		}
@@ -78,10 +78,10 @@ namespace zap
 
 			return;
 		}
-
 		
 		i_compute_shader = glCreateShader(GL_COMPUTE_SHADER);
-		glShaderSource(i_compute_shader, 1, &i_source, NULL);
+		char* ptr = i_source.data();
+		glShaderSource(i_compute_shader, 1, &ptr, NULL);
 		glCompileShader(i_compute_shader);
 
 		// Check compile errors
