@@ -8,6 +8,36 @@
 #include "../util/Message.h"
 #include "../util/Util.h"
 
+/*****************************************************************************/
+
+// Enable virtual terminal processing on windows
+
+#ifdef _WIN32
+
+#include <windows.h>
+
+void EnableWindowsVirtalProcessing()
+{
+	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+	DWORD dwmode = 0;
+	GetConsoleMode(handle, &dwmode);
+	dwmode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+	SetConsoleMode(handle, dwmode);
+	
+	messages::PrintMessage("Enabled Windows Virtual Terminal Processing", "", MessageTypes::api_core_info);
+}
+
+#endif
+
+
+#ifndef _WIN32
+
+void EnableWindowsVirtalProcessing(){}
+
+#endif
+
+/*****************************************************************************/
+
 
 /*****************************************************************************/
 
@@ -26,6 +56,8 @@ namespace zap
 
 	void Init(unsigned int version_major, unsigned int version_minor)
 	{
+		EnableWindowsVirtalProcessing();
+
 		if (version_major < 3)
 		{
 			messages::PrintMessage("Zap only supports OpenGL versions above 3.3 - switching to 3.3", "Resources.cpp/ void zap::Init(...)", MessageTypes::warning, true);
