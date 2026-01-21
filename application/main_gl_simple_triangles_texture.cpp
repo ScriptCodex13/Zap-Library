@@ -28,9 +28,8 @@ window_camera_invoker  cbi([](zap::Window& window)
 		}
 	});
 
-class TextPainter : public zap::Mesh
+class TextureImagePainter : public zap::Mesh
 {
-
 	const char* vertexCameraShaderSource = R"glsl(#version 330 core
 		layout(location = 0) in vec3 aPos;
 		layout(location = 1) in vec2 aTexCoord;
@@ -71,7 +70,7 @@ class TextPainter : public zap::Mesh
 
 	unsigned int textureHash;
 public:
-	TextPainter() //:zap::Mesh(vertices, indices)
+	TextureImagePainter() //:zap::Mesh(vertices, indices)
 	{
 		PreSetIndices(indices);
 		PreSetVertices(vertices);
@@ -101,35 +100,30 @@ int main_gl_simple_triangles_texture()
 	zap::util::scope_guard zapDeleter(zap::Delete);
 	zap::InitGlad();
 
-	//Mesh
+	TextureImagePainter mesh;
+
+	window.UpdateViewport(); //This is a set callback. Once set == forever set
+
+	while (window.Open())
 	{
-		TextPainter mesh;
+		cbi(window);
 
-		//mesh.Finish();
+		//from here draw starts
+		//there starts general draw
+		glClear(GL_DEPTH_BUFFER_BIT); // PR
+		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
+		zap::ClearBackground(zap::BackgroundColor::BLACK);
 
-		window.UpdateViewport(); //This is a set callback. Once set == forever set
+		//here starts current VAO for current program draw
+		mesh.Bind(); //set current context before any draw routines, it prevents mess in more complex programs
+		mesh.Draw();
+		//here draw ends
 
-		while (window.Open())
-		{
-			cbi(window);
+		window.SetTitle(std::to_string(window.GetDelta()));
 
-			//from here draw starts
-			//there starts general draw
-			glClear(GL_DEPTH_BUFFER_BIT); // PR
-			zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
-			zap::ClearBackground(zap::BackgroundColor::BLACK);
+		window.Update();
+		window.Draw();
 
-			//here starts current VAO for current program draw
-			mesh.Bind(); //set current context before any draw routines, it prevents mess in more complex programs
-			mesh.Draw();
-			//here draw ends
-
-			window.SetTitle(std::to_string(window.GetDelta()));
-
-			window.Update();
-			window.Draw();
-
-		}
 	}
 	return 0;
 }

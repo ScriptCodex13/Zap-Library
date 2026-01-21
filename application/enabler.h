@@ -1,10 +1,7 @@
 #pragma once
 
 //Examples
-////TODO: this app crashes, to investigate later
-//#define MAIN_GL_SIMPLE_TRIANGLES_TEXTURE_CPP
-//TODO: this app crashes, to investigate later
-//#define MAIN_CONTROLLER_TEST_CPP
+#define MAIN_GL_SIMPLE_TRIANGLES_TEXTURE_CPP
 
 //#define MAIN_CPP
 //#define MAIN_UI_BUTTON_CPP
@@ -18,8 +15,9 @@
 //#define MAIN_GL_SIMPLE_TEXT_PAINTER_CPP
 //#define MAIN_GL_SIMPLE_TRIANGLES_CLASS_TEXTURE_CPP
 //#define MAIN_UI_TEXTURE_TEXT_BUTTON_CPP
-#define MAIN_COMPUTE_SHADER_TEST
+//#define MAIN_COMPUTE_SHADER_TEST
 
+//#define MAIN_CONTROLLER_TEST_CPP
 //#define MAIN_ASSIMP_MODEL_LOADING_CPP
 
 //Audio
