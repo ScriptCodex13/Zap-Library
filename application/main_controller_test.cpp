@@ -1,10 +1,8 @@
 #include "enabler.h"
 
-#ifdef MAIN_CONTROLLER_TEST_CPP
-
 #include <Zap.h>
 
-int main()
+int main_controller_test()
 {
 	zap::Init();
 
@@ -31,6 +29,10 @@ int main()
 	}
 
 	zap::Delete();
+	return 0;
 }
 
+#include "enabler.h"
+#ifdef MAIN_CONTROLLER_TEST_CPP
+int main() { return main_controller_test(); }
 #endif

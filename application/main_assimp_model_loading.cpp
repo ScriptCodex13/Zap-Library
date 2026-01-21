@@ -1,6 +1,5 @@
 #include "enabler.h"
 
-#ifdef MAIN_ASSIMP_MODEL_LOADING_CPP
 
 #include <Zap.h>
 #include <Graphics.h>
@@ -21,7 +20,7 @@ R"glsl(
 			}
 	)glsl";
 
-int main()
+int main_assimp_model_loading()
 {
 	zap::Init(4, 6);
 
@@ -122,6 +121,10 @@ int main()
 	}
 
 	zap::Delete();
+	return 0;
 }
 
+#include "enabler.h"
+#ifdef MAIN_ASSIMP_MODEL_LOADING_CPP
+int main() { return main_assimp_model_loading(); }
 #endif

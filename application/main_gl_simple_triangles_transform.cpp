@@ -1,5 +1,4 @@
 #include "enabler.h"
-#ifdef MAIN_GL_SIMPLE_TRIANGLES_TRANSFORM_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -30,7 +29,7 @@ window_invoker cbi([](zap::Window& window)
 		}
 	});
 
-const char* vertexCameraShaderSource = R"glsl(#version 330 core
+static const char* vertexCameraShaderSource = R"glsl(#version 330 core
 layout(location = 0) in vec3 aPos;
 layout(location = 1) in vec3 aColor;
 out vec3 ourColor;
@@ -44,7 +43,7 @@ void main()
 	ourColor = aColor;
 })glsl";
 
-const char* fragmentCameraShaderSource = R"glsl(#version 330
+static const char* fragmentCameraShaderSource = R"glsl(#version 330
 out vec4 FragColor;
 in vec3 ourColor;
 
@@ -53,7 +52,7 @@ void main()
     FragColor = vec4(ourColor, 0);
 })glsl";
 
-int main()
+int main_gl_simple_triangles_transform()
 {
 	zap::Init();
 
@@ -124,7 +123,9 @@ int main()
 	}
 
 
-
+	return 0;
 }
-
+#include "enabler.h"
+#ifdef MAIN_GL_SIMPLE_TRIANGLES_TRANSFORM_CPP
+int main() { return main_gl_simple_triangles_transform(); }
 #endif

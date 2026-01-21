@@ -1,5 +1,4 @@
 #include "enabler.h"
-#ifdef MAIN_GL_SIMPLE_TRIANGLES_CLASS_CAMERA_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -116,7 +115,7 @@ public:
 	}
 };
 
-int main()
+int main_gl_simple_triangles_class_camera()
 {
 	zap::Init();
 
@@ -187,7 +186,9 @@ int main()
 	}
 
 
-
+	return 0;
 }
-
+#include "enabler.h"
+#ifdef MAIN_GL_SIMPLE_TRIANGLES_CLASS_CAMERA_CPP
+int main() { return main_gl_simple_triangles_class_camera(); }
 #endif

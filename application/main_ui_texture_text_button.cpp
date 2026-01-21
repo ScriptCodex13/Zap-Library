@@ -1,5 +1,4 @@
 #include "enabler.h"
-#ifdef MAIN_UI_TEXTURE_TEXT_BUTTON_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing
@@ -27,7 +26,7 @@ window_invoker  cbi
 	);
 
 
-int main()
+int main_ui_texture_text_button()
 {
 	using std::cout;
 	using std::wcout;
@@ -115,5 +114,7 @@ int main()
 
 }
 
-
+#include "enabler.h"
+#ifdef MAIN_UI_TEXTURE_TEXT_BUTTON_CPP
+int main() { return main_ui_texture_text_button(); }
 #endif

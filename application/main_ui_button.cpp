@@ -1,5 +1,4 @@
 #include "enabler.h"
-#ifdef MAIN_UI_BUTTON_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -24,7 +23,7 @@ window_invoker  cbi([](zap::Window& window) {
 	}
 });
 
-int main()
+int main_ui_button()
 {
 	//ZAP_DISABLE_OUTPUTS(true);
 
@@ -97,5 +96,7 @@ int main()
 
 }
 
-
+#include "enabler.h"
+#ifdef MAIN_UI_BUTTON_CPP
+int main() { return main_ui_button(); }
 #endif

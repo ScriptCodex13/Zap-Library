@@ -1,5 +1,4 @@
 #include "enabler.h"
-#ifdef MAIN_GL_TEXT_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -24,7 +23,7 @@ window_invoker  cbi([](zap::Window& window) {
 	}
 });
 
-int main()
+int main_gl_text()
 {
 	//ZAP_DISABLE_OUTPUTS(true);
 
@@ -84,5 +83,7 @@ int main()
 
 }
 
-
+#include "enabler.h"
+#ifdef MAIN_GL_TEXT_CPP
+int main() { return main_gl_text(); }
 #endif

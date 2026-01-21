@@ -1,5 +1,4 @@
 ﻿#include "enabler.h"
-#ifdef MAIN_GL_SIMPLE_TEXT_PAINTER_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -127,7 +126,7 @@ public:
 	}
 };
 
-int main()
+int main_gl_simple_text_painter()
 {
 	zap::Init();
 
@@ -139,6 +138,8 @@ int main()
 	TextPainter mesh;
 
 	window.UpdateViewport(); //This is a set callback. Once set == forever set
+	//mesh.Finish();
+	mesh.printf(L"saut la toti");
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -166,6 +167,9 @@ int main()
 		window.Draw();
 
 	}
+	return 0;
 }
-
+#include "enabler.h"
+#ifdef MAIN_GL_SIMPLE_TEXT_PAINTER_CPP
+int main() { return main_gl_simple_text_painter(); }
 #endif

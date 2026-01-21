@@ -1,7 +1,5 @@
 #include "enabler.h"
 
-#ifdef MAIN_AUDIO_TEST_CPP
-
 #include <Audio.h>
 #include <Zap.h>
 
@@ -30,7 +28,7 @@ void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uin
     (void)pInput;
 }
 
-int main()
+int main_audio_test()
 {
     zap::Init(4, 6);
 
@@ -76,7 +74,10 @@ int main()
 
 
     zap::Delete();
+	return 0;
 }
 
-
+#include "enabler.h"
+#ifdef MAIN_AUDIO_TEST_CPP
+int main() { return main_audio_test(); }
 #endif

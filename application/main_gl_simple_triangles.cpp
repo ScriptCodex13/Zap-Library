@@ -1,5 +1,4 @@
 #include "enabler.h"
-#ifdef MAIN_GL_SIMPLE_TRIANGLES_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -49,7 +48,7 @@ void main()
     FragColor = vec4(ourColor, 0);
 })glsl";
 
-int main()
+int main_gl_simple_triangles()
 {
 	zap::Init();
 
@@ -108,7 +107,9 @@ int main()
 	}
 
 
-
+	return 0;
 }
-
+#include "enabler.h"
+#ifdef MAIN_GL_SIMPLE_TRIANGLES_CPP
+int main() { return main_gl_simple_triangles(); }
 #endif

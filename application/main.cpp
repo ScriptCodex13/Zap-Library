@@ -1,5 +1,4 @@
 #include "enabler.h"
-#ifdef MAIN_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -52,7 +51,7 @@ window_camera_invoker  cbi([](zap::Window& window, zap::SceneCamera& camera) {
 	}
 });
 
-int main()
+int main_main()
 {
 	//ZAP_DISABLE_OUTPUTS(true);
 
@@ -223,5 +222,7 @@ int main()
 
 }
 
-
+#include "enabler.h"
+#ifdef MAIN_CPP
+int main() { return main_main(); }
 #endif

@@ -1,6 +1,4 @@
 #include "enabler.h"
-//#ifdef SAMPLE_MAIN_SIMPLE_TRIANGLES_TEXTURE_CPP
-#ifdef MAIN_GL_SIMPLE_TRIANGLES_TEXTURE_CPP
 
 // Just a example
 // PR = Prototyping -> only for testing 
@@ -94,8 +92,8 @@ public:
 		Mesh::Draw();
 	}
 };
-
-int main()
+//TODO: this app crashes
+int main_gl_simple_triangles_texture()
 {
 	zap::Init();
 
@@ -104,32 +102,40 @@ int main()
 	zap::InitGlad();
 
 	//Mesh
-	TextPainter mesh;
-	mesh.Finish();
-
-	window.UpdateViewport(); //This is a set callback. Once set == forever set
-
-	while (window.Open())
 	{
-		cbi(window);
+		TextPainter mesh;
 
-		//from here draw starts
-		//there starts general draw
-		glClear(GL_DEPTH_BUFFER_BIT); // PR
-		zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
-		zap::ClearBackground(zap::BackgroundColor::BLACK);
+		//mesh.Finish();
 
-		//here starts current VAO for current program draw
-		mesh.Bind(); //set current context before any draw routines, it prevents mess in more complex programs
-		mesh.Draw();
-		//here draw ends
+		window.UpdateViewport(); //This is a set callback. Once set == forever set
 
-		window.SetTitle(std::to_string(window.GetDelta()));
+		while (window.Open())
+		{
+			cbi(window);
 
-		window.Update();
-		window.Draw();
+			//from here draw starts
+			//there starts general draw
+			glClear(GL_DEPTH_BUFFER_BIT); // PR
+			zap::ShowWireFrame(window.isKeyPressed(zap::Key::F10));
+			zap::ClearBackground(zap::BackgroundColor::BLACK);
 
+			//here starts current VAO for current program draw
+			mesh.Bind(); //set current context before any draw routines, it prevents mess in more complex programs
+			mesh.Draw();
+			//here draw ends
+
+			window.SetTitle(std::to_string(window.GetDelta()));
+
+			window.Update();
+			window.Draw();
+
+		}
 	}
+	return 0;
 }
 
+
+#include "enabler.h"
+#ifdef MAIN_GL_SIMPLE_TRIANGLES_TEXTURE_CPP
+int main() { return main_gl_simple_triangles_texture(); }
 #endif

@@ -1,7 +1,5 @@
 #include "enabler.h"
 
-#ifdef MAIN_GL_COMPUTE_SHADER_TEST
-
 #include <Zap.h>
 #include <Graphics.h>
 
@@ -75,7 +73,26 @@ R"glsl(
 		}
 )glsl";
 
-int main()
+
+
+void showOpenGLExtensions()
+{
+	using std::cout;
+	using std::endl;
+	cout << "OpenGL Info:" << endl;
+	cout << "       Vendor:       " << glGetString(GL_VENDOR) << endl;
+	cout << "       Renderer:     " << glGetString(GL_RENDERER) << endl;
+	cout << "       Version:      " << glGetString(GL_VERSION) << endl;
+	cout << "       GLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
+	GLint exts;
+	glGetIntegerv(GL_NUM_EXTENSIONS, &exts);
+	cout << "Number of extensions: " << exts << endl;
+	for (int i = 0; i < exts; i++)
+	{
+		cout << "   " << i + 1 << ". " << glGetStringi(GL_EXTENSIONS, i) << endl;
+	}
+}
+int main_compute_shader_test ()
 {
 	zap::Init(4, 6);
 
@@ -93,6 +110,7 @@ int main()
 
 	computeshader.Finish();
 
+	showOpenGLExtensions();
 	//
 
 	unsigned int texture;
@@ -143,6 +161,10 @@ int main()
 	glDeleteTextures(1, &texture);
 
 	zap::Delete();
+	return 0;
 }
 
+#include "enabler.h"
+#ifdef MAIN_COMPUTE_SHADER_TEST
+int main() { return main_compute_shader_test(); }
 #endif

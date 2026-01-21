@@ -1,5 +1,4 @@
 #include "enabler.h"
-#ifdef SIMPLE_TRIANGLES_CLASS_TEXTURE_TEXT_RAW_CPP
 
 #define _USE_MATH_DEFINES
 
@@ -612,7 +611,7 @@ GLuint createVao(const geometry& geo)
     return vao;
 }
 
-int main()
+int main_gl_simple_triangles_class_texture_text_raw()
 {
     freetype.LoadFont("C:/Windows/Fonts/arial.ttf");
 
@@ -737,5 +736,7 @@ int main()
     return 0;
 }
 
-
+#include "enabler.h"
+#ifdef SIMPLE_TRIANGLES_CLASS_TEXTURE_TEXT_RAW_CPP
+int main(){ return main_gl_simple_triangles_class_texture_text_raw(); }
 #endif

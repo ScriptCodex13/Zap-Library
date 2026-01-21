@@ -1,5 +1,11 @@
 #pragma once
 
+//Examples
+////TODO: this app crashes, to investigate later
+//#define MAIN_GL_SIMPLE_TRIANGLES_TEXTURE_CPP
+//TODO: this app crashes, to investigate later
+//#define MAIN_CONTROLLER_TEST_CPP
+
 //#define MAIN_CPP
 //#define MAIN_UI_BUTTON_CPP
 //#define MAIN_GL_CUBES_LIGHT_CPP
@@ -8,23 +14,18 @@
 //#define MAIN_GL_SIMPLE_TRIANGLES_CLASS_CPP
 //#define MAIN_GL_SIMPLE_TRIANGLES_CLASS_CAMERA_CPP
 
-
 //#define MAIN_GL_TEXT_CPP
 //#define MAIN_GL_SIMPLE_TEXT_PAINTER_CPP
-//#define MAIN_GL_SIMPLE_TRIANGLES_TEXTURE_CPP
 //#define MAIN_GL_SIMPLE_TRIANGLES_CLASS_TEXTURE_CPP
 //#define MAIN_UI_TEXTURE_TEXT_BUTTON_CPP
-//#define MAIN_GL_COMPUTE_SHADER_TEST
+#define MAIN_COMPUTE_SHADER_TEST
 
-#define MAIN_ASSIMP_MODEL_LOADING_CPP
-
-//#define MAIN_CONTROLLER_TEST_CPP
+//#define MAIN_ASSIMP_MODEL_LOADING_CPP
 
 //Audio
-
 //#define MAIN_AUDIO_TEST_CPP
 
-// IF_LAB
+// IF LAB
 //#define IF_LAB_MAIN3_CPP
 //#define IF_LAB_MAIN33TYPE_CPP
 //#define IF_LAB_MAIN4_CPP

@@ -1,6 +1,4 @@
 #include "enabler.h"
-#ifdef MAIN_GL_CUBES_LIGHT_CPP
-
 // Just a example
 // PR = Prototyping -> only for testing 
 #include <Zap.h>
@@ -50,7 +48,7 @@ window_camera_invoker  cbi([](zap::Window& window, zap::SceneCamera& camera) {
 	}
 });
 
-int main()
+int main_gl_cubes_light()
 {
 	//ZAP_DISABLE_OUTPUTS(true);
 
@@ -151,5 +149,7 @@ int main()
 
 }
 
-
+#include "enabler.h"
+#ifdef MAIN_GL_CUBES_LIGHT_CPP
+int main() { return main_gl_cubes_light(); }
 #endif
