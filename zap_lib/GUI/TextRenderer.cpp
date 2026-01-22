@@ -44,7 +44,7 @@ namespace zap
 
 		if (FT_Init_FreeType(&ft_instance))
 		{
-			messages::PrintMessage("Failed to initialze the FreeType library", "TextRenderer.cpp/ zap::Text::Text(...)", MessageTypes::fatal_error);
+			messages::PrintMessage("Failed to initialize the FreeType library", "TextRenderer.cpp/ zap::Text::Text(...)", MessageTypes::fatal_error);
 			ZAP_INTERRUPT_FATAL_ERROR;
 		}
 
@@ -81,7 +81,7 @@ namespace zap
 	{
 		ClearAllTextures();
 
-        FT_Set_Pixel_Sizes(i_font, 0, i_character_size); // Or i carracter size
+        FT_Set_Pixel_Sizes(i_font, 0, i_character_size); // Or i character size
 
 		GLint currentAlignment;
 		glGetIntegerv(GL_UNPACK_ALIGNMENT, &currentAlignment);

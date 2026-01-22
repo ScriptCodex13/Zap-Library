@@ -14,7 +14,7 @@ namespace zap
 	{
 		std::string GetFileContent(const char* path)
 		{
-			ZAP_REQUIRE_ALL(std::filesystem::exists(path) && "File path can not be found: " && path);
+			ZAP_REQUIRE_ALL(std::filesystem::exists(path) && "File path cannot be found: " && path);
 			using std::cout;
 			using std::endl;
 			using std::string;

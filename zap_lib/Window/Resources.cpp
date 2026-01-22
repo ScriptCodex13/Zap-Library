@@ -137,7 +137,7 @@ namespace zap
 		}
 		else 
 		{
-			messages::PrintMessage("glad initialized sucessfully", "", MessageTypes::api_core_info, false);
+			messages::PrintMessage("glad initialized successfully", "", MessageTypes::api_core_info, false);
 			
 			if(zap_state_vars::disable_outputs == false) 
 				std::cout << "\033[32m[CORE] " << "Running on graphics device: " << glGetString(GL_RENDERER) << "\033[0m" << std::endl;

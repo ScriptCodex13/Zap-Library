@@ -86,11 +86,11 @@ namespace zap
 
 		// Check compile errors
 
-		int sucess;
+		int success;
 		char info[1024];
 
-		glGetShaderiv(i_compute_shader, GL_COMPILE_STATUS, &sucess);
-		if(!sucess)
+		glGetShaderiv(i_compute_shader, GL_COMPILE_STATUS, &success);
+		if(!success)
 		{
 			glGetShaderInfoLog(i_compute_shader, 1024, NULL, info);
 			messages::PrintMessage("Failed to compile compute shader:", "ComputeShader.cpp/void zap::ComputeShader::Finish()", MessageTypes::error);
@@ -106,8 +106,8 @@ namespace zap
 
 		// Check compile errors
 
-		glGetProgramiv(i_compute_shader, GL_COMPILE_STATUS, &sucess);
-		if (!sucess)
+		glGetProgramiv(i_compute_shader, GL_COMPILE_STATUS, &success);
+		if (!success)
 		{
 			glGetProgramInfoLog(i_compute_shader, 1024, NULL, info);
 			messages::PrintMessage("Failed to link compute shader program:", "ComputeShader.cpp/void zap::ComputeShader::Finish()", MessageTypes::error);

@@ -106,10 +106,10 @@ namespace zap
 		glTexImage2D(GL_TEXTURE_2D, 0, i_descriptor.type, i_descriptor.width, i_descriptor.height, 0, i_descriptor.type, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-	void Texture::FlushData(int width, int heigth, unsigned char* data)
+	void Texture::FlushData(int width, int height, unsigned char* data)
 	{
 		Bind();
-		i_descriptor.width = width, i_descriptor.height = heigth;
+		i_descriptor.width = width, i_descriptor.height = height;
 		glTexImage2D(GL_TEXTURE_2D, 0, i_descriptor.type, i_descriptor.width, i_descriptor.height, 0, i_descriptor.type, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}

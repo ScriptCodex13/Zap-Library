@@ -114,7 +114,7 @@ namespace zap
 
 		resultdata.diffuse_maps = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "diffuse_t"); // The string is for identifying the texture type
 		resultdata.specular_maps = LoadMaterialTextures(material, aiTextureType_SPECULAR, "specular_t");
-		resultdata.normal_maps = LoadMaterialTextures(material, aiTextureType_HEIGHT, "noraml_t");
+		resultdata.normal_maps = LoadMaterialTextures(material, aiTextureType_HEIGHT, "normal_t");
 		resultdata.height_maps = LoadMaterialTextures(material, aiTextureType_AMBIENT, "height_t");
 
 
