@@ -156,12 +156,13 @@ namespace zap
 			#define GLFW_DELETE
 		#endif
 
-		messages::PrintMessage("Deleted reseources", "", MessageTypes::api_core_info, false);
+		messages::PrintMessage("Deleted resources", "", MessageTypes::api_core_info, false);
 
 		/******************************************************************************/
 	}
 
 }
+
 
 
 #endif
