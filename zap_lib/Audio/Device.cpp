@@ -2,9 +2,22 @@
 
 namespace zap
 {
-	AudioDevice::AudioDevice(SoundContainer& sound_container): i_sound_container(sound_container)
+	AudioDevice::AudioDevice(SoundContainer& sound_container): i_sound_container(&sound_container)
 	{
 		i_device_config = ma_device_config();
+		i_device_state = DeviceState::PLAY;
+
+		if (i_sound_container == nullptr)
+			messages::PrintMessage("Audio Device recieved no valid SoundContainer", "Device.cpp/ zap::AudioDevice::AudioDevice(...)", MessageTypes::error);
+	}
+
+	AudioDevice::AudioDevice(SoundWriter& sound_writer) : i_sound_writer(&sound_writer)
+	{
+		i_device_config = ma_device_config();
+		i_device_state = DeviceState::RECORD;
+
+		if (i_sound_container == nullptr)
+			messages::PrintMessage("Audio Device recieved no valid SoundWriter", "Device.cpp/ zap::AudioDevice::AudioDevice(...)", MessageTypes::error);
 	}
 
 	AudioDevice::~AudioDevice()
@@ -13,14 +26,14 @@ namespace zap
 	}
 
 
-	void AudioDevice::SetPlaybackType(PlaybackTypes playbacktype)
+	void AudioDevice::SetDeviceType(DeviceTypes playbacktype)
 	{
-		data.i_playback_type = playbacktype;
+		data.i_device_type = playbacktype;
 	}
 
-	void AudioDevice::SetFormat(PlaybackFormat playbackformat)
+	void AudioDevice::SetFormat(AudioFormat audioformat)
 	{
-		data.i_playback_format = playbackformat;
+		data.i_audio_format = audioformat;
 	}
 
 	void AudioDevice::SetChannels(unsigned int channels)
@@ -42,23 +55,35 @@ namespace zap
 
 	void AudioDevice::RewindToFrame(uint64_t frame)
 	{
-		ma_decoder_seek_to_pcm_frame(&i_sound_container.i_decoder, (ma_uint64)frame);
+		if(i_device_state == DeviceState::PLAY)
+			ma_decoder_seek_to_pcm_frame(&i_sound_container->i_decoder, (ma_uint64)frame);
 	}
 
 	void AudioDevice::Finish(void (*callback)(ma_device*, void*, const void*, ma_uint32))
 	{
-		i_device_config = ma_device_config_init((ma_device_type)data.i_playback_type);
-		i_device_config.playback.format = i_sound_container.i_decoder.outputFormat;//(ma_format)data.i_playback_format;
-		i_device_config.playback.channels = i_sound_container.i_decoder.outputChannels;//data.i_channels;
-		i_device_config.sampleRate = i_sound_container.i_decoder.outputSampleRate;//data.i_sample_rate;
-		i_device_config.dataCallback = callback;
-		i_device_config.pUserData = &i_sound_container.i_decoder;
+		i_device_config = ma_device_config_init((ma_device_type)data.i_device_type);
+		
+		if (i_device_state == DeviceState::PLAY)
+		{
+			i_device_config.playback.format = i_sound_container->i_decoder.outputFormat;//(ma_format)data.i_playback_format;
+			i_device_config.playback.channels = i_sound_container->i_decoder.outputChannels;//data.i_channels;
+			i_device_config.sampleRate = i_sound_container->i_decoder.outputSampleRate;//data.i_sample_rate;
+			i_device_config.dataCallback = callback;
+			i_device_config.pUserData = &i_sound_container->i_decoder;
+		}
+		else if (i_device_state == DeviceState::RECORD)
+		{
+			i_device_config.playback.format = i_sound_writer->i_encoder.config.format;//(ma_format)data.i_playback_format;
+			i_device_config.playback.channels = i_sound_writer->i_encoder.config.channels;//data.i_channels;
+			i_device_config.sampleRate = i_sound_writer->i_encoder.config.sampleRate;//data.i_sample_rate;
+			i_device_config.dataCallback = callback;
+			i_device_config.pUserData = &i_sound_writer->i_encoder;
+		}
 
 		if (ma_device_init(NULL, &i_device_config, &i_device) != MA_SUCCESS)
 		{
 			messages::PrintMessage("Failed to init audio device", "Device.cpp/ void zap::AudioDevice::Finish()", MessageTypes::error);
 		}
-
 	}
 
 	void AudioDevice::Finish()

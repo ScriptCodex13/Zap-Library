@@ -1,7 +1,7 @@
 #pragma once
 
 //Examples
-#define MAIN_GL_SIMPLE_TRIANGLES_TEXTURE_CPP
+//#define MAIN_GL_SIMPLE_TRIANGLES_TEXTURE_CPP
 
 //#define MAIN_CPP
 //#define MAIN_UI_BUTTON_CPP
@@ -21,7 +21,9 @@
 //#define MAIN_ASSIMP_MODEL_LOADING_CPP
 
 //Audio
-//#define MAIN_AUDIO_TEST_CPP
+
+#define MAIN_AUDIO_TEST_CPP
+//#define MAIN_AUDIO_RECORDING
 
 // IF LAB
 //#define IF_LAB_MAIN3_CPP
