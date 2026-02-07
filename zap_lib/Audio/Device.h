@@ -67,9 +67,9 @@ namespace zap
 
 	struct SoundWriter
 	{
-		SoundWriter(std::string file, EncoderFormat encoder_format, AudioFormat audio_format, uint32_t channels, uint32_t sample_rate)
+		SoundWriter(std::string file_path, EncoderFormat encoder_format, AudioFormat audio_format, uint32_t channels, uint32_t sample_rate)
 		{
-			i_file = file;
+			i_file = file_path;
 			i_encoder_format = encoder_format;
 			i_audio_format = audio_format;
 			i_channels = channels;
@@ -77,7 +77,7 @@ namespace zap
 
 			i_encoder_config = ma_encoder_config_init((ma_encoding_format)i_encoder_format, (ma_format)i_audio_format, (ma_uint32)i_channels, (ma_uint32)i_sample_rate);
 		
-			if (ma_encoder_init_file(i_file.c_str(), &i_encoder_config, &i_encoder)) 
+			if (ma_encoder_init_file(i_file.c_str(), &i_encoder_config, &i_encoder) != MA_SUCCESS)
 			{
 				messages::PrintMessage("Failed to find output file: " + i_file, "Device.h/ zap::SoundWriter::SoundWriter(..)", MessageTypes::error);
 			}

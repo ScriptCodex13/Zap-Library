@@ -22,8 +22,8 @@
 
 //Audio
 
-#define MAIN_AUDIO_TEST_CPP
-//#define MAIN_AUDIO_RECORDING
+//#define MAIN_AUDIO_TEST_CPP
+#define MAIN_AUDIO_RECORDING
 
 // IF LAB
 //#define IF_LAB_MAIN3_CPP
