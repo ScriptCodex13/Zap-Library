@@ -103,6 +103,12 @@ namespace zap
 		return AddTextureFromData(hash, texture_data, texture_width, texture_height, Type, filter, settings, wrapping);
 	}
 
+	void Mesh::ActivateTexture(unsigned int hash, std::string uniform_name)
+	{
+		glUniform1i(glGetUniformLocation(shaderProgram, uniform_name.c_str()), hash);
+	}
+
+
 	// TODO: Move the shader functionality to a separate class, totally five functions to be moved
 	void Mesh::SetVertexShaderSource(const std::string& source)
 	{

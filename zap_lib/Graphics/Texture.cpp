@@ -17,7 +17,7 @@
 
 namespace zap
 {
-	Texture::Texture(unsigned int external_id, const std::string path, TextureDescriptor descriptor)
+	Texture::Texture(unsigned int hash, const std::string path, TextureDescriptor descriptor)
 	{
 	}
 	Texture::Texture(unsigned int hash, const std::string path,
@@ -26,11 +26,9 @@ namespace zap
 						TextureWrapping  wrapping) :
 							i_Hash       (hash),
 							i_descriptor { filter , setting, wrapping, wrapping, 0, -1, -1, true}
-
 	{
 		glGenTextures(1, &i_TextureId);
 		GenTextureFromFile(path);
-
 	}
 
 	Texture::Texture(
@@ -132,12 +130,10 @@ namespace zap
 	}
 
 	void Texture::Bind() 
-	{ 
+	{
+		glActiveTexture(GL_TEXTURE0 + i_Hash);
 		glBindTexture(GL_TEXTURE_2D, i_TextureId);
 	}
-
-
-
 }
 
 

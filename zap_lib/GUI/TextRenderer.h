@@ -8,6 +8,7 @@
 // includes
 
 #include "../Graphics/Mesh.h"
+#include "../Graphics/Texture.h"
 #include "../Util/Message.h"
 #include "../Util/Util.h"
 

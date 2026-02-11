@@ -81,6 +81,8 @@ namespace zap
 		Texture& AddTextureFromPath(const std::string path, TextureFilter filter = TextureFilter::LINEAR, MipmapSetting settings = MipmapSetting::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
 		Texture& AddTextureFromData(unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilter filter = TextureFilter::LINEAR, MipmapSetting settings = MipmapSetting::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER); // Add texture but with manual loaded texture_data
 
+		void ActivateTexture(unsigned int hash, std::string uniform_name);
+
 		//Separate vertex buffer data functions for more complex logic
 		void VertexBufferData();
 		void VertexBufferData(const std::vector<float>& newBufferData);

@@ -98,9 +98,17 @@ namespace zap
 				messages::PrintMessage("Failed to load glyph", "TextRenderer.cpp/ void zap::Text::GenerateCharacters(...)", MessageTypes::error);
 			}
 
-			Texture& tex = AddTextureFromData((unsigned int)c,
+			/*Texture& tex = Mesh::AddTextureFromData
+			(
+				(unsigned int)c, "text"
 				i_font->glyph->bitmap.buffer,
 				i_font->glyph->bitmap.width, i_font->glyph->bitmap.rows,  GL_RED, 
+				i_texture_filter, i_mipmap_setting,
+				zap::TextureWrapping::CLAMP_TO_EDGE
+			);*/
+
+			Texture& tex = Mesh::AddTextureFromData((unsigned int)c, i_font->glyph->bitmap.buffer,
+				i_font->glyph->bitmap.width, i_font->glyph->bitmap.rows, GL_RED,
 				i_texture_filter, i_mipmap_setting,
 				zap::TextureWrapping::CLAMP_TO_EDGE);
 

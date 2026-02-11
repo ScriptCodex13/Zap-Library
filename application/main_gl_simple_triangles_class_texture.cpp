@@ -79,12 +79,12 @@ out vec4 FragColor;
 in vec3 ourColor;
 in vec2 TexCoord;
 
-uniform sampler2D ourTexture;
+uniform sampler2D texture1;
+uniform sampler2D texture2;
 
 void main()
 {
-    FragColor = texture(ourTexture, TexCoord);
-    //FragColor = vec4(ourColor, 0);
+   FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2);
 })glsl";
 
 int main_gl_simple_triangles_class_texture	()
@@ -117,11 +117,17 @@ int main_gl_simple_triangles_class_texture	()
 	mesh.SetFragmentShaderSource(fragmentCameraShaderSource);
 	mesh.SetAttribPointer(0, 3, 5, 0);
 	mesh.SetAttribPointer(1, 2, 5, 3);
-	//unsigned int texture0Id = mesh.AddTexture(0, "textures/texture.png", zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
-	//unsigned int texture0Id = mesh.AddTexture(0, "textures/texture.png", zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
+	//unsigned int texture0Id = mesh.AddTexture(0, "textures/texture.png", zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).GetHash();
+	//unsigned int texture0Id = mesh.AddTexture(0, "textures/texture.png", zap::TextureFilters::NEAREST, zap::MipmapSettings::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).GetHash();
+
 	unsigned int texture0Id = mesh.AddTextureFromPath(0, "textures/texture.png", zap::TextureFilter::NEAREST, zap::MipmapSetting::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
+	unsigned int texture1Id = mesh.AddTextureFromPath(1, "textures/Button_Texture.png", zap::TextureFilter::NEAREST, zap::MipmapSetting::LINEAR_MIPMAP_LINEAR, zap::TextureWrapping::CLAMP_TO_BORDER).getHash();
 
 	mesh.Finish();
+
+	mesh.UseProgram();
+	mesh.ActivateTexture(texture0Id, "texture1");
+	mesh.ActivateTexture(texture1Id, "texture2");
 
 	window.UpdateViewport(); //This is a set callback. Once set == forever set
 	std::array<int, 2> size = window.GetSize(); // Not a Ref to the window size !
@@ -160,15 +166,19 @@ int main_gl_simple_triangles_class_texture	()
 
 
 		//here starts current VAO for current program draw
-		mesh.Bind(); //set current context before any draw routines, it prevents mess in more complex programs
+		//set current context before any draw routines, it prevents mess in more complex programs
 		//update uniforms
 
 		mesh.UpdateModel(glm::rotate(glm::mat4(1.0), (float)0, glm::vec3(0.0f, 1.0f, 0.0f)));
 		mesh.UpdateView(camera.GetView());
 		mesh.UpdateProjection(camera.GetProjection());
-
+		
+		//glActiveTexture(GL_TEXTURE0);
 		mesh.BindTextureByHash(texture0Id);
+		//glActiveTexture(GL_TEXTURE1);
+		mesh.BindTextureByHash(texture1Id);
 
+		mesh.Bind();
 		mesh.Draw();
 		//here draw ends
 

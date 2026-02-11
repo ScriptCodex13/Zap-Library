@@ -61,9 +61,9 @@ namespace zap
 	{
 	public:
 		Texture() {}
-		Texture(unsigned int external_id, const std::string path, TextureDescriptor = DefaultForFilepath);
-		Texture(unsigned int external_id, const std::string path, TextureFilter filter = TextureFilter::LINEAR, MipmapSetting settings = MipmapSetting::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
-		Texture(unsigned int external_id, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilter filter = TextureFilter::LINEAR, MipmapSetting settings = MipmapSetting::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
+		Texture(unsigned int hash, const std::string path, TextureDescriptor = DefaultForFilepath);
+		Texture(unsigned int hash, const std::string path, TextureFilter filter = TextureFilter::LINEAR, MipmapSetting settings = MipmapSetting::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
+		Texture(unsigned int hash, unsigned char* texture_data, int texture_width, int texture_height, GLenum Type, TextureFilter filter = TextureFilter::LINEAR, MipmapSetting settings = MipmapSetting::LINEAR_MIPMAP_LINEAR, TextureWrapping wrapping = TextureWrapping::CLAMP_TO_BORDER);
 
 		void DeleteTexture();
 		void Bind();
@@ -78,6 +78,9 @@ namespace zap
 		void GenTextureFromData(unsigned char* data);
 		unsigned int i_TextureId = -1;
 		unsigned int i_Hash = -1;
+
+		std::string i_uniform_name;
+
 	private:
 		TextureDescriptor i_descriptor = {
 			TextureFilter::LINEAR,               // filter
