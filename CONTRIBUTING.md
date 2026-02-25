@@ -1,6 +1,20 @@
 # Contributing
 
-So you want to contribute to this project ? That's great ! But we have to get the boring stuff done first.
+**So you want to contribute to this project ? That's great ! But we have to get the boring stuff done first.**
+
+## Issues 
+
+If want to write an issue we have got some recommendations on how to write a pull request so we can make a fix:
+
+1. Tell us about what happened.
+2. Tell us a little bit about your environment so we can replicate the bug (OS, Build, IDE etc.)
+3. In the end you should tell us what you expected what should happen
+
+- Then we are going to help you out as best as we can !
+
+### If you have got a feature request
+
+Tell us about your suggestion. Dont shy away from the technical details.
 
 ## Requriments for making a Pull request 
 
@@ -27,6 +41,7 @@ It's important to keep the code in a consistent style so we came up with some re
 5. Use include guards in your headers
 6. Every callable function for users of this software should be in capital letters.
    ex.: void MyFunction()
+7. If possible try to avoid using global variables (exept for API states)
 
 ## Additional requirements
 
@@ -51,4 +66,5 @@ Step 1 - Contact us on our [discord server](https://discord.gg/hr2vjemJSV) and t
 Step 2 - We will then assign you a new role name applicant. So you can enter the applicant chat. There we'll just look at your example project. (Don't worry it won't be like a job interview :) )
 
 Step 3 - We will tell you if you're a contributor then. If you're not you can stay applicant and try again later on.
+
 
