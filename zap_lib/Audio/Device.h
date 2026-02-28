@@ -46,15 +46,44 @@ namespace zap
 		unsigned int i_sample_rate = 48000;
 	};
 
+	struct SoundBuffer
+	{
+		SoundBuffer(AudioFormat audio_format, uint32_t channels, uint32_t buffersize, void* preallocated_buffer = NULL, ma_allocation_callbacks* allocation_callback)
+		{
+			i_audio_format = audio_format;
+			i_channels = channels;
+			i_buffersize = buffersize;
+
+			ma_result result = ma_pcm_rb_init((ma_format)i_audio_format, (ma_uint32)i_channels, (ma_uint32)i_buffersize, preallocated_buffer, allocation_callback, &i_rb);
+		
+			if(result != MA_SUCCESS)
+			{
+				messages::PrintMessage("Was not able to allocate audio buffer", "Device.h/ zap::SoundBuffer::SoundBuffer(..)", MessageTypes::error);
+			}
+		}
+		~SoundBuffer()
+		{
+			ma_pcm_rb_uninit(&i_rb);
+		}
+
+		ma_pcm_rb i_rb;
+
+		AudioFormat i_audio_format;
+		uint32_t i_channels;
+		uint32_t i_buffersize;
+	};
+
 	struct SoundContainer
 	{
 		SoundContainer(std::string file_path)
 		{
-			ma_result result = ma_decoder_init_file(file_path.c_str(), NULL, &i_decoder);
+			i_file_path = file_path;
+
+			ma_result result = ma_decoder_init_file(i_file_path.c_str(), NULL, &i_decoder);
 
 			if (result != MA_SUCCESS)
 			{
-				messages::PrintMessage("Cannot load audio file from path: " + file_path, "Device.h/ zap::SoundContainer::SoundContainer(..)", MessageTypes::error);
+				messages::PrintMessage("Cannot load audio file from path: " + i_file_path, "Device.h/ zap::SoundContainer::SoundContainer(..)", MessageTypes::error);
 			}
 		}
 		~SoundContainer()
@@ -63,6 +92,7 @@ namespace zap
 		}
 
 		ma_decoder i_decoder;
+		std::string i_file_path;
 	};
 
 	struct SoundWriter
@@ -110,12 +140,6 @@ namespace zap
 		(void)pInput;
 	};
 
-	enum class DeviceState
-	{
-		PLAY,
-		RECORD
-	};
-
 	class AudioDevice
 	{
 	public:
@@ -139,8 +163,6 @@ namespace zap
 		//std::function<void(ma_device*, void*, const void*, ma_uint32)> i_callback = data_callback;
 
 	public:
-		DeviceState i_device_state;
-
 		SoundContainer* i_sound_container;
 		SoundWriter* i_sound_writer;
 		ma_device i_device;

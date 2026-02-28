@@ -5,7 +5,6 @@ namespace zap
 	AudioDevice::AudioDevice(SoundContainer& sound_container): i_sound_container(&sound_container)
 	{
 		i_device_config = ma_device_config();
-		i_device_state = zap::DeviceState::PLAY;
 		data.i_device_type = zap::DeviceTypes::PLAYBACK;
 
 		if (i_sound_container == nullptr)
@@ -15,7 +14,6 @@ namespace zap
 	AudioDevice::AudioDevice(SoundWriter& sound_writer) : i_sound_writer(&sound_writer)
 	{
 		i_device_config = ma_device_config();
-		i_device_state = zap::DeviceState::RECORD;
 		data.i_device_type = zap::DeviceTypes::CAPTURE;
 
 		if (i_sound_writer == nullptr)
@@ -60,7 +58,7 @@ namespace zap
 
 	void AudioDevice::RewindToFrame(uint64_t frame)
 	{
-		if(i_device_state == DeviceState::PLAY)
+		if(data.i_device_type == DeviceTypes::PLAYBACK)
 			ma_decoder_seek_to_pcm_frame(&i_sound_container->i_decoder, (ma_uint64)frame);
 	}
 
@@ -68,7 +66,7 @@ namespace zap
 	{
 		i_device_config = ma_device_config_init((ma_device_type)data.i_device_type);
 		
-		if (i_device_state == DeviceState::PLAY)
+		if (data.i_device_type == DeviceTypes::PLAYBACK)
 		{
 			i_device_config.playback.format = i_sound_container->i_decoder.outputFormat;//(ma_format)data.i_playback_format;
 			i_device_config.playback.channels = i_sound_container->i_decoder.outputChannels;//data.i_channels;
@@ -76,7 +74,7 @@ namespace zap
 			i_device_config.dataCallback = callback;
 			i_device_config.pUserData = &i_sound_container->i_decoder;
 		}
-		else if (i_device_state == DeviceState::RECORD)
+		else if (data.i_device_type == DeviceTypes::CAPTURE)
 		{
 			i_device_config.capture.format = i_sound_writer->i_encoder.config.format;//(ma_format)data.i_playback_format;
 			i_device_config.capture.channels = i_sound_writer->i_encoder.config.channels;//data.i_channels;
